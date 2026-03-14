@@ -1,0 +1,1652 @@
+[
+  {
+    "category": "FITNESS",
+    "subs": [
+      {
+        "subName": "Fitness",
+        "isTopLevel": true,
+        "searchPrompt": "top fitness influencers",
+        "altSearchTerms": [
+          "favorite fitness creators",
+          "top fitness accounts"
+        ],
+        "knownSources": [
+          "disruptmarketing.co",
+          "gymfluencers.agency",
+          "popularpays.com",
+          "reddit.com/r/Fitness",
+          "seekahost.co.uk",
+          "favikon.com",
+          "theinfluenceroom.com",
+          "modash.io",
+          "clickanalytic.com",
+          "trainerize.com",
+          "thesocialshepherd.com",
+          "ugcfactory.io",
+          "socialtradia.com",
+          "hellomagazine.com",
+          "insense.pro",
+          "adparlor.com",
+          "influencity.com",
+          "socialbook.io",
+          "amraandelma.com",
+          "wod.guru"
+        ],
+        "platformNotes": "Instagram triggers agency directories. YouTube/TikTok rely heavier on community forums and listicles.",
+        "regionNotes": "Both UK and US return abundant results. Region pulls localized marketing agency lists effectively.",
+        "difficulty": "Easy"
+      },
+      {
+        "subName": "Calisthenics",
+        "isTopLevel": false,
+        "searchPrompt": "favorite bodyweight fitness creators",
+        "altSearchTerms": [
+          "top calisthenics influencers",
+          "street workout accounts"
+        ],
+        "knownSources": [
+          "reddit.com/r/bodyweightfitness",
+          "reddit.com/r/Calisthenic",
+          "influencer-hero.com",
+          "socialveins.com",
+          "feedspot.com",
+          "thesocialcat.com",
+          "modash.io"
+        ],
+        "platformNotes": "Reddit threads heavily prioritize YouTube for full-length tutorials.",
+        "regionNotes": "UK thinner than US but still viable. This niche leans global — community discussions rarely focus on one region.",
+        "difficulty": "Easy"
+      },
+      {
+        "subName": "Science-Based Training",
+        "isTopLevel": false,
+        "searchPrompt": "evidence based fitness influencers",
+        "altSearchTerms": [
+          "science based lifting creators",
+          "science backed training influencers"
+        ],
+        "knownSources": [
+          "reddit.com/r/weightroom",
+          "reddit.com/r/Fitness",
+          "billcampbellphd.com",
+          "menshealth.com/uk",
+          "theinfluenceagency.com",
+          "girlsloveevidence.com",
+          "trainerize.com"
+        ],
+        "platformNotes": "The community heavily favors long-form video for breaking down scientific literature. YouTube strongest.",
+        "regionNotes": "Region doesn't affect results much — this niche is inherently global. US and UK return similar creators.",
+        "difficulty": "Medium"
+      },
+      {
+        "subName": "Powerlifting / Strength",
+        "isTopLevel": false,
+        "searchPrompt": "top powerlifting influencers",
+        "altSearchTerms": [
+          "favorite powerlifting accounts",
+          "strength training influencers"
+        ],
+        "knownSources": [
+          "reddit.com/r/powerlifting",
+          "reddit.com/r/weightroom",
+          "influencer-hero.com",
+          "collabstr.com",
+          "modash.io"
+        ],
+        "platformNotes": "Instagram frequently surfaces for meet recaps and single heavy lifts.",
+        "regionNotes": "US much richer than UK. Both return viable results.",
+        "difficulty": "Easy"
+      },
+      {
+        "subName": "Women's Fitness",
+        "isTopLevel": false,
+        "searchPrompt": "top female fitness influencers",
+        "altSearchTerms": [
+          "favorite fitness lifestyle accounts",
+          "female gym influencers"
+        ],
+        "knownSources": [
+          "reddit.com/r/xxfitness",
+          "favikon.com",
+          "theinfluenceroom.com",
+          "clickanalytic.com",
+          "afluencer.com",
+          "influencity.com",
+          "gymfluencers.agency",
+          "stackinfluence.com"
+        ],
+        "platformNotes": "Must use 'female fitness' or 'gym influencers' — 'women's fitness' returns generic wellness content.",
+        "regionNotes": "Both UK and US are highly abundant.",
+        "difficulty": "Easy"
+      },
+      {
+        "subName": "Yoga / Mobility",
+        "isTopLevel": false,
+        "searchPrompt": "top yoga influencers",
+        "altSearchTerms": [
+          "favorite yoga creators",
+          "mobility flow accounts"
+        ],
+        "knownSources": [
+          "reddit.com/r/yoga",
+          "reddit.com/r/xxfitness",
+          "favikon.com",
+          "feedspot.com",
+          "thesocialcat.com",
+          "theinfluenceagency.com"
+        ],
+        "platformNotes": "Search splits between full-length follow-along classes (YouTube) and quick flows (TikTok/IG).",
+        "regionNotes": "Both UK and US abundant. Let yoga dominate — 'mobility' alone is too thin.",
+        "difficulty": "Easy"
+      }
+    ]
+  },
+  {
+    "category": "FOOD_AND_COOKING",
+    "subs": [
+      {
+        "subName": "Food & Cooking",
+        "isTopLevel": true,
+        "searchPrompt": "top food creators",
+        "altSearchTerms": [
+          "favorite cooking influencers",
+          "best culinary accounts"
+        ],
+        "knownSources": [
+          "theinfluenceagency.com",
+          "foodbloggerpro.com",
+          "reddit.com/r/Cooking",
+          "sproutsocial.com",
+          "cloudkitchens.com",
+          "kwmarketinguk.co.uk",
+          "favikon.com",
+          "collabstr.com",
+          "stackinfluence.com",
+          "clickanalytic.com",
+          "kolsquare.com",
+          "ugcfactory.io",
+          "ecommercefastlane.com",
+          "air.io",
+          "grin.co",
+          "amraandelma.com"
+        ],
+        "platformNotes": "YouTube returns long-form chefs. IG/TikTok return fast-paced aesthetic cooks.",
+        "regionNotes": "Both UK and US return rich results. Localized marketing agency lists surface well with region.",
+        "difficulty": "Easy"
+      },
+      {
+        "subName": "Quick Recipes",
+        "isTopLevel": false,
+        "searchPrompt": "easy meal prep creators",
+        "altSearchTerms": [
+          "quick recipe influencers",
+          "top meal prep accounts"
+        ],
+        "knownSources": [
+          "reddit.com/r/MealPrepSunday",
+          "thesocialshepherd.com",
+          "territory-influence.com",
+          "reddit.com/r/EatCheapAndHealthy",
+          "hauslane.com"
+        ],
+        "platformNotes": "YouTube indexes heavily for bulk prep. Short-form focuses on 15-minute daily meals.",
+        "regionNotes": "Both UK and US return solid results. No major difference with or without region.",
+        "difficulty": "Easy"
+      },
+      {
+        "subName": "Protein / Macros",
+        "isTopLevel": false,
+        "searchPrompt": "high protein recipe creators",
+        "altSearchTerms": [
+          "fitness meal prep accounts",
+          "macro friendly food influencers"
+        ],
+        "knownSources": [
+          "grocerslist.com",
+          "reddit.com/r/MealPrepSunday",
+          "deficientvegans.com",
+          "abdullahiibrahim.com",
+          "ecommercefastlane.com"
+        ],
+        "platformNotes": "Short-form platforms completely dominate this space with quick calorie breakdowns.",
+        "regionNotes": "Both UK and US viable. Niche is growing fast — new creator listicles appear frequently.",
+        "difficulty": "Medium"
+      },
+      {
+        "subName": "Healthy / Diet",
+        "isTopLevel": false,
+        "searchPrompt": "healthy eating influencers",
+        "altSearchTerms": [
+          "plant based food creators",
+          "diet recipe accounts"
+        ],
+        "knownSources": [
+          "digitalvoices.com",
+          "reddit.com/r/EatCheapAndHealthy",
+          "kolsquare.com",
+          "thesocialshepherd.com",
+          "izea.com",
+          "keepface.com",
+          "fashionmonitor.com"
+        ],
+        "platformNotes": "Overlaps with registered dietitians on IG. YouTube favors 'What I Eat in a Day' format.",
+        "regionNotes": "Diet trends fluctuate by region — UK and US have different popular diets, both return well.",
+        "difficulty": "Easy"
+      },
+      {
+        "subName": "Restaurant Reviews",
+        "isTopLevel": false,
+        "searchPrompt": "top restaurant reviewers",
+        "altSearchTerms": [
+          "local foodie accounts",
+          "best food critics"
+        ],
+        "knownSources": [
+          "squaremeal.co.uk",
+          "wearememo.com",
+          "thesocialshepherd.com",
+          "thecourieronline.co.uk",
+          "joliapp.com",
+          "thenational.scot",
+          "thecaterer.com",
+          "vivianagency.com",
+          "pepperagency.com",
+          "escapadepr.com",
+          "mob.co.uk"
+        ],
+        "platformNotes": "TikTok and Instagram are the absolute dominant platforms for short-form visual reviews.",
+        "regionNotes": "Region is critical — without it, results become chaotic with global creators. Always use region.",
+        "difficulty": "Medium"
+      },
+      {
+        "subName": "Street Food",
+        "isTopLevel": false,
+        "searchPrompt": "street food vloggers",
+        "altSearchTerms": [
+          "local street food creators",
+          "best street food accounts"
+        ],
+        "knownSources": [
+          "reddit.com/r/streetfood",
+          "youtube.com",
+          "kolsquare.com",
+          "vivianagency.com",
+          "influencer-hero.com",
+          "adparlor.com",
+          "feedspot.com"
+        ],
+        "platformNotes": "'Vloggers' triggers YouTube long-form docs. 'Creators' triggers quick TikTok bites.",
+        "regionNotes": "Highly region-dependent — street food culture differs massively by country. Region is essential.",
+        "difficulty": "Easy"
+      }
+    ]
+  },
+  {
+    "category": "AI",
+    "subs": [
+      {
+        "subName": "AI",
+        "isTopLevel": true,
+        "searchPrompt": "top AI influencers",
+        "altSearchTerms": [
+          "best artificial intelligence creators",
+          "top AI tech accounts"
+        ],
+        "knownSources": [
+          "influencer-hero.com",
+          "thinkers360.com",
+          "metricsmule.com",
+          "socialrails.com",
+          "favikon.com",
+          "onalytica.com",
+          "starngage.com",
+          "kolsquare.com",
+          "influencermarketinghub.com",
+          "analyticsvidhya.com",
+          "pathmonk.com",
+          "awisee.com",
+          "hyperwriteai.com",
+          "digitalocean.com"
+        ],
+        "platformNotes": "YouTube favors deep-dive podcast formats. TikTok favors rapid-fire news and tool showcases.",
+        "regionNotes": "Surfaces localized tech PR roundups. Both UK and US return well — AI is a global niche but localized coverage exists.",
+        "difficulty": "Easy"
+      },
+      {
+        "subName": "AI Tools & Reviews",
+        "isTopLevel": false,
+        "searchPrompt": "top AI tool reviewers",
+        "altSearchTerms": [
+          "new AI tools creators",
+          "AI software review accounts"
+        ],
+        "knownSources": [
+          "reddit.com/r/ChatGPT",
+          "therundown.ai",
+          "favikon.com",
+          "influencity.com",
+          "skimai.com"
+        ],
+        "platformNotes": "TikTok and Instagram dominate for quick '3 AI tools you need' hooks.",
+        "regionNotes": "Region filters out global noise and pinpoints local tech reviewers. Both UK and US return useful results.",
+        "difficulty": "Easy"
+      },
+      {
+        "subName": "AI News & Commentary",
+        "isTopLevel": false,
+        "searchPrompt": "AI news creators",
+        "altSearchTerms": [
+          "artificial intelligence commentary accounts",
+          "top AI update influencers"
+        ],
+        "knownSources": [
+          "reddit.com/r/singularity",
+          "reddit.com/r/artificial",
+          "feedspot.com",
+          "exploreaitogether.com",
+          "lkiconsulting.io",
+          "pwskills.com"
+        ],
+        "platformNotes": "YouTube dominates for weekly AI news roundups. Podcasts also strong here.",
+        "regionNotes": "Highlights creators who contextualize global AI news for local audiences. US richer than UK.",
+        "difficulty": "Easy"
+      },
+      {
+        "subName": "AI Creative Tools",
+        "isTopLevel": false,
+        "searchPrompt": "AI art and video creators",
+        "altSearchTerms": [
+          "generative AI design influencers",
+          "Midjourney tutorial accounts"
+        ],
+        "knownSources": [
+          "reddit.com/r/midjourney",
+          "reddit.com/r/StableDiffusion",
+          "kolsquare.com",
+          "invideo.io",
+          "veed.io"
+        ],
+        "platformNotes": "Highly visual — Instagram and YouTube are the primary platforms here.",
+        "regionNotes": "Helps surface local digital artists, though this niche skews global. US returns more than UK.",
+        "difficulty": "Medium"
+      },
+      {
+        "subName": "AI Coding / Dev Tools",
+        "isTopLevel": false,
+        "searchPrompt": "AI coding tutorial creators",
+        "altSearchTerms": [
+          "machine learning dev influencers",
+          "AI programming accounts"
+        ],
+        "knownSources": [
+          "reddit.com/r/LocalLLaMA",
+          "reddit.com/r/MachineLearning",
+          "dev.to",
+          "feedspot.com",
+          "kingy.ai",
+          "headphonesty.com",
+          "lkiconsulting.io",
+          "analyticsvidhya.com",
+          "skimai.com",
+          "digitalocean.com"
+        ],
+        "platformNotes": "YouTube is heavily favored for long-form, screen-share coding tutorials.",
+        "regionNotes": "Region helps identify local tech talent but results are thinner — this niche is very global.",
+        "difficulty": "Hard"
+      },
+      {
+        "subName": "AI Automation / Agents",
+        "isTopLevel": false,
+        "searchPrompt": "AI automation creators",
+        "altSearchTerms": [
+          "top AI agent workflow influencers",
+          "Zapier Make tutorial accounts"
+        ],
+        "knownSources": [
+          "reddit.com/r/Automate",
+          "favikon.com",
+          "collabstr.com",
+          "pathmonk.com"
+        ],
+        "platformNotes": "YouTube is best for full workflow builds; TikTok for quick automation hooks.",
+        "regionNotes": "Surfaces local B2B tech influencers. US richer; UK more sparse but growing.",
+        "difficulty": "Medium"
+      }
+    ]
+  },
+  {
+    "category": "BEAUTY",
+    "subs": [
+      {
+        "subName": "Beauty",
+        "isTopLevel": true,
+        "searchPrompt": "top beauty influencers",
+        "altSearchTerms": [
+          "favorite beauty creators",
+          "top makeup accounts"
+        ],
+        "knownSources": [
+          "brands.joinstatus.com",
+          "diarydirectory.com",
+          "influencermatchmaker.co.uk",
+          "reddit.com/r/BeautyGuruChatter",
+          "favikon.com",
+          "modash.io",
+          "upfluence.com",
+          "hobo.video",
+          "flockler.com",
+          "stackinfluence.com",
+          "starngage.com",
+          "adparlor.com"
+        ],
+        "platformNotes": "Instagram and TikTok dominate heavily. YouTube for long-form tutorials and hauls.",
+        "regionNotes": "Regional searches perfectly isolate local PR lists and brand ambassadors. Both UK and US very rich.",
+        "difficulty": "Easy"
+      },
+      {
+        "subName": "Makeup Tutorials",
+        "isTopLevel": false,
+        "searchPrompt": "makeup tutorial creators",
+        "altSearchTerms": [
+          "best makeup artists",
+          "top MUA influencers"
+        ],
+        "knownSources": [
+          "reddit.com/r/MakeupAddiction",
+          "thesocialshepherd.com",
+          "influencer-hero.com",
+          "amraandelma.com"
+        ],
+        "platformNotes": "'MUA' (Makeup Artist) is a crucial keyword for Instagram and TikTok searches.",
+        "regionNotes": "Product availability varies by region — UK vs US drugstore brands differ. Both return well.",
+        "difficulty": "Easy"
+      },
+      {
+        "subName": "Skincare Routines",
+        "isTopLevel": false,
+        "searchPrompt": "top skincare influencers",
+        "altSearchTerms": [
+          "favorite skincare creators",
+          "dermatologist accounts"
+        ],
+        "knownSources": [
+          "reddit.com/r/SkincareAddiction",
+          "reddit.com/r/AsianBeauty",
+          "traackr.com",
+          "awisee.com",
+          "gcimagazine.com"
+        ],
+        "platformNotes": "TikTok drives rapid viral trends. YouTube is preferred for active ingredient deep-dives.",
+        "regionNotes": "Highlights local dermatologists and region-specific product availability. Both UK and US rich.",
+        "difficulty": "Easy"
+      },
+      {
+        "subName": "Haircare",
+        "isTopLevel": false,
+        "searchPrompt": "top haircare influencers",
+        "altSearchTerms": [
+          "hair tutorial creators",
+          "curly hair accounts"
+        ],
+        "knownSources": [
+          "reddit.com/r/HaircareScience",
+          "modash.io",
+          "thesocialshepherd.com"
+        ],
+        "platformNotes": "Instagram thrives on visual transformations. TikTok favors quick maintenance tips.",
+        "regionNotes": "Both UK and US return excellent results.",
+        "difficulty": "Easy"
+      },
+      {
+        "subName": "Budget / Dupes",
+        "isTopLevel": false,
+        "searchPrompt": "drugstore makeup creators",
+        "altSearchTerms": [
+          "affordable beauty influencers",
+          "beauty dupe accounts"
+        ],
+        "knownSources": [
+          "reddit.com/r/drugstoreMUA",
+          "buzzfeed.com",
+          "allure.com",
+          "amraandelma.com",
+          "styledandstrolling.com"
+        ],
+        "platformNotes": "TikTok is the undisputed king of the 'dupe' format right now.",
+        "regionNotes": "'Drugstore' translates differently by region — UK has Boots/Superdrug, US has CVS/Walgreens. Region matters for product relevance.",
+        "difficulty": "Medium"
+      },
+      {
+        "subName": "Men's Grooming",
+        "isTopLevel": false,
+        "searchPrompt": "men's grooming influencers",
+        "altSearchTerms": [
+          "men's skincare creators",
+          "top barber accounts"
+        ],
+        "knownSources": [
+          "reddit.com/r/malegrooming",
+          "gq.com",
+          "modash.io",
+          "sproutsocial.com"
+        ],
+        "platformNotes": "Instagram and TikTok split evenly between skincare routines and haircut styling.",
+        "regionNotes": "Helps isolate grooming from general men's fashion. Both UK and US return distinct results.",
+        "difficulty": "Medium"
+      }
+    ]
+  },
+  {
+    "category": "TECH",
+    "subs": [
+      {
+        "subName": "Tech",
+        "isTopLevel": true,
+        "searchPrompt": "top tech influencers",
+        "altSearchTerms": [
+          "best technology reviewers",
+          "top consumer tech creators"
+        ],
+        "knownSources": [
+          "upfluence.com",
+          "socialbook.io",
+          "disruptmarketing.co",
+          "tytopr.com",
+          "benlabs.com",
+          "reddit.com/r/tech",
+          "reddit.com/r/AskReddit",
+          "favikon.com",
+          "starngage.com",
+          "wisestamp.com",
+          "peertopeermarketing.co",
+          "onsightapp.com",
+          "haulpack.com",
+          "getkobe.com"
+        ],
+        "platformNotes": "YouTube favors cinematic tech reviews. TikTok favors rapid-fire unboxings.",
+        "regionNotes": "Separates massive global creators from regional PR. Both UK and US return well, but US is significantly richer.",
+        "difficulty": "Easy"
+      },
+      {
+        "subName": "Smartphones",
+        "isTopLevel": false,
+        "searchPrompt": "best smartphone reviewers",
+        "altSearchTerms": [
+          "top mobile tech influencers",
+          "phone tech creators"
+        ],
+        "knownSources": [
+          "reddit.com/r/Smartphones",
+          "reddit.com/r/Android",
+          "makeuseof.com",
+          "iqfluence.io",
+          "feedspot.com",
+          "beacons.ai"
+        ],
+        "platformNotes": "TikTok focuses heavily on camera tests and comparisons. YouTube on full spec deep-dives.",
+        "regionNotes": "Brand availability varies massively by region (e.g. carrier-locked phones). Region is important here.",
+        "difficulty": "Easy"
+      },
+      {
+        "subName": "Laptops & Desktop Reviews",
+        "isTopLevel": false,
+        "searchPrompt": "top PC hardware reviewers",
+        "altSearchTerms": [
+          "best laptop reviewers",
+          "custom PC builder accounts"
+        ],
+        "knownSources": [
+          "reddit.com/r/pcmasterrace",
+          "reddit.com/r/buildapc",
+          "smbtech.au",
+          "thesocialshepherd.com"
+        ],
+        "platformNotes": "YouTube dominates heavily for deep-dive benchmarking and custom PC builds.",
+        "regionNotes": "Hardware pricing and availability are strictly regional. UK and US have different retail ecosystems.",
+        "difficulty": "Medium"
+      },
+      {
+        "subName": "Audio / Headphones",
+        "isTopLevel": false,
+        "searchPrompt": "best audiophile reviewers",
+        "altSearchTerms": [
+          "top headphone reviewers",
+          "hi-fi audio creators"
+        ],
+        "knownSources": [
+          "reddit.com/r/headphones",
+          "reddit.com/r/HeadphoneAdvice",
+          "salon.com",
+          "reddit.com/r/EDM",
+          "modash.io",
+          "headphonesty.com",
+          "headphones.com",
+          "head-fi.org"
+        ],
+        "platformNotes": "YouTube is the absolute hub for this niche. Audiophiles require deep-dive frequency response data.",
+        "regionNotes": "Helps capture local hi-fi audio reviewers, though the niche is fairly global. US much richer.",
+        "difficulty": "Medium"
+      },
+      {
+        "subName": "Apps / Software",
+        "isTopLevel": false,
+        "searchPrompt": "top SaaS influencers",
+        "altSearchTerms": [
+          "best software review creators",
+          "productivity app influencers"
+        ],
+        "knownSources": [
+          "wdcweb.com",
+          "letmecook.io",
+          "divbyzero.com",
+          "clickstrike.com",
+          "reddit.com/r/sysadmin",
+          "favikon.com",
+          "influencity.com"
+        ],
+        "platformNotes": "TikTok dominates with '3 apps you need' hooks. YouTube for in-depth walkthroughs.",
+        "regionNotes": "Regional SaaS tools and apps differ by market — some tools are US-only or UK-focused.",
+        "difficulty": "Easy"
+      },
+      {
+        "subName": "Wearables / Smart Home",
+        "isTopLevel": false,
+        "searchPrompt": "top smart home influencers",
+        "altSearchTerms": [
+          "wearable tech creators",
+          "home automation accounts"
+        ],
+        "knownSources": [
+          "reddit.com/r/smarthome",
+          "reddit.com/r/HomeKit",
+          "socialveins.com",
+          "izea.com",
+          "chrisoram.com",
+          "reddit.com/r/Strava",
+          "thesocialcat.com"
+        ],
+        "platformNotes": "Instagram and TikTok dominate for aesthetic 'smart home setup' showcases.",
+        "regionNotes": "Smart home protocols and electrical standards are region-locked (e.g. Matter, Z-Wave frequencies). Region matters.",
+        "difficulty": "Easy"
+      }
+    ]
+  },
+  {
+    "category": "BUSINESS_AND_FINANCE",
+    "subs": [
+      {
+        "subName": "Business & Finance",
+        "isTopLevel": true,
+        "searchPrompt": "top finance influencers",
+        "altSearchTerms": [
+          "favorite finance creators",
+          "best financial accounts"
+        ],
+        "knownSources": [
+          "favikon.com",
+          "sovereignboss.co.uk",
+          "tembomoney.com",
+          "amraandelma.com",
+          "due.com",
+          "captiv8.io",
+          "diversification.com",
+          "agilitypr.com",
+          "collabstr.com"
+        ],
+        "platformNotes": "TikTok/Instagram surface quick-tip creators; YouTube surfaces deep-dive analysts.",
+        "regionNotes": "Both UK and US return rich results. Localized marketing agency lists and PR roundups surface well with region.",
+        "difficulty": "Easy"
+      },
+      {
+        "subName": "Personal Finance / Saving",
+        "isTopLevel": false,
+        "searchPrompt": "best personal finance creators",
+        "altSearchTerms": [
+          "top saving money accounts",
+          "favorite budgeting channels"
+        ],
+        "knownSources": [
+          "reddit.com/r/personalfinance",
+          "reddit.com/r/UKPersonalFinance",
+          "tembomoney.com",
+          "izea.com",
+          "mashable.com",
+          "findcollab.com"
+        ],
+        "platformNotes": "Reddit heavily prefers the term 'creators' or 'channels' over 'influencers' (which communities often distrust).",
+        "regionNotes": "Tax laws and saving vehicles (ISA vs. Roth IRA) are strictly region-locked. Region is essential here.",
+        "difficulty": "Easy"
+      },
+      {
+        "subName": "Investing",
+        "isTopLevel": false,
+        "searchPrompt": "top investing influencers",
+        "altSearchTerms": [
+          "favorite stock market creators",
+          "best investment channels"
+        ],
+        "knownSources": [
+          "modash.io",
+          "collabstr.com",
+          "reddit.com/r/investing",
+          "reddit.com/r/Bogleheads",
+          "diversification.com",
+          "coinbureau.com",
+          "levelfields.ai",
+          "themillenniallegacy.com"
+        ],
+        "platformNotes": "YouTube is the absolute dominant platform here for long-form portfolio breakdowns and market analysis.",
+        "regionNotes": "Localized platforms surface creators who understand specific regional market regulations. Both UK and US return well.",
+        "difficulty": "Medium"
+      },
+      {
+        "subName": "Side Hustles / Entrepreneurship",
+        "isTopLevel": false,
+        "searchPrompt": "best entrepreneurship channels",
+        "altSearchTerms": [
+          "top startup creators",
+          "business case study accounts"
+        ],
+        "knownSources": [
+          "reddit.com/r/Entrepreneur",
+          "agilitypr.com",
+          "millennialmagazine.com",
+          "amraandelma.com",
+          "favikon.com",
+          "feedspot.com",
+          "trendyphrase.com",
+          "collabstr.com",
+          "modash.io",
+          "influencer-hero.com"
+        ],
+        "platformNotes": "Avoid the word 'influencer' here; it triggers 'fake guru' and course-seller spam. 'Channels' and 'Creators' surface legitimate founders.",
+        "regionNotes": "Helps identify local founders and localized startup advice. US much richer than UK.",
+        "difficulty": "Hard"
+      },
+      {
+        "subName": "Career / Productivity",
+        "isTopLevel": false,
+        "searchPrompt": "best career advice creators",
+        "altSearchTerms": [
+          "top career influencers",
+          "interview tip accounts"
+        ],
+        "knownSources": [
+          "novoresume.de",
+          "interview-coach.co.uk",
+          "studentcircus.com",
+          "reddit.com/r/careerguidance",
+          "collabstr.com"
+        ],
+        "platformNotes": "TikTok is highly popular for this niche (often referred to as 'CareerTok'). LinkedIn is also a massive secondary platform.",
+        "regionNotes": "Job markets, CV/resume expectations, and interview etiquette vary by region. Both UK and US return well.",
+        "difficulty": "Medium"
+      },
+      {
+        "subName": "Financial News / Commentary",
+        "isTopLevel": false,
+        "searchPrompt": "financial commentary creators",
+        "altSearchTerms": [
+          "market analysis influencers",
+          "top economic news accounts"
+        ],
+        "knownSources": [
+          "reddit.com/r/stocks",
+          "beincrypto.com",
+          "diversification.com",
+          "levelfields.ai"
+        ],
+        "platformNotes": "YouTube and X (Twitter) are the primary hubs for real-time market commentary.",
+        "regionNotes": "Separates global macroeconomic news from local market analysis. Both regions viable.",
+        "difficulty": "Medium"
+      }
+    ]
+  },
+  {
+    "category": "LIFE_HACKERS",
+    "subs": [
+      {
+        "subName": "Life Hackers",
+        "isTopLevel": true,
+        "searchPrompt": "top life hack influencers",
+        "altSearchTerms": [
+          "best hack creators",
+          "favorite life tips accounts"
+        ],
+        "knownSources": [
+          "favikon.com",
+          "amraandelma.com",
+          "feedspot.com",
+          "socialbook.io",
+          "lifehacker.com",
+          "theinfluenceagency.com",
+          "izea.com",
+          "collabstr.com",
+          "modash.io",
+          "thesocialshepherd.com",
+          "influencermatchmaker.co.uk",
+          "socialchamp.com",
+          "awisee.com",
+          "collabs.io",
+          "dengarden.com",
+          "hireinfluence.com",
+          "hypeauditor.com",
+          "ifttt.com",
+          "influencerupdate.biz",
+          "iqfluence.io",
+          "jawscleans.com",
+          "lemon8-app.com",
+          "reddit.com/r/budget",
+          "reddit.com/r/diysnark",
+          "reddit.com/r/minimalism",
+          "thedigitalprojectmanager.com",
+          "thesocialcat.com",
+          "upfluence.com"
+        ],
+        "platformNotes": "TikTok dominates for short-form, rapid-fire hacks. YouTube is better for long-form 'testing viral hacks' videos.",
+        "regionNotes": "Life hacks often depend on regionally available products or store chains. Both UK and US return well.",
+        "difficulty": "Easy"
+      },
+      {
+        "subName": "Money Saving / Budget Hacks",
+        "isTopLevel": false,
+        "searchPrompt": "best money saving tip creators",
+        "altSearchTerms": [
+          "top cash stuffing influencers",
+          "budget hack accounts"
+        ],
+        "knownSources": [
+          "reddit.com/r/Frugal",
+          "reddit.com/r/povertyfinance",
+          "favikon.com",
+          "feedspot.com",
+          "amraandelma.com",
+          "collabstr.com",
+          "theinfluenceagency.com"
+        ],
+        "platformNotes": "TikTok is the absolute king of quick money-saving tips. YouTube for full budget breakdowns and 'no spend' challenges.",
+        "regionNotes": "Currency, tax systems, and store availability are strictly regional. Region essential.",
+        "difficulty": "Easy"
+      },
+      {
+        "subName": "CleanTok / Cleaning",
+        "isTopLevel": false,
+        "searchPrompt": "top CleanTok creators",
+        "altSearchTerms": [
+          "best cleaning influencers",
+          "favorite cleaning hack accounts"
+        ],
+        "knownSources": [
+          "socialbook.io",
+          "favikon.com",
+          "garfieldbrooklyn.com",
+          "lifehacker.com",
+          "amraandelma.com",
+          "theinfluenceagency.com",
+          "izea.com",
+          "reddit.com/r/CleaningTips"
+        ],
+        "platformNotes": "TikTok is THE platform for CleanTok (#CleanTok 71B+ views). Instagram for aesthetic 'before and after' content.",
+        "regionNotes": "Cleaning products and brands differ massively by region (e.g. Mrs Hinch UK vs. Go Clean Co US). Region important.",
+        "difficulty": "Easy"
+      },
+      {
+        "subName": "Home Organisation / Decluttering",
+        "isTopLevel": false,
+        "searchPrompt": "best home organization influencers",
+        "altSearchTerms": [
+          "top decluttering creators",
+          "favorite pantry organization accounts"
+        ],
+        "knownSources": [
+          "feedspot.com",
+          "favikon.com",
+          "hellomagazine.com",
+          "amraandelma.com",
+          "izea.com",
+          "reddit.com/r/declutter",
+          "reddit.com/r/organization"
+        ],
+        "platformNotes": "Instagram and TikTok dominate for satisfying 'before and after' transformations. YouTube for full room makeovers.",
+        "regionNotes": "Storage products (IKEA, Target, etc.) are region-specific. Both UK and US return well.",
+        "difficulty": "Easy"
+      },
+      {
+        "subName": "DIY / Home Repair",
+        "isTopLevel": false,
+        "searchPrompt": "top DIY home repair creators",
+        "altSearchTerms": [
+          "best home renovation influencers",
+          "favorite handyman accounts"
+        ],
+        "knownSources": [
+          "influencer-hero.com",
+          "beacons.ai",
+          "cheapism.com",
+          "slashgear.com",
+          "izea.com",
+          "feedspot.com",
+          "reddit.com/r/DIY",
+          "reddit.com/r/HomeImprovement"
+        ],
+        "platformNotes": "YouTube dominates for long-form tutorials. TikTok for quick before-and-after transformation clips.",
+        "regionNotes": "Building codes, electrical standards, and hardware stores are entirely region-locked. Region essential.",
+        "difficulty": "Medium"
+      },
+      {
+        "subName": "Life & Productivity Hacks",
+        "isTopLevel": false,
+        "searchPrompt": "best productivity hack creators",
+        "altSearchTerms": [
+          "top everyday tips influencers",
+          "life hack accounts"
+        ],
+        "knownSources": [
+          "favikon.com",
+          "amraandelma.com",
+          "feedspot.com",
+          "hireharbour.com",
+          "reddit.com/r/LifeProTips",
+          "reddit.com/r/productivity",
+          "sproutsocial.com"
+        ],
+        "platformNotes": "TikTok for viral quick tips. YouTube for structured productivity systems and morning routines.",
+        "regionNotes": "Productivity tools and apps can be region-specific. Both UK and US return well.",
+        "difficulty": "Easy"
+      }
+    ]
+  },
+  {
+    "category": "REACTORS",
+    "subs": [
+      {
+        "subName": "Reactors",
+        "isTopLevel": true,
+        "searchPrompt": "top reaction channels",
+        "altSearchTerms": [
+          "best reaction creators",
+          "favorite reactor accounts"
+        ],
+        "knownSources": [
+          "reactionfinder.com",
+          "thesocialshepherd.com",
+          "amraandelma.com",
+          "lemon8-app.com",
+          "reddit.com/r/youtube",
+          "favikon.com",
+          "air.io",
+          "veefly.com",
+          "ranker.com",
+          "thetoptens.com",
+          "upviews.com",
+          "favoree.io"
+        ],
+        "platformNotes": "YouTube completely dominates the concept of 'reaction channels.' TikTok is primarily known for 'duets' and 'stitches' rather than full reactions.",
+        "regionNotes": "Both UK and US return useful results, though the biggest reactors tend to be globally recognized. Region helps surface local-language creators.",
+        "difficulty": "Easy"
+      },
+      {
+        "subName": "Film / TV Reactions",
+        "isTopLevel": false,
+        "searchPrompt": "best movie reaction channels",
+        "altSearchTerms": [
+          "top tv reaction creators",
+          "favorite film reactors"
+        ],
+        "knownSources": [
+          "reddit.com/r/movies",
+          "reddit.com/r/Blindwave",
+          "reddit.com/r/PopcornInBed",
+          "reddit.com/r/moviecritic",
+          "collabstr.com",
+          "modash.io",
+          "reactionfinder.com",
+          "feedspot.com",
+          "favoree.io"
+        ],
+        "platformNotes": "YouTube is mandatory here because of copyright constraints and the need for long-form picture-in-picture commentary.",
+        "regionNotes": "Audiences frequently watch creators from around the world for diverse cultural perspectives on Western cinema. Region still useful for local-language creators.",
+        "difficulty": "Easy"
+      },
+      {
+        "subName": "Music Reactions",
+        "isTopLevel": false,
+        "searchPrompt": "top music reaction channels",
+        "altSearchTerms": [
+          "best song reaction creators",
+          "favorite album reactors"
+        ],
+        "knownSources": [
+          "reddit.com/r/Music",
+          "reddit.com/r/hiphopheads",
+          "reddit.com/r/popheads",
+          "poppassionblog.com",
+          "feedspot.com",
+          "favoree.io"
+        ],
+        "platformNotes": "YouTube is the primary hub. Viewers look for deep-dive analysis (e.g., vocal coaches or producers) rather than just people nodding along to songs.",
+        "regionNotes": "Region is crucial to find creators reacting to local genres (e.g., UK Drill vs. US Hip-Hop).",
+        "difficulty": "Medium"
+      },
+      {
+        "subName": "Sports Reactions",
+        "isTopLevel": false,
+        "searchPrompt": "best sports reaction channels",
+        "altSearchTerms": [
+          "top game reaction creators",
+          "favorite fan reaction accounts"
+        ],
+        "knownSources": [
+          "reddit.com/r/sports",
+          "reddit.com/r/soccer",
+          "reddit.com/r/nfl",
+          "tubularlabs.com",
+          "sportskred.com",
+          "favoree.io"
+        ],
+        "platformNotes": "TikTok and X (Twitter) are highly active for live, short-form game reactions. YouTube is used for post-game commentary.",
+        "regionNotes": "Region is strictly mandatory. UK search returns Premier League and Rugby reactions; US returns NFL and NBA.",
+        "difficulty": "Medium"
+      },
+      {
+        "subName": "Food / Try Reactions",
+        "isTopLevel": false,
+        "searchPrompt": "best food reaction creators",
+        "altSearchTerms": [
+          "top taste test channels",
+          "favorite food try accounts"
+        ],
+        "knownSources": [
+          "reddit.com/r/StupidFood",
+          "reddit.com/r/food",
+          "thesocialcat.com",
+          "hashfame.com",
+          "keepface.com",
+          "theinfluenceagency.com"
+        ],
+        "platformNotes": "TikTok is the absolute king of the 'trying weird food' reaction format.",
+        "regionNotes": "Fast-food menus and grocery store snacks differ wildly by region — makes this highly localized. Region essential.",
+        "difficulty": "Easy"
+      },
+      {
+        "subName": "Celebrity News & Gossip",
+        "isTopLevel": false,
+        "searchPrompt": "top pop culture commentary channels",
+        "altSearchTerms": [
+          "best celebrity tea accounts",
+          "favorite pop culture youtubers"
+        ],
+        "knownSources": [
+          "reddit.com/r/popculturechat",
+          "reddit.com/r/Fauxmoi",
+          "reddit.com/r/youtubedrama",
+          "feedspot.com",
+          "modash.io",
+          "collabstr.com",
+          "theinfluenceagency.com",
+          "buzzfeed.com"
+        ],
+        "platformNotes": "YouTube is heavily favored for long-form 'video essays' and deep dives. TikTok is used for rapid-fire 'tea' and scandal updates.",
+        "regionNotes": "Pinpoints creators who cover regional celebrities and local media drama. Both UK and US return well.",
+        "difficulty": "Medium"
+      }
+    ]
+  },
+  {
+    "category": "FASHION",
+    "subs": [
+      {
+        "subName": "Fashion",
+        "isTopLevel": true,
+        "searchPrompt": "top fashion influencers",
+        "altSearchTerms": [
+          "best style creators",
+          "favorite fashion accounts"
+        ],
+        "knownSources": [
+          "traackr.com",
+          "hypeauditor.com",
+          "thesocialshepherd.com",
+          "neoreach.com",
+          "kolsquare.com",
+          "diarydirectory.com",
+          "influencity.com",
+          "pepperagency.com",
+          "theinfluenceroom.com"
+        ],
+        "platformNotes": "Instagram is the dominant platform for static high-fashion photography. TikTok leads for quick styling and trend-cycles.",
+        "regionNotes": "Highly effective for isolating domestic PR lists and localized marketing agencies. Both UK and US return well.",
+        "difficulty": "Easy"
+      },
+      {
+        "subName": "Women's Fashion",
+        "isTopLevel": false,
+        "searchPrompt": "best womens fashion creators",
+        "altSearchTerms": [
+          "top female style influencers",
+          "favorite OOTD accounts"
+        ],
+        "knownSources": [
+          "thesocialshepherd.com",
+          "izea.com",
+          "reddit.com/r/femalefashionadvice",
+          "reddit.com/r/fashionwomens35",
+          "kolsquare.com"
+        ],
+        "platformNotes": "The community frequently searches by body type (e.g., 'midsize fashion creators,' 'petite style influencers') rather than just 'women's fashion'.",
+        "regionNotes": "Sizing metrics and brand availability vary wildly by region (UK vs US sizing). Region matters.",
+        "difficulty": "Easy"
+      },
+      {
+        "subName": "Women's Hauls / Try-Ons",
+        "isTopLevel": false,
+        "searchPrompt": "best clothing haul creators",
+        "altSearchTerms": [
+          "top try on haul influencers",
+          "favorite outfit try on channels"
+        ],
+        "knownSources": [
+          "aspire.io",
+          "fashionmonitor.com",
+          "lemon8-app.com",
+          "reddit.com/r/PlusSize"
+        ],
+        "platformNotes": "YouTube dominates for long-form, multi-brand hauls. TikTok is used for fast, single-brand unboxings.",
+        "regionNotes": "'Hauls' are entirely dependent on regional shipping and store access (e.g., ASOS UK vs. Target US). Region essential.",
+        "difficulty": "Medium"
+      },
+      {
+        "subName": "Women's Thrift / Budget Styling",
+        "isTopLevel": false,
+        "searchPrompt": "top sustainable fashion creators",
+        "altSearchTerms": [
+          "best thrift influencers",
+          "budget style channels"
+        ],
+        "knownSources": [
+          "corq.studio",
+          "feedspot.com",
+          "reddit.com/r/FrugalFemaleFashion"
+        ],
+        "platformNotes": "'Sustainable fashion creators' is the heavily preferred industry/PR term. 'Thrift influencers' surfaces Poshmark/Depop resellers on IG/TikTok.",
+        "regionNotes": "Thrifting culture and second-hand apps (Vinted vs. ThredUp) are highly region-specific. Region matters.",
+        "difficulty": "Easy"
+      },
+      {
+        "subName": "Men's Fashion / Style",
+        "isTopLevel": false,
+        "searchPrompt": "best menswear channels",
+        "altSearchTerms": [
+          "top men's style creators",
+          "favorite male fashion youtubers"
+        ],
+        "knownSources": [
+          "neoreach.com",
+          "izea.com",
+          "reddit.com/r/malefashionadvice",
+          "amraandelma.com"
+        ],
+        "platformNotes": "Avoid the word 'influencer' here; the community actively complains about sponsored 'douchey' fashion influencers. 'Menswear channels' surfaces well-respected creators.",
+        "regionNotes": "Formalwear and everyday casual styles shift significantly across regions. Both UK and US return distinct results.",
+        "difficulty": "Medium"
+      },
+      {
+        "subName": "Men's Sneakers / Streetwear",
+        "isTopLevel": false,
+        "searchPrompt": "top sneakerhead influencers",
+        "altSearchTerms": [
+          "best streetwear creators",
+          "favorite sneaker channels"
+        ],
+        "knownSources": [
+          "upfluence.com",
+          "izea.com",
+          "favikon.com",
+          "hotdrops.com",
+          "reddit.com/r/Sneakers",
+          "myunidays.com"
+        ],
+        "platformNotes": "Instagram is heavily utilized for 'on-foot' sneaker photography and drops. YouTube is the primary hub for unboxings and authenticating fakes.",
+        "regionNotes": "Sneaker drop availability, SNKRS app access, and local streetwear boutiques are entirely region-locked. Region essential.",
+        "difficulty": "Easy"
+      }
+    ]
+  },
+  {
+    "category": "GAMING",
+    "subs": [
+      {
+        "subName": "Gaming",
+        "isTopLevel": true,
+        "searchPrompt": "top gaming influencers",
+        "altSearchTerms": [
+          "best gaming creators",
+          "favorite gaming accounts"
+        ],
+        "knownSources": [
+          "disruptmarketing.co",
+          "gameinfluencer.com",
+          "influencermatchmaker.co.uk",
+          "influencer-hero.com",
+          "crowdcreate.us",
+          "goatagency.com",
+          "async.com",
+          "awisee.com",
+          "stackinfluence.com",
+          "videaze.com"
+        ],
+        "platformNotes": "YouTube dominates for long-form essays/reviews; Twitch is the live-streaming hub; TikTok/IG are mostly short clips and meme formats.",
+        "regionNotes": "While major creators are global, regional searches surface local-language creators and localized marketing agencies. Both UK and US return well.",
+        "difficulty": "Easy"
+      },
+      {
+        "subName": "Game Reviews",
+        "isTopLevel": false,
+        "searchPrompt": "best video game review channels",
+        "altSearchTerms": [
+          "top game reviewers",
+          "favorite game critique accounts"
+        ],
+        "knownSources": [
+          "reddit.com/r/videogames",
+          "reddit.com/r/Games",
+          "gamefaqs.gamespot.com",
+          "gameinfluencer.com",
+          "disruptmarketing.co",
+          "influencermatchmaker.co.uk",
+          "crowdcreate.us",
+          "esports.net"
+        ],
+        "platformNotes": "YouTube is the primary platform for detailed reviews. Written platforms and Reddit are heavily used to verify YouTube reviewers' trustworthiness.",
+        "regionNotes": "Regional game pricing and localization quality make reviews depending on the creator's region. US richer than UK.",
+        "difficulty": "Medium"
+      },
+      {
+        "subName": "Gaming Guides / Tutorials",
+        "isTopLevel": false,
+        "searchPrompt": "best gaming tutorial channels",
+        "altSearchTerms": [
+          "top video game guide creators",
+          "favorite game walkthrough accounts"
+        ],
+        "knownSources": [
+          "reddit.com/r/2007scape",
+          "reddit.com/r/diablo4",
+          "reddit.com/r/gaming",
+          "maxroll.gg",
+          "mobalytics.gg",
+          "d4builds.gg",
+          "icy-veins.com",
+          "wowhead.com",
+          "gameinfluencer.com",
+          "influencer-hero.com"
+        ],
+        "platformNotes": "YouTube is absolute king for walkthroughs/guides. TikTok is for quick 60-second tips/easter eggs.",
+        "regionNotes": "Localized languages matter heavily for complex game guides. US much richer but UK viable.",
+        "difficulty": "Medium"
+      },
+      {
+        "subName": "Streaming / Let's Play",
+        "isTopLevel": false,
+        "searchPrompt": "top lets play channels",
+        "altSearchTerms": [
+          "best twitch streamers",
+          "favorite livestreaming creators"
+        ],
+        "knownSources": [
+          "twitchstats.net",
+          "twitchtracker.com",
+          "streamscharts.com",
+          "reddit.com/r/Twitch",
+          "reddit.com/r/LivestreamFail",
+          "esportstalk.com",
+          "progamingarena.co.uk",
+          "meltwater.com"
+        ],
+        "platformNotes": "Twitch and YouTube Live are primary. 'Let's Play' specifically triggers VOD content on YouTube.",
+        "regionNotes": "Streaming audiences are highly segmented by language and time zone. Region matters for local streamers.",
+        "difficulty": "Easy"
+      },
+      {
+        "subName": "Esports / Competitive",
+        "isTopLevel": false,
+        "searchPrompt": "top esports influencers",
+        "altSearchTerms": [
+          "best competitive gaming creators",
+          "pro player accounts"
+        ],
+        "knownSources": [
+          "influencermarketinghub.com",
+          "influencers.feedspot.com",
+          "audiencly.com",
+          "kairosmedia.com",
+          "cloutboost.com",
+          "neoreach.com",
+          "upfluence.com",
+          "esports.net",
+          "sportskred.com"
+        ],
+        "platformNotes": "X (Twitter) and Twitch dominate the esports conversation.",
+        "regionNotes": "Esports leagues are heavily region-based (e.g., NA vs EU LCS). Region essential for competitive scene discovery.",
+        "difficulty": "Medium"
+      },
+      {
+        "subName": "Gaming Clips",
+        "isTopLevel": false,
+        "searchPrompt": "best gaming clip channels",
+        "altSearchTerms": [
+          "top gaming compilation creators",
+          "funny gaming moments accounts"
+        ],
+        "knownSources": [
+          "amraandelma.com",
+          "influencer-hero.com",
+          "thesocialcat.com",
+          "reddit.com/r/gamingclips",
+          "reddit.com/r/LivestreamFail"
+        ],
+        "platformNotes": "TikTok, YouTube Shorts, and Instagram Reels completely own this subcategory.",
+        "regionNotes": "Gaming memes frequently cross regional borders, but region still helps surface local-language compilation creators.",
+        "difficulty": "Easy"
+      }
+    ]
+  },
+  {
+    "category": "HEALTH_AND_WELLNESS",
+    "subs": [
+      {
+        "subName": "Health & Wellness",
+        "isTopLevel": true,
+        "searchPrompt": "top health and wellness influencers",
+        "altSearchTerms": [
+          "best wellness creators",
+          "favorite holistic health accounts"
+        ],
+        "knownSources": [
+          "feedspot.com",
+          "hummingbird.agency",
+          "thinkers360.com",
+          "grin.co",
+          "goatagency.com",
+          "ecommercefastlane.com",
+          "stackinfluence.com",
+          "peertopeermarketing.co",
+          "viralnation.com",
+          "activelivingzone.com"
+        ],
+        "platformNotes": "Instagram is the dominant platform for aesthetic 'wellness' routines. YouTube is favored for long-form lifestyle vlogs.",
+        "regionNotes": "Localized marketing agency lists and medical/wellness PR roundups surface well. Both UK and US return rich results.",
+        "difficulty": "Easy"
+      },
+      {
+        "subName": "Supplements / Biohacking",
+        "isTopLevel": false,
+        "searchPrompt": "best biohacking channels",
+        "altSearchTerms": [
+          "top supplement influencers",
+          "biohacker creators"
+        ],
+        "knownSources": [
+          "feedspot.com",
+          "influencer-hero.com",
+          "reddit.com/r/Biohackers",
+          "upfluence.com",
+          "thesocialshepherd.com",
+          "modash.io",
+          "favikon.com",
+          "hacks4wellness.com",
+          "avea-life.com"
+        ],
+        "platformNotes": "YouTube dominates for long-form, data-driven 'protocol' breakdowns. TikTok and Instagram are heavily utilized for 'stack' routines.",
+        "regionNotes": "Supplement regulations and availability (e.g., FDA in the US vs. MHRA in the UK) vary massively by region. Region is very important.",
+        "difficulty": "Medium"
+      },
+      {
+        "subName": "Mental Health Tips",
+        "isTopLevel": false,
+        "searchPrompt": "top TherapyTok creators",
+        "altSearchTerms": [
+          "best mental health influencers",
+          "licensed therapist accounts"
+        ],
+        "knownSources": [
+          "hireinfluence.com",
+          "feedspot.com",
+          "socialpubli.com",
+          "reddit.com/r/mentalhealth",
+          "reddit.com/r/TalkTherapy",
+          "theinfluenceagency.com",
+          "collabstr.com",
+          "izea.com",
+          "goatagency.com",
+          "influencermatchmaker.co.uk",
+          "everydayhealth.com"
+        ],
+        "platformNotes": "TikTok is the absolute hub for this niche under the umbrella term 'TherapyTok.'",
+        "regionNotes": "Therapy licensing, mental health resources, and cultural stigma differ significantly across regions. Region helps surface local licensed professionals.",
+        "difficulty": "Easy"
+      },
+      {
+        "subName": "Longevity / Anti-Aging",
+        "isTopLevel": false,
+        "searchPrompt": "top longevity influencers",
+        "altSearchTerms": [
+          "best anti aging creators",
+          "healthy lifespan accounts"
+        ],
+        "knownSources": [
+          "feedspot.com",
+          "favikon.com",
+          "aginganalytics.com",
+          "influencer-hero.com",
+          "reddit.com/r/longevity",
+          "reddit.com/r/AntiAging",
+          "modash.io",
+          "thesocialcat.com",
+          "hypeauditor.com",
+          "slowmyage.com"
+        ],
+        "platformNotes": "X (Twitter) and YouTube are the primary hubs for longevity scientists and tech entrepreneurs to debate research.",
+        "regionNotes": "Access to specific longevity clinics and treatments is highly localized. US much richer than UK for this niche.",
+        "difficulty": "Medium"
+      },
+      {
+        "subName": "Nutrition Science",
+        "isTopLevel": false,
+        "searchPrompt": "best registered dietitian creators",
+        "altSearchTerms": [
+          "top nutrition science channels",
+          "evidence based nutrition accounts"
+        ],
+        "knownSources": [
+          "reddit.com/r/nutrition",
+          "reddit.com/r/dietetics",
+          "thesocialshepherd.com",
+          "influencer-hero.com",
+          "favikon.com",
+          "grin.co",
+          "viralnation.com",
+          "gethapi.org"
+        ],
+        "platformNotes": "YouTube is favored for breaking down clinical studies. Instagram is utilized heavily by Registered Dietitians for infographics.",
+        "regionNotes": "Dietary guidelines and food quality regulations are heavily region-dependent. Both UK and US return well.",
+        "difficulty": "Medium"
+      },
+      {
+        "subName": "Women's Health",
+        "isTopLevel": false,
+        "searchPrompt": "top womens health influencers",
+        "altSearchTerms": [
+          "best PCOS creators",
+          "favorite fertility accounts"
+        ],
+        "knownSources": [
+          "influencer-hero.com",
+          "glossy.co",
+          "reddit.com/r/PCOS",
+          "reddit.com/r/WomensHealth",
+          "reddit.com/r/TryingForABaby",
+          "theinfluenceagency.com",
+          "modash.io",
+          "goatagency.com",
+          "ecommercefastlane.com"
+        ],
+        "platformNotes": "TikTok and Instagram heavily drive community sharing regarding specific conditions like PCOS and endometriosis.",
+        "regionNotes": "Healthcare systems and maternal health standards are strictly regional. Both UK and US return well.",
+        "difficulty": "Easy"
+      }
+    ]
+  },
+  {
+    "category": "TRAVEL",
+    "subs": [
+      {
+        "subName": "Travel",
+        "isTopLevel": true,
+        "searchPrompt": "top travel influencers",
+        "altSearchTerms": [
+          "best travel creators",
+          "favorite travel accounts"
+        ],
+        "knownSources": [
+          "taggbox.com",
+          "amraandelma.com",
+          "afluencer.com",
+          "influencermatchmaker.co.uk",
+          "heepsy.com",
+          "feedspot.com",
+          "inbeat.agency",
+          "keepface.com",
+          "thesocialshepherd.com",
+          "hobo.video",
+          "later.com",
+          "hawthorncreative.com",
+          "impulze.ai"
+        ],
+        "platformNotes": "Instagram is heavily favored for luxury and aesthetic travel. YouTube is the absolute standard for long-form destination guides and vlogs.",
+        "regionNotes": "Highly effective for isolating domestic travel creators versus global jet-setters. Both UK and US rich.",
+        "difficulty": "Easy"
+      },
+      {
+        "subName": "Budget Travel Tips",
+        "isTopLevel": false,
+        "searchPrompt": "best budget travel channels",
+        "altSearchTerms": [
+          "top shoestring travel influencers",
+          "cheap travel creators"
+        ],
+        "knownSources": [
+          "influencer-hero.com",
+          "feedspot.com",
+          "afluencer.com",
+          "reddit.com/r/Shoestring",
+          "reddit.com/r/povertyfinance",
+          "thesocialshepherd.com",
+          "modash.io",
+          "collabstr.com",
+          "upfluence.com",
+          "stackinfluence.com"
+        ],
+        "platformNotes": "TikTok dominates the 'budget travel hack' space with short, viral tips. YouTube is used for full budget breakdowns.",
+        "regionNotes": "Regional currency strength and flight hubs (Ryanair in EU vs. Spirit in US) dictate budget content. Region essential.",
+        "difficulty": "Easy"
+      },
+      {
+        "subName": "City Guides",
+        "isTopLevel": false,
+        "searchPrompt": "best local travel creators",
+        "altSearchTerms": [
+          "top city guide influencers",
+          "favorite hidden gem accounts"
+        ],
+        "knownSources": [
+          "iambassador.net",
+          "keepface.com",
+          "inbeat.agency",
+          "urbantravelblog.com",
+          "vickyflipfloptravels.com",
+          "thesocialcat.com",
+          "favikon.com",
+          "reddit.com/r/London",
+          "reddit.com/r/AskNYC",
+          "collabstr.com"
+        ],
+        "platformNotes": "TikTok and Instagram Reels are the absolute kings of 'hidden gem' local city guides.",
+        "regionNotes": "Region is strictly mandatory to avoid globally chaotic results and pinpoint regional experts.",
+        "difficulty": "Medium"
+      },
+      {
+        "subName": "Travel Hacks",
+        "isTopLevel": false,
+        "searchPrompt": "top travel hack influencers",
+        "altSearchTerms": [
+          "best travel tips creators",
+          "favorite point hacking accounts"
+        ],
+        "knownSources": [
+          "thepointsguy.com",
+          "reddit.com/r/TravelHacks",
+          "reddit.com/r/Shoestring",
+          "feedspot.com",
+          "influencer-hero.com",
+          "afluencer.com",
+          "modash.io",
+          "collabstr.com",
+          "upfluence.com",
+          "hypeauditor.com"
+        ],
+        "platformNotes": "'Point hacking' (credit card travel rewards) is a massive sub-niche here, heavily debated on Reddit and YouTube.",
+        "regionNotes": "Credit card reward systems and airline loyalty programs are entirely region-locked. Region essential.",
+        "difficulty": "Easy"
+      },
+      {
+        "subName": "Solo / Digital Nomad",
+        "isTopLevel": false,
+        "searchPrompt": "best digital nomad channels",
+        "altSearchTerms": [
+          "top solo travel influencers",
+          "favorite solo female travel accounts"
+        ],
+        "knownSources": [
+          "feedspot.com",
+          "influencer-hero.com",
+          "afluencer.com",
+          "reddit.com/r/digitalnomad",
+          "reddit.com/r/solotravel",
+          "reddit.com/r/Shoestring",
+          "thesocialcat.com",
+          "modash.io",
+          "collabstr.com",
+          "upfluence.com"
+        ],
+        "platformNotes": "YouTube is heavily favored for 'day in the life of a digital nomad' content. Instagram is used for aesthetic solo travel photography.",
+        "regionNotes": "Visa regulations, tax laws, and remote work infrastructure vary massively by the creator's home region. Region essential.",
+        "difficulty": "Medium"
+      },
+      {
+        "subName": "Adventure / Outdoor",
+        "isTopLevel": false,
+        "searchPrompt": "top adventure travel influencers",
+        "altSearchTerms": [
+          "best outdoor creators",
+          "favorite hiking channels"
+        ],
+        "knownSources": [
+          "thesocialcat.com",
+          "theinfluenceagency.com",
+          "collabstr.com",
+          "heepsy.com",
+          "reddit.com/r/Outdoors",
+          "reddit.com/r/CampingandHiking",
+          "reddit.com/r/backpacking",
+          "feedspot.com",
+          "influencer-hero.com",
+          "afluencer.com"
+        ],
+        "platformNotes": "YouTube is the primary hub for long-form trekking documentaries and gear reviews. Instagram surfaces extreme sports photography.",
+        "regionNotes": "Access to specific national parks, mountain ranges, and seasonal weather dictates the content. Region important.",
+        "difficulty": "Easy"
+      }
+    ]
+  }
+]

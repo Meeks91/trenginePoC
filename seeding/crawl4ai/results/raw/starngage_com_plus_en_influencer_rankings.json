@@ -1,0 +1,279 @@
+{
+  "influencers": [
+    {
+      "name": "Bonaire, Saint Eustatius and Saba",
+      "handle": "bonaire-saint-eustatius-and-saba",
+      "handle_platform": "Instagram"
+    },
+    {
+      "name": "Bosnia and Herzegovina",
+      "handle": "bosnia-and-herzegovina",
+      "handle_platform": "Instagram"
+    },
+    {
+      "name": "British Indian Ocean Territory",
+      "handle": "british-indian-ocean-territory",
+      "handle_platform": "Instagram"
+    },
+    {
+      "name": "British Virgin Islands",
+      "handle": "british-virgin-islands",
+      "handle_platform": "Instagram"
+    },
+    {
+      "name": "Central African Republic",
+      "handle": "central-african-republic",
+      "handle_platform": "Instagram"
+    },
+    {
+      "name": "Democratic Republic of the Congo",
+      "handle": "democratic-republic-of-the-congo",
+      "handle_platform": "Instagram"
+    },
+    {
+      "name": "Northern Mariana Islands",
+      "handle": "northern-mariana-islands",
+      "handle_platform": "Instagram"
+    },
+    {
+      "name": "Saint Pierre and Miquelon",
+      "handle": "saint-pierre-and-miquelon",
+      "handle_platform": "Instagram"
+    },
+    {
+      "name": "Saint Vincent and the Grenadines",
+      "handle": "saint-vincent-and-the-grenadines",
+      "handle_platform": "Instagram"
+    },
+    {
+      "name": "Svalbard and Jan Mayen",
+      "handle": "svalbard-and-jan-mayen",
+      "handle_platform": "Instagram"
+    },
+    {
+      "name": "Turks and Caicos Islands",
+      "handle": "turks-and-caicos-islands",
+      "handle_platform": "Instagram"
+    },
+    {
+      "name": "United States Minor Outlying Islands",
+      "handle": "united-states-minor-outlying-islands",
+      "handle_platform": "Instagram"
+    },
+    {
+      "name": "Bonaire, Saint Eustatius and Saba",
+      "handle": "bonaire-saint-eustatius-and-saba",
+      "handle_platform": "TikTok"
+    },
+    {
+      "name": "Bosnia and Herzegovina",
+      "handle": "bosnia-and-herzegovina",
+      "handle_platform": "TikTok"
+    },
+    {
+      "name": "British Indian Ocean Territory",
+      "handle": "british-indian-ocean-territory",
+      "handle_platform": "TikTok"
+    },
+    {
+      "name": "British Virgin Islands",
+      "handle": "british-virgin-islands",
+      "handle_platform": "TikTok"
+    },
+    {
+      "name": "Central African Republic",
+      "handle": "central-african-republic",
+      "handle_platform": "TikTok"
+    },
+    {
+      "name": "Democratic Republic of the Congo",
+      "handle": "democratic-republic-of-the-congo",
+      "handle_platform": "TikTok"
+    },
+    {
+      "name": "Northern Mariana Islands",
+      "handle": "northern-mariana-islands",
+      "handle_platform": "TikTok"
+    },
+    {
+      "name": "Saint Pierre and Miquelon",
+      "handle": "saint-pierre-and-miquelon",
+      "handle_platform": "TikTok"
+    },
+    {
+      "name": "Saint Vincent and the Grenadines",
+      "handle": "saint-vincent-and-the-grenadines",
+      "handle_platform": "TikTok"
+    },
+    {
+      "name": "Svalbard and Jan Mayen",
+      "handle": "svalbard-and-jan-mayen",
+      "handle_platform": "TikTok"
+    },
+    {
+      "name": "Turks and Caicos Islands",
+      "handle": "turks-and-caicos-islands",
+      "handle_platform": "TikTok"
+    },
+    {
+      "name": "United States Minor Outlying Islands",
+      "handle": "united-states-minor-outlying-islands",
+      "handle_platform": "TikTok"
+    },
+    {
+      "name": "Bonaire, Saint Eustatius and Saba",
+      "handle": "bonaire-saint-eustatius-and-saba",
+      "handle_platform": "YouTube"
+    },
+    {
+      "name": "Bosnia and Herzegovina",
+      "handle": "bosnia-and-herzegovina",
+      "handle_platform": "YouTube"
+    },
+    {
+      "name": "British Indian Ocean Territory",
+      "handle": "british-indian-ocean-territory",
+      "handle_platform": "YouTube"
+    },
+    {
+      "name": "British Virgin Islands",
+      "handle": "british-virgin-islands",
+      "handle_platform": "YouTube"
+    },
+    {
+      "name": "Central African Republic",
+      "handle": "central-african-republic",
+      "handle_platform": "YouTube"
+    },
+    {
+      "name": "Democratic Republic of the Congo",
+      "handle": "democratic-republic-of-the-congo",
+      "handle_platform": "YouTube"
+    },
+    {
+      "name": "Northern Mariana Islands",
+      "handle": "northern-mariana-islands",
+      "handle_platform": "YouTube"
+    },
+    {
+      "name": "Saint Pierre and Miquelon",
+      "handle": "saint-pierre-and-miquelon",
+      "handle_platform": "YouTube"
+    },
+    {
+      "name": "Saint Vincent and the Grenadines",
+      "handle": "saint-vincent-and-the-grenadines",
+      "handle_platform": "YouTube"
+    },
+    {
+      "name": "Svalbard and Jan Mayen",
+      "handle": "svalbard-and-jan-mayen",
+      "handle_platform": "YouTube"
+    },
+    {
+      "name": "Turks and Caicos Islands",
+      "handle": "turks-and-caicos-islands",
+      "handle_platform": "YouTube"
+    },
+    {
+      "name": "United States Minor Outlying Islands",
+      "handle": "united-states-minor-outlying-islands",
+      "handle_platform": "YouTube"
+    },
+    {
+      "name": "StarNgage",
+      "handle": "starngage",
+      "handle_platform": "Instagram"
+    },
+    {
+      "name": "StarNgage",
+      "handle": "starngage",
+      "handle_platform": "TikTok"
+    },
+    {
+      "name": "StarNgage",
+      "handle": "starngage",
+      "handle_platform": "YouTube"
+    },
+    {
+      "name": "StarNgage",
+      "handle": "starngage",
+      "handle_platform": "Threads"
+    },
+    {
+      "name": "US",
+      "handle": "united-states",
+      "handle_platform": "Instagram"
+    },
+    {
+      "name": "India",
+      "handle": "india",
+      "handle_platform": "Instagram"
+    },
+    {
+      "name": "Sri Lanka",
+      "handle": "sri-lanka",
+      "handle_platform": "Instagram"
+    },
+    {
+      "name": "Romania",
+      "handle": "romania",
+      "handle_platform": "Instagram"
+    },
+    {
+      "name": "Australia",
+      "handle": "australia",
+      "handle_platform": "Instagram"
+    },
+    {
+      "name": "Singapore",
+      "handle": "singapore",
+      "handle_platform": "TikTok"
+    },
+    {
+      "name": "Philippines",
+      "handle": "philippines",
+      "handle_platform": "TikTok"
+    },
+    {
+      "name": "Malaysia",
+      "handle": "malaysia",
+      "handle_platform": "TikTok"
+    },
+    {
+      "name": "Canada",
+      "handle": "canada",
+      "handle_platform": "TikTok"
+    },
+    {
+      "name": "Germany",
+      "handle": "germany",
+      "handle_platform": "TikTok"
+    },
+    {
+      "name": "South Korea",
+      "handle": "south-korea",
+      "handle_platform": "YouTube"
+    },
+    {
+      "name": "Bangladesh",
+      "handle": "bangladesh",
+      "handle_platform": "YouTube"
+    },
+    {
+      "name": "Nepal",
+      "handle": "nepal",
+      "handle_platform": "YouTube"
+    },
+    {
+      "name": "Norway",
+      "handle": "norway",
+      "handle_platform": "YouTube"
+    },
+    {
+      "name": "Uruguay",
+      "handle": "uruguay",
+      "handle_platform": "YouTube"
+    }
+  ]
+}

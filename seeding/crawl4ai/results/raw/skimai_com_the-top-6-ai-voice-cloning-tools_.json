@@ -1,0 +1,34 @@
+{
+  "influencers": [
+    {
+      "name": "ElevenLabs",
+      "handle": "elevenlabs.io",
+      "handle_platform": "website"
+    },
+    {
+      "name": "Resemble AI",
+      "handle": "resemble.ai",
+      "handle_platform": "website"
+    },
+    {
+      "name": "Synthesys",
+      "handle": "synthesys.io",
+      "handle_platform": "website"
+    },
+    {
+      "name": "Murf",
+      "handle": "murf.ai",
+      "handle_platform": "website"
+    },
+    {
+      "name": "HeyGen",
+      "handle": "heygen.com",
+      "handle_platform": "website"
+    },
+    {
+      "name": "ReadSpeaker",
+      "handle": "readspeaker.com",
+      "handle_platform": "website"
+    }
+  ]
+}

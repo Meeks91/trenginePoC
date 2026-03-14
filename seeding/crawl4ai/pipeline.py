@@ -1,0 +1,280 @@
+"""PerJobPipelineRunner — Per-job orchestration: Search → Crawl → Extract → Enrich per job.
+
+After all jobs complete, shared post-gather logic (name resolution, dedup,
+canary validation, report, save) runs via BasePipelineRunner.run().
+
+Also supports a single-URL override mode that skips Search entirely.
+"""
+
+from __future__ import annotations
+
+import logging
+
+from config.seed_schema import SeedJob
+
+from services.audit.AuditService import AuditLog
+from config import (
+    AUDIT_DIR, CURRENT_YEAR, LLM_PROVIDER,
+)
+from config.schema import SubResult, RegionResult, Influencer, Platform
+
+from services.search.SearchService import SearchResults
+from services.crawling.CrawlService import CrawlService
+from services.extraction.HandleExtractionService import HandleExtractionService
+from services.extraction.NameMentionTracker import NameMentionTracker
+from services.enrichment.NameToHandleService import NameToHandleService
+from services.reporting.PipelineReporter import PipelineReporter
+
+from base_pipeline import BasePipelineRunner, GatherResult
+
+
+logger = logging.getLogger(__name__)
+
+
+class PerJobPipelineRunner(BasePipelineRunner):
+    """Per-job pipeline: runs Search→Crawl→Extract→Enrich independently per job.
+
+    Extends BasePipelineRunner — shared post-gather logic (name resolution,
+    dedup, canary validation, report, save) is inherited via run().
+
+    Search is handled by base class via _search_all_configs().
+    This class implements _on_config_search_finished() to crawl, extract,
+    and enrich immediately after each config's search completes.
+    """
+
+    def __init__(self, **kwargs) -> None:
+        super().__init__(**kwargs)
+        # Cross-job accumulator for the per-job loop
+        self._all_influencer_entries: list[tuple[Influencer, str]] = []
+        # Cross-job name tracker for deferred resolution
+        self._global_name_tracker = NameMentionTracker()
+
+    # ── Template Method overrides ─────────────────────────────────────────
+
+    async def _search_and_extract_influencers(
+        self, jobs: list[SeedJob],
+    ) -> GatherResult:
+        """Per-job strategy: base runs search, we crawl+extract per job."""
+        self._all_influencer_entries.clear()
+        self._global_name_tracker = NameMentionTracker()
+
+        # Base class owns search iteration + circuit breaker
+        outcomes = await self._search_all_configs(jobs)
+
+        return GatherResult(
+            influencer_to_category=list(self._all_influencer_entries),
+            name_tracker=self._global_name_tracker,
+            job_outcomes=outcomes,
+        )
+
+    async def _on_config_search_finished(
+        self,
+        job: SeedJob,
+        search_results: SearchResults,
+    ) -> None:
+        """Crawl → extract → enrich for a single successful config."""
+        job_key = f"{job.category_key}_{job.sub.sub_name}_{job.platform.value}_{job.region.code.value}"
+        job_key = job_key.replace("/", "-").replace(" ", "_")
+
+        url_query_pairs = search_results.url_query_pairs
+        direct_handles = search_results.direct_handles
+
+        self._assembler.save_search_urls(job_key, url_query_pairs)
+
+        if not url_query_pairs and not direct_handles:
+            logger.warning("  No URLs found")
+            return
+
+        # Crawl
+        audit = AuditLog(AUDIT_DIR, job_key)
+        crawl_svc = CrawlService(audit)
+        if self.no_bfs:
+            pages = await crawl_svc.crawl_urls(url_query_pairs)
+        else:
+            pages = await crawl_svc.crawl_urls_bfs(url_query_pairs)
+        self._stats.record_crawl(
+            pages,
+            dropped=crawl_svc.dropped_count,
+            retries=crawl_svc.retry_count,
+        )
+
+        # Extract handles
+        handle_svc = HandleExtractionService(audit)
+        extract_result = await handle_svc.extract_all_handles(
+            pages,
+            platform=job.platform.value,
+            category_key=job.category_key,
+            sub_name=job.sub.sub_name,
+            region=job.region.label,
+            year=CURRENT_YEAR,
+            direct_handles=direct_handles,
+            sample_n=self.sample_n,
+        )
+        self._stats.record_extraction(extract_result)
+
+        # Merge per-job name tracker into global tracker
+        if extract_result.name_tracker is not None:
+            self._global_name_tracker.merge(extract_result.name_tracker)
+
+        # Enrich
+        enrich_svc = NameToHandleService(audit)
+        unique = enrich_svc.resolve_cross_account_handles(
+            extract_result.all_merged, platform=job.platform,
+            skip_cross_platform=self.no_cross_platform_lookup,
+        )
+        self._stats.record_enrichment(
+            unique_count=len(unique),
+            handles_filled=sum(1 for inf in unique if inf.handles),
+            retries=enrich_svc.retries,
+            failures=enrich_svc.failures,
+        )
+
+        # Build SourceResult list
+        sources = self._assembler.build_source_results(
+            pages, extract_result.llm_handles,
+        )
+
+        logger.info("  Audit log: %s", audit.path)
+
+        # Accumulate for global dedup (category_key only, not full job key)
+        for inf in unique:
+            self._all_influencer_entries.append((inf, job.category_key))
+
+    # ── run_jobs (legacy wrapper) ────────────────────────────────────────
+
+    async def run_jobs(self, jobs: list[SeedJob]) -> list[RegionResult]:
+        """Run multiple jobs, build nested RegionResult output, then finalize.
+
+        This is the per-job entry point called by cli.py (default mode).
+        It delegates orchestration to _search_and_extract_influencers() and
+        finalization to the base template, but also builds the nested
+        RegionResult structure that is unique to per-job mode.
+        """
+        # Run the template (search+extract → name res → dedup → canary → report → save)
+        seeds = await self.run(jobs)
+
+        # Build nested RegionResult output from the SubResults created during
+        # _on_config_search_finished() — this structure is per-job mode only
+        regions: dict[str, dict] = {}
+        for job in jobs:
+            region_code = job.region.code.value
+            plat = job.platform.value
+            cat = job.category_key
+            sub = job.sub.sub_name
+
+            regions.setdefault(region_code, {}) \
+                   .setdefault(plat, {}) \
+                   .setdefault(cat, {})[sub] = SubResult(
+                       is_top_level=job.sub.is_top_level,
+                   )
+
+        output = [
+            RegionResult(region=region, platforms=platforms)
+            for region, platforms in regions.items()
+        ]
+
+        self._assembler.save_pipeline_output(output)
+        return output
+
+    # ── Single-URL override mode ─────────────────────────────────────────
+
+    async def run_single_url(
+        self,
+        url: str,
+        *,
+        platform: str = "Instagram",
+        category_key: str = "UNKNOWN",
+        sub_name: str = "Unknown",
+        region: str = "US",
+    ) -> SubResult:
+        """Run the pipeline against a single URL, skipping Search entirely.
+
+        Useful for debugging, testing extraction on a specific page, or
+        one-off runs. Does not require a SeedJob — uses sensible defaults.
+        """
+        job_key = f"single_url_{platform}_{region}"
+        logger.info("="*70)
+        logger.info("  SINGLE URL: %s", url)
+        logger.info("  Context: %s / %s / %s / %s", platform, category_key, sub_name, region)
+        logger.info("="*70)
+
+        audit = AuditLog(AUDIT_DIR, job_key)
+
+        # Skip Search — go straight to Crawl
+        logger.info("  --- Search: SKIPPED (single URL override) ---")
+        url_query_pairs = [(url, "manual_override")]
+
+        # Crawl
+        crawl_svc = CrawlService(audit)
+        if self.no_bfs:
+            pages = await crawl_svc.crawl_urls(url_query_pairs)
+        else:
+            pages = await crawl_svc.crawl_urls_bfs(url_query_pairs)
+        self._stats.record_crawl(pages)
+
+        # Extract handles
+        handle_svc = HandleExtractionService(audit)
+        extract_result = await handle_svc.extract_all_handles(
+            pages,
+            platform=platform,
+            category_key=category_key,
+            sub_name=sub_name,
+            region=region,
+            year=CURRENT_YEAR,
+            direct_handles=[],
+            sample_n=self.sample_n,
+        )
+        self._stats.record_extraction(extract_result)
+
+        # Deferred Name Resolution (single-URL mode)
+        name_records = self._run_deferred_name_resolution(
+            tracker=extract_result.name_tracker,
+            audit=audit,
+            sub_name=sub_name,
+            platform=Platform(platform),
+            influencer_to_category=[],
+        )
+
+        # Enrich
+        enrich_svc = NameToHandleService(audit)
+        unique = enrich_svc.resolve_cross_account_handles(
+            extract_result.all_merged, platform=Platform(platform),
+            skip_cross_platform=self.no_cross_platform_lookup,
+        )
+        self._stats.record_enrichment(
+            unique_count=len(unique),
+            handles_filled=sum(1 for inf in unique if inf.handles),
+            retries=enrich_svc.retries,
+            failures=enrich_svc.failures,
+        )
+
+        # Build SourceResult list
+        sources = self._assembler.build_source_results(
+            pages, extract_result.llm_handles,
+        )
+
+        # Generate Report
+        yield_warnings = self._stats.check_yield_warnings()
+        reporter = PipelineReporter()
+        reporter.generate(
+            stats=self.stats,
+            validation_results={},
+            model=LLM_PROVIDER,
+            mode="single-url",
+            influencers=unique,
+            name_mentions=name_records,
+            warnings=yield_warnings,
+        )
+
+        logger.info("  Audit log: %s", audit.path)
+        logger.info("  Result: %d unique influencers", len(unique))
+
+        return SubResult(
+            is_top_level=True,
+            sources=sources,
+            all_influencers=unique,
+        )
+
+
+# Backward compatibility alias
+PipelineRunner = PerJobPipelineRunner

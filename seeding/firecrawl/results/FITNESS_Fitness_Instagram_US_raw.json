@@ -1,0 +1,10 @@
+{
+  "success": true,
+  "id": null,
+  "status": "failed",
+  "data": null,
+  "error": "Refusal: Error: Agent reached max credits",
+  "model": "spark-1-mini",
+  "credits_used": 0,
+  "expires_at": "2026-03-10 22:06:55.857000+00:00"
+}

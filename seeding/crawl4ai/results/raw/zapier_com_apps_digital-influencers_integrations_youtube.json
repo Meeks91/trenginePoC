@@ -1,0 +1,14 @@
+{
+  "influencers": [
+    {
+      "name": "OpenAI",
+      "handle": "openai",
+      "handle_platform": "YouTube"
+    },
+    {
+      "name": "Anthropic",
+      "handle": "anthropic-claude",
+      "handle_platform": "YouTube"
+    }
+  ]
+}

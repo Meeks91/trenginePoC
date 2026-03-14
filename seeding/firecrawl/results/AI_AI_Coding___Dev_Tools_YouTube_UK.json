@@ -1,0 +1,26 @@
+{
+  "category_key": "AI",
+  "sub_name": "AI Coding / Dev Tools",
+  "platform": "YouTube",
+  "region": "UK",
+  "difficulty": "Hard",
+  "model": "spark-1-mini",
+  "credits_used": 0,
+  "prompt": "Find the top YouTube influencers based in the UK who create content about AI coding tutorial creators.\n\nThese search queries return good results for this niche: \"AI coding tutorial creators YouTube UK 2025\", \"machine learning dev influencers YouTube UK 2025\", \"AI programming accounts YouTube UK 2025\"\n\nExtract every influencer name and their YouTube handle from the sources you find. Return as many as possible.",
+  "urls_sent": [
+    "reddit.com/r/LocalLLaMA",
+    "reddit.com/r/MachineLearning",
+    "dev.to",
+    "feedspot.com",
+    "kingy.ai",
+    "headphonesty.com",
+    "lkiconsulting.io",
+    "analyticsvidhya.com",
+    "skimai.com",
+    "digitalocean.com"
+  ],
+  "influencers": [],
+  "count": 0,
+  "timestamp": "2026-03-09T21:55:37.391460",
+  "meets_threshold": false
+}

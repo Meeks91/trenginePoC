@@ -1,0 +1,37 @@
+{"phase": "crawl", "action": "page_success", "timestamp": "2026-03-12T00:35:57.634643+00:00", "url": "https://www.reddit.com/r/naturalbodybuilding/comments/1ja6y54/which_fitness_influencers_bodybuilders_do_you/", "raw_tokens": 3447, "fit_tokens": 2016}
+{"phase": "crawl", "action": "page_success", "timestamp": "2026-03-12T00:36:02.852058+00:00", "url": "https://www.reddit.com/r/naturalbodybuilding/comments/1ja6y54/which_fitness_influencers_bodybuilders_do_you/?tl=pt-br", "raw_tokens": 5390, "fit_tokens": 3392}
+{"phase": "name_resolution", "action": "no_match", "timestamp": "2026-03-12T00:36:04.097533+00:00", "name": "AI Assistants", "reason": "no_platform_url"}
+{"phase": "name_resolution", "action": "no_match", "timestamp": "2026-03-12T00:36:08.890804+00:00", "name": "Acrobat Studio", "reason": "no_platform_url"}
+{"phase": "name_resolution", "action": "resolved", "timestamp": "2026-03-12T00:36:12.105797+00:00", "name": "Alex Leonidas", "handle": "alexleonidasofficial", "reason": "Instagram"}
+{"phase": "name_resolution", "action": "no_match", "timestamp": "2026-03-12T00:36:15.620287+00:00", "name": "Bald Omni Man", "reason": "no_platform_url"}
+{"phase": "name_resolution", "action": "no_match", "timestamp": "2026-03-12T00:36:19.558090+00:00", "name": "Bald Omni-man", "reason": "no_platform_url"}
+{"phase": "name_resolution", "action": "resolved", "timestamp": "2026-03-12T00:36:23.060000+00:00", "name": "Basement Bodybuilding", "handle": "basement.bodybuilding", "reason": "Instagram"}
+{"phase": "name_resolution", "action": "resolved", "timestamp": "2026-03-12T00:36:23.060491+00:00", "name": "Basement Bodybuilding", "handle": "BasementBodybuilding", "reason": "YouTube"}
+{"phase": "name_resolution", "action": "resolved", "timestamp": "2026-03-12T00:36:27.082474+00:00", "name": "Dr Mike", "handle": "doctor.mike", "reason": "Instagram"}
+{"phase": "name_resolution", "action": "resolved", "timestamp": "2026-03-12T00:36:27.082951+00:00", "name": "Dr Mike", "handle": "doctormike", "reason": "TikTok"}
+{"phase": "name_resolution", "action": "no_match", "timestamp": "2026-03-12T00:36:30.820436+00:00", "name": "Eric Bugenhagen", "reason": "no_platform_url"}
+{"phase": "name_resolution", "action": "no_match", "timestamp": "2026-03-12T00:36:35.223734+00:00", "name": "Eric Janicki", "reason": "no_platform_url"}
+{"phase": "name_resolution", "action": "resolved", "timestamp": "2026-03-12T00:36:39.021706+00:00", "name": "Geoffrey Verity Schofield", "handle": "geoffreyverityschofield", "reason": "Instagram"}
+{"phase": "name_resolution", "action": "no_match", "timestamp": "2026-03-12T00:36:42.559598+00:00", "name": "Hipertrofia Natural", "reason": "no_platform_url"}
+{"phase": "name_resolution", "action": "no_match", "timestamp": "2026-03-12T00:36:46.109944+00:00", "name": "Jeff Nippard", "reason": "no_platform_url"}
+{"phase": "name_resolution", "action": "resolved", "timestamp": "2026-03-12T00:36:49.123636+00:00", "name": "Jeffy Nip Nip", "handle": "jeffnippard", "reason": "Instagram"}
+{"phase": "name_resolution", "action": "resolved", "timestamp": "2026-03-12T00:36:49.124138+00:00", "name": "Jeffy Nip Nip", "handle": "jeffnippardfitness", "reason": "TikTok"}
+{"phase": "name_resolution", "action": "resolved", "timestamp": "2026-03-12T00:36:49.124544+00:00", "name": "Jeffy Nip Nip", "handle": "heresjeffy", "reason": "TikTok"}
+{"phase": "name_resolution", "action": "resolved", "timestamp": "2026-03-12T00:36:52.266583+00:00", "name": "John Meadows", "handle": "mountaindog1", "reason": "Instagram"}
+{"phase": "name_resolution", "action": "resolved", "timestamp": "2026-03-12T00:36:52.267060+00:00", "name": "John Meadows", "handle": "johnmeadows", "reason": "Instagram"}
+{"phase": "name_resolution", "action": "resolved", "timestamp": "2026-03-12T00:36:52.267278+00:00", "name": "John Meadows", "handle": "kristianengen", "reason": "TikTok"}
+{"phase": "name_resolution", "action": "no_match", "timestamp": "2026-03-12T00:36:57.268614+00:00", "name": "Jonathan Warren", "reason": "no_platform_url"}
+{"phase": "name_resolution", "action": "resolved", "timestamp": "2026-03-12T00:37:00.424176+00:00", "name": "Jonathan Warren's", "handle": "popular", "reason": "Instagram"}
+{"phase": "name_resolution", "action": "resolved", "timestamp": "2026-03-12T00:37:00.424770+00:00", "name": "Jonathan Warren's", "handle": "jonathanwarrenlifestyle", "reason": "TikTok"}
+{"phase": "name_resolution", "action": "resolved", "timestamp": "2026-03-12T00:37:04.966256+00:00", "name": "Natural Hypertrophy", "handle": "naturalhypertrophy", "reason": "Instagram"}
+{"phase": "name_resolution", "action": "resolved", "timestamp": "2026-03-12T00:37:08.522933+00:00", "name": "Parkrun\nLearn More", "handle": "parkrunuk", "reason": "Instagram"}
+{"phase": "name_resolution", "action": "resolved", "timestamp": "2026-03-12T00:37:08.523526+00:00", "name": "Parkrun\nLearn More", "handle": "parkrun", "reason": "TikTok"}
+{"phase": "name_resolution", "action": "resolved", "timestamp": "2026-03-12T00:37:08.523739+00:00", "name": "Parkrun\nLearn More", "handle": "parkrunHub", "reason": "YouTube"}
+{"phase": "name_resolution", "action": "no_match", "timestamp": "2026-03-12T00:37:12.850880+00:00", "name": "Promoted\nBecome", "reason": "no_platform_url"}
+{"phase": "name_resolution", "action": "no_match", "timestamp": "2026-03-12T00:37:16.510928+00:00", "name": "Promoted\nMeet", "reason": "no_platform_url"}
+{"phase": "name_resolution", "action": "no_match", "timestamp": "2026-03-12T00:37:19.760942+00:00", "name": "Promoted\nTranslate", "reason": "no_platform_url"}
+{"phase": "name_resolution", "action": "no_match", "timestamp": "2026-03-12T00:37:24.859994+00:00", "name": "Sean Nalewanyj", "reason": "no_platform_url"}
+{"phase": "enrich", "action": "handle_found", "timestamp": "2026-03-12T00:37:31.567316+00:00", "name": "Basement Bodybuilding", "handle": "@basement.bodybuilding"}
+{"phase": "enrich", "action": "handle_found", "timestamp": "2026-03-12T00:37:38.036152+00:00", "name": "Jeffy Nip Nip", "handle": "@stebs"}
+{"phase": "enrich", "action": "handle_found", "timestamp": "2026-03-12T00:37:40.198794+00:00", "name": "Jeffy Nip Nip", "handle": "@stebs"}
+{"phase": "enrich", "action": "handle_found", "timestamp": "2026-03-12T00:37:46.858951+00:00", "name": "Jonathan Warren's", "handle": "@popular"}

@@ -1,0 +1,17 @@
+{
+  "FITNESS_Fitness_UK": {
+    "pass_rate": 0.3333333333333333,
+    "found": [
+      "Joe Wicks"
+    ],
+    "missing": [
+      "Alice Liveing",
+      "Krissy Cela"
+    ],
+    "expected": [
+      "Alice Liveing",
+      "Joe Wicks",
+      "Krissy Cela"
+    ]
+  }
+}

@@ -1,0 +1,71 @@
+{"phase": "crawl", "action": "page_success", "timestamp": "2026-03-12T09:42:11.433323+00:00", "url": "https://grin.co/blog/top-food-influencers/", "raw_tokens": 5664, "fit_tokens": 4635}
+{"phase": "crawl", "action": "page_success", "timestamp": "2026-03-12T09:42:34.588431+00:00", "url": "https://grin.co/wp-content/uploads/2023/12/IM_Top_18_Food_Influencers_2025-Q2-04_WEBSITE.webp", "raw_tokens": 24, "fit_tokens": 0}
+{"phase": "crawl", "action": "page_success", "timestamp": "2026-03-12T09:42:34.589561+00:00", "url": "https://grin.co/wp-content/uploads/2023/12/IM_Top_Food_Micro_Influencers_2023-Q4-12_Featured1.webp", "raw_tokens": 26, "fit_tokens": 0}
+{"phase": "crawl", "action": "page_success", "timestamp": "2026-03-12T09:42:34.590264+00:00", "url": "https://grin.co/wp-content/uploads/2023/12/Sallys-Baking-1024x550.webp", "raw_tokens": 19, "fit_tokens": 0}
+{"phase": "crawl", "action": "page_success", "timestamp": "2026-03-12T09:42:34.590804+00:00", "url": "https://grin.co/wp-content/uploads/2023/12/Pinch-of-Yum-1024x555.webp", "raw_tokens": 18, "fit_tokens": 0}
+{"phase": "crawl", "action": "page_success", "timestamp": "2026-03-12T09:42:34.591358+00:00", "url": "https://grin.co/wp-content/uploads/2023/12/Harvest.webp", "raw_tokens": 15, "fit_tokens": 0}
+{"phase": "crawl", "action": "page_success", "timestamp": "2026-03-12T09:42:34.591955+00:00", "url": "https://grin.co/blog/best-travel-content-creators/", "raw_tokens": 5544, "fit_tokens": 4799}
+{"phase": "crawl", "action": "page_success", "timestamp": "2026-03-12T09:42:34.593522+00:00", "url": "https://grin.co/blog/instagram-influencer-marketing/", "raw_tokens": 5743, "fit_tokens": 5032}
+{"phase": "crawl", "action": "page_success", "timestamp": "2026-03-12T09:42:34.594828+00:00", "url": "https://grin.co/influencer-marketing-101/", "raw_tokens": 1366, "fit_tokens": 609}
+{"phase": "crawl", "action": "page_success", "timestamp": "2026-03-12T09:42:34.595722+00:00", "url": "https://grin.co/creator-influencer-recruitment/", "raw_tokens": 2499, "fit_tokens": 1580}
+{"phase": "crawl", "action": "page_success", "timestamp": "2026-03-12T09:42:34.596578+00:00", "url": "https://grin.co/blog/the-ultimate-guide-to-micro-influencers/", "raw_tokens": 5656, "fit_tokens": 4829}
+{"phase": "crawl", "action": "page_success", "timestamp": "2026-03-12T09:42:34.597824+00:00", "url": "https://grin.co/blog/everything-to-know-about-tiktok-influencer-marketing/", "raw_tokens": 7887, "fit_tokens": 7186}
+{"phase": "crawl", "action": "page_success", "timestamp": "2026-03-12T09:42:34.599629+00:00", "url": "https://grin.co/blog/the-ultimate-guide-to-youtube-influencer-marketing/", "raw_tokens": 9694, "fit_tokens": 8727}
+{"phase": "enrich", "action": "retry", "timestamp": "2026-03-12T09:42:40.046765+00:00", "name": "jordan_the_stallion8", "error": "No results found.", "attempt": 1}
+{"phase": "enrich", "action": "retry", "timestamp": "2026-03-12T09:42:44.174902+00:00", "name": "jordan_the_stallion8", "error": "No results found.", "attempt": 2}
+{"phase": "enrich", "action": "retry", "timestamp": "2026-03-12T09:42:49.800551+00:00", "name": "jordan_the_stallion8", "error": "No results found.", "attempt": 3}
+{"phase": "enrich", "action": "permanent_failure", "timestamp": "2026-03-12T09:42:59.820478+00:00", "name": "jordan_the_stallion8", "error": "No results found."}
+{"phase": "enrich", "action": "retry", "timestamp": "2026-03-12T09:43:02.289156+00:00", "name": "rkihd", "error": "No results found.", "attempt": 1}
+{"phase": "enrich", "action": "retry", "timestamp": "2026-03-12T09:43:05.978664+00:00", "name": "rkihd", "error": "No results found.", "attempt": 2}
+{"phase": "enrich", "action": "retry", "timestamp": "2026-03-12T09:43:11.707153+00:00", "name": "rkihd", "error": "No results found.", "attempt": 3}
+{"phase": "enrich", "action": "permanent_failure", "timestamp": "2026-03-12T09:43:21.726895+00:00", "name": "rkihd", "error": "No results found."}
+{"phase": "enrich", "action": "retry", "timestamp": "2026-03-12T09:43:24.243877+00:00", "name": "samseats", "error": "No results found.", "attempt": 1}
+{"phase": "enrich", "action": "retry", "timestamp": "2026-03-12T09:43:28.177633+00:00", "name": "samseats", "error": "No results found.", "attempt": 2}
+{"phase": "enrich", "action": "retry", "timestamp": "2026-03-12T09:43:34.100105+00:00", "name": "samseats", "error": "No results found.", "attempt": 3}
+{"phase": "enrich", "action": "permanent_failure", "timestamp": "2026-03-12T09:43:43.211423+00:00", "name": "samseats", "error": "No results found."}
+{"phase": "enrich", "action": "retry", "timestamp": "2026-03-12T09:43:45.691442+00:00", "name": "s_johnson_voiceovers", "error": "No results found.", "attempt": 1}
+{"phase": "enrich", "action": "retry", "timestamp": "2026-03-12T09:43:48.966676+00:00", "name": "s_johnson_voiceovers", "error": "No results found.", "attempt": 2}
+{"phase": "enrich", "action": "retry", "timestamp": "2026-03-12T09:43:54.200344+00:00", "name": "s_johnson_voiceovers", "error": "No results found.", "attempt": 3}
+{"phase": "enrich", "action": "permanent_failure", "timestamp": "2026-03-12T09:44:04.036473+00:00", "name": "s_johnson_voiceovers", "error": "No results found."}
+{"phase": "enrich", "action": "retry", "timestamp": "2026-03-12T09:44:06.634363+00:00", "name": "logagm", "error": "No results found.", "attempt": 1}
+{"phase": "enrich", "action": "retry", "timestamp": "2026-03-12T09:44:10.074143+00:00", "name": "logagm", "error": "No results found.", "attempt": 2}
+{"phase": "enrich", "action": "retry", "timestamp": "2026-03-12T09:44:16.001810+00:00", "name": "logagm", "error": "No results found.", "attempt": 3}
+{"phase": "enrich", "action": "permanent_failure", "timestamp": "2026-03-12T09:44:25.479105+00:00", "name": "logagm", "error": "No results found."}
+{"phase": "enrich", "action": "retry", "timestamp": "2026-03-12T09:44:27.945309+00:00", "name": "benjixavier", "error": "No results found.", "attempt": 1}
+{"phase": "enrich", "action": "retry", "timestamp": "2026-03-12T09:44:31.356701+00:00", "name": "benjixavier", "error": "No results found.", "attempt": 2}
+{"phase": "enrich", "action": "retry", "timestamp": "2026-03-12T09:44:37.214885+00:00", "name": "benjixavier", "error": "No results found.", "attempt": 3}
+{"phase": "enrich", "action": "permanent_failure", "timestamp": "2026-03-12T09:44:46.595067+00:00", "name": "benjixavier", "error": "No results found."}
+{"phase": "enrich", "action": "retry", "timestamp": "2026-03-12T09:44:49.246914+00:00", "name": "wishbonekitchen", "error": "No results found.", "attempt": 1}
+{"phase": "enrich", "action": "retry", "timestamp": "2026-03-12T09:44:53.001917+00:00", "name": "wishbonekitchen", "error": "No results found.", "attempt": 2}
+{"phase": "enrich", "action": "retry", "timestamp": "2026-03-12T09:44:58.537004+00:00", "name": "wishbonekitchen", "error": "No results found.", "attempt": 3}
+{"phase": "enrich", "action": "handle_found", "timestamp": "2026-03-12T09:45:08.536226+00:00", "name": "wishbonekitchen", "handle": "@wishbonekitchen"}
+{"phase": "enrich", "action": "handle_found", "timestamp": "2026-03-12T09:45:16.245411+00:00", "name": "hoka", "handle": "@hoka"}
+{"phase": "enrich", "action": "handle_found", "timestamp": "2026-03-12T09:45:18.641558+00:00", "name": "supergoop", "handle": "@supergoopprotec"}
+{"phase": "enrich", "action": "handle_found", "timestamp": "2026-03-12T09:45:25.489118+00:00", "name": "nazlia", "handle": "@nazliayunus"}
+{"phase": "enrich", "action": "handle_found", "timestamp": "2026-03-12T09:45:27.820918+00:00", "name": "Silvs", "handle": "@silvs_geh"}
+{"phase": "enrich", "action": "retry", "timestamp": "2026-03-12T09:45:36.116270+00:00", "name": "gabiiigarrr", "error": "No results found.", "attempt": 1}
+{"phase": "enrich", "action": "retry", "timestamp": "2026-03-12T09:45:39.617582+00:00", "name": "gabiiigarrr", "error": "No results found.", "attempt": 2}
+{"phase": "enrich", "action": "retry", "timestamp": "2026-03-12T09:45:45.801429+00:00", "name": "gabiiigarrr", "error": "No results found.", "attempt": 3}
+{"phase": "enrich", "action": "permanent_failure", "timestamp": "2026-03-12T09:45:56.187972+00:00", "name": "gabiiigarrr", "error": "No results found."}
+{"phase": "enrich", "action": "handle_found", "timestamp": "2026-03-12T09:45:59.055630+00:00", "name": "myreek_", "handle": "@myreek_"}
+{"phase": "enrich", "action": "handle_found", "timestamp": "2026-03-12T09:46:01.276386+00:00", "name": "mianmya1", "handle": "@mianmya1"}
+{"phase": "enrich", "action": "retry", "timestamp": "2026-03-12T09:46:06.373512+00:00", "name": "wittyybabyla", "error": "No results found.", "attempt": 1}
+{"phase": "enrich", "action": "retry", "timestamp": "2026-03-12T09:46:10.415314+00:00", "name": "wittyybabyla", "error": "No results found.", "attempt": 2}
+{"phase": "enrich", "action": "retry", "timestamp": "2026-03-12T09:46:16.336540+00:00", "name": "wittyybabyla", "error": "No results found.", "attempt": 3}
+{"phase": "enrich", "action": "permanent_failure", "timestamp": "2026-03-12T09:46:26.379938+00:00", "name": "wittyybabyla", "error": "No results found."}
+{"phase": "enrich", "action": "handle_found", "timestamp": "2026-03-12T09:46:28.112868+00:00", "name": "themayagraves", "handle": "@themayagraves"}
+{"phase": "enrich", "action": "handle_found", "timestamp": "2026-03-12T09:46:31.142146+00:00", "name": "lindseyxworth", "handle": "@lindseyxworth"}
+{"phase": "enrich", "action": "retry", "timestamp": "2026-03-12T09:46:33.981505+00:00", "name": "shopbypinkprincess", "error": "No results found.", "attempt": 1}
+{"phase": "enrich", "action": "retry", "timestamp": "2026-03-12T09:46:38.125373+00:00", "name": "shopbypinkprincess", "error": "No results found.", "attempt": 2}
+{"phase": "enrich", "action": "retry", "timestamp": "2026-03-12T09:46:43.902337+00:00", "name": "shopbypinkprincess", "error": "No results found.", "attempt": 3}
+{"phase": "enrich", "action": "permanent_failure", "timestamp": "2026-03-12T09:46:53.518883+00:00", "name": "shopbypinkprincess", "error": "No results found."}
+{"phase": "enrich", "action": "handle_found", "timestamp": "2026-03-12T09:46:58.772509+00:00", "name": "charlidamelio", "handle": "@charlidamelio"}
+{"phase": "enrich", "action": "handle_found", "timestamp": "2026-03-12T09:47:03.841520+00:00", "name": "danielclarke_dc3", "handle": "@danielclarke_dc3"}
+{"phase": "enrich", "action": "handle_found", "timestamp": "2026-03-12T09:47:09.481852+00:00", "name": "jdsportsus", "handle": "@jdsportsus"}
+{"phase": "enrich", "action": "handle_found", "timestamp": "2026-03-12T09:47:11.799103+00:00", "name": "vaselinebrand", "handle": "@vaselinebrandhealthy..."}
+{"phase": "enrich", "action": "handle_found", "timestamp": "2026-03-12T09:47:14.136195+00:00", "name": "theangeldenise", "handle": "@theangeldenise"}
+{"phase": "enrich", "action": "handle_found", "timestamp": "2026-03-12T09:47:17.388776+00:00", "name": "mallie", "handle": "@mallievincent"}
+{"phase": "enrich", "action": "retry", "timestamp": "2026-03-12T09:47:23.435819+00:00", "name": "patreeky", "error": "No results found.", "attempt": 1}
+{"phase": "enrich", "action": "retry", "timestamp": "2026-03-12T09:47:27.830225+00:00", "name": "patreeky", "error": "No results found.", "attempt": 2}
+{"phase": "enrich", "action": "retry", "timestamp": "2026-03-12T09:47:34.182506+00:00", "name": "patreeky", "error": "No results found.", "attempt": 3}
+{"phase": "enrich", "action": "permanent_failure", "timestamp": "2026-03-12T09:47:44.650069+00:00", "name": "patreeky", "error": "No results found."}

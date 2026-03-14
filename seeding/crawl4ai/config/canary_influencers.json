@@ -1,0 +1,327 @@
+{
+  "_comment": "Canary influencers: SM-NATIVE creators (built following ON social media). If missing from results, pipeline has a gap.",
+
+  "FITNESS": {
+    "Fitness": {
+      "US": ["Kayla Itsines", "Michelle Lewin", "Whitney Simmons"],
+      "UK": ["Joe Wicks", "Krissy Cela", "Alice Liveing"]
+    },
+    "Calisthenics": {
+      "US": ["Chris Heria", "Austin Dunham", "FitnessFAQ"],
+      "UK": ["FitnessFAQ", "School of Calisthenics"]
+    },
+    "Science-Based Training": {
+      "US": ["Jeff Nippard", "Mike Israetel", "Jeff Cavaliere"],
+      "UK": ["Natacha Oceane"]
+    },
+    "Powerlifting / Strength": {
+      "US": ["Meg Gallagher", "Stefi Cohen"],
+      "UK": ["Eddie Hall"]
+    },
+    "Women's Fitness": {
+      "US": ["Jen Selter", "Massy Arias", "Lean Beef Patty"],
+      "UK": ["Krissy Cela", "Alice Liveing"]
+    },
+    "Yoga / Mobility": {
+      "US": ["Adriene Mishler", "Jessamyn Stanley"],
+      "UK": ["Cat Meffan"]
+    }
+  },
+
+  "FOOD_AND_COOKING": {
+    "Food & Cooking": {
+      "US": ["Nick DiGiovanni", "Yumna Jawad", "Tabitha Brown"],
+      "UK": ["Poppy O'Toole", "Bosh!"]
+    },
+    "Quick Recipes": {
+      "US": ["Emily Mariko", "Tieghan Gerard"],
+      "UK": ["Nathan Anthony", "Mob Kitchen"]
+    },
+    "Protein / Macros": {
+      "US": ["Derek Howes", "Remington James"],
+      "UK": ["Graeme Tomlinson"]
+    },
+    "Healthy / Diet": {
+      "US": ["Carleigh Bodrug", "Danielle Brown"],
+      "UK": ["Ella Mills", "Fi Cooper"]
+    },
+    "Restaurant Reviews": {
+      "US": ["Keith Lee", "Stefan Johnson"],
+      "UK": ["Zack Hipps"]
+    },
+    "Street Food": {
+      "US": ["Mark Wiens", "Bayashi"],
+      "UK": ["Sorted Food"]
+    }
+  },
+
+  "AI": {
+    "AI": {
+      "US": ["Matt Wolfe", "Matthew Berman"],
+      "UK": ["Two Minute Papers"]
+    },
+    "AI Tools & Reviews": {
+      "US": ["Matt Wolfe", "MattVidPro AI"],
+      "UK": ["Two Minute Papers"]
+    },
+    "AI News & Commentary": {
+      "US": ["Fireship", "Wes Roth"],
+      "UK": []
+    },
+    "AI Creative Tools": {
+      "US": ["Corridor Crew", "Curious Refuge"],
+      "UK": []
+    },
+    "AI Coding / Dev Tools": {
+      "US": ["Fireship", "Code Bullet"],
+      "UK": []
+    },
+    "AI Automation / Agents": {
+      "US": ["Riley Brown", "Liam Otley"],
+      "UK": []
+    }
+  },
+
+  "BEAUTY": {
+    "Beauty": {
+      "US": ["Huda Kattan", "James Charles", "Mikayla Nogueira"],
+      "UK": ["Caroline Hirons", "NikkieTutorials"]
+    },
+    "Makeup Tutorials": {
+      "US": ["Patrick Starrr", "Desi Perkins", "Bretman Rock"],
+      "UK": ["NikkieTutorials"]
+    },
+    "Skincare Routines": {
+      "US": ["Hyram Yarbro", "Dr. Muneeb Shah"],
+      "UK": ["Caroline Hirons"]
+    },
+    "Haircare": {
+      "US": ["Brad Mondo", "Jen Atkin"],
+      "UK": ["Chris Appleton"]
+    },
+    "Budget / Dupes": {
+      "US": ["Mikayla Nogueira"],
+      "UK": ["Caroline Hirons"]
+    },
+    "Men's Grooming": {
+      "US": ["Alex Costa", "Manny Gutierrez"],
+      "UK": ["Robin James", "Jeremy Fragrance"]
+    }
+  },
+
+  "TECH": {
+    "Tech": {
+      "US": ["MKBHD", "Linus Tech Tips"],
+      "UK": ["Mrwhosetheboss"]
+    },
+    "Smartphones": {
+      "US": ["MKBHD", "Unbox Therapy"],
+      "UK": ["SuperSaf", "Mrwhosetheboss"]
+    },
+    "Laptops & Desktop Reviews": {
+      "US": ["Linus Tech Tips", "Austin Evans"],
+      "UK": ["The Tech Chap"]
+    },
+    "Audio / Headphones": {
+      "US": ["DankPods", "MKBHD"],
+      "UK": ["SuperSaf"]
+    },
+    "Apps / Software": {
+      "US": ["iJustine", "Sara Dietschy"],
+      "UK": []
+    },
+    "Wearables / Smart Home": {
+      "US": ["iJustine", "UrAvgConsumer"],
+      "UK": ["The Tech Chap"]
+    }
+  },
+
+  "BUSINESS_AND_FINANCE": {
+    "Business & Finance": {
+      "US": ["Graham Stephan", "Alex Hormozi"],
+      "UK": ["Steven Bartlett"]
+    },
+    "Personal Finance / Saving": {
+      "US": ["Humphrey Yang", "Tori Dunlap", "Vivian Tu"],
+      "UK": ["Nischa Shah", "Mark Tilbury"]
+    },
+    "Investing": {
+      "US": ["Andrei Jikh", "Graham Stephan"],
+      "UK": ["Mark Tilbury", "James Jani"]
+    },
+    "Side Hustles / Entrepreneurship": {
+      "US": ["Gary Vaynerchuk", "Alex Hormozi"],
+      "UK": ["Steven Bartlett"]
+    },
+    "Career / Productivity": {
+      "US": ["Ali Abdaal", "Thomas Frank"],
+      "UK": ["Ali Abdaal"]
+    },
+    "Financial News / Commentary": {
+      "US": ["Jaspreet Singh", "Erika Kullberg"],
+      "UK": ["Damien Jordan"]
+    }
+  },
+
+  "LIFE_HACKERS": {
+    "Life Hackers": {
+      "US": ["Vanesa Amaro", "Melissa Maker"],
+      "UK": ["Mrs Hinch"]
+    },
+    "Money Saving / Budget Hacks": {
+      "US": ["Humphrey Yang", "Vivian Tu"],
+      "UK": ["Poku Banks"]
+    },
+    "CleanTok / Cleaning": {
+      "US": ["Vanesa Amaro", "Go Clean Co", "Brandon Pleshek"],
+      "UK": ["Mrs Hinch", "Auri Kananen"]
+    },
+    "Home Organisation / Decluttering": {
+      "US": ["The Home Edit", "Kaeli Mae"],
+      "UK": ["The Folding Lady"]
+    },
+    "DIY / Home Repair": {
+      "US": ["LaurDIY", "Mr. Kate"],
+      "UK": []
+    },
+    "Life & Productivity Hacks": {
+      "US": ["Ali Abdaal", "Thomas Frank"],
+      "UK": ["Ali Abdaal"]
+    }
+  },
+
+  "REACTORS": {
+    "Reactors": {
+      "US": ["REACT", "h3h3Productions"],
+      "UK": ["SidemenReacts"]
+    },
+    "Film / TV Reactions": {
+      "US": ["Blind Wave", "Popcorn In Bed"],
+      "UK": ["The Critical Drinker"]
+    },
+    "Music Reactions": {
+      "US": ["ImDontai", "FlightReacts"],
+      "UK": []
+    },
+    "Sports Reactions": {
+      "US": ["FlightReacts"],
+      "UK": ["SidemenReacts"]
+    },
+    "Food / Try Reactions": {
+      "US": ["People Vs Food"],
+      "UK": ["Sorted Food"]
+    },
+    "Celebrity News & Gossip": {
+      "US": ["h3h3Productions", "Danny Gonzalez"],
+      "UK": []
+    }
+  },
+
+  "FASHION": {
+    "Fashion": {
+      "US": ["Chiara Ferragni", "Emma Chamberlain"],
+      "UK": ["Lydia Millen"]
+    },
+    "Women's Fashion": {
+      "US": ["Aimee Song", "Danielle Bernstein"],
+      "UK": ["Lydia Millen", "Monikh Dale"]
+    },
+    "Women's Hauls / Try-Ons": {
+      "US": ["Emma Chamberlain"],
+      "UK": []
+    },
+    "Women's Thrift / Budget Styling": {
+      "US": ["Tyler Chanel", "Shelbi"],
+      "UK": []
+    },
+    "Men's Fashion / Style": {
+      "US": ["Adam Gallagher"],
+      "UK": ["Rowan Row", "Carl Cunard"]
+    },
+    "Men's Sneakers / Streetwear": {
+      "US": ["De'arra Taylor"],
+      "UK": ["Leo Mandella", "Sherlina Nym"]
+    }
+  },
+
+  "GAMING": {
+    "Gaming": {
+      "US": ["Ninja", "Markiplier"],
+      "UK": ["KSI", "DanTDM"]
+    },
+    "Game Reviews": {
+      "US": ["Skill Up", "videogamedunkey"],
+      "UK": []
+    },
+    "Gaming Guides / Tutorials": {
+      "US": ["TheRadBrad"],
+      "UK": []
+    },
+    "Streaming / Let's Play": {
+      "US": ["Markiplier", "Jacksepticeye"],
+      "UK": ["KSI", "DanTDM"]
+    },
+    "Esports / Competitive": {
+      "US": ["Ninja", "shroud"],
+      "UK": []
+    },
+    "Gaming Clips": {
+      "US": ["SypherPK", "Tfue"],
+      "UK": []
+    }
+  },
+
+  "HEALTH_AND_WELLNESS": {
+    "Health & Wellness": {
+      "US": ["Andrew Huberman", "Jay Shetty"],
+      "UK": ["Dr. Julie Smith"]
+    },
+    "Supplements / Biohacking": {
+      "US": ["Thomas DeLauer", "More Plates More Dates"],
+      "UK": ["Tim Gray"]
+    },
+    "Mental Health Tips": {
+      "US": ["Jay Shetty", "Dr. Julie Smith"],
+      "UK": ["Dr. Julie Smith"]
+    },
+    "Longevity / Anti-Aging": {
+      "US": ["Bryan Johnson", "Kayla Barnes-Lentz"],
+      "UK": []
+    },
+    "Nutrition Science": {
+      "US": ["Thomas DeLauer", "More Plates More Dates"],
+      "UK": ["Graeme Tomlinson", "Emily English"]
+    },
+    "Women's Health": {
+      "US": ["Dr. Jolene Brighten"],
+      "UK": []
+    }
+  },
+
+  "TRAVEL": {
+    "Travel": {
+      "US": ["Drew Binsky", "Lost LeBlanc"],
+      "UK": ["Hand Luggage Only"]
+    },
+    "Budget Travel Tips": {
+      "US": ["Kara and Nate", "Nomadic Matt"],
+      "UK": ["Hand Luggage Only"]
+    },
+    "City Guides": {
+      "US": ["Drew Binsky"],
+      "UK": ["Kelsey in London"]
+    },
+    "Travel Hacks": {
+      "US": ["Kara and Nate"],
+      "UK": []
+    },
+    "Solo / Digital Nomad": {
+      "US": ["Lost LeBlanc", "Sorelle Amore"],
+      "UK": []
+    },
+    "Adventure / Outdoor": {
+      "US": ["Yes Theory", "Fearless and Far"],
+      "UK": ["Fun for Louis"]
+    }
+  }
+}

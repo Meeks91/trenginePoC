@@ -1,0 +1,34 @@
+{
+  "influencers": [
+    {
+      "name": "Josh Wambugu",
+      "handle": "josh",
+      "handle_platform": "awisee.com"
+    },
+    {
+      "name": "Awisee.com",
+      "handle": "awisee.com",
+      "handle_platform": ""
+    },
+    {
+      "name": "Clickstrike",
+      "handle": "",
+      "handle_platform": ""
+    },
+    {
+      "name": "Single Grain",
+      "handle": "",
+      "handle_platform": ""
+    },
+    {
+      "name": "SmartSites",
+      "handle": "",
+      "handle_platform": ""
+    },
+    {
+      "name": "Major Tom",
+      "handle": "",
+      "handle_platform": ""
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "influencers": [
+    {
+      "name": "Peter Nettesheim",
+      "handle": "peter-nettesheim",
+      "handle_platform": "influencer-hero.com"
+    },
+    {
+      "name": "Lucía Zabala",
+      "handle": "lucia-zabala",
+      "handle_platform": "influencer-hero.com"
+    },
+    {
+      "name": "Beau Bottles",
+      "handle": "beau-bottles",
+      "handle_platform": "influencer-hero.com"
+    },
+    {
+      "name": "TCL",
+      "handle": "case-study-tcl",
+      "handle_platform": "influencer-hero.com"
+    },
+    {
+      "name": "Arabian Oud",
+      "handle": "case-study-arabian-oud",
+      "handle_platform": "influencer-hero.com"
+    },
+    {
+      "name": "Immersive Gamebox",
+      "handle": "case-study-immersive-gamebox",
+      "handle_platform": "influencer-hero.com"
+    },
+    {
+      "name": "Ondecor",
+      "handle": "case-study-ondecor",
+      "handle_platform": "influencer-hero.com"
+    }
+  ]
+}

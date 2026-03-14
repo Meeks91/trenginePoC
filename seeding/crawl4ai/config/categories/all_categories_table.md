@@ -1,0 +1,88 @@
+# All Categories & Subcategories — 72 Subs
+
+| # | Category | Sub | Top? | Search Prompt | Alt Terms | Known Sources | Difficulty |
+|---|---|---|---|---|---|---|---|
+| 1 | FITNESS | Fitness | ✅ | top fitness influencers | favorite fitness creators; top fitness accounts | disruptmarketing.co, gymfluencers.agency, popularpays.com, reddit.com/r/Fitness, seekahost.co.uk (+15 more) | Easy |
+| 2 | FITNESS | Calisthenics |  | favorite bodyweight fitness creators | top calisthenics influencers; street workout accounts | reddit.com/r/bodyweightfitness, reddit.com/r/Calisthenic, influencer-hero.com, socialveins.com, feedspot.com (+2 more) | Easy |
+| 3 | FITNESS | Science-Based Training |  | evidence based fitness influencers | science based lifting creators; science backed training influencers | reddit.com/r/weightroom, reddit.com/r/Fitness, billcampbellphd.com, menshealth.com/uk, theinfluenceagency.com (+2 more) | Medium |
+| 4 | FITNESS | Powerlifting / Strength |  | top powerlifting influencers | favorite powerlifting accounts; strength training influencers | reddit.com/r/powerlifting, reddit.com/r/weightroom, influencer-hero.com, collabstr.com, modash.io | Easy |
+| 5 | FITNESS | Women's Fitness |  | top female fitness influencers | favorite fitness lifestyle accounts; female gym influencers | reddit.com/r/xxfitness, favikon.com, theinfluenceroom.com, clickanalytic.com, afluencer.com (+3 more) | Easy |
+| 6 | FITNESS | Yoga / Mobility |  | top yoga influencers | favorite yoga creators; mobility flow accounts | reddit.com/r/yoga, reddit.com/r/xxfitness, favikon.com, feedspot.com, thesocialcat.com (+1 more) | Easy |
+| 7 | FOOD_AND_COOKING | Food & Cooking | ✅ | top food creators | favorite cooking influencers; best culinary accounts | theinfluenceagency.com, foodbloggerpro.com, reddit.com/r/Cooking, sproutsocial.com, cloudkitchens.com (+11 more) | Easy |
+| 8 | FOOD_AND_COOKING | Quick Recipes |  | easy meal prep creators | quick recipe influencers; top meal prep accounts | reddit.com/r/MealPrepSunday, thesocialshepherd.com, territory-influence.com, reddit.com/r/EatCheapAndHealthy, hauslane.com | Easy |
+| 9 | FOOD_AND_COOKING | Protein / Macros |  | high protein recipe creators | fitness meal prep accounts; macro friendly food influencers | grocerslist.com, reddit.com/r/MealPrepSunday, deficientvegans.com, abdullahiibrahim.com, ecommercefastlane.com | Medium |
+| 10 | FOOD_AND_COOKING | Healthy / Diet |  | healthy eating influencers | plant based food creators; diet recipe accounts | digitalvoices.com, reddit.com/r/EatCheapAndHealthy, kolsquare.com, thesocialshepherd.com, izea.com (+2 more) | Easy |
+| 11 | FOOD_AND_COOKING | Restaurant Reviews |  | top restaurant reviewers | local foodie accounts; best food critics | squaremeal.co.uk, wearememo.com, thesocialshepherd.com, thecourieronline.co.uk, joliapp.com (+6 more) | Medium |
+| 12 | FOOD_AND_COOKING | Street Food |  | street food vloggers | local street food creators; best street food accounts | reddit.com/r/streetfood, youtube.com, kolsquare.com, vivianagency.com, influencer-hero.com (+2 more) | Easy |
+| 13 | AI | AI | ✅ | top AI influencers | best artificial intelligence creators; top AI tech accounts | influencer-hero.com, thinkers360.com, metricsmule.com, socialrails.com, favikon.com (+9 more) | Easy |
+| 14 | AI | AI Tools & Reviews |  | top AI tool reviewers | new AI tools creators; AI software review accounts | reddit.com/r/ChatGPT, therundown.ai, favikon.com, influencity.com, skimai.com | Easy |
+| 15 | AI | AI News & Commentary |  | AI news creators | artificial intelligence commentary accounts; top AI update influencers | reddit.com/r/singularity, reddit.com/r/artificial, feedspot.com, exploreaitogether.com, lkiconsulting.io (+1 more) | Easy |
+| 16 | AI | AI Creative Tools |  | AI art and video creators | generative AI design influencers; Midjourney tutorial accounts | reddit.com/r/midjourney, reddit.com/r/StableDiffusion, kolsquare.com, invideo.io, veed.io | Medium |
+| 17 | AI | AI Coding / Dev Tools |  | AI coding tutorial creators | machine learning dev influencers; AI programming accounts | reddit.com/r/LocalLLaMA, reddit.com/r/MachineLearning, dev.to, feedspot.com, kingy.ai (+5 more) | Hard |
+| 18 | AI | AI Automation / Agents |  | AI automation creators | top AI agent workflow influencers; Zapier Make tutorial accounts | reddit.com/r/Automate, favikon.com, collabstr.com, pathmonk.com | Medium |
+| 19 | BEAUTY | Beauty | ✅ | top beauty influencers | favorite beauty creators; top makeup accounts | brands.joinstatus.com, diarydirectory.com, influencermatchmaker.co.uk, reddit.com/r/BeautyGuruChatter, favikon.com (+7 more) | Easy |
+| 20 | BEAUTY | Makeup Tutorials |  | makeup tutorial creators | best makeup artists; top MUA influencers | reddit.com/r/MakeupAddiction, thesocialshepherd.com, influencer-hero.com, amraandelma.com | Easy |
+| 21 | BEAUTY | Skincare Routines |  | top skincare influencers | favorite skincare creators; dermatologist accounts | reddit.com/r/SkincareAddiction, reddit.com/r/AsianBeauty, traackr.com, awisee.com, gcimagazine.com | Easy |
+| 22 | BEAUTY | Haircare |  | top haircare influencers | hair tutorial creators; curly hair accounts | reddit.com/r/HaircareScience, modash.io, thesocialshepherd.com | Easy |
+| 23 | BEAUTY | Budget / Dupes |  | drugstore makeup creators | affordable beauty influencers; beauty dupe accounts | reddit.com/r/drugstoreMUA, buzzfeed.com, allure.com, amraandelma.com, styledandstrolling.com | Medium |
+| 24 | BEAUTY | Men's Grooming |  | men's grooming influencers | men's skincare creators; top barber accounts | reddit.com/r/malegrooming, gq.com, modash.io, sproutsocial.com | Medium |
+| 25 | TECH | Tech | ✅ | top tech influencers | best technology reviewers; top consumer tech creators | upfluence.com, socialbook.io, disruptmarketing.co, tytopr.com, benlabs.com (+9 more) | Easy |
+| 26 | TECH | Smartphones |  | best smartphone reviewers | top mobile tech influencers; phone tech creators | reddit.com/r/Smartphones, reddit.com/r/Android, makeuseof.com, iqfluence.io, feedspot.com (+1 more) | Easy |
+| 27 | TECH | Laptops & Desktop Reviews |  | top PC hardware reviewers | best laptop reviewers; custom PC builder accounts | reddit.com/r/pcmasterrace, reddit.com/r/buildapc, smbtech.au, thesocialshepherd.com | Medium |
+| 28 | TECH | Audio / Headphones |  | best audiophile reviewers | top headphone reviewers; hi-fi audio creators | reddit.com/r/headphones, reddit.com/r/HeadphoneAdvice, salon.com, reddit.com/r/EDM, modash.io (+3 more) | Medium |
+| 29 | TECH | Apps / Software |  | top SaaS influencers | best software review creators; productivity app influencers | wdcweb.com, letmecook.io, divbyzero.com, clickstrike.com, reddit.com/r/sysadmin (+2 more) | Easy |
+| 30 | TECH | Wearables / Smart Home |  | top smart home influencers | wearable tech creators; home automation accounts | reddit.com/r/smarthome, reddit.com/r/HomeKit, socialveins.com, izea.com, chrisoram.com (+2 more) | Easy |
+| 31 | BUSINESS_AND_FINANCE | Business & Finance | ✅ | top finance influencers | favorite finance creators; best financial accounts | favikon.com, sovereignboss.co.uk, tembomoney.com, amraandelma.com, due.com (+4 more) | Easy |
+| 32 | BUSINESS_AND_FINANCE | Personal Finance / Saving |  | best personal finance creators | top saving money accounts; favorite budgeting channels | reddit.com/r/personalfinance, reddit.com/r/UKPersonalFinance, tembomoney.com, izea.com, mashable.com (+1 more) | Easy |
+| 33 | BUSINESS_AND_FINANCE | Investing |  | top investing influencers | favorite stock market creators; best investment channels | modash.io, collabstr.com, reddit.com/r/investing, reddit.com/r/Bogleheads, diversification.com (+3 more) | Medium |
+| 34 | BUSINESS_AND_FINANCE | Side Hustles / Entrepreneurship |  | best entrepreneurship channels | top startup creators; business case study accounts | reddit.com/r/Entrepreneur, agilitypr.com, millennialmagazine.com, amraandelma.com, favikon.com (+5 more) | Hard |
+| 35 | BUSINESS_AND_FINANCE | Career / Productivity |  | best career advice creators | top career influencers; interview tip accounts | novoresume.de, interview-coach.co.uk, studentcircus.com, reddit.com/r/careerguidance, collabstr.com | Medium |
+| 36 | BUSINESS_AND_FINANCE | Financial News / Commentary |  | financial commentary creators | market analysis influencers; top economic news accounts | reddit.com/r/stocks, beincrypto.com, diversification.com, levelfields.ai | Medium |
+| 37 | LIFE_HACKERS | Life Hackers | ✅ | top life hack influencers | best hack creators; favorite life tips accounts | favikon.com, amraandelma.com, feedspot.com, socialbook.io, lifehacker.com (+23 more) | Easy |
+| 38 | LIFE_HACKERS | Money Saving / Budget Hacks |  | best money saving tip creators | top cash stuffing influencers; budget hack accounts | reddit.com/r/Frugal, reddit.com/r/povertyfinance, favikon.com, feedspot.com, amraandelma.com (+2 more) | Easy |
+| 39 | LIFE_HACKERS | CleanTok / Cleaning |  | top CleanTok creators | best cleaning influencers; favorite cleaning hack accounts | socialbook.io, favikon.com, garfieldbrooklyn.com, lifehacker.com, amraandelma.com (+3 more) | Easy |
+| 40 | LIFE_HACKERS | Home Organisation / Decluttering |  | best home organization influencers | top decluttering creators; favorite pantry organization accounts | feedspot.com, favikon.com, hellomagazine.com, amraandelma.com, izea.com (+2 more) | Easy |
+| 41 | LIFE_HACKERS | DIY / Home Repair |  | top DIY home repair creators | best home renovation influencers; favorite handyman accounts | influencer-hero.com, beacons.ai, cheapism.com, slashgear.com, izea.com (+3 more) | Medium |
+| 42 | LIFE_HACKERS | Life & Productivity Hacks |  | best productivity hack creators | top everyday tips influencers; life hack accounts | favikon.com, amraandelma.com, feedspot.com, hireharbour.com, reddit.com/r/LifeProTips (+2 more) | Easy |
+| 43 | REACTORS | Reactors | ✅ | top reaction channels | best reaction creators; favorite reactor accounts | reactionfinder.com, thesocialshepherd.com, amraandelma.com, lemon8-app.com, reddit.com/r/youtube (+7 more) | Easy |
+| 44 | REACTORS | Film / TV Reactions |  | best movie reaction channels | top tv reaction creators; favorite film reactors | reddit.com/r/movies, reddit.com/r/Blindwave, reddit.com/r/PopcornInBed, reddit.com/r/moviecritic, collabstr.com (+4 more) | Easy |
+| 45 | REACTORS | Music Reactions |  | top music reaction channels | best song reaction creators; favorite album reactors | reddit.com/r/Music, reddit.com/r/hiphopheads, reddit.com/r/popheads, poppassionblog.com, feedspot.com (+1 more) | Medium |
+| 46 | REACTORS | Sports Reactions |  | best sports reaction channels | top game reaction creators; favorite fan reaction accounts | reddit.com/r/sports, reddit.com/r/soccer, reddit.com/r/nfl, tubularlabs.com, sportskred.com (+1 more) | Medium |
+| 47 | REACTORS | Food / Try Reactions |  | best food reaction creators | top taste test channels; favorite food try accounts | reddit.com/r/StupidFood, reddit.com/r/food, thesocialcat.com, hashfame.com, keepface.com (+1 more) | Easy |
+| 48 | REACTORS | Celebrity News & Gossip |  | top pop culture commentary channels | best celebrity tea accounts; favorite pop culture youtubers | reddit.com/r/popculturechat, reddit.com/r/Fauxmoi, reddit.com/r/youtubedrama, feedspot.com, modash.io (+3 more) | Medium |
+| 49 | FASHION | Fashion | ✅ | top fashion influencers | best style creators; favorite fashion accounts | traackr.com, hypeauditor.com, thesocialshepherd.com, neoreach.com, kolsquare.com (+4 more) | Easy |
+| 50 | FASHION | Women's Fashion |  | best womens fashion creators | top female style influencers; favorite OOTD accounts | thesocialshepherd.com, izea.com, reddit.com/r/femalefashionadvice, reddit.com/r/fashionwomens35, kolsquare.com | Easy |
+| 51 | FASHION | Women's Hauls / Try-Ons |  | best clothing haul creators | top try on haul influencers; favorite outfit try on channels | aspire.io, fashionmonitor.com, lemon8-app.com, reddit.com/r/PlusSize | Medium |
+| 52 | FASHION | Women's Thrift / Budget Styling |  | top sustainable fashion creators | best thrift influencers; budget style channels | corq.studio, feedspot.com, reddit.com/r/FrugalFemaleFashion | Easy |
+| 53 | FASHION | Men's Fashion / Style |  | best menswear channels | top men's style creators; favorite male fashion youtubers | neoreach.com, izea.com, reddit.com/r/malefashionadvice, amraandelma.com | Medium |
+| 54 | FASHION | Men's Sneakers / Streetwear |  | top sneakerhead influencers | best streetwear creators; favorite sneaker channels | upfluence.com, izea.com, favikon.com, hotdrops.com, reddit.com/r/Sneakers (+1 more) | Easy |
+| 55 | GAMING | Gaming | ✅ | top gaming influencers | best gaming creators; favorite gaming accounts | disruptmarketing.co, gameinfluencer.com, influencermatchmaker.co.uk, influencer-hero.com, crowdcreate.us (+5 more) | Easy |
+| 56 | GAMING | Game Reviews |  | best video game review channels | top game reviewers; favorite game critique accounts | reddit.com/r/videogames, reddit.com/r/Games, gamefaqs.gamespot.com, gameinfluencer.com, disruptmarketing.co (+3 more) | Medium |
+| 57 | GAMING | Gaming Guides / Tutorials |  | best gaming tutorial channels | top video game guide creators; favorite game walkthrough accounts | reddit.com/r/2007scape, reddit.com/r/diablo4, reddit.com/r/gaming, maxroll.gg, mobalytics.gg (+5 more) | Medium |
+| 58 | GAMING | Streaming / Let's Play |  | top lets play channels | best twitch streamers; favorite livestreaming creators | twitchstats.net, twitchtracker.com, streamscharts.com, reddit.com/r/Twitch, reddit.com/r/LivestreamFail (+3 more) | Easy |
+| 59 | GAMING | Esports / Competitive |  | top esports influencers | best competitive gaming creators; pro player accounts | influencermarketinghub.com, influencers.feedspot.com, audiencly.com, kairosmedia.com, cloutboost.com (+4 more) | Medium |
+| 60 | GAMING | Gaming Clips |  | best gaming clip channels | top gaming compilation creators; funny gaming moments accounts | amraandelma.com, influencer-hero.com, thesocialcat.com, reddit.com/r/gamingclips, reddit.com/r/LivestreamFail | Easy |
+| 61 | HEALTH_AND_WELLNESS | Health & Wellness | ✅ | top health and wellness influencers | best wellness creators; favorite holistic health accounts | feedspot.com, hummingbird.agency, thinkers360.com, grin.co, goatagency.com (+5 more) | Easy |
+| 62 | HEALTH_AND_WELLNESS | Supplements / Biohacking |  | best biohacking channels | top supplement influencers; biohacker creators | feedspot.com, influencer-hero.com, reddit.com/r/Biohackers, upfluence.com, thesocialshepherd.com (+4 more) | Medium |
+| 63 | HEALTH_AND_WELLNESS | Mental Health Tips |  | top TherapyTok creators | best mental health influencers; licensed therapist accounts | hireinfluence.com, feedspot.com, socialpubli.com, reddit.com/r/mentalhealth, reddit.com/r/TalkTherapy (+6 more) | Easy |
+| 64 | HEALTH_AND_WELLNESS | Longevity / Anti-Aging |  | top longevity influencers | best anti aging creators; healthy lifespan accounts | feedspot.com, favikon.com, aginganalytics.com, influencer-hero.com, reddit.com/r/longevity (+5 more) | Medium |
+| 65 | HEALTH_AND_WELLNESS | Nutrition Science |  | best registered dietitian creators | top nutrition science channels; evidence based nutrition accounts | reddit.com/r/nutrition, reddit.com/r/dietetics, thesocialshepherd.com, influencer-hero.com, favikon.com (+3 more) | Medium |
+| 66 | HEALTH_AND_WELLNESS | Women's Health |  | top womens health influencers | best PCOS creators; favorite fertility accounts | influencer-hero.com, glossy.co, reddit.com/r/PCOS, reddit.com/r/WomensHealth, reddit.com/r/TryingForABaby (+4 more) | Easy |
+| 67 | TRAVEL | Travel | ✅ | top travel influencers | best travel creators; favorite travel accounts | taggbox.com, amraandelma.com, afluencer.com, influencermatchmaker.co.uk, heepsy.com (+8 more) | Easy |
+| 68 | TRAVEL | Budget Travel Tips |  | best budget travel channels | top shoestring travel influencers; cheap travel creators | influencer-hero.com, feedspot.com, afluencer.com, reddit.com/r/Shoestring, reddit.com/r/povertyfinance (+5 more) | Easy |
+| 69 | TRAVEL | City Guides |  | best local travel creators | top city guide influencers; favorite hidden gem accounts | iambassador.net, keepface.com, inbeat.agency, urbantravelblog.com, vickyflipfloptravels.com (+5 more) | Medium |
+| 70 | TRAVEL | Travel Hacks |  | top travel hack influencers | best travel tips creators; favorite point hacking accounts | thepointsguy.com, reddit.com/r/TravelHacks, reddit.com/r/Shoestring, feedspot.com, influencer-hero.com (+5 more) | Easy |
+| 71 | TRAVEL | Solo / Digital Nomad |  | best digital nomad channels | top solo travel influencers; favorite solo female travel accounts | feedspot.com, influencer-hero.com, afluencer.com, reddit.com/r/digitalnomad, reddit.com/r/solotravel (+5 more) | Medium |
+| 72 | TRAVEL | Adventure / Outdoor |  | top adventure travel influencers | best outdoor creators; favorite hiking channels | thesocialcat.com, theinfluenceagency.com, collabstr.com, heepsy.com, reddit.com/r/Outdoors (+5 more) | Easy |
+
+**Total: 72 subs across 12 categories**
+
+| Stat | Value |
+|---|---|
+| Categories | 12 |
+| Subs | 72 |
+| Total Sources | 582 |
+| Avg Sources/Sub | 8.1 |
+| Easy Difficulty | 44 |
+| Medium Difficulty | 26 |
+| Hard Difficulty | 2 |

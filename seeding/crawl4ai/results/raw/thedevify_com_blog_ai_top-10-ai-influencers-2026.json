@@ -1,0 +1,54 @@
+{
+  "influencers": [
+    {
+      "name": "Andrew Ng",
+      "handle": "",
+      "handle_platform": ""
+    },
+    {
+      "name": "Sam Altman",
+      "handle": "",
+      "handle_platform": ""
+    },
+    {
+      "name": "Demis Hassabis",
+      "handle": "",
+      "handle_platform": ""
+    },
+    {
+      "name": "Fei-Fei Li",
+      "handle": "",
+      "handle_platform": ""
+    },
+    {
+      "name": "Lex Fridman",
+      "handle": "",
+      "handle_platform": ""
+    },
+    {
+      "name": "Yann LeCun",
+      "handle": "",
+      "handle_platform": ""
+    },
+    {
+      "name": "Sundar Pichai",
+      "handle": "",
+      "handle_platform": ""
+    },
+    {
+      "name": "Timnit Gebru",
+      "handle": "",
+      "handle_platform": ""
+    },
+    {
+      "name": "Andrej Karpathy",
+      "handle": "",
+      "handle_platform": ""
+    },
+    {
+      "name": "Ethan Mollick",
+      "handle": "",
+      "handle_platform": ""
+    }
+  ]
+}

@@ -1,0 +1,44 @@
+{
+  "influencers": [
+    {
+      "name": "Runway Gen-2",
+      "handle": "",
+      "handle_platform": ""
+    },
+    {
+      "name": "Meta AI",
+      "handle": "",
+      "handle_platform": ""
+    },
+    {
+      "name": "ImageBind",
+      "handle": "",
+      "handle_platform": ""
+    },
+    {
+      "name": "ChatGPT",
+      "handle": "",
+      "handle_platform": ""
+    },
+    {
+      "name": "OpenAI",
+      "handle": "",
+      "handle_platform": ""
+    },
+    {
+      "name": "Inworld AI",
+      "handle": "",
+      "handle_platform": ""
+    },
+    {
+      "name": "Objective",
+      "handle": "",
+      "handle_platform": ""
+    },
+    {
+      "name": "Kailua Labs",
+      "handle": "",
+      "handle_platform": ""
+    }
+  ]
+}

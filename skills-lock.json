@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "skills": {
+    "crawl4ai": {
+      "source": "smithery.ai",
+      "sourceType": "well-known",
+      "computedHash": "c3bdedb276282af891f6867ac84b0cea769c25543d327c13dd8887317a6183b5"
+    }
+  }
+}

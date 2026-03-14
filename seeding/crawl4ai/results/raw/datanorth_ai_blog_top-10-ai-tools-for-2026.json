@@ -1,0 +1,54 @@
+{
+  "influencers": [
+    {
+      "name": "ChatGPT Consultancy",
+      "handle": "chatgpt",
+      "handle_platform": "datanorth.ai"
+    },
+    {
+      "name": "ChatGPT Training Workshops",
+      "handle": "chatgpt",
+      "handle_platform": "datanorth.ai"
+    },
+    {
+      "name": "Claude Consultancy",
+      "handle": "claude",
+      "handle_platform": "datanorth.ai"
+    },
+    {
+      "name": "Microsoft Copilot Consultancy",
+      "handle": "microsoft-copilot",
+      "handle_platform": "datanorth.ai"
+    },
+    {
+      "name": "Gemini Development & Implementation",
+      "handle": "gemini-development-implementation",
+      "handle_platform": "datanorth.ai"
+    },
+    {
+      "name": "Cursor Training Workshop",
+      "handle": "cursor-training-workshop",
+      "handle_platform": "datanorth.ai"
+    },
+    {
+      "name": "Perplexity Consultancy",
+      "handle": "perplexity",
+      "handle_platform": "datanorth.ai"
+    },
+    {
+      "name": "n8n Workflow Development & Implementation",
+      "handle": "n8n-workflow-development-implementation",
+      "handle_platform": "datanorth.ai"
+    },
+    {
+      "name": "Midjourney Consultancy",
+      "handle": "midjourney",
+      "handle_platform": "datanorth.ai"
+    },
+    {
+      "name": "NotebookLM Consultancy",
+      "handle": "notebooklm",
+      "handle_platform": "datanorth.ai"
+    }
+  ]
+}

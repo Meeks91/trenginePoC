@@ -1,0 +1,104 @@
+{
+  "influencers": [
+    {
+      "name": "InstaHeadshots",
+      "handle": "instaheadshots",
+      "handle_platform": ""
+    },
+    {
+      "name": "Presentory",
+      "handle": "presentory",
+      "handle_platform": ""
+    },
+    {
+      "name": "Render",
+      "handle": "render",
+      "handle_platform": ""
+    },
+    {
+      "name": "Aragon.ai",
+      "handle": "aragon",
+      "handle_platform": ""
+    },
+    {
+      "name": "StocksToBuyNow AI",
+      "handle": "stockstobuynow-ai",
+      "handle_platform": ""
+    },
+    {
+      "name": "Nerdify Bot",
+      "handle": "nerdify-bot",
+      "handle_platform": ""
+    },
+    {
+      "name": "AfterShoot",
+      "handle": "aftershoot",
+      "handle_platform": ""
+    },
+    {
+      "name": "Artisse",
+      "handle": "artisse",
+      "handle_platform": ""
+    },
+    {
+      "name": "FlowCV",
+      "handle": "flowcv",
+      "handle_platform": ""
+    },
+    {
+      "name": "Fathom 2.0",
+      "handle": "fathom-20",
+      "handle_platform": ""
+    },
+    {
+      "name": "V0 by Vercel",
+      "handle": "v0dev",
+      "handle_platform": ""
+    },
+    {
+      "name": "Retell AI",
+      "handle": "retell-ai",
+      "handle_platform": ""
+    },
+    {
+      "name": "PerchPeek",
+      "handle": "perchpeek",
+      "handle_platform": ""
+    },
+    {
+      "name": "Poptin",
+      "handle": "poptin",
+      "handle_platform": ""
+    },
+    {
+      "name": "Logome",
+      "handle": "logome",
+      "handle_platform": ""
+    },
+    {
+      "name": "Flalingo",
+      "handle": "flai",
+      "handle_platform": ""
+    },
+    {
+      "name": "Accountable",
+      "handle": "accountablede",
+      "handle_platform": ""
+    },
+    {
+      "name": "Video To Blog",
+      "handle": "video-to-blog",
+      "handle_platform": ""
+    },
+    {
+      "name": "Poppy AI",
+      "handle": "poppy-ai",
+      "handle_platform": ""
+    },
+    {
+      "name": "Supabase",
+      "handle": "supabase",
+      "handle_platform": ""
+    }
+  ]
+}

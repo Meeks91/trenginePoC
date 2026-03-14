@@ -1,0 +1,26 @@
+{
+  "category_key": "BUSINESS_AND_FINANCE",
+  "sub_name": "Side Hustles / Entrepreneurship",
+  "platform": "TikTok",
+  "region": "US",
+  "difficulty": "Hard",
+  "model": "spark-1-mini",
+  "credits_used": 0,
+  "prompt": "Find the top TikTok influencers based in the US who create content about best entrepreneurship channels.\n\nThese search queries return good results for this niche: \"best entrepreneurship channels TikTok US 2025\", \"top startup creators TikTok US 2025\", \"business case study accounts TikTok US 2025\"\n\nExtract every influencer name and their TikTok handle from the sources you find. Return as many as possible.",
+  "urls_sent": [
+    "reddit.com/r/Entrepreneur",
+    "agilitypr.com",
+    "millennialmagazine.com",
+    "amraandelma.com",
+    "favikon.com",
+    "feedspot.com",
+    "trendyphrase.com",
+    "collabstr.com",
+    "modash.io",
+    "influencer-hero.com"
+  ],
+  "influencers": [],
+  "count": 0,
+  "timestamp": "2026-03-09T21:57:55.561919",
+  "meets_threshold": false
+}

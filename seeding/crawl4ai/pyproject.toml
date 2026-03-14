@@ -1,0 +1,60 @@
+# ── Project Metadata ──────────────────────────────────────────────
+[project]
+name = "crawl4ai-pipeline"
+version = "0.1.0"
+description = "Seed crawler pipeline for TrendPuppy"
+requires-python = ">=3.11"
+
+# ── Mypy ──────────────────────────────────────────────────────────
+[tool.mypy]
+python_version = "3.11"
+
+# ── Strictness (graduated – start here, tighten over time) ───────
+warn_return_any              = true
+warn_unused_configs          = true
+warn_redundant_casts         = true
+warn_unused_ignores          = true
+no_implicit_optional         = true
+
+# Disallow untyped definitions in YOUR code but not in tests
+disallow_untyped_defs        = true
+disallow_incomplete_defs     = true
+
+# Show error codes (e.g. [arg-type]) so you can selectively ignore
+show_error_codes             = true
+pretty                       = true
+
+# ── Import handling ──────────────────────────────────────────────
+# Follow imports in first-party code, but don't force every
+# third-party lib to ship type stubs on day one.
+follow_imports               = "normal"
+ignore_missing_imports       = false
+
+# ── Per-module overrides ─────────────────────────────────────────
+# Third-party libs without stubs – silence missing-import errors.
+[[tool.mypy.overrides]]
+module = [
+    "crawl4ai.*",
+    "ddgs.*",
+    "litellm.*",
+]
+ignore_missing_imports = true
+
+# Tests can be looser while you retrofit types.
+[[tool.mypy.overrides]]
+module = "tests.*"
+disallow_untyped_defs = false
+disallow_incomplete_defs = false
+
+# ── Pytest ────────────────────────────────────────────────────────
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = "test_*.py"
+python_classes = "Test*"
+python_functions = "test_*"
+addopts = "-v --tb=short -m 'not network and not slow'"
+markers = [
+    "network: hits real external APIs (DDG, Gemini) — excluded by default, run with: pytest -m network",
+    "slow: long-running tests — excluded by default, run with: pytest -m slow",
+    "integration: integration tests with mocked external deps",
+]

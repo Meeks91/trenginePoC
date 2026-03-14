@@ -1,0 +1,54 @@
+{
+  "influencers": [
+    {
+      "name": "Chris Bumstead",
+      "handle": "chrisbumstead",
+      "handle_platform": "Instagram"
+    },
+    {
+      "name": "Kayla Itsines",
+      "handle": "kayla_itsines",
+      "handle_platform": "Instagram"
+    },
+    {
+      "name": "Anatoly",
+      "handle": "anatoly_prank",
+      "handle_platform": "YouTube"
+    },
+    {
+      "name": "Chloe Ting",
+      "handle": "chloeting",
+      "handle_platform": "YouTube"
+    },
+    {
+      "name": "Simeon Panda",
+      "handle": "simeonpanda",
+      "handle_platform": "Instagram"
+    },
+    {
+      "name": "Whitney Simmons",
+      "handle": "whitneyysimmons",
+      "handle_platform": "YouTube"
+    },
+    {
+      "name": "Jeff Nippard",
+      "handle": "jeffnippard",
+      "handle_platform": "YouTube"
+    },
+    {
+      "name": "Jesse James West",
+      "handle": "jessejames west",
+      "handle_platform": "YouTube"
+    },
+    {
+      "name": "Massy Arias",
+      "handle": "massy.arias",
+      "handle_platform": "Instagram"
+    },
+    {
+      "name": "Cassey Ho",
+      "handle": "blogilates",
+      "handle_platform": "YouTube"
+    }
+  ]
+}

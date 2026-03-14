@@ -1,0 +1,2 @@
+After writing an article on Caroline Girvan’s EPIC program, I’ve received DMs and questions from people about other YouTube workout plans and whether or not the health and fitness influencers behind them are worth their salt. Below, I’ve compiled some of the science-based health and fitness influencers and YouTubers that I’ve personally watched, and have[Continue reading ](https://girlsloveevidence.com/science-based-health-and-fitness-influencers/)
+Manage consent

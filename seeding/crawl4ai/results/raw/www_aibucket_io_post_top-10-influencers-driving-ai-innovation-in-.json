@@ -1,0 +1,54 @@
+{
+  "influencers": [
+    {
+      "name": "Sam Altman",
+      "handle": "",
+      "handle_platform": ""
+    },
+    {
+      "name": "Fei‑Fei Li",
+      "handle": "",
+      "handle_platform": ""
+    },
+    {
+      "name": "Andrew Ng",
+      "handle": "",
+      "handle_platform": ""
+    },
+    {
+      "name": "Timnit Gebru",
+      "handle": "",
+      "handle_platform": ""
+    },
+    {
+      "name": "Geoffrey Hinton",
+      "handle": "",
+      "handle_platform": ""
+    },
+    {
+      "name": "Yoshua Bengio",
+      "handle": "",
+      "handle_platform": ""
+    },
+    {
+      "name": "Kate Crawford",
+      "handle": "",
+      "handle_platform": ""
+    },
+    {
+      "name": "Daphne Koller",
+      "handle": "",
+      "handle_platform": ""
+    },
+    {
+      "name": "Lex Fridman",
+      "handle": "",
+      "handle_platform": ""
+    },
+    {
+      "name": "Joy Buolamwini",
+      "handle": "",
+      "handle_platform": ""
+    }
+  ]
+}
