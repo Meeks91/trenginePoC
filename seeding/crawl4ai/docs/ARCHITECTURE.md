@@ -166,7 +166,7 @@ then after ALL jobs finish, deferred resolution + global dedup runs.
 │  │   e) NameExtractor: pulls 2-3 word proper names from     │                     │
 │  │      page text, feeds into NameMentionTracker             │                     │
 │  │                                                          │                     │
-│  │   f) ExtractionService LLM: only fires if page has       │                     │
+│  │   f) LLMExtractionService: only fires if page has       │                     │
 │  │      ZERO handles (URL + naked) AND URL looks like a     │                     │
 │  │      listicle. Sends fit_markdown to Gemini.             │                     │
 │  │                                                          │                     │
@@ -555,7 +555,7 @@ crawl4ai/
              │ 4. Heading-based name assignment
  ────────────┤
  Cost ~$0.001│ 5. HandleClassifier LLM (ambiguous @handles only)
- Cost ~$0.003│ 6. ExtractionService LLM (zero-handle listicles only)
+ Cost ~$0.003│ 6. LLMExtractionService (zero-handle listicles only)
 ```
 
 ### NameToHandleService: Two Modes

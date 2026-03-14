@@ -106,8 +106,7 @@ Total = 1 + 3 + 2 = **6 queries** for this job.
 | **Retry** | Exponential backoff: `2^attempt + jitter`, max 30s, up to 3 retries |
 | **Caching** | `SearchCache` stores results on disk; cache hit = skip DDG |
 | **Engine rotation** | `SEARCH_BACKEND="auto"` rotates across DDG, Brave, Bing, Google, etc. |
-| **Circuit breaker (per-config)** | If ≥50% of queries for a config fail (`DDG_FAILURE_THRESHOLD_PCT`), skip crawl/extract for that config. Only evaluated after `DDG_FAILURE_MIN_QUERIES` (3) queries. |
-| **Circuit breaker (global)** | If `DDG_KILL_AFTER_N` (3) consecutive configs produce errored outcomes, stop all remaining search. Remaining configs are marked as `ErroredConfig`. |
+| **Circuit breaker** | Per-config: if ≥50% of queries fail permanently (`DDG_FAILURE_THRESHOLD_PCT`), skip crawl/extract for that config. Only evaluated after `DDG_FAILURE_MIN_QUERIES` (3) queries. Global: kill search after `DDG_KILL_AFTER_N` (3) consecutive config failures. Remaining configs are marked as `ErroredConfig`. |
 
 ---
 
@@ -199,8 +198,31 @@ Every extracted handle must pass these checks:
    - Media/news: @forbes, @bbc, @cnn, @espn...
    - Sports orgs: @nba, @nfl, @ufc, @fifa...
    - Country/city names: @usa, @london, @tokyo...
-   - Profanity substrings: handles containing vulgar terms are rejected
-     via `_IGNORE_SUBSTRINGS` (substring match, not exact)
+
+❌ PROFANITY SUBSTRING FILTER (_IGNORE_SUBSTRINGS):
+   - Handles containing profanity substrings are rejected even if
+     not in the exact-match ignore list (e.g. "sexy_yoga" blocked).
+```
+
+#### NameCleaner (Shared Cleanup)
+
+**Service**: `NameCleaner.py`
+**Injected into**: `LLMResponseParser` + `NameExtractor`
+
+All names pass through a shared cleanup pipeline before entering the system:
+
+```
+Pipeline:
+  1. Strip markdown bold (**name**)
+  2. Strip markdown links [text](url)
+  3. Strip leading number prefix (1. Name, 2) Name)
+  4. Decode URL-encoded strings (%20 etc.) — reject if still garbled
+  5. Reject non-person entities via blocklists:
+     - Brands/tools: Canva, Peloton, Nike, ChatGPT, Gymshark...
+     - Countries: Bangladesh, India, United States...
+     - News orgs: BBC, CNN, Forbes, TechCrunch...
+     - Generic phrases: Content Creator, Engagement Rate...
+  6. Reject LinkedIn slugs (first-last-1234567 patterns)
 ```
 
 #### Name Assignment from Headings
@@ -654,8 +676,8 @@ name_res → resolved, no_match
 | `NAME_RESOLUTION_MIN_MENTIONS` | 2 | `--name-min-mentions` | Min cross-page mentions for DDG |
 | `NAME_RESOLUTION_MAX_PER_SUB` | 5 | — | Max names resolved per sub-category |
 | `DDG_FAILURE_THRESHOLD_PCT` | 0.5 | — | Abort config if ≥50% queries fail permanently |
-| `DDG_FAILURE_MIN_QUERIES` | 3 | — | Don't evaluate failure threshold until N queries attempted |
-| `DDG_KILL_AFTER_N` | 3 | — | Kill all remaining search after N consecutive config failures |
+| `DDG_FAILURE_MIN_QUERIES` | 3 | — | Don't evaluate threshold until N queries attempted |
+| `DDG_KILL_AFTER_N` | 3 | — | Kill search after N consecutive config failures |
 
 ### CLI Flags
 

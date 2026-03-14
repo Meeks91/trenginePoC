@@ -6,7 +6,42 @@
 
 Discovers and extracts influencer handles across **N platforms × N regions × N subs** to seed TrendPuppy's database. Platforms, regions, and subcategories are all extensible via `seed_schema.py` — add a new region or platform and the pipeline picks it up automatically.
 
+## Prerequisites
+
+| Requirement | Version |
+|-------------|---------|
+| Python | 3.11+ |
+| Playwright (auto-installed by Crawl4AI) | latest |
+| Gemini API key | `GEMINI_API_KEY` env var |
+
+## Installation
+
+```bash
+# 1. Clone the repo and cd into the crawler
+cd seeding/crawl4ai
+
+# 2. Create and activate a virtual environment
+python3 -m venv .venv
+source .venv/bin/activate
+
+# 3. Install dependencies
+pip install crawl4ai litellm duckduckgo-search httpx pydantic
+
+# 4. Set up Crawl4AI's browser (downloads Chromium via Playwright)
+crawl4ai-setup
+
+# 5. Set your Gemini API key (or export in .bashrc/.zshrc)
+export GEMINI_API_KEY="your-key-here"
+
+# 6. Verify everything works
+crawl4ai-doctor
+python3 -m pytest tests/unit -x -q   # Should pass ~600 tests
+```
+
+> **Optional — Local LLM:** Set `USE_OLLAMA=1` to use a local Ollama model (`gemma3:4b`) instead of Gemini. No API key needed.
+
 ## Structure
+
 
 ```
 seeding/crawl4ai/
