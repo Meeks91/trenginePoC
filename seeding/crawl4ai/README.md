@@ -245,3 +245,15 @@ python3 -m pytest -m network
 # 4. Slow tests: Tests that take >10s (e.g., live crawling). Excluded by default.
 python3 -m pytest -m slow
 ```
+
+### Git Hooks
+
+The repository includes a pre-commit hook that automatically runs the fast test suite (unit + integration, skipping network/slow tests) before allowing a commit.
+
+To install the hook locally:
+```bash
+# From the repository root (TrendPuppy/PoCs/trenginePoc)
+cp .git/hooks/pre-commit.sample .git/hooks/pre-commit
+# Or if you already have the provided pre-commit file from a fresh clone, just ensure it's executable:
+chmod +x .git/hooks/pre-commit
+```
