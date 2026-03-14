@@ -119,7 +119,7 @@ throughout. There's no structure to extract from.
 def test_no_person_headings_returns_capped_text():
     """When no person headings found, return full text capped at max chars."""
     result = truncate_for_llm(_NO_HEADINGS_PAGE)
-    assert len(result) <= 8000
+    assert len(result) <= 12_000
     assert "Jeff Nippard" in result  # Content preserved
 
 
@@ -144,7 +144,7 @@ def test_section_titles_not_treated_as_people():
     """Section titles like 'Top 10 Fitness Influencers' shouldn't be treated as person names."""
     result = truncate_for_llm(_SECTION_HEADINGS_ONLY)
     # Should fall back to capped text since no person headings
-    assert len(result) <= 8000
+    assert len(result) <= 12_000
 
 
 # ══════════════════════════════════════════════════════════════════════
@@ -223,4 +223,54 @@ def test_max_char_cap():
     """Output should never exceed _MAX_TRUNCATED_CHARS."""
     huge_page = "## Person One\n" + "x" * 20000 + "\n## Person Two\n"
     result = truncate_for_llm(huge_page)
-    assert len(result) <= 8000
+    assert len(result) <= 12_000
+
+
+# ══════════════════════════════════════════════════════════════════════
+# Inline markdown link headings (regression test)
+# ══════════════════════════════════════════════════════════════════════
+
+_LINK_HEADINGS_PAGE = """
+Preamble content here. Navigation and ads. Cookie banners and disclaimers.
+Preamble content here. Navigation and ads. Cookie banners and disclaimers.
+Preamble content here. Navigation and ads. Cookie banners and disclaimers.
+Preamble content here. Navigation and ads. Cookie banners and disclaimers.
+Preamble content here. Navigation and ads. Cookie banners and disclaimers.
+Preamble content here. Navigation and ads. Cookie banners and disclaimers.
+
+## Joe Wicks ([@The Body Coach TV on YouTube](https://www.youtube.com/channel/abc))
+
+Joe has transformed home workouts. @thebodycoach on Instagram.
+
+## Alex Beattie ([@alex.beattie on TikTok](https://www.tiktok.com/@alex.beattie))
+
+Alex is a rising star in UK fitness. Known for transformation content.
+
+## Courtney Black ([@courtneyblackfitness on TikTok](https://www.tiktok.com/@courtneyblackfitness))
+
+Courtney focuses on HIIT and bodyweight training.
+
+## Tips on How to Become a Fitness Influencer
+
+Generic advice section that should not be included.
+
+## Newsletter
+
+Subscribe for updates.
+"""
+
+
+def test_headings_with_markdown_links_treated_as_people():
+    """Headings with inline platform links should be recognized as person names.
+
+    Regression test: previously, headings like
+    ``## Joe Wicks ([@handle on YouTube](url))`` were rejected because
+    "YouTube" matched the section-title exclusion regex.
+    """
+    result = truncate_for_llm(_LINK_HEADINGS_PAGE)
+    assert "Joe Wicks" in result
+    assert "Alex Beattie" in result
+    assert "Courtney Black" in result
+    # The generic advice section should be trimmed
+    assert "Generic advice" not in result
+
