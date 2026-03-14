@@ -25,7 +25,7 @@ python3 -m venv .venv
 source .venv/bin/activate
 
 # 3. Install dependencies
-pip install crawl4ai litellm duckduckgo-search httpx pydantic
+pip install -r requirements.txt
 
 # 4. Set up Crawl4AI's browser (downloads Chromium via Playwright)
 crawl4ai-setup
@@ -35,7 +35,7 @@ export GEMINI_API_KEY="your-key-here"
 
 # 6. Verify everything works
 crawl4ai-doctor
-python3 -m pytest tests/unit -x -q   # Should pass ~600 tests
+python3 -m pytest tests/unit -x -q   # Unit tests (fast, no API calls)
 ```
 
 > **Optional — Local LLM:** Set `USE_OLLAMA=1` to use a local Ollama model (`gemma3:4b`) instead of Gemini. No API key needed.
@@ -219,3 +219,29 @@ PYTHONPATH="." python3 cli.py --url https://example.com/influencers
 | **Total** | | **~3,944-4,244** | **~3,584-3,884** |
 
 > Name resolution multiplies by region when regions run as separate parallel streams (`--region US` + `--region UK`). In a single `--all` batch, names merge across regions → cap is `numSubs × 5 = 360`.
+
+## Development & Testing
+
+### Code Style
+
+Please adhere to the project's Python coding standards. For full details on typing, assertions, and structure, view the `/code-style` workflow file:
+`cat ../../.agent/workflows/code-style.md`
+
+### Running Tests
+
+The test suite is divided into layers using pytest markers. Run tests from the `seeding/crawl4ai` directory:
+
+```bash
+# 1. Unit tests: Fast, zero external API calls. Mocked DDG and responses.
+python3 -m pytest tests/unit
+
+# 2. Integration tests: Tests components wired together, still mocking network.
+python3 -m pytest tests/integration
+
+# 3. Network/E2E tests: Hits real DDG and Gemini APIs. (Requires GEMINI_API_KEY)
+# These are excluded by default. Use the 'network' marker to run them:
+python3 -m pytest -m network
+
+# 4. Slow tests: Tests that take >10s (e.g., live crawling). Excluded by default.
+python3 -m pytest -m slow
+```
