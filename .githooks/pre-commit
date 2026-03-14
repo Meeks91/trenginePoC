@@ -1,0 +1,18 @@
+#!/bin/bash
+# Installed via: git config core.hooksPath .githooks
+
+echo "Running standard test suite (skipping network & slow tests)..."
+export PY_COLORS=1
+
+cd "seeding/crawl4ai" || exit 1
+
+if ! python -m pytest tests/unit -q --disable-warnings; then
+    echo "========================================="
+    echo "❌ PRE-COMMIT FAILED: Standard tests broken!"
+    echo "Please fix the failing tests before committing."
+    echo "========================================="
+    exit 1
+fi
+
+echo "✅ Standard tests passed."
+exit 0

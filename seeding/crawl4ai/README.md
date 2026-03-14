@@ -248,12 +248,12 @@ python3 -m pytest -m slow
 
 ### Git Hooks
 
-The repository includes a pre-commit hook that automatically runs the fast test suite (unit + integration, skipping network/slow tests) before allowing a commit.
+The repository includes tracked git hooks in the `.githooks` directory to enforce code quality:
+- **`pre-commit`**: Automatically runs the fast test suite (unit tests only) before allowing a commit.
+- **`pre-push`**: Automatically runs the **full comprehensive test suite** (including optional network and slow tests) before allowing a push to remote.
 
-To install the hook locally:
+To install the hooks locally:
 ```bash
 # From the repository root (TrendPuppy/PoCs/trenginePoc)
-cp .git/hooks/pre-commit.sample .git/hooks/pre-commit
-# Or if you already have the provided pre-commit file from a fresh clone, just ensure it's executable:
-chmod +x .git/hooks/pre-commit
+git config core.hooksPath .githooks
 ```
