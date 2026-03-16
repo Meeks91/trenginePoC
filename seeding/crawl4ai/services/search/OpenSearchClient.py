@@ -84,30 +84,30 @@ class OpenSearchClient:
     def _build_queries(self, job: SeedJob) -> list[SearchQuery]:
         """Generate DDG-safe queries — no inurl:, no OR chains."""
         queries: list[SearchQuery] = []
-        queries.extend(self._primary_open(job))
-        queries.extend(self._alt_open(job))
+        queries.extend(self._open_queries(job))
         queries.extend(self._site_targeted(job))
         return queries
 
-    def _primary_open(self, job: SeedJob) -> list[SearchQuery]:
-        """Primary search prompt — open web."""
-        q = (
-            f'"{job.sub.sub_name}" {job.sub.search_prompt} '
-            f'{job.platform.value} influencers list {job.year}'
-        )
-        return [SearchQuery(query=q, query_type=QueryType.PRIMARY_OPEN)]
+    def _open_queries(self, job: SeedJob) -> list[SearchQuery]:
+        """Open-web queries — primary + all alt terms share one formula."""
+        terms: list[tuple[str, QueryType]] = [
+            (
+                f'{job.sub.search_prompt} {job.platform.value} influencers list {job.year}',
+                QueryType.PRIMARY_OPEN,
+            ),
+        ]
+        for alt in job.sub.alt_search_terms:
+            terms.append((
+                f'{alt} {job.platform.value} influencers {job.region.search_label} {job.year}',
+                QueryType.ALT_OPEN,
+            ))
 
-    def _alt_open(self, job: SeedJob) -> list[SearchQuery]:
-        """All alt search terms — open web with region."""
         return [
             SearchQuery(
-                query=(
-                    f'"{job.sub.sub_name}" {term} '
-                    f'{job.platform.value} influencers {job.region.search_label} {job.year}'
-                ),
-                query_type=QueryType.ALT_OPEN,
+                query=f'"{job.sub.sub_name}" {suffix}'.strip(),
+                query_type=qtype,
             )
-            for term in job.sub.alt_search_terms
+            for suffix, qtype in terms
         ]
 
     def _site_targeted(self, job: SeedJob) -> list[SearchQuery]:

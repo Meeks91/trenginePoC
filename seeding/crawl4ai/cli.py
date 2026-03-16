@@ -13,6 +13,7 @@ Usage:
 
 import argparse
 import asyncio
+import os
 import sys
 from pathlib import Path
 
@@ -21,6 +22,7 @@ from config.seed_schema import (
     SeedJob, Platform, RegionCode, REGIONS, load_categories,
 )
 from config import INPUT_COST_PER_1M, OUTPUT_COST_PER_1M, RESULTS_DIR, CURRENT_YEAR
+from base_pipeline import SearchClientType
 from pipeline import PerJobPipelineRunner
 from phase_pipeline import PhasePipelineRunner
 from services.search.SearchCache import SearchCache
@@ -94,7 +96,16 @@ async def main() -> None:
                         help="Enable deferred name → handle resolution (Reddit names → DDG → social handles)")
     parser.add_argument("--name-min-mentions", type=int, default=2,
                         help="Minimum cross-page mentions before DDG fires for a name (default: 2)")
+    parser.add_argument("--search-client", type=str, choices=["open", "strict"], default="open",
+                        help="Search client: 'open' (DDG, free) or 'strict' (Serper, paid)")
     args = parser.parse_args()
+
+    # Validate Serper API key when using strict client
+    search_client_type = SearchClientType(args.search_client)
+    if search_client_type == SearchClientType.STRICT:
+        if not os.environ.get("SERPER_API_KEY"):
+            print("ERROR: --search-client=strict requires SERPER_API_KEY env var")
+            sys.exit(1)
 
     cache = SearchCache(cache_dir=RESULTS_DIR / "search_cache")
 
@@ -103,6 +114,7 @@ async def main() -> None:
         no_bfs=not args.bfs,
         no_cross_platform_lookup=not args.cross_platform_lookup,
         cache=cache,
+        search_client_type=search_client_type,
         name_resolution=args.name_resolution,
         name_resolution_min_mentions=args.name_min_mentions,
     )
@@ -157,6 +169,7 @@ async def main() -> None:
             no_bfs=not args.bfs,
             no_cross_platform_lookup=not args.cross_platform_lookup,
             cache=cache,
+            search_client_type=search_client_type,
             name_resolution=args.name_resolution,
             name_resolution_min_mentions=args.name_min_mentions,
         )

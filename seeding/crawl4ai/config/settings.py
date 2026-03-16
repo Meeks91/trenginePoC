@@ -31,6 +31,7 @@ REPORTS_DIR = RESULTS_DIR / "reports"          # Generated pipeline summary repo
 
 # ── API Keys ──
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "")
+SERPER_API_KEY = os.getenv("SERPER_API_KEY", "")
 
 # ── LLM Config ──
 # Model name in litellm format: "provider/model-name"

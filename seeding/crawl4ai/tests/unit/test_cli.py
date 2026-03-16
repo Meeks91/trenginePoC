@@ -116,3 +116,50 @@ def test_generate_seed_jobs_default_year():
     assert len(jobs) > 0
     for job in jobs:
         assert job.year == CURRENT_YEAR
+
+
+# ── SearchClientType wiring ──
+
+def test_default_search_client_is_open(tmp_path):
+    """Default search_client_type should be OPEN (DDG)."""
+    from base_pipeline import SearchClientType
+    from pipeline import PerJobPipelineRunner
+    from services.search.OpenSearchClient import OpenSearchClient
+    from services.audit.AuditService import AuditLog
+
+    runner = PerJobPipelineRunner()
+    assert runner._search_client_type == SearchClientType.OPEN
+
+    audit = AuditLog(tmp_path, "test")
+    client = runner._build_search_client(audit)
+    assert isinstance(client, OpenSearchClient)
+
+
+def test_strict_search_client_type_builds_strict(tmp_path, monkeypatch):
+    """search_client_type=STRICT should build StrictSearchClient."""
+    monkeypatch.setenv("SERPER_API_KEY", "test-key-123")
+    from base_pipeline import SearchClientType
+    from pipeline import PerJobPipelineRunner
+    from services.search.StrictSearchClient import StrictSearchClient
+    from services.audit.AuditService import AuditLog
+
+    runner = PerJobPipelineRunner(search_client_type=SearchClientType.STRICT)
+    assert runner._search_client_type == SearchClientType.STRICT
+
+    audit = AuditLog(tmp_path, "test")
+    client = runner._build_search_client(audit)
+    assert isinstance(client, StrictSearchClient)
+
+
+def test_open_search_client_type_builds_open(tmp_path):
+    """search_client_type=OPEN should build OpenSearchClient."""
+    from base_pipeline import SearchClientType
+    from pipeline import PerJobPipelineRunner
+    from services.search.OpenSearchClient import OpenSearchClient
+    from services.audit.AuditService import AuditLog
+
+    runner = PerJobPipelineRunner(search_client_type=SearchClientType.OPEN)
+    audit = AuditLog(tmp_path, "test")
+    client = runner._build_search_client(audit)
+    assert isinstance(client, OpenSearchClient)
+

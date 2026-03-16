@@ -18,6 +18,7 @@ from __future__ import annotations
 import abc
 import logging
 from dataclasses import dataclass, field
+from enum import Enum
 
 from config.seed_schema import SeedJob
 from config import (
@@ -34,6 +35,7 @@ from services.audit.AuditService import AuditLog
 from services.search.SearchService import SearchService, SearchResults
 from services.search.SearchCache import SearchCache
 from services.search.OpenSearchClient import OpenSearchClient
+from services.search.StrictSearchClient import StrictSearchClient
 from services.extraction.NameMentionTracker import NameMentionTracker
 from services.enrichment.NameToHandleService import NameToHandleService
 from services.enrichment.InfluencerMerger import InfluencerMerger
@@ -66,6 +68,12 @@ class GatherResult:
     job_outcomes: list[JobOutcome] = field(default_factory=list)
 
 
+class SearchClientType(str, Enum):
+    """Which search backend to use."""
+    OPEN = "open"      # DDG (free)
+    STRICT = "strict"  # Serper (paid)
+
+
 class BasePipelineRunner(abc.ABC):
     """Shared base for PipelineRunner and PhasePipelineRunner.
 
@@ -81,6 +89,7 @@ class BasePipelineRunner(abc.ABC):
         no_bfs: bool = False,
         no_cross_platform_lookup: bool = False,
         cache: SearchCache | None = None,
+        search_client_type: SearchClientType = SearchClientType.OPEN,
         name_resolution: bool = NAME_RESOLUTION_ENABLED,
         name_resolution_min_mentions: int = NAME_RESOLUTION_MIN_MENTIONS,
         name_resolution_max_per_sub: int = NAME_RESOLUTION_MAX_PER_SUB,
@@ -89,6 +98,7 @@ class BasePipelineRunner(abc.ABC):
         self.no_bfs = no_bfs
         self.no_cross_platform_lookup = no_cross_platform_lookup
         self._cache = cache
+        self._search_client_type = search_client_type
         self.name_resolution = name_resolution
         self.name_resolution_min_mentions = name_resolution_min_mentions
         self.name_resolution_max_per_sub = name_resolution_max_per_sub
@@ -296,7 +306,7 @@ class BasePipelineRunner(abc.ABC):
         logger.info("  [%d/%d] %s", index, total, config_key)
 
         audit = AuditLog(AUDIT_DIR, config_key.replace("/", "_"))
-        client = OpenSearchClient(audit, cache=self._cache)
+        client = self._build_search_client(audit)
         search_svc = SearchService(audit, client=client)
 
         search_results = search_svc.discover_urls(job)
@@ -309,6 +319,13 @@ class BasePipelineRunner(abc.ABC):
         )
 
         return search_results
+
+    def _build_search_client(self, audit: AuditLog) -> OpenSearchClient | StrictSearchClient:
+        """Build the correct search client based on configured type."""
+        if self._search_client_type == SearchClientType.STRICT:
+            from config.settings import SERPER_API_KEY
+            return StrictSearchClient(audit, api_key=SERPER_API_KEY)
+        return OpenSearchClient(audit, cache=self._cache)
 
     @staticmethod
     def _evaluate_search_outcome(
