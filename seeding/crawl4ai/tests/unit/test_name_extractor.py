@@ -19,10 +19,12 @@ class TestExtractCandidateNames:
         assert "Alex Leonidas" in names
         assert "Jeff Nippard" in names
 
-    def test_three_word_names(self):
+    def test_three_word_names_rejected(self):
+        """Three-word sequences should NOT be matched — regex requires exactly 2."""
         text = "Check out Bald Omni Man for bodybuilding content."
         names = extract_candidate_names(text)
-        assert any("Bald Omni Man" in n for n in names)
+        assert "Bald Omni Man" not in names
+        assert "Bald Omni" in names
 
     def test_single_words_skipped(self):
         """Single capitalized words should NOT be extracted as names."""

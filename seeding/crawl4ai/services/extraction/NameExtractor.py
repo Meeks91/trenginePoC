@@ -39,11 +39,11 @@ _SENTENCE_STARTERS = frozenset({
     "other", "similar", "such", "via", "per", "non",
 })
 
-# Regex: 2-3 capitalized words, allowing hyphens and apostrophes.
+# Regex: exactly 2 capitalized words, allowing hyphens and apostrophes.
 _NAME_RE = re.compile(
     r"\b("
     r"[A-Z][a-zA-Z'\u2019-]+"  # First word (capitalized, allows O'Brien, Omni-man)
-    r"(?:\s[A-Z][a-zA-Z'\u2019-]+){1,2}"  # 1-2 more capitalized words
+    r"\s[A-Z][a-zA-Z'\u2019-]+"  # Exactly 1 more capitalized word
     r")\b"
 )
 
@@ -66,6 +66,15 @@ _WORD_BLOCKLIST = frozenset({
     "creator", "creators", "ambassador", "ambassadors",
     "sponsored", "advertisement", "affiliate",
     "pre-order", "order",
+    # Noise from article headings / scraped page elements
+    "training", "evidence", "research", "science", "daily",
+    "front", "expert", "approved", "certified",
+    "download", "chrome", "tips", "tricks",
+    # Adult / spam
+    "cams", "adult", "porn", "xxx", "nsfw",
+    # UI elements
+    "login", "register", "signup", "subscribe",
+    "cookie", "cookies", "privacy", "preferences",
 })
 
 # Common proper noun phrases to skip (not influencer names)
@@ -111,6 +120,10 @@ _NAME_BLOCKLIST = frozenset({
     "no juice", "actual prep starts", "weeks out",
     # Fitness / exercise terms
     "pull ups", "push ups", "jm presses",
+    # Scraped heading fragments
+    "daily dare", "front rack", "pull day", "push day",
+    "case study", "peer review", "save preferences",
+    "download chrome", "accept all",
 })
 
 
@@ -161,6 +174,10 @@ def extract_candidate_names(text: str, max_names: int = MAX_NAMES_PER_PAGE) -> l
             continue
         if len(name) < 4:
             continue
+        if any(w.isupper() and len(w) > 1 for w in name.split()):
+            continue
+        if name[-1] in ".:!?,;":
+            continue
         seen.add(key)
         unique.append(name)
 
@@ -207,6 +224,10 @@ def extract_candidate_names_with_counts(
         if words & _WORD_BLOCKLIST:
             continue
         if first_word in _SENTENCE_STARTERS:
+            continue
+        if any(w.isupper() and len(w) > 1 for w in name.split()):
+            continue
+        if name[-1] in ".:!?,;":
             continue
         raw_counts[name] = raw_counts.get(name, 0) + 1
 

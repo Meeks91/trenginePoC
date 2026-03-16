@@ -49,7 +49,7 @@
 | **Overall** | **1/3** | **33%** |
 
 ## Name Mentions
-**59 names** tracked across all pages
+**60 names** tracked across all pages
 
 | # | Name | Mentions | Source | URLs | Resolved? | Handle |
 |---|------|----------|--------|------|-----------|--------|
@@ -57,61 +57,62 @@
 | 2 | Adam Maxted | 6 | llm, non-reddit, regex | 1 | ❌ |
 | 3 | Victoria Niamh | 6 | llm, non-reddit, regex | 1 | ❌ |
 | 4 | Michael Griffiths | 5 | llm, non-reddit | 1 | ❌ |
-| 5 | Love Island | 4 | non-reddit | 1 | ❌ |
-| 6 | Joe Wicks | 3 | llm, non-reddit | 1 | ❌ |
-| 7 | Lucy Davis | 3 | llm, non-reddit | 1 | ❌ |
-| 8 | Lisa Cross | 3 | llm, non-reddit | 1 | ❌ |
-| 9 | Sean Casey | 3 | llm, non-reddit | 1 | ❌ |
+| 5 | Sean Casey | 5 | llm, non-reddit | 1 | ❌ |
+| 6 | Love Island | 4 | non-reddit | 1 | ❌ |
+| 7 | Lucy Davis | 4 | llm, non-reddit | 1 | ❌ |
+| 8 | Joe Wicks | 3 | llm, non-reddit | 1 | ❌ |
+| 9 | Lisa Cross | 3 | llm, non-reddit | 1 | ❌ |
 | 10 | Alex Beattie | 3 | llm, non-reddit, regex | 1 | ❌ |
-| 11 | The Body Coach | 2 | non-reddit | 1 | ❌ |
+| 11 | The Body | 2 | non-reddit | 1 | ❌ |
 | 12 | Dirty Harry | 2 | non-reddit | 1 | ❌ |
-| 13 | Emma Storey-Gordon | 2 | llm, non-reddit | 1 | ❌ |
-| 14 | Email Address Password | 1 | non-reddit | 1 | ❌ |
-| 15 | Remember Me | 1 | non-reddit | 1 | ❌ |
-| 16 | Lost Your Password | 1 | non-reddit | 1 | ❌ |
-| 17 | Customize Consent Preferences | 1 | non-reddit | 1 | ❌ |
-| 18 | NecessaryAlways Active Necessary | 1 | non-reddit | 1 | ❌ |
-| 19 | Functional Functional | 1 | non-reddit | 1 | ❌ |
-| 20 | Analytics Analytical | 1 | non-reddit | 1 | ❌ |
-| 21 | Performance Performance | 1 | non-reddit | 1 | ❌ |
-| 22 | Reject All | 1 | non-reddit | 1 | ❌ |
-| 23 | Save My Preferences | 1 | non-reddit | 1 | ❌ |
-| 24 | Day Plan | 1 | non-reddit | 1 | ❌ |
-| 25 | Former Newcastle | 1 | non-reddit | 1 | ❌ |
-| 26 | Achievable Academy | 1 | non-reddit | 1 | ❌ |
-| 27 | International Bodybuilding | 1 | non-reddit | 1 | ❌ |
-| 28 | TV Love Island | 1 | non-reddit | 1 | ❌ |
-| 29 | Lucy Davis Fit | 1 | non-reddit | 1 | ❌ |
-| 30 | The Marine Commandos | 1 | non-reddit | 1 | ❌ |
-| 31 | Navy Seal | 1 | non-reddit | 1 | ❌ |
-| 32 | International Federation | 1 | non-reddit | 1 | ❌ |
-| 33 | Scintillate Marbella | 1 | non-reddit | 1 | ❌ |
-| 34 | The Glow Up | 1 | non-reddit | 1 | ❌ |
-| 35 | Sean Casey Academy | 1 | non-reddit | 1 | ❌ |
-| 36 | Discover Your Niche | 1 | non-reddit | 1 | ❌ |
-| 37 | Study Your Niche | 1 | non-reddit | 1 | ❌ |
-| 38 | Know Your Target | 1 | non-reddit | 1 | ❌ |
-| 39 | Determine Your Competitive | 1 | non-reddit | 1 | ❌ |
-| 40 | Edge This | 1 | non-reddit | 1 | ❌ |
-| 41 | Define Your Goals | 1 | non-reddit | 1 | ❌ |
+| 13 | Niche The | 2 | non-reddit | 1 | ❌ |
+| 14 | Emma Storey-Gordon | 2 | llm, non-reddit | 1 | ❌ |
+| 15 | Email Address | 1 | non-reddit | 1 | ❌ |
+| 16 | Password Remember | 1 | non-reddit | 1 | ❌ |
+| 17 | Lost Your | 1 | non-reddit | 1 | ❌ |
+| 18 | Customize Consent | 1 | non-reddit | 1 | ❌ |
+| 19 | NecessaryAlways Active | 1 | non-reddit | 1 | ❌ |
+| 20 | Functional Functional | 1 | non-reddit | 1 | ❌ |
+| 21 | Analytics Analytical | 1 | non-reddit | 1 | ❌ |
+| 22 | Performance Performance | 1 | non-reddit | 1 | ❌ |
+| 23 | Reject All | 1 | non-reddit | 1 | ❌ |
+| 24 | Save My | 1 | non-reddit | 1 | ❌ |
+| 25 | Day Plan | 1 | non-reddit | 1 | ❌ |
+| 26 | Former Newcastle | 1 | non-reddit | 1 | ❌ |
+| 27 | Achievable Academy | 1 | non-reddit | 1 | ❌ |
+| 28 | International Bodybuilding | 1 | non-reddit | 1 | ❌ |
+| 29 | The Marine | 1 | non-reddit | 1 | ❌ |
+| 30 | Navy Seal | 1 | non-reddit | 1 | ❌ |
+| 31 | International Federation | 1 | non-reddit | 1 | ❌ |
+| 32 | Scintillate Marbella | 1 | non-reddit | 1 | ❌ |
+| 33 | The Glow | 1 | non-reddit | 1 | ❌ |
+| 34 | Up Project | 1 | non-reddit | 1 | ❌ |
+| 35 | Discover Your | 1 | non-reddit | 1 | ❌ |
+| 36 | Study Your | 1 | non-reddit | 1 | ❌ |
+| 37 | Know Your | 1 | non-reddit | 1 | ❌ |
+| 38 | Target Audience | 1 | non-reddit | 1 | ❌ |
+| 39 | Determine Your | 1 | non-reddit | 1 | ❌ |
+| 40 | Competitive Edge | 1 | non-reddit | 1 | ❌ |
+| 41 | Define Your | 1 | non-reddit | 1 | ❌ |
 | 42 | Strategies Long-term | 1 | non-reddit | 1 | ❌ |
-| 43 | Monetize Your Brand | 1 | non-reddit | 1 | ❌ |
-| 44 | To Wrap It | 1 | non-reddit | 1 | ❌ |
-| 45 | Up Many | 1 | non-reddit | 1 | ❌ |
-| 46 | Gymfluencers Lifts IE | 1 | non-reddit | 1 | ❌ |
-| 47 | Neutonic Creatine Sachets | 1 | non-reddit | 1 | ❌ |
-| 48 | First Last Email | 1 | non-reddit | 1 | ❌ |
-| 49 | Send Message | 1 | non-reddit | 1 | ❌ |
-| 50 | courtneyblackfitness | 1 | regex | 1 | ❌ |
-| 51 | bblisacross | 1 | regex | 1 | ❌ |
-| 52 | mac_griffiths | 1 | regex | 1 | ❌ |
-| 53 | ESGfitness | 1 | regex | 1 | ❌ |
-| 54 | adammaxted2262 | 1 | regex | 1 | ❌ |
-| 55 | The | 1 | regex | 1 | ❌ |
-| 56 | Lucy | 1 | regex | 1 | ❌ |
-| 57 | Courtney | 1 | regex | 1 | ❌ |
-| 58 | Michael | 1 | regex | 1 | ❌ |
-| 59 | Sean | 1 | regex | 1 | ❌ |
+| 43 | Monetize Your | 1 | non-reddit | 1 | ❌ |
+| 44 | Brand You | 1 | non-reddit | 1 | ❌ |
+| 45 | To Wrap | 1 | non-reddit | 1 | ❌ |
+| 46 | It Up | 1 | non-reddit | 1 | ❌ |
+| 47 | Gymfluencers Lifts | 1 | non-reddit | 1 | ❌ |
+| 48 | Neutonic Creatine | 1 | non-reddit | 1 | ❌ |
+| 49 | First Last | 1 | non-reddit | 1 | ❌ |
+| 50 | Send Message | 1 | non-reddit | 1 | ❌ |
+| 51 | courtneyblackfitness | 1 | regex | 1 | ❌ |
+| 52 | bblisacross | 1 | regex | 1 | ❌ |
+| 53 | mac_griffiths | 1 | regex | 1 | ❌ |
+| 54 | ESGfitness | 1 | regex | 1 | ❌ |
+| 55 | adammaxted2262 | 1 | regex | 1 | ❌ |
+| 56 | The | 1 | regex | 1 | ❌ |
+| 57 | Lucy | 1 | regex | 1 | ❌ |
+| 58 | Courtney | 1 | regex | 1 | ❌ |
+| 59 | Michael | 1 | regex | 1 | ❌ |
+| 60 | Sean | 1 | regex | 1 | ❌ |
 
 ## Token Usage
 | Metric | Value |

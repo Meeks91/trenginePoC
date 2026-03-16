@@ -32,7 +32,7 @@ FIXTURE_FILE = FIXTURES_DIR / "reddit_bodybuilding_raw.txt"
 # These MUST all be extracted — 100% recall required
 TARGET_NAMES = {
     "Jonathan Warren",
-    "Geoffrey Verity Schofield",
+    "Geoffrey Verity",
     "John Meadows",
     "Eric Janicki",
     "Jeff Nippard",
