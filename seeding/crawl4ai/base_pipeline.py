@@ -33,6 +33,7 @@ from config.schema import (
 from services.audit.AuditService import AuditLog
 from services.search.SearchService import SearchService, SearchResults
 from services.search.SearchCache import SearchCache
+from services.search.OpenSearchClient import OpenSearchClient
 from services.extraction.NameMentionTracker import NameMentionTracker
 from services.enrichment.NameToHandleService import NameToHandleService
 from services.enrichment.InfluencerMerger import InfluencerMerger
@@ -295,24 +296,15 @@ class BasePipelineRunner(abc.ABC):
         logger.info("  [%d/%d] %s", index, total, config_key)
 
         audit = AuditLog(AUDIT_DIR, config_key.replace("/", "_"))
-        search_svc = SearchService(audit, cache=self._cache)
+        client = OpenSearchClient(audit, cache=self._cache)
+        search_svc = SearchService(audit, client=client)
 
-        search_results = search_svc.discover_urls(
-            sub_name=job.sub.sub_name,
-            platform=job.platform.value,
-            region=job.region.search_label,
-            year=CURRENT_YEAR,
-            search_prompt=job.sub.search_prompt,
-            alt_search_terms=job.sub.alt_search_terms,
-            known_sources=job.sub.known_sources,
-            difficulty=job.sub.difficulty,
-            inurl_slugs=job.sub.resolved_strict_slugs,
-        )
+        search_results = search_svc.discover_urls(job)
 
         self._stats.record_search(
             url_count=len(search_results.url_query_pairs),
             direct_handle_count=len(search_results.direct_handles),
-            retries=0,   # retries now tracked inside SearchResults
+            retries=0,
             failures=search_results.failure_count,
         )
 
