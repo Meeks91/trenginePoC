@@ -92,8 +92,8 @@ async def main() -> None:
                         help="Filter jobs by region code (e.g. US, UK)")
     parser.add_argument("--phase", action="store_true",
                         help="Use phase-based pipeline (search all → dedupe → crawl once → merge)")
-    parser.add_argument("--name-resolution", action="store_true", default=False,
-                        help="Enable deferred name → handle resolution (Reddit names → DDG → social handles)")
+    parser.add_argument("--name-resolution", action=argparse.BooleanOptionalAction, default=True,
+                        help="Deferred name → handle resolution (default: on, disable with --no-name-resolution)")
     parser.add_argument("--name-min-mentions", type=int, default=2,
                         help="Minimum cross-page mentions before DDG fires for a name (default: 2)")
     parser.add_argument("--search-client", type=str, choices=["open", "strict"], default="open",
