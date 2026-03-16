@@ -33,3 +33,6 @@ Thumbs.db
 
 # Node
 node_modules/
+
+# Pipeline results / caches (runtime output, not source)
+seeding/crawl4ai/results/
