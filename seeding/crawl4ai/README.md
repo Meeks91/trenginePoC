@@ -1,6 +1,6 @@
 # Seed Crawler Pipeline v6
 
-> Last updated: 2026-03-15
+> Last updated: 2026-03-16
 
 ## What This Does
 
@@ -13,6 +13,7 @@ Discovers and extracts influencer handles across **N platforms × N regions × N
 | Python | 3.11+ |
 | Playwright (auto-installed by Crawl4AI) | latest |
 | Gemini API key | `GEMINI_API_KEY` env var |
+| Serper API key (optional, for `--search-client strict`) | `SERPER_API_KEY` env var |
 
 > [!NOTE]
 > **English only.** Search queries, title-matching, and slug-matching are currently English-only. Multi-language support is not yet implemented.
@@ -63,9 +64,11 @@ seeding/crawl4ai/
 │
 ├── services/
 │   ├── search/
-│   │   ├── QueryBuilder.py ······ DDG query string generation (3 query types)
-│   │   ├── SearchCache.py ······· Disk-backed DDG result cache (SHA-256 keyed, 24h TTL)
-│   │   └── SearchService.py ····· Multi-engine DDG search + DDG dorking + retry/backoff
+│   │   ├── SearchClient.py ······ Protocol + RawSearchResult + SearchQuery + QueryType
+│   │   ├── OpenSearchClient.py ·· DDG backend (free, no dork operators beyond site:)
+│   │   ├── StrictSearchClient.py  Serper/Google backend (paid, full intitle:/OR/site: dorks)
+│   │   ├── SearchService.py ····· Client-agnostic filtering: ads, platform URLs, relevance
+│   │   └── SearchCache.py ······· Disk-backed DDG result cache (SHA-256 keyed, 24h TTL)
 │   ├── crawling/
 │   │   ├── CrawlService.py ······ Crawl4AI headless browser, BFS link-following
 │   │   └── filters.py ··········· PruningContentFilter factory
@@ -101,8 +104,8 @@ seeding/crawl4ai/
 │   └── business_rules.md ········ Comprehensive decision rules reference
 │
 ├── tests/
-│   ├── unit/ ················· 39 suites, ~600 tests (no API calls)
-│   ├── integration/ ·········· 15 suites, ~335 tests (mocked DDG/LLM)
+│   ├── unit/ ················· 40+ suites, ~720 tests (no API calls)
+│   ├── integration/ ·········· 15 suites, ~260 tests (mocked DDG/LLM)
 │   ├── e2e/ ·················· Live crawl tests
 │   └── fixtures/ ············· 61 saved real pages
 │
@@ -112,7 +115,8 @@ seeding/crawl4ai/
 ## Pipeline Flow
 
 ```
-DDG Search → Crawl4AI → Regex Extract → NameCleaner → Classify Handles → LLM Fallback
+SearchClient (DDG or Serper) → SearchService (ad/platform/relevance filter)
+    → Crawl4AI → Regex Extract → NameCleaner → Classify Handles → LLM Fallback
     → Name Tracking → Enrich (DDG backfill) → Deferred Name Resolution
     → Global Merge + Dedup → Output
 ```
@@ -125,10 +129,12 @@ DDG Search → Crawl4AI → Regex Extract → NameCleaner → Classify Handles �
 
 | Stage | Rule | Cost |
 |-------|------|------|
-| **Search** | 3 query types from seed config (primary, alt, site-targeted) | Free |
+| **Search** | 2 backends: `open` (DDG, free) or `strict` (Serper/Google, paid) | Free / ~$0.005/query |
+| **Search** | 3 query types: primary open, alt open, site-targeted | — |
+| **Search** | `_is_relevant()` OR filter: mandatory word OR slug OR sub_name OR category_key OR reddit | Free |
 | **Search** | DDG dorking: platform URLs → extract handle immediately, skip crawl | Free |
-| **Search** | Search cache: SHA-256 keyed disk cache, 24h TTL, skip redundant DDG calls | Free |
-| **Search** | DDG circuit breaker: skip config if ≥50% queries fail; kill search after 3 consecutive config failures | Free |
+| **Search** | Search cache: SHA-256 keyed disk cache, 24h TTL (DDG only) | Free |
+| **Search** | DDG circuit breaker: skip config if ≥50% queries fail; kill after 3 consecutive failures | Free |
 | **Crawl** | Crawl4AI + PruningContentFilter → 20-60% token reduction | Free |
 | **Regex** | 10 patterns: IG embeds, URL patterns, @mentions | Free |
 | **Regex** | ~200-entry ignore list + profanity substring filter (CSS, JS, brands, cities, platforms) | Free |
@@ -161,6 +167,9 @@ PYTHONPATH="." python3 cli.py --category FITNESS --phase
 # With name resolution
 PYTHONPATH="." python3 cli.py --all --name-resolution --name-min-mentions 2
 
+# With Serper search (paid, full Google dork operators)
+SERPER_API_KEY=xxx PYTHONPATH="." python3 cli.py --job FITNESS/Fitness/Instagram/US --search-client strict
+
 # Single URL override
 PYTHONPATH="." python3 cli.py --url https://example.com/influencers
 ```
@@ -181,6 +190,7 @@ PYTHONPATH="." python3 cli.py --url https://example.com/influencers
 | `--name-resolution` | Off | Enable deferred name→handle resolution |
 | `--name-min-mentions` | 2 | Min mentions for name resolution |
 | `--platform` | Instagram | Platform context for `--url` mode |
+| `--search-client` | `open` | `open` (DDG, free) or `strict` (Serper, paid) |
 
 ## Configuration (`config/settings.py`)
 
@@ -204,7 +214,8 @@ PYTHONPATH="." python3 cli.py --url https://example.com/influencers
 
 | Component | Per page | Per job (~30pg) | Full batch (432 jobs) |
 |-----------|---------|----------------|----------------------|
-| DDG search | Free | Free | Free |
+| DDG search (`--search-client open`) | Free | Free | Free |
+| Serper search (`--search-client strict`) | ~$0.005/query | ~$0.02 | ~$8.64 |
 | Crawl4AI | Free | Free | Free |
 | Regex extraction | Free | Free | Free |
 | Mechanical classification | Free | Free | Free |

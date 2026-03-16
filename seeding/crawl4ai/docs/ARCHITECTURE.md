@@ -1,7 +1,7 @@
 # Crawl4AI Seed Crawler — Architecture
 
 > Exhaustive reference for the crawl4ai CLI seed pipeline.
-> Last updated: 2026-03-15
+> Last updated: 2026-03-16
 
 ---
 
@@ -43,6 +43,7 @@ Jobs are generated from `all_categories.json` by `seed_schema.generate_seed_jobs
 ┌─────────────────────────────────────────────────────────────────────────────────┐
 │                              cli.py — Entry Point                              │
 │  argparse: --job / --category / --all / --url / --phase / --sample / --bfs     │
+│            --search-client open|strict / --name-resolution                     │
 └────────────┬──────────────────────┬───────────────────────┬─────────────────────┘
              │ (default)            │ --phase               │ --url
              ▼                      ▼                       │
@@ -77,12 +78,12 @@ Jobs are generated from `all_categories.json` by `seed_schema.generate_seed_jobs
 │  ┌─────────────────┐  ┌──────────────────┐  ┌──────────────────────────────┐   │
 │  │    search/       │  │   crawling/       │  │       extraction/            │   │
 │  │                  │  │                   │  │                              │   │
-│  │  QueryBuilder    │  │  CrawlService     │  │  HandleExtractionService     │   │
-│  │  SearchCache     │  │  filters          │  │    ├── RegexHandleExtractor  │   │
-│  │  SearchService   │  │                   │  │    ├── PlatformClassifier    │   │
-│  │                  │  │                   │  │    ├── HandleClassifier      │   │
-│  └─────────────────┘  └──────────────────┘  │    ├── LLMExtractionService  │   │
-│                                              │    ├── YouTubeChannelRes.    │   │
+│  │  SearchClient    │  │  CrawlService     │  │  HandleExtractionService     │   │
+│  │  (Protocol)      │  │  filters          │  │    ├── RegexHandleExtractor  │   │
+│  │  OpenSearchCli.  │  │                   │  │    ├── PlatformClassifier    │   │
+│  │  StrictSearchCli.│  │                   │  │    ├── HandleClassifier      │   │
+│  │  SearchService   │  │                   │  │    ├── LLMExtractionService  │   │
+│  │  SearchCache     │  │                   │  │    ├── YouTubeChannelRes.    │   │
 │  ┌─────────────────┐  ┌──────────────────┐  │    ├── NameCleaner           │   │
 │  │  enrichment/     │  │    audit/         │  │    ├── NameExtractor         │   │
 │  │                  │  │                   │  │    ├── NameMentionTracker   │   │
@@ -114,23 +115,33 @@ then after ALL jobs finish, deferred resolution + global dedup runs.
 │                                                                                  │
 │  STEP 1: SEARCH                                                                  │
 │  ┌──────────────────────────────────────────────────────────┐                     │
-│  │ QueryBuilder generates 3 types of DDG queries:           │                     │
-│  │   • primary: "{sub} {search_prompt} {platform}           │                     │
-│  │               influencers list {year}"                   │                     │
-│  │   • alt:     "{sub} {alt_term} {platform} influencers    │                     │
-│  │               {region} {year}"                           │                     │
-│  │   • site:    "site:{source} {search_prompt} {platform}   │                     │
-│  │               {year}"                                    │                     │
-│  │                                                          │                     │
-│  │ SearchService runs each query against DDG.               │                     │
-│  │                                                          │                     │
-│  │ If DDG returns a platform URL (e.g. instagram.com/kurti  │                     │
-│  │ stefano), the handle is extracted immediately (DDG Dork- │                     │
-│  │ ing) — that URL is NOT queued for crawling.              │                     │
-│  │                                                          │                     │
-│  │ OUTPUT → list of (url, query) pairs to crawl             │                     │
-│  │        → list of direct handles (no crawl needed)        │                     │
-│  └──────────────────────────────────────────────────────────┘                     │
+│  │ SearchClient protocol wraps the backend.             │                     │
+│  │ Default: OpenSearchClient (free DDG).                 │                     │
+│  │ --search-client strict: StrictSearchClient (Serper).   │                     │
+│  │                                                        │                     │
+│  │ Both clients generate 3 query types per job:           │                     │
+│  │   • primary: "{sub} {search_prompt} {platform}         │                     │
+│  │               influencers list {year}"                 │                     │
+│  │   • alt:     "{sub} {alt_term} {platform} influencers  │                     │
+│  │               {region} {year}"                         │                     │
+│  │   • site:    "site:{source} {search_prompt} {platform} │                     │
+│  │               {year}"                                  │                     │
+│  │                                                        │                     │
+│  │ StrictSearchClient adds Google dork operators:         │                     │
+│  │   (intitle:influencer OR intitle:creator OR intitle:top │                     │
+│  │    OR site:reddit.com) + (slug1 OR slug2) + terms      │                     │
+│  │                                                        │                     │
+│  │ SearchService filters results (client-agnostic):       │                     │
+│  │   1. Remove ad/tracking URLs                           │                     │
+│  │   2. DDG dorking: extract handles from platform URLs   │                     │
+│  │   3. _is_relevant() OR filter:                         │                     │
+│  │      mandatory word in title OR slug in URL path       │                     │
+│  │      OR sub_name in title OR category in title         │                     │
+│  │      OR domain is reddit.com                           │                     │
+│  │                                                        │                     │
+│  │ OUTPUT → list of (url, query) pairs to crawl           │                     │
+│  │        → list of direct handles (no crawl needed)      │                     │
+│  └────────────────────────────────────────────────────────┘                     │
 │                                                                                  │
 │  STEP 2: CRAWL                                                                   │
 │  ┌──────────────────────────────────────────────────────────┐                     │
@@ -438,9 +449,11 @@ crawl4ai/
 │
 ├── services/
 │   ├── search/
-│   │   ├── QueryBuilder.py         # DDG query string generation (3 query types)
-│   │   ├── SearchCache.py          # Disk-backed DDG result cache (SHA-256 keyed, 24h TTL)
-│   │   └── SearchService.py        # Multi-engine DDG search + DDG dorking + retry/backoff
+│   │   ├── SearchClient.py         # Protocol + RawSearchResult + SearchQuery + QueryType
+│   │   ├── OpenSearchClient.py     # DDG backend (free, no dork ops beyond site:)
+│   │   ├── StrictSearchClient.py   # Serper/Google backend (paid, full intitle:/OR/site: dorks)
+│   │   ├── SearchService.py        # Client-agnostic: ads, platform URLs, _is_relevant()
+│   │   └── SearchCache.py          # Disk-backed DDG result cache (SHA-256 keyed, 24h TTL)
 │   │
 │   ├── crawling/
 │   │   ├── CrawlService.py         # Crawl4AI headless browser, BFS link-following
@@ -519,9 +532,11 @@ crawl4ai/
 
 | Module | What it does |
 |--------|-------------|
-| `QueryBuilder` | Builds 3 query types per job: primary open, alt open, site-targeted. Supports `Difficulty`-based `inurl:` prefix for non-Easy subs. |
+| `SearchClient` | Protocol defining the `search(SeedJob) → RawSearchResult[]` interface. Shared types: `SearchQuery`, `RawSearchResult`, `QueryType`. |
+| `OpenSearchClient` | DDG backend. Builds 3 query types (primary, alt, site). No dork operators beyond `site:`. Free, broad results. |
+| `StrictSearchClient` | Serper/Google backend. Full dork operators: `intitle:`, `site:`, `OR`, `()`. Precise, paid. |
+| `SearchService` | **Client-agnostic search orchestrator.** Receives a `SearchClient`, runs queries, filters: ads, platform URL dorking, `_is_relevant()` OR filter. |
 | `SearchCache` | Disk-backed DDG cache. SHA-256 hash key → JSON file. 24h TTL. |
-| `SearchService` | DDG search with engine rotation, ad filtering, DDG dorking, exponential backoff. |
 | `CrawlService` | Crawl4AI headless browser. Concurrent crawling. BFS link-following for same-domain listicle links. |
 | `HandleExtractionService` | **Extraction orchestrator.** Regex → NameCleaner → Classify → YT resolve → Names → LLM gate → Merge. |
 | `RegexHandleExtractor` | 10 compiled patterns. ~200-entry ignore list. Heading-based name assignment to handles. |
@@ -612,7 +627,8 @@ Services take `AuditLog` + optional config. Pipeline runners compose services �
 | CLI | argparse |
 | Async | asyncio |
 | Web Crawling | Crawl4AI (`AsyncWebCrawler`, `PruningContentFilter`) |
-| Search | `ddgs` (DuckDuckGo, multi-engine rotation) |
+| Search (free) | `ddgs` (DuckDuckGo, multi-engine rotation), wrapped by `OpenSearchClient` |
+| Search (paid) | Serper API (Google), wrapped by `StrictSearchClient` |
 | LLM | `litellm` → Gemini 2.5 Flash Lite (Pydantic structured output) |
 | HTTP | `httpx` (YouTube channel resolution) |
 | Schema | dataclasses (domain), Pydantic (LLM binding) |
