@@ -1,0 +1,100 @@
+[Home](https://www.kolsquare.com/en)
+/
+ReSources
+/
+[blog](https://www.kolsquare.com/en/blog)
+[Influence strategy](https://www.kolsquare.com/en/categories/strategie-dinfluence)
+Posted on
+February 21, 2022
+# 5 killer Influencer Marketing campaigns in the Food sector
+Food and beverage brands, whether it's food products, supermarkets or chefs and restaurants, are part of a vibrant industry. Most internet users enjoy this sector and are looking for original, quick, or healthier recipes to improve their diet online. Collaborations with KOLs (Key Opinion Leaders) are highly beneficial for this sector which keeps growing year after year for many reasons. Here are 5 examples of successful global Influence Marketing campaigns. Something to drool over... Let's go!
+### TABLE OF CONTENTS
+[Why working with content creators can be a winning strategy for the food sector?](https://www.kolsquare.com/en/blog/5-killer-influencer-marketing-campaigns-in-the-food-sector#why-working-with-content-creators-can-be-a-winning-strategy-for-the-food-sector)
+[HelloFresh relies on micro-influencers with its #RefreshWithHelloFresh campaign](https://www.kolsquare.com/en/blog/5-killer-influencer-marketing-campaigns-in-the-food-sector#hellofresh-relies-on-micro-influencers-with-its-refreshwithhellofresh-campaign)
+[Oreo launches exclusive collection with Chiara Ferragni](https://www.kolsquare.com/en/blog/5-killer-influencer-marketing-campaigns-in-the-food-sector#oreo-launches-exclusive-collection-with-chiara-ferragni)
+[Danone: focus on an in-store Influence Marketing campaign](https://www.kolsquare.com/en/blog/5-killer-influencer-marketing-campaigns-in-the-food-sector#danone-focus-on-an-in-store-influence-marketing-campaign)
+[Chipotle, the kings of TikTok challenges](https://www.kolsquare.com/en/blog/5-killer-influencer-marketing-campaigns-in-the-food-sector#chipotle-the-kings-of-tiktok-challenges)
+[Dunkin' creates an original drink, "The Charli", in collaboration with TikToker Charli D'Amelio](https://www.kolsquare.com/en/blog/5-killer-influencer-marketing-campaigns-in-the-food-sector#dunkin-creates-an-original-drink-the-charli-in-collaboration-with-tiktoker-charli-damelio)
+Person taking photo of several dishes 
+## Why working with content creators can be a winning strategy for the food sector?
+Influence Marketing has a huge scope of action, especially for the food industry, which allows professionals to imagine many creative and innovative schemes for several reasons: 
+  1. Food is, in fact, **one of the most popular topics on social networks**. For example, [the hashtag #foodporn](https://www.instagram.com/explore/tags/foodporn/) has been used more than 280 million times on Instagram at the time of writing, 
+  2. It’s a topic that speaks to everyone! Not all consumers are addicted to sports, interested in fashion or play video games, but everyone consumes food, 
+  3. Food is **aesthetically pleasing** and visual content generates on average 94% more engagement than text alone.
+
+
+Food & Beverages KOLs are particularly popular on social media because they are able to engage their audiences quickly due to the popularity of the topics they cover. Studies show that influencer marketing on Instagram in the food and beverage industry generates [an average engagement rate of 7.38%](https://union.co/articles/how-influencer-marketing-improves-campaign-performance-and-drives-food-beverage-sales), five times higher than the average rate!
+Eye-catching visuals, a sense of authenticity and a tight-knit community are the key ingredients that brands in this sector use to gain visibility, awareness and to **increase sales in the long term**. Let’s take a look at 5 successful Influence Marketing campaigns in this industry, which has not finished making our taste buds water. 
+## HelloFresh relies on micro-influencers with its #RefreshWithHelloFresh campaign
+You’re probably familiar with HelloFresh, but did you know that it is the **world’s first meal kit company**? Founded in 2011 in Germany, the brand has quickly become a global success. With a global presence in fourteen countries and three continents, the company has grown to become the largest player in the global meal kit market.
+The reason HelloFresh is so popular today is due to the Influence Marketing strategy it has successfully implemented on social networks and in particular on Instagram. Having developed a very photogenic product that is perfectly in tune with the current trend, the brand lends itself perfectly to influencer marketing. Moreover, HelloFresh has fully integrated the potential offered by this **performance lever** and has become a master in the art of identifying relevant micro-influencers for its brand and its various campaigns.
+In 2019, for its “[#RefreshWithHelloFresh](https://www.instagram.com/explore/tags/refreshwithhellofresh/)” campaign, aimed at the UK market, HelloFresh has teamed up with 15 micro-influencers evolving in different sectors ([lifestyle with Rosie](https://www.instagram.com/p/ByiQXPVhVGI/), [decoration with Jennifer](https://www.instagram.com/p/ByKBL_5g2t9/) or [family with Coral](https://www.instagram.com/p/ByDm9C-hH5i/)) as well as with the celebrity [Davina McCall](https://www.instagram.com/p/CEZI9cRnVJA/), who was, for the occasion, the face of this Influence Marketing campaign. For this #RefreshWithHelloFresh operation, the brand commissioned the group of content creators to participate in a 21-day long campaign to try out different HelloFresh recipes.
+The aim of the campaign was to promote the ease, convenience and enjoyment of cooking at home that its DIY packed lunch delivery service offers. The campaign resulted in HelloFresh [increasing impressions by 274% and receiving 325% more content](https://imagency.com/hellofresh).
+With #RefreshWithHelloFresh, HelloFresh and The Influencer Marketing Agency (IMA) also won some great accolades at the **2020 Influencer Marketing Awards** :
+  * Influencer Marketing Awards 2020 Winner,
+  * Silver Award for Best Food and Drink Campaign, 
+  * Silver Award for the most effective collaboration or partnership. 
+
+
+## Oreo launches exclusive collection with Chiara Ferragni
+Most brands activate KOLs (Key Opinion Leaders) by asking them to advertise their brand or products through a post or stories on their social networks. The famous American cookie brand, Oreo, went a step further by collaborating with [Instagram star Chiara Ferragni](https://www.instagram.com/chiaraferragni/) (26.3M followers on Instagram) to launch a **limited edition product** with a packaging design inspired by the Italian KOL’s style. 
+And that’s not all! Oreo also launched a capsule collection inspired by Chiara Ferragni that users could win by participating in various competitions organised on social networks.
+Through this Influence Marketing campaign, launched in March 2020, Oreo reinforced its “cool” image among **millennials and Generation Z** by partnering with a very popular content creator. Moreover, with her huge community, Chiara Ferragni has given the brand a huge global reach, greatly amplifying the collaboration and its performance. The video published by Chiara Ferragni on her Instagram account received more than 246K likes and was seen by more than 2M internet users. [The photo of the packaging designed especially for their collaboration](https://www.instagram.com/p/B9MF_8boXIP/?utm_source=ig_embed&amp;ig_rid=32c2320d-1ca1-4fe3-a073-118d57cd6c3c) also generated a very high level of engagement with more than 639K likes and thousands of comments. A more than successful operation! 
+## Danone: focus on an in-store Influence Marketing campaign
+In 2021, French brand Danone teamed up with its [Portuguese ambassador Cláudia Vieira](https://www.danone.pt/artigos/novidades/claudia-vieira-junta-se-de-novo-a-activia-para-uma-vida-com-mais-flow) for a highly original in-store Influence Marketing campaign. Instead of focusing solely on social networks, Danone wanted to offer a real in-store experience with a special Influence Marketing campaign that took place directly at the point of purchase where its consumers are.
+With **Tokinomo** , the advertising robot used on the shelves of the supermarket, Danone was able to take advantage of influencer marketing and use its ambassador as a **real storyteller**. We all know that consumers love stories and brands can greatly increase their loyalty with well-chosen and defined storytelling. The voice of the content creator, via the Tokinomo robot, **captured the attention of shoppers** as they shopped i shop. Once their attention was captured, they were able to listen to Cláudia Vieira’s story about her experience with the Danone brand. 
+The results speak for themselves: as consumers were “attracted” in a creative and differentiating way, they naturally ended up buying more, 10 times more in fact. Regular in-store promotional campaigns increase sales by an average of 20%. [Here, the campaign implemented with Tokinomo increased them by over 200%](https://www.tokinomo.com/blog/in-store-influencer-marketing-danone). 
+## Chipotle, the kings of TikTok challenges
+[With 1.7M followers and 35M likes](https://www.tiktok.com/@chipotle), Chipotle has made the choice to focus on TikTok in recent months. The brand’s decision to invest in the social network is more than wise as **generation Z represents more than 50% of its clientele** and is particularly found on the platform. The company, moreover, realised that Generation Z takeaways were of the same value as millennials, but that Generation Z ordered 3-4 times a week.
+In May 2019, Chipotle therefore decided to launch its first TikTok challenge, the [#ChipotleLidFlip](https://www.tiktok.com/tag/chipotlelidflip), during the summer, when its target consumers were on school holidays. At the same time, to **boost the use of the hashtag** and get as many people as possible to take part in the challenge, the brand also contacted Gen Z content creators who were avowed Chipotle “fans”, such as [Youtuber David Dobrik](https://www.youtube.com/channel/UCmh5gdwCx6lN7gEC20leNVA) (18.3M subscribers on Youtube) to carry the campaign. His video, posted on TikTok, generated over 600K likes, 1700 comments and over 15K shares in just a few days! 
+Their first #ChipotleLidFlip challenge was taken up by hundreds of thousands of internet users around the world who tried their hand at the exercise by filming themselves in short videos while using the branded hashtag. Given the great success of this first challenge (the hashtag #ChipotleLidFlip now has over [328M views](https://www.tiktok.com/tag/chipotlelidflip)), Chipotle quickly measured **the effectiveness of Influencer partnerships**. 
+In August 2019, the brand did it again and partnered with [Loren Gray (49M followers on TikTok)](https://www.tiktok.com/@lorengray?lang=en) for National Lawyer’s Day with another hashtag challenge that was also a huge success:
+  * KOL Loren Gray’s video generated nearly 709K likes and over 5K comments, sparking a viral phenomenon around **#GuacDance** , 
+  * In total, the campaign received 500M views and set a new record as [the highest performing brand challenge in the US](https://www.marketingdive.com/news/chipotle-smashes-tiktok-records-with-guacdance-challenge/560102/). The hashtag now has [over 1 billion views](https://www.tiktok.com/tag/guacdance?lang=en), 
+  * The TikTok challenge resulted in Chipotle’s largest ever serving of guacamole, with over [800,000 servings of the condiment served](https://www.influencerupdate.biz/feature/68521/loren-gray-and-chipotles-tiktok-team-up-a-case-study/https://www.influencerupdate.biz/feature/68521/loren-gray-and-chipotles-tiktok-team-up-a-case-study/).
+
+
+## Dunkin' creates an original drink, "The Charli", in collaboration with TikToker Charli D'Amelio
+The famous donut brand Dunkin has created a signature drink with [the famous TikToker Charli D’Amelio (136.3M followers on TikTok)](https://www.tiktok.com/@charlidamelio?lang=fr). In September 2020, as part of their collaboration, Dunkin’ launched “The Charli”, a new whole milk and caramel drink named after the content creator. The video of the influencer picking up her drink at one of the brand’s drive-throughs has been viewed millions of times. For this collaboration, a dance challenge was also planned using an original soundtrack that was [featured in over 22.5K videos](https://www.tiktok.com/music/The-Charli-6868312589710363398). 
+[The video posted by Charli](https://www.tiktok.com/@dunkin/video/6868308072692043014?is_copy_url=1&amp;is_from_webapp=v1) received over 4.7M likes, 53K comments and 144K shares. The brand also posted a contest on its Instagram account allowing 5 fans to **win a virtual meeting with the TikToker**. The conditions? Post a photo of themselves with the famous drink created as part of the partnership using the hashtag #CharliXDunkinContest and mentioning the brand. A good idea that allowed the brand to increase its visibility even more thanks to the numerous fan-generated contents.
+The results of the collaboration far exceeded the brand’s expectations, selling “hundreds of thousands” of drinks in the first five days of the campaign’s launch. The launch day set a record for daily users on the **Dunkin’ Donuts app** , where users could pre-order the drink for direct pick-up. The Influence Marketing campaign with TikToker resulted in a [57% increase in daily downloads of the app](https://www.ypulse.com/article/2021/01/21/5-fast-food-brands-reinventing-celeb-influencer-collabs/). That’s a lot! 
+The company added that it saw a 20% increase in cold drink sales on the day of the launch, and a 45% increase in sales the following day. Due to the overwhelming success of this campaign, Dunkin’ decided to [collaborate with TikToker again the following year](https://www.tubefilter.com/2021/02/17/charli-damelio-tiktok-dunkin-donuts-second-signature-drink/), for a second signature drink in partnership with the brand: the “Charli Cold Foam”. A partnership that never ceases to amaze us! 
+**Relying on celebrities or micro-influencers, inviting KOLs to co-create a collection or a product, setting up 100% digital or in-store campaigns, brands in the food sector definitely have a wide range of creative devices when it comes to Influence Marketing!**
+## 📊 Kolsquare Budget Report 2026: Optimize Your Influence Budget
+* 💰 Learn how top brands plan & defend their 2026 influencer marketing budgets
+* 📈 Get data-driven frameworks and ROI benchmarks
+* 🧩 Build a budget that drives measurable business impact
+‍
+[Download now ](https://www.kolsquare.com/en/free-ressources/kolsquare-budget-report-2026-stretching-spend-scaling-influence)
+### About Kolsquare
+Kolsquare is Europe’s leading Influencer Marketing platform, offering a data-driven solution that empowers brands to scale their KOL (Key Opinion Leader) marketing strategies through authentic partnerships with top creators.
+Kolsquare’s advanced technology helps marketing professionals seamlessly identify the best content creators by filtering their content and audience, while also enabling them to build, manage, and optimize campaigns from start to finish. This includes measuring results and benchmarking performance against competitors.
+With a thriving global community of influencer marketing experts, Kolsquare serves hundreds of customers—including Coca-Cola, Netflix, Sony Music, Publicis, Sézane, Sephora, Lush, and Hermès—by leveraging the latest Big Data, AI, and Machine Learning technologies. Our platform taps into an extensive network of KOLs with more than 5,000 followers across 180 countries on Instagram, TikTok, X (Twitter), Facebook, YouTube, and Snapchat.
+As a Certified B Corporation, Kolsquare leads the way in promoting Responsible Influence, championing transparency, ethical practices, and meaningful collaborations that inspire positive change.
+Since October 2024, Kolsquare has become part of the [Team.Blue](http://Team.Blue) group, one of the largest private tech companies in Europe, and a leading digital enabler for businesses and entrepreneurs across Europe. Team.Blue brings together over 60 successful brands in web hosting, domains, e-commerce, online compliance, lead generation, application solutions, and social media.
+## Ready to elevate your marketing game with **Influencer Marketing**?
+Our team of experts will be happy to show you our influencer platform in action and discuss your individual needs and aspirations.
+[Book a demo ](https://www.kolsquare.com/en/request-a-demo)
+### Author
+[See all articles ](https://www.kolsquare.com/en/blog/5-killer-influencer-marketing-campaigns-in-the-food-sector#)
+## FAQ
+No items found.
+blog
+## What’s trending on the social web?
+### [Mastering Influencer Marketing Strategy: The 2026 Guide for UK Marketers March 12, 2026 ](https://www.kolsquare.com/en/blog/crafting-an-effective-influencer-marketing-strategy-guide-for-uk-marketing-experts)
+### [Instagram engagement rate: definition, calculation and tips to boost it February 3, 2026 ](https://www.kolsquare.com/en/blog/instagram-engagement-rate-definition-calculation-and-tips-to-boost-it)
+### [Unpacking EMV in influencer marketing December 12, 2025 ](https://www.kolsquare.com/en/blog/earned-media-value-emv-a-essential-kpi-in-influence-marketing)
+### [Micro-Influencer Platforms: How Are They Revolutionizing Niche Marketing? July 23, 2025 ](https://www.kolsquare.com/en/blog/micro-influencer-platforms-revolutionazing-niche-marketing)
+### [KOLs: The secret sauce for your influencer marketing strategy July 8, 2025 ](https://www.kolsquare.com/en/blog/mastering-the-art-of-kol-marketing-definition-winning-strategies)
+### [Real and creative examples of influencer marketing campaigns April 16, 2025 ](https://www.kolsquare.com/en/blog/real-and-creative-examples-of-influencer-marketing-campaigns)
+[Visit our blog ](https://www.kolsquare.com/en/blog)
+Our product
+[Influencer Marketing Plattform](https://www.kolsquare.com/en/influencer-marketing-platform)[Influencer Discovery](https://www.kolsquare.com/en/products/finding-the-right-influencers)[Influencer CRM](https://www.kolsquare.com/en/products/manage-your-campaigns)[Influencer Reporting](https://www.kolsquare.com/en/products/measure-and-optimize-your-campaigns)[Social listening](https://www.kolsquare.com/en/products/analyze-competition-and-social-listening)
+[Chrome extension](https://www.kolsquare.com/en/products/chrome-extension)[Pricing](https://www.kolsquare.com/en/products/pricing)
+#InfluenceForGood
+[#InfluenceForGood](https://www.kolsquare.com/en/influence-responsable/responsible-influence)[Our commitments](https://www.kolsquare.com/en/influence-responsable/entreprise-responsable)[Tech For Good](https://www.kolsquare.com/en/influence-responsable/tech-for-good)[Carbon footprint](https://www.kolsquare.com/en/measuring-the-carbon-footprint)[Apply for Kolsquare's 1% for NGOs](https://www.kolsquare.com/en/influence-responsable/ngo-form-page)
+Resources
+[Blog](https://www.kolsquare.com/en/blog)[Customer stories](https://www.kolsquare.com/en/success-stories)[Free Resources](https://www.kolsquare.com/en/free-ressources)[Top Influencers](https://www.kolsquare.com/en/top-influencers)[KOL directory](https://www.kolsquare.com/en/directory)[Kolculator](https://www.kolsquare.com/en/kolculator)[TikTok Calculator](https://www.kolsquare.com/en/tiktok-calculator)[Webinars](https://www.kolsquare.com/en/webinar)[Industry Ranking](https://www.kolsquare.com/en/industry-ranking)[Influencer Marketing Klub](https://www.influencermarketingklub.com/)[Training Project](https://www.kolsquare.com/en/training-project)
+About
+[About Kolsquare](https://www.kolsquare.com/en/about)[Frequently Asked Questions](https://www.kolsquare.com/en/frequently-asked-questions)[SLA](https://storage.googleapis.com/static.kolsquare.com/assets/SLA_Kolsquare_EN.pdf)[Career page](https://kolsquareteamblue.teamtailor.com/)[Whistleblowing](https://www.kolsquare.com/en/whistleblowing)
+Copyright © 2024 Kolsquare

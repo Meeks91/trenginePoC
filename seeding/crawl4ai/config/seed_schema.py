@@ -116,11 +116,9 @@ class SubCategory:
         """Return explicit strict_slugs for inurl: filtering.
 
         Raises ValueError if difficulty is Medium/Hard and strict_slugs is empty.
-        Easy difficulty returns empty list (no inurl: filtering).
+        Easy difficulty returns whatever is defined (may be empty).
         """
-        if self.difficulty == Difficulty.EASY:
-            return []
-        if not self.strict_slugs:
+        if self.difficulty != Difficulty.EASY and not self.strict_slugs:
             raise ValueError(
                 f"SubCategory '{self.sub_name}' has difficulty={self.difficulty.value} "
                 f"but no strictSlugs defined. Medium/Hard subcats must define strictSlugs."

@@ -14,7 +14,7 @@ from config.seed_schema import SeedJob
 
 from services.audit.AuditService import AuditLog
 from config import (
-    AUDIT_DIR, CURRENT_YEAR, LLM_PROVIDER,
+    AUDIT_DIR, CURRENT_YEAR, LLM_PROVIDER, REPORTS_DIR,
 )
 from config.schema import SubResult, RegionResult, Influencer, Platform
 
@@ -173,7 +173,6 @@ class PerJobPipelineRunner(BasePipelineRunner):
             for region, platforms in regions.items()
         ]
 
-        self._assembler.save_pipeline_output(output)
         return output
 
     # ── Single-URL override mode ─────────────────────────────────────────
@@ -253,10 +252,14 @@ class PerJobPipelineRunner(BasePipelineRunner):
             pages, extract_result.llm_handles,
         )
 
-        # Generate Report
+        # Generate Report + Save
         yield_warnings = self._stats.check_yield_warnings()
+        run_id = self._assembler.generate_run_id(region)
+        run_dir = REPORTS_DIR / run_id
+
         reporter = PipelineReporter()
         reporter.generate(
+            run_dir=run_dir,
             stats=self.stats,
             validation_results={},
             model=LLM_PROVIDER,

@@ -116,7 +116,6 @@ async def test_e2e_from_html_real_llm():
             with (
                 patch("services.crawling.CrawlService.PAGES_DIR", tmp_path / "pages"),
                 patch("services.extraction.LLMExtractionService.RAW_DIR", tmp_path / "raw"),
-                patch("services.reporting.PipelineReporter.REPORTS_DIR", tmp_path / "reports"),
             ):
                 audit = AuditLog(tmp_path / "audit", "e2e_html_llm_test")
 
@@ -256,6 +255,7 @@ async def test_e2e_from_html_real_llm():
                     )
                 ]
                 report_path = reporter.generate(
+                    run_dir=tmp_path / "reports" / "e2e_llm_run",
                     stats=stats,
                     validation_results=validation_results,
                     model=LLM_PROVIDER,

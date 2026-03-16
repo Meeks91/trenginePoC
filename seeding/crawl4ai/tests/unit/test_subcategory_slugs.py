@@ -4,7 +4,7 @@ Unit Tests: SubCategory.resolved_strict_slugs
 Tests the explicit strictSlugs config used for the inurl: DDG operator.
 
 Verifies:
-  - Easy difficulty returns [] (no inurl filtering)
+  - Easy difficulty returns whatever slugs are defined (may be empty)
   - Medium/Hard without strict_slugs raises ValueError
   - Medium/Hard with strict_slugs returns them
   - Config validation: all Medium/Hard subcats in all_categories.json have strictSlugs
@@ -36,16 +36,16 @@ def _sub(
 
 # ── Easy difficulty ──────────────────────────────────────────────────────────
 
-def test_easy_returns_empty_list():
-    """Easy difficulty → no inurl filtering, returns []."""
+def test_easy_returns_empty_list_when_no_slugs():
+    """Easy difficulty with no slugs → returns []."""
     sub = _sub("AI", difficulty=Difficulty.EASY)
     assert sub.resolved_strict_slugs == []
 
 
-def test_easy_ignores_strict_slugs_if_present():
-    """Easy with strictSlugs defined → still returns [] (Easy never filters)."""
+def test_easy_returns_slugs_when_defined():
+    """Easy with strictSlugs defined → returns them (slugs are now enforced)."""
     sub = _sub("AI", difficulty=Difficulty.EASY, strict_slugs=["ai"])
-    assert sub.resolved_strict_slugs == []
+    assert sub.resolved_strict_slugs == ["ai"]
 
 
 # ── Medium/Hard without strict_slugs ────────────────────────────────────────

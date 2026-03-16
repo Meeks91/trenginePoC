@@ -195,6 +195,82 @@ class TestTopRedditNames:
         assert tracker.top_reddit_names(max_per_group=5, min_mentions=1) == []
 
 
+class TestTopRedditNamesByGroup:
+    """top_reddit_names_by_group() — returns per-group deques for slot recycling."""
+
+    def test_returns_deques_per_group(self):
+        from collections import deque
+        tracker = NameMentionTracker()
+        _record(tracker, "Jeff Nippard", 5, "https://reddit.com/1",
+                SourceType.REDDIT, sub="Gym", category="FITNESS",
+                platform="Instagram", region="US")
+        result = tracker.top_reddit_names_by_group(
+            max_candidates_per_group=10, min_mentions=1,
+        )
+        assert len(result) == 1
+        key = ("Instagram", "FITNESS", "Gym", "US")
+        assert key in result
+        assert isinstance(result[key], deque)
+        assert result[key][0].canonical == "Jeff Nippard"
+
+    def test_sorted_by_total_mention_count(self):
+        tracker = NameMentionTracker()
+        _record(tracker, "Low Person", 2, "https://reddit.com/1",
+                SourceType.REDDIT, sub="Gym")
+        _record(tracker, "High Person", 10, "https://reddit.com/2",
+                SourceType.REDDIT, sub="Gym")
+        result = tracker.top_reddit_names_by_group(
+            max_candidates_per_group=10, min_mentions=1,
+        )
+        group = list(result.values())[0]
+        assert group[0].canonical == "High Person"
+        assert group[1].canonical == "Low Person"
+
+    def test_min_mentions_filters(self):
+        tracker = NameMentionTracker()
+        _record(tracker, "Rare Person", 1, "https://reddit.com/1",
+                SourceType.REDDIT, sub="Gym")
+        _record(tracker, "Popular Person", 5, "https://reddit.com/2",
+                SourceType.REDDIT, sub="Gym")
+        result = tracker.top_reddit_names_by_group(
+            max_candidates_per_group=10, min_mentions=3,
+        )
+        group = list(result.values())[0]
+        assert len(group) == 1
+        assert group[0].canonical == "Popular Person"
+
+    def test_max_candidates_caps_queue(self):
+        tracker = NameMentionTracker()
+        for i in range(10):
+            _record(tracker, f"Person {i}", 10 - i, f"https://reddit.com/{i}",
+                    SourceType.REDDIT, sub="Gym")
+        result = tracker.top_reddit_names_by_group(
+            max_candidates_per_group=3, min_mentions=1,
+        )
+        group = list(result.values())[0]
+        assert len(group) == 3
+
+    def test_non_reddit_excluded(self):
+        tracker = NameMentionTracker()
+        _record(tracker, "Blog Only", 100, "https://blog.com/1",
+                SourceType.NON_REDDIT, sub="Gym")
+        result = tracker.top_reddit_names_by_group(
+            max_candidates_per_group=10, min_mentions=1,
+        )
+        assert len(result) == 0
+
+    def test_separate_groups_for_different_subs(self):
+        tracker = NameMentionTracker()
+        _record(tracker, "Gym Person", 5, "https://reddit.com/1",
+                SourceType.REDDIT, sub="Gym")
+        _record(tracker, "Yoga Person", 5, "https://reddit.com/2",
+                SourceType.REDDIT, sub="Yoga")
+        result = tracker.top_reddit_names_by_group(
+            max_candidates_per_group=10, min_mentions=1,
+        )
+        assert len(result) == 2
+
+
 class TestMergeTrackers:
     """Merging one tracker into another."""
 

@@ -75,6 +75,12 @@ class CrawlService:
         _dispatcher = importlib.import_module("crawl4ai.async_dispatcher")
         SemaphoreDispatcher = _dispatcher.SemaphoreDispatcher
         RateLimiter = _dispatcher.RateLimiter
+        # Use importlib to bypass pytest's import rewriting — the project dir
+        # 'crawl4ai' shadows the pip package during test collection.
+        import importlib
+        _dispatcher = importlib.import_module("crawl4ai.async_dispatcher")
+        SemaphoreDispatcher = _dispatcher.SemaphoreDispatcher
+        RateLimiter = _dispatcher.RateLimiter
 
         rate_limiter = RateLimiter(
             base_delay=(1.0, 3.0),

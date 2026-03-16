@@ -1,0 +1,39 @@
+{
+  "influencers": [
+    {
+      "name": "Facebook",
+      "handle": "",
+      "handle_platform": ""
+    },
+    {
+      "name": "YouTube",
+      "handle": "",
+      "handle_platform": ""
+    },
+    {
+      "name": "Instagram",
+      "handle": "",
+      "handle_platform": ""
+    },
+    {
+      "name": "TikTok",
+      "handle": "",
+      "handle_platform": ""
+    },
+    {
+      "name": "Stack Influence",
+      "handle": "",
+      "handle_platform": ""
+    },
+    {
+      "name": "X",
+      "handle": "",
+      "handle_platform": ""
+    },
+    {
+      "name": "LinkedIn",
+      "handle": "",
+      "handle_platform": ""
+    }
+  ]
+}

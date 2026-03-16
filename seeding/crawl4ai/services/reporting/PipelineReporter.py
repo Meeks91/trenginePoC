@@ -8,7 +8,7 @@ import os
 from datetime import datetime, timezone
 from pathlib import Path
 
-from config import REPORTS_DIR, INPUT_COST_PER_1M, OUTPUT_COST_PER_1M
+from config import INPUT_COST_PER_1M, OUTPUT_COST_PER_1M
 from config.schema import (
     PipelineStats, JobBreakdown, Influencer, SeedInfluencer,
     NameMentionRecord, Platform, ErroredConfig,
@@ -21,11 +21,11 @@ class PipelineReporter:
     """Generates pipeline_report.md after a run."""
 
     def __init__(self) -> None:
-        os.makedirs(REPORTS_DIR, exist_ok=True)
         self.last_report_path: Path | None = None
 
     def generate(
         self,
+        run_dir: Path,
         stats: PipelineStats,
         validation_results: dict[str, ValidationResult | None],
         model: str,
@@ -40,8 +40,9 @@ class PipelineReporter:
         total_configs: int = 0,
     ) -> Path:
         """Generate a human-readable report. Returns path to the report file."""
+        os.makedirs(run_dir, exist_ok=True)
         ts = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%S")
-        report_path = REPORTS_DIR / f"pipeline_report_{ts.replace(':', '')}.md"
+        report_path = run_dir / "report.md"
 
         handle_fill_rate = (
             f"{stats.handles_filled}/{stats.influencers_deduped}"

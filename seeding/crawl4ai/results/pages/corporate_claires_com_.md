@@ -1,0 +1,2 @@
+Claire’s is a global brand powerhouse for self-expression, creating exclusive, curated and fun fashionable jewelry and accessories, and offering world-leading piercing services. The company operates under the brand name Claire's.
+Since 1974, Claire’s has been the fun fashion destination for jewelry, cosmetics, accessories and ear piercing for tweens, teens and young girls between 3 and 18 years of age. Customers can shop at 2,300 Claire’s stores worldwide. [Find a store near you.](http://www.claires.com/locator/default.asp)

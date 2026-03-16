@@ -159,12 +159,20 @@ class SeedInfluencer:
 
     Maps directly to: influencers(ig_handle, tk_handle, yt_handle, name)
     + influencer_categories junction table.
+    Includes provenance: source_urls, extraction_methods, citation_count.
     """
     name: str
     ig_handle: str = ""
     tk_handle: str = ""
     yt_handle: str = ""
-    categories: list[str] = field(default_factory=list)  # Row-based categories
+    categories: list[str] = field(default_factory=list)
+    source_urls: list[str] = field(default_factory=list)
+    extraction_methods: list[str] = field(default_factory=list)
+
+    @property
+    def citation_count(self) -> int:
+        """Number of distinct source pages citing this influencer."""
+        return len(self.source_urls)
 
     def to_dict(self) -> dict:
         return {
@@ -173,6 +181,9 @@ class SeedInfluencer:
             "tk_handle": self.tk_handle,
             "yt_handle": self.yt_handle,
             "categories": self.categories,
+            "source_urls": self.source_urls,
+            "extraction_methods": self.extraction_methods,
+            "citation_count": self.citation_count,
         }
 
 

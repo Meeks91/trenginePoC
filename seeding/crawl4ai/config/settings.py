@@ -105,8 +105,8 @@ WORD_COUNT_THRESHOLD = 10
 
 # ── Name Resolution ──
 # Deferred name → handle resolution (Reddit names → DDG → social handles).
-# Off by default; enable via --name-resolution CLI flag.
-NAME_RESOLUTION_ENABLED = False
+# On by default; disable via --no-name-resolution CLI flag.
+NAME_RESOLUTION_ENABLED = True
 # Minimum cross-page mentions before DDG fires for a name.
 # Higher = fewer false positives but misses single-mention names.
 NAME_RESOLUTION_MIN_MENTIONS = 2

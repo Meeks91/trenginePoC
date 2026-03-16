@@ -21,7 +21,7 @@ from dataclasses import dataclass, field
 
 from config.seed_schema import SeedJob
 from config import (
-    AUDIT_DIR, CURRENT_YEAR, LLM_PROVIDER,
+    AUDIT_DIR, CURRENT_YEAR, LLM_PROVIDER, REPORTS_DIR, RESULTS_DIR,
     NAME_RESOLUTION_ENABLED, NAME_RESOLUTION_MIN_MENTIONS, NAME_RESOLUTION_MAX_PER_SUB,
     DDG_FAILURE_THRESHOLD_PCT, DDG_FAILURE_MIN_QUERIES, DDG_KILL_AFTER_N,
 )
@@ -153,10 +153,15 @@ class BasePipelineRunner(abc.ABC):
         # Step 5: Canary validation
         self._run_canary_validation(jobs, gather.influencer_to_category)
 
-        # Step 6: Report (including errored configs)
+        # Step 6: Report
         yield_warnings = self._stats.check_yield_warnings()
+        region_label = jobs[0].region.code.value if jobs else "UNKNOWN"
+        run_id = self._assembler.generate_run_id(region_label)
+        run_dir = RESULTS_DIR / run_id
+
         reporter = PipelineReporter()
         reporter.generate(
+            run_dir=run_dir,
             stats=self.stats,
             validation_results=self.validation_results,
             model=LLM_PROVIDER,
@@ -168,10 +173,9 @@ class BasePipelineRunner(abc.ABC):
             total_configs=len(jobs),
         )
 
-        # Step 7: Save
-        self._assembler.save_global_seeds(seeds)
-        self._assembler.save_unresolved_names(name_records)
-        self._assembler.save_report_directory(
+        # Step 7: Save all output into run directory
+        self._assembler.save_run_report(
+            run_dir=run_dir,
             seeds=seeds,
             errored_configs=errored_configs,
             name_records=name_records,
@@ -384,6 +388,18 @@ class BasePipelineRunner(abc.ABC):
                 if vr.missing:
                     logger.warning("     Missing: %s", ", ".join(vr.missing))
 
+    def _build_known_handles(
+        self,
+        influencer_to_category: list[tuple[Influencer, str]],
+    ) -> set[str]:
+        """Build set of already-resolved lowercase handles for collision detection."""
+        known: set[str] = set()
+        for inf, _cat in influencer_to_category:
+            for _plat, handle in inf.handles.items():
+                if handle:
+                    known.add(handle.lower())
+        return known
+
     def _run_deferred_name_resolution(
         self,
         *,
@@ -393,7 +409,11 @@ class BasePipelineRunner(abc.ABC):
         platform: Platform,
         influencer_to_category: list[tuple[Influencer, str]],
     ) -> list[NameMentionRecord]:
-        """Run deferred name → handle resolution if enabled.
+        """Run deferred name → handle resolution with slot recycling.
+
+        Builds a known-handles set from all gathered influencers, gets
+        per-group candidate queues from the tracker, and resolves via
+        DDG with collision-aware slot recycling.
 
         Resolved influencers are appended to influencer_to_category so they
         are included in the subsequent global dedup + canary validation.
@@ -415,17 +435,37 @@ class BasePipelineRunner(abc.ABC):
                 for m in tracker.all_names
             ]
 
+        known_handles = self._build_known_handles(influencer_to_category)
+
+        group_queues = tracker.top_reddit_names_by_group(
+            max_candidates_per_group=40,
+            min_mentions=self.name_resolution_min_mentions,
+        )
+
         svc = NameToHandleService(audit)
-        resolved_influencers, records = svc.resolve_handles_for_top_mentioned_names(
-            tracker,
+        resolved_influencers, records = svc.resolve_with_recycling(
+            group_queues=group_queues,
+            known_handles=known_handles,
             platform=platform,
             sub_name=sub_name,
-            min_mentions=self.name_resolution_min_mentions,
-            max_per_group=self.name_resolution_max_per_sub,
+            max_slots_per_group=self.name_resolution_max_per_sub,
         )
 
         for inf in resolved_influencers:
             influencer_to_category.append((inf, "NAME_RESOLUTION"))
+
+        # Append records for names that were not queued (audit completeness)
+        queued_canonicals = {r.canonical for r in records}
+        for mention in tracker.all_names:
+            if mention.canonical not in queued_canonicals:
+                records.append(NameMentionRecord(
+                    canonical=mention.canonical,
+                    variants=mention.variants,
+                    mention_count=mention.mention_count,
+                    source_types=mention.source_types,
+                    source_urls=sorted(mention.source_urls),
+                    was_searched=False,
+                ))
 
         return records
 

@@ -29,19 +29,20 @@ Usage:
 from __future__ import annotations
 
 import difflib
-from collections import defaultdict
+from collections import defaultdict, deque
 from collections.abc import Iterator
 from dataclasses import dataclass, field
 
 from config.schema import SourceType
 
 # Type aliases for bucket parallel-list elements
-VariantCounts = dict[str, int]
-StringSet = set[str]
-BucketRow = tuple[
+type VariantCounts = dict[str, int]
+type StringSet = set[str]
+type BucketRow = tuple[
     VariantCounts, bool, StringSet, StringSet,
     StringSet, StringSet, StringSet, StringSet,
 ]
+type GroupKey = tuple[str, str, str, str]  # (platform, category, sub, region)
 
 
 # ══════════════════════════════════════════════════════════════════════
@@ -139,6 +140,8 @@ class NameMentionTracker:
             if idx is not None:
                 self._searched[idx] = True
 
+    # ── Internal ───────────────────────────────────────────────────────
+
     def _build_mention(
         self,
         bucket: dict[str, int],
@@ -169,8 +172,13 @@ class NameMentionTracker:
     def all_names(self) -> list[NameMention]:
         """All name buckets, sorted by mention_count DESC."""
         result = [
-            self._build_mention(b, s, st, su, sn, p, c, r)
-            for b, s, st, su, sn, p, c, r in self._iter_buckets()
+            self._build_mention(
+                bucket, searched, source_types,
+                source_urls, sub_names, platforms, categories, regions,
+            )
+            for bucket, searched, source_types,
+                source_urls, sub_names, platforms, categories, regions
+            in self._iter_buckets()
         ]
         result.sort(key=lambda m: m.mention_count, reverse=True)
         return result
@@ -179,9 +187,14 @@ class NameMentionTracker:
     def reddit_names(self) -> list[NameMention]:
         """Buckets where "reddit" ∈ source_types, sorted by mention_count DESC."""
         result = [
-            self._build_mention(b, s, st, su, sn, p, c, r)
-            for b, s, st, su, sn, p, c, r in self._iter_buckets()
-            if SourceType.REDDIT.value in st
+            self._build_mention(
+                bucket, searched, source_types,
+                source_urls, sub_names, platforms, categories, regions,
+            )
+            for bucket, searched, source_types,
+                source_urls, sub_names, platforms, categories, regions
+            in self._iter_buckets()
+            if SourceType.REDDIT.value in source_types
         ]
         result.sort(key=lambda m: m.mention_count, reverse=True)
         return result
@@ -190,18 +203,24 @@ class NameMentionTracker:
     def non_reddit_names(self) -> list[NameMention]:
         """Buckets where "reddit" ∉ source_types, sorted by mention_count DESC."""
         result = [
-            self._build_mention(b, s, st, su, sn, p, c, r)
-            for b, s, st, su, sn, p, c, r in self._iter_buckets()
-            if SourceType.REDDIT.value not in st
+            self._build_mention(
+                bucket, searched, source_types,
+                source_urls, sub_names, platforms, categories, regions,
+            )
+            for bucket, searched, source_types,
+                source_urls, sub_names, platforms, categories, regions
+            in self._iter_buckets()
+            if SourceType.REDDIT.value not in source_types
         ]
         result.sort(key=lambda m: m.mention_count, reverse=True)
         return result
 
     def top_reddit_names(self, max_per_group: int, min_mentions: int) -> list[NameMention]:
-        """Top N reddit names per (platform, category, sub, region) group.
+        """Top N reddit-gated names per (platform, category, sub, region) group.
 
-        Uses TOTAL additive mention_count (reddit + non-reddit merged
-        via fuzzy bucket identity). Only names with count >= min_mentions qualify.
+        Candidates must have at least one reddit source (quality gate).
+        Ranked by total mention_count (reddit + listicle combined) so
+        cross-source validation boosts genuine influencers above noise.
         """
         reddit = [m for m in self.reddit_names if m.mention_count >= min_mentions]
 
@@ -226,32 +245,62 @@ class NameMentionTracker:
         selected.sort(key=lambda m: m.mention_count, reverse=True)
         return selected
 
+    def top_reddit_names_by_group(
+        self,
+        max_candidates_per_group: int,
+        min_mentions: int,
+    ) -> dict[GroupKey, deque[NameMention]]:
+        """Per-group ranked queues for slot recycling.
+
+        Returns up to max_candidates_per_group candidates per group,
+        sorted by total mention_count DESC. Reddit gate applied
+        (only names with at least one reddit source included).
+        """
+        reddit = [m for m in self.reddit_names
+                  if m.mention_count >= min_mentions]
+
+        groups: dict[GroupKey, list[NameMention]] = defaultdict(list)
+        for mention in reddit:
+            for plat in mention.platforms:
+                for cat in mention.categories:
+                    for sub in mention.sub_names:
+                        for reg in mention.regions:
+                            groups[(plat, cat, sub, reg)].append(mention)
+
+        result: dict[GroupKey, deque[NameMention]] = {}
+        for key, mentions in groups.items():
+            mentions.sort(key=lambda m: m.mention_count, reverse=True)
+            result[key] = deque(mentions[:max_candidates_per_group])
+        return result
+
     def merge(self, other: NameMentionTracker) -> None:
         """Merge another tracker's buckets into this one."""
-        for b, s, st, su, sn, p, c, r in other._iter_buckets():
-            for name, count in b.items():
+        for (bucket, searched, source_types,
+             source_urls, sub_names, platforms, categories, regions,
+        ) in other._iter_buckets():
+            for name, count in bucket.items():
                 idx = self._find_bucket(name)
                 if idx is None:
                     self._buckets.append({name: count})
-                    self._searched.append(s)
-                    self._source_types.append(set(st))
-                    self._source_urls.append(set(su))
-                    self._sub_names.append(set(sn))
-                    self._platforms.append(set(p))
-                    self._categories.append(set(c))
-                    self._regions.append(set(r))
+                    self._searched.append(searched)
+                    self._source_types.append(set(source_types))
+                    self._source_urls.append(set(source_urls))
+                    self._sub_names.append(set(sub_names))
+                    self._platforms.append(set(platforms))
+                    self._categories.append(set(categories))
+                    self._regions.append(set(regions))
                 else:
                     self._buckets[idx][name] = (
                         self._buckets[idx].get(name, 0) + count
                     )
-                    if s:
+                    if searched:
                         self._searched[idx] = True
-                    self._source_types[idx].update(st)
-                    self._source_urls[idx].update(su)
-                    self._sub_names[idx].update(sn)
-                    self._platforms[idx].update(p)
-                    self._categories[idx].update(c)
-                    self._regions[idx].update(r)
+                    self._source_types[idx].update(source_types)
+                    self._source_urls[idx].update(source_urls)
+                    self._sub_names[idx].update(sub_names)
+                    self._platforms[idx].update(platforms)
+                    self._categories[idx].update(categories)
+                    self._regions[idx].update(regions)
 
     # ── Internal helpers ────────────────────────────────────────────────
 

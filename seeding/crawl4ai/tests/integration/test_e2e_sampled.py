@@ -68,7 +68,8 @@ async def _test_e2e_sampled_async():
             patch("pipeline.AUDIT_DIR", tmp_path / "audit"),
             patch("services.crawling.CrawlService.PAGES_DIR", tmp_path / "pages"),
             patch("services.extraction.LLMExtractionService.RAW_DIR", tmp_path / "raw"),
-            patch("services.reporting.PipelineReporter.REPORTS_DIR", tmp_path / "reports"),
+            patch("base_pipeline.REPORTS_DIR", tmp_path / "reports"),
+            patch("pipeline.REPORTS_DIR", tmp_path / "reports"),
         ):
             runner = PipelineRunner(sample_n=3)
             result = await runner.run_single_url(
@@ -103,9 +104,12 @@ async def _test_e2e_sampled_async():
             assert runner.stats.total_input_tokens > 0, "No input tokens recorded"
 
             # ── Report assertions ──
-            report_files = list((tmp_path / "reports").glob("pipeline_report_*.md"))
-            assert len(report_files) == 1, f"Expected 1 report, found {len(report_files)}"
-            report_content = report_files[0].read_text()
+            report_dir = tmp_path / "reports"
+            run_dirs = [d for d in report_dir.iterdir() if d.is_dir()] if report_dir.exists() else []
+            assert len(run_dirs) == 1, f"Expected 1 run directory, got {len(run_dirs)}"
+            run_dir = run_dirs[0]
+            assert (run_dir / "report.md").exists(), "report.md not created"
+            report_content = (run_dir / "report.md").read_text()
             assert "Pipeline Report" in report_content, "Report missing header"
             assert str(runner.stats.influencers_deduped) in report_content, "Report missing dedup count"
 

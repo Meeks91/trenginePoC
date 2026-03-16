@@ -63,8 +63,8 @@ class QueryBuilder:
 
     @property
     def _inurl_clause(self) -> str:
-        """Build inurl: OR clause for strict search. Empty string for Easy."""
-        if self.difficulty == Difficulty.EASY or not self.inurl_slugs:
+        """Build inurl: OR clause for strict search. Empty if no slugs defined."""
+        if not self.inurl_slugs:
             return ""
         return " OR ".join(f"inurl:{s}" for s in self.inurl_slugs) + " "
 

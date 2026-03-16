@@ -6,7 +6,14 @@
     "yt_handle": "",
     "categories": [
       "FITNESS"
-    ]
+    ],
+    "source_urls": [
+      "http://127.0.0.1:55324/gymfluencers_uk_fitness.html"
+    ],
+    "extraction_methods": [
+      "llm"
+    ],
+    "citation_count": 1
   },
   {
     "name": "Alex Beattie",
@@ -15,7 +22,14 @@
     "yt_handle": "",
     "categories": [
       "FITNESS"
-    ]
+    ],
+    "source_urls": [
+      "http://127.0.0.1:55324/gymfluencers_uk_fitness.html"
+    ],
+    "extraction_methods": [
+      "llm"
+    ],
+    "citation_count": 1
   },
   {
     "name": "Alex Beattie",
@@ -24,7 +38,15 @@
     "yt_handle": "",
     "categories": [
       "FITNESS"
-    ]
+    ],
+    "source_urls": [
+      "http://127.0.0.1:55324/gymfluencers_uk_fitness.html"
+    ],
+    "extraction_methods": [
+      "llm",
+      "regex"
+    ],
+    "citation_count": 1
   },
   {
     "name": "Courtney Black",
@@ -33,7 +55,14 @@
     "yt_handle": "",
     "categories": [
       "FITNESS"
-    ]
+    ],
+    "source_urls": [
+      "http://127.0.0.1:55324/gymfluencers_uk_fitness.html"
+    ],
+    "extraction_methods": [
+      "llm"
+    ],
+    "citation_count": 1
   },
   {
     "name": "Courtney Black",
@@ -42,7 +71,15 @@
     "yt_handle": "",
     "categories": [
       "FITNESS"
-    ]
+    ],
+    "source_urls": [
+      "http://127.0.0.1:55324/gymfluencers_uk_fitness.html"
+    ],
+    "extraction_methods": [
+      "llm",
+      "regex"
+    ],
+    "citation_count": 1
   },
   {
     "name": "Michael Griffiths",
@@ -51,7 +88,15 @@
     "yt_handle": "mac_griffiths",
     "categories": [
       "FITNESS"
-    ]
+    ],
+    "source_urls": [
+      "http://127.0.0.1:55324/gymfluencers_uk_fitness.html"
+    ],
+    "extraction_methods": [
+      "llm",
+      "regex"
+    ],
+    "citation_count": 1
   },
   {
     "name": "Emma Storey-Gordon",
@@ -60,7 +105,14 @@
     "yt_handle": "esgfitness",
     "categories": [
       "FITNESS"
-    ]
+    ],
+    "source_urls": [
+      "http://127.0.0.1:55324/gymfluencers_uk_fitness.html"
+    ],
+    "extraction_methods": [
+      "llm"
+    ],
+    "citation_count": 1
   },
   {
     "name": "Emma Storey-Gordon",
@@ -69,7 +121,15 @@
     "yt_handle": "esgfitness",
     "categories": [
       "FITNESS"
-    ]
+    ],
+    "source_urls": [
+      "http://127.0.0.1:55324/gymfluencers_uk_fitness.html"
+    ],
+    "extraction_methods": [
+      "llm",
+      "regex"
+    ],
+    "citation_count": 1
   },
   {
     "name": "Lisa Cross",
@@ -78,7 +138,15 @@
     "yt_handle": "",
     "categories": [
       "FITNESS"
-    ]
+    ],
+    "source_urls": [
+      "http://127.0.0.1:55324/gymfluencers_uk_fitness.html"
+    ],
+    "extraction_methods": [
+      "llm",
+      "regex"
+    ],
+    "citation_count": 1
   },
   {
     "name": "Adam Maxted",
@@ -87,7 +155,15 @@
     "yt_handle": "adammaxted2262",
     "categories": [
       "FITNESS"
-    ]
+    ],
+    "source_urls": [
+      "http://127.0.0.1:55324/gymfluencers_uk_fitness.html"
+    ],
+    "extraction_methods": [
+      "llm",
+      "regex"
+    ],
+    "citation_count": 1
   },
   {
     "name": "Victoria Niamh",
@@ -96,7 +172,15 @@
     "yt_handle": "",
     "categories": [
       "FITNESS"
-    ]
+    ],
+    "source_urls": [
+      "http://127.0.0.1:55324/gymfluencers_uk_fitness.html"
+    ],
+    "extraction_methods": [
+      "llm",
+      "regex"
+    ],
+    "citation_count": 1
   },
   {
     "name": "The",
@@ -105,7 +189,14 @@
     "yt_handle": "the",
     "categories": [
       "FITNESS"
-    ]
+    ],
+    "source_urls": [
+      "http://127.0.0.1:55324/gymfluencers_uk_fitness.html"
+    ],
+    "extraction_methods": [
+      "regex"
+    ],
+    "citation_count": 1
   },
   {
     "name": "Lucy",
@@ -114,7 +205,14 @@
     "yt_handle": "lucy",
     "categories": [
       "FITNESS"
-    ]
+    ],
+    "source_urls": [
+      "http://127.0.0.1:55324/gymfluencers_uk_fitness.html"
+    ],
+    "extraction_methods": [
+      "regex"
+    ],
+    "citation_count": 1
   },
   {
     "name": "Courtney",
@@ -123,7 +221,14 @@
     "yt_handle": "",
     "categories": [
       "FITNESS"
-    ]
+    ],
+    "source_urls": [
+      "http://127.0.0.1:55324/gymfluencers_uk_fitness.html"
+    ],
+    "extraction_methods": [
+      "regex"
+    ],
+    "citation_count": 1
   },
   {
     "name": "Michael",
@@ -132,7 +237,14 @@
     "yt_handle": "michael",
     "categories": [
       "FITNESS"
-    ]
+    ],
+    "source_urls": [
+      "http://127.0.0.1:55324/gymfluencers_uk_fitness.html"
+    ],
+    "extraction_methods": [
+      "regex"
+    ],
+    "citation_count": 1
   },
   {
     "name": "adammaxted",
@@ -141,7 +253,14 @@
     "yt_handle": "adammaxted",
     "categories": [
       "FITNESS"
-    ]
+    ],
+    "source_urls": [
+      "http://127.0.0.1:55324/gymfluencers_uk_fitness.html"
+    ],
+    "extraction_methods": [
+      "regex"
+    ],
+    "citation_count": 1
   },
   {
     "name": "Sean",
@@ -150,7 +269,14 @@
     "yt_handle": "sean",
     "categories": [
       "FITNESS"
-    ]
+    ],
+    "source_urls": [
+      "http://127.0.0.1:55324/gymfluencers_uk_fitness.html"
+    ],
+    "extraction_methods": [
+      "regex"
+    ],
+    "citation_count": 1
   },
   {
     "name": "seancaseyfitness111",
@@ -159,7 +285,10 @@
     "yt_handle": "seancaseyfitness111",
     "categories": [
       "FITNESS"
-    ]
+    ],
+    "source_urls": [],
+    "extraction_methods": [],
+    "citation_count": 0
   },
   {
     "name": "LucyDavisFit",
@@ -168,7 +297,10 @@
     "yt_handle": "lucydavisfit",
     "categories": [
       "FITNESS"
-    ]
+    ],
+    "source_urls": [],
+    "extraction_methods": [],
+    "citation_count": 0
   },
   {
     "name": "TheBodyCoachTV",
@@ -177,6 +309,9 @@
     "yt_handle": "thebodycoachtv",
     "categories": [
       "FITNESS"
-    ]
+    ],
+    "source_urls": [],
+    "extraction_methods": [],
+    "citation_count": 0
   }
 ]

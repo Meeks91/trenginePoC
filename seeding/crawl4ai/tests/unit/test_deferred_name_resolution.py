@@ -57,15 +57,15 @@ def _build_tracker(
 
 
 # ══════════════════════════════════════════════════════════════════════
-# Resolution disabled by default
+# Resolution disabled explicitly
 # ══════════════════════════════════════════════════════════════════════
 
 class TestResolutionDisabled:
-    """When name_resolution=False (the default), no DDG calls fire."""
+    """When name_resolution=False (explicit), no DDG calls fire."""
 
-    def test_default_resolution_is_off(self):
+    def test_default_resolution_is_on(self):
         runner = PipelineRunner()
-        assert runner.name_resolution is False
+        assert runner.name_resolution is True
 
     def test_disabled_returns_records_without_resolution(self):
         runner = PipelineRunner(name_resolution=False)
@@ -292,7 +292,7 @@ class TestCLIFlagPropagation:
 
     def test_name_resolution_flag_defaults(self):
         runner = PipelineRunner()
-        assert runner.name_resolution is False
+        assert runner.name_resolution is True
         assert runner.name_resolution_min_mentions == 2
 
     def test_name_resolution_flag_override(self):
@@ -306,7 +306,7 @@ class TestCLIFlagPropagation:
     def test_phase_pipeline_flag_defaults(self):
         from phase_pipeline import PhasePipelineRunner
         runner = PhasePipelineRunner()
-        assert runner.name_resolution is False
+        assert runner.name_resolution is True
         assert runner.name_resolution_min_mentions == 2
 
     def test_phase_pipeline_flag_override(self):

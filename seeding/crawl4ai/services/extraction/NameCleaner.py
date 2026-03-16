@@ -61,10 +61,35 @@ _GENERIC_BLOCKLIST = frozenset({
     "fake followers", "fake follower check",
     "engagement rate calculator", "engagement rate",
     "influencer hero", "influencer search", "influencer discovery",
+    # Scrape artifact names — section headings/labels extracted as names
+    "table of contents", "read more", "engagement rate benchmark",
+    "why it works", "execution", "trust & transparency",
+    "trust and transparency", "company", "videos",
+    "strength training:", "pilates:", "free webinar",
+    "people brands and", "gaming and esport",
+})
+
+# Non-content-creator celebrities — NOT Arnold, The Rock, Gordon Ramsay
+_CELEBRITY_BLOCKLIST = frozenset({
+    "taylor swift", "beyonce", "rihanna", "ariana grande",
+    "billie eilish", "dua lipa", "shakira", "cardi b",
+    "olivia rodrigo", "lady gaga", "justin bieber",
+    "drake", "neymar", "david beckham", "will smith",
+    "emma watson", "harry styles", "adele",
+    "robert downey jr", "tom holland", "narendra modi",
+    "bts", "jack black", "rosalia",
+    "cristiano ronaldo", "lionel messi",
+    "daft punk", "take my breath", "love theme",
+    "pewdiepie", "mr beast", "samsung galaxy",
+    "shreya ghoshal", "neha kakkar", "diljit dosanjh",
+    "selena gomez", "kim kardashian", "kylie jenner",
 })
 
 # Combined lowercase set for efficient lookup
-_ALL_NON_PERSON = _BRAND_BLOCKLIST | _COUNTRY_BLOCKLIST | _NEWS_ORG_BLOCKLIST | _GENERIC_BLOCKLIST
+_ALL_NON_PERSON = (
+    _BRAND_BLOCKLIST | _COUNTRY_BLOCKLIST | _NEWS_ORG_BLOCKLIST
+    | _GENERIC_BLOCKLIST | _CELEBRITY_BLOCKLIST
+)
 
 # LinkedIn slug pattern: first-last-1234567
 _LINKEDIN_SLUG_RE = re.compile(r'^[a-z]+-[a-z]+(?:-[a-z0-9]+)*-\d{4,}$')

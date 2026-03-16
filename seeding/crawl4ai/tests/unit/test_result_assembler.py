@@ -73,7 +73,7 @@ class TestBuildSourceResults:
             "https://b.com": [],
         }
         sources = assembler.build_source_results(pages, url_to_inf)
-        assert len(sources) == 2  # failed page excluded
+        assert len(sources) == 2
         assert sources[0].url == "https://a.com"
         assert len(sources[0].influencers) == 1
         assert sources[1].url == "https://b.com"
@@ -87,175 +87,23 @@ class TestBuildSourceResults:
         assert sources[0].influencers == []
 
 
-class TestSavePipelineOutput:
-    """Tests for ResultAssembler.save_pipeline_output()."""
+class TestGenerateRunId:
+    """Tests for ResultAssembler.generate_run_id()."""
 
-    def test_saves_output_json(self):
-        with tempfile.TemporaryDirectory() as tmp:
-            results_dir = Path(tmp) / "results"
-            with patch("services.reporting.ResultAssembler.RESULTS_DIR", results_dir):
-                assembler = ResultAssembler()
-                output = [
-                    RegionResult(
-                        region="US",
-                        platforms={
-                            "Instagram": {
-                                "FITNESS": {
-                                    "Fitness": SubResult(is_top_level=True),
-                                }
-                            }
-                        },
-                    )
-                ]
-                path = assembler.save_pipeline_output(output)
-                assert path.exists()
-                data = json.loads(path.read_text())
-                assert len(data) == 1
-                assert data[0]["region"] == "US"
+    def test_format_includes_region(self):
+        run_id = ResultAssembler.generate_run_id("US")
+        assert run_id.endswith("_US")
 
+    def test_format_uses_12_hour_clock(self):
+        run_id = ResultAssembler.generate_run_id("UK")
+        parts = run_id.split("_")
+        assert len(parts) == 3
+        assert len(parts[0]) == 10  # YYYY-MM-DD
+        assert "am" in parts[1] or "pm" in parts[1]
+        assert "." in parts[1]  # H.MM separator
+        assert parts[2] == "UK"
 
-# ── Fixtures for unresolved names tests ──
-
-def _sample_records() -> list[NameMentionRecord]:
-    """Mix of resolved and unresolved records."""
-    return [
-        NameMentionRecord(
-            canonical="Joe Wicks",
-            variants=["joe wicks"],
-            mention_count=5,
-            source_types=["llm"],
-            source_urls=["https://example.com/page1"],
-            was_searched=True,
-            resolved_handle="thebodycoach",
-            resolved_platform="Instagram",
-        ),
-        NameMentionRecord(
-            canonical="Lucy Davis",
-            variants=["lucy davis"],
-            mention_count=3,
-            source_types=["llm"],
-            source_urls=["https://example.com/page1", "https://example.com/page2"],
-            was_searched=True,
-            resolved_handle="",
-            resolved_platform="",
-        ),
-        NameMentionRecord(
-            canonical="Sean Casey",
-            variants=["sean casey"],
-            mention_count=1,
-            source_types=["llm"],
-            source_urls=["https://example.com/page1"],
-            was_searched=False,
-            resolved_handle="",
-            resolved_platform="",
-        ),
-    ]
-
-
-class TestSaveUnresolvedNames:
-    """Tests for ResultAssembler.save_unresolved_names()."""
-
-    def test_filters_to_unresolved_only(self):
-        """Only records with no resolved handle are saved."""
-        with tempfile.TemporaryDirectory() as tmp:
-            with patch("services.reporting.ResultAssembler.RESULTS_DIR", Path(tmp)):
-                assembler = ResultAssembler()
-                path = assembler.save_unresolved_names(_sample_records())
-                data = json.loads(path.read_text())
-                assert len(data) == 2
-                names = {r["canonical"] for r in data}
-                assert names == {"Lucy Davis", "Sean Casey"}
-
-    def test_resolved_records_excluded(self):
-        """Joe Wicks (resolved) must not appear in output."""
-        with tempfile.TemporaryDirectory() as tmp:
-            with patch("services.reporting.ResultAssembler.RESULTS_DIR", Path(tmp)):
-                assembler = ResultAssembler()
-                path = assembler.save_unresolved_names(_sample_records())
-                data = json.loads(path.read_text())
-                assert "Joe Wicks" not in [r["canonical"] for r in data]
-
-    def test_preserves_all_fields(self):
-        """Each record in JSON has all NameMentionRecord fields."""
-        expected_fields = {
-            "canonical", "variants", "mention_count",
-            "source_types", "source_urls",
-            "was_searched", "resolved_handle", "resolved_platform",
-        }
-        with tempfile.TemporaryDirectory() as tmp:
-            with patch("services.reporting.ResultAssembler.RESULTS_DIR", Path(tmp)):
-                assembler = ResultAssembler()
-                path = assembler.save_unresolved_names(_sample_records())
-                data = json.loads(path.read_text())
-                for record in data:
-                    assert set(record.keys()) == expected_fields
-
-    def test_mention_count_preserved(self):
-        """Mention counts and search status transfer correctly."""
-        with tempfile.TemporaryDirectory() as tmp:
-            with patch("services.reporting.ResultAssembler.RESULTS_DIR", Path(tmp)):
-                assembler = ResultAssembler()
-                path = assembler.save_unresolved_names(_sample_records())
-                data = json.loads(path.read_text())
-                lucy = next(r for r in data if r["canonical"] == "Lucy Davis")
-                assert lucy["mention_count"] == 3
-                assert lucy["was_searched"] is True
-                assert len(lucy["source_urls"]) == 2
-                sean = next(r for r in data if r["canonical"] == "Sean Casey")
-                assert sean["mention_count"] == 1
-                assert sean["was_searched"] is False
-
-    def test_empty_input_produces_empty_json(self):
-        """No records → empty JSON array."""
-        with tempfile.TemporaryDirectory() as tmp:
-            with patch("services.reporting.ResultAssembler.RESULTS_DIR", Path(tmp)):
-                assembler = ResultAssembler()
-                path = assembler.save_unresolved_names([])
-                assert json.loads(path.read_text()) == []
-
-    def test_all_resolved_produces_empty_json(self):
-        """If all records are resolved, output is empty array."""
-        records = [
-            NameMentionRecord(
-                canonical="Joe Wicks",
-                mention_count=5,
-                was_searched=True,
-                resolved_handle="thebodycoach",
-                resolved_platform="Instagram",
-            ),
-        ]
-        with tempfile.TemporaryDirectory() as tmp:
-            with patch("services.reporting.ResultAssembler.RESULTS_DIR", Path(tmp)):
-                assembler = ResultAssembler()
-                path = assembler.save_unresolved_names(records)
-                assert json.loads(path.read_text()) == []
-
-    def test_output_filename(self):
-        """Output file is named unresolved_names.json."""
-        with tempfile.TemporaryDirectory() as tmp:
-            with patch("services.reporting.ResultAssembler.RESULTS_DIR", Path(tmp)):
-                assembler = ResultAssembler()
-                path = assembler.save_unresolved_names(_sample_records())
-                assert path.name == "unresolved_names.json"
-                assert path.parent == Path(tmp)
-
-    def test_schema_shape(self):
-        """Each record has correct field types, not just names."""
-        with tempfile.TemporaryDirectory() as tmp:
-            with patch("services.reporting.ResultAssembler.RESULTS_DIR", Path(tmp)):
-                assembler = ResultAssembler()
-                path = assembler.save_unresolved_names(_sample_records())
-                data = json.loads(path.read_text())
-                for record in data:
-                    assert isinstance(record["canonical"], str)
-                    assert isinstance(record["variants"], list)
-                    assert all(isinstance(v, str) for v in record["variants"])
-                    assert isinstance(record["mention_count"], int)
-                    assert record["mention_count"] > 0
-                    assert isinstance(record["source_types"], list)
-                    assert isinstance(record["source_urls"], list)
-                    assert all(isinstance(u, str) for u in record["source_urls"])
-                    assert isinstance(record["was_searched"], bool)
-                    assert isinstance(record["resolved_handle"], str)
-                    assert record["resolved_handle"] == ""
-                    assert isinstance(record["resolved_platform"], str)
+    def test_different_regions_produce_different_ids(self):
+        us_id = ResultAssembler.generate_run_id("US")
+        uk_id = ResultAssembler.generate_run_id("UK")
+        assert us_id != uk_id

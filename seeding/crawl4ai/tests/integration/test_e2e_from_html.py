@@ -237,9 +237,10 @@ async def test_e2e_from_html():
             with (
                 patch("services.crawling.CrawlService.PAGES_DIR", tmp_path / "pages"),
                 patch("services.extraction.LLMExtractionService.RAW_DIR", tmp_path / "raw"),
-                patch("services.reporting.PipelineReporter.REPORTS_DIR", tmp_path / "reports"),
                 patch("services.reporting.ResultAssembler.REPORTS_DIR", tmp_path / "reports"),
                 patch("services.reporting.ResultAssembler.RESULTS_DIR", tmp_path / "results"),
+                patch("base_pipeline.RESULTS_DIR", tmp_path / "results"),
+                patch("base_pipeline.REPORTS_DIR", tmp_path / "reports"),
                 patch("base_pipeline.AUDIT_DIR", tmp_path / "audit"),
             ):
                 audit = AuditLog(tmp_path / "audit", "e2e_html_test")
@@ -261,20 +262,30 @@ async def test_e2e_from_html():
 
                 # ── Compare against golden fixtures ──
 
-                # 1. global_seeds.json
-                actual_seeds = _sort_records(json.loads(
-                    (tmp_path / "results" / "global_seeds.json").read_text()
+                # Find run directory (results/<run_id>/)
+                results_dir = tmp_path / "results"
+                run_dirs = [d for d in results_dir.iterdir() if d.is_dir()]
+                assert len(run_dirs) == 1, (
+                    f"Expected 1 run directory, got {len(run_dirs)}"
+                )
+                run_dir = run_dirs[0]
+
+                # 1. seeds.json (was global_seeds.json)
+                actual_seeds = _sort_records(_normalize_urls(json.loads(
+                    (run_dir / "seeds.json").read_text()
+                )))
+                expected_seeds = _sort_records(_normalize_urls(
+                    _load_golden("global_seeds.json")
                 ))
-                expected_seeds = _sort_records(_load_golden("global_seeds.json"))
                 assert actual_seeds == expected_seeds, (
-                    f"global_seeds.json mismatch:\n"
+                    f"seeds.json mismatch:\n"
                     f"  actual count: {len(actual_seeds)}\n"
                     f"  expected count: {len(expected_seeds)}"
                 )
 
                 # 2. unresolved_names.json
                 actual_unresolved = _sort_records(_normalize_urls(json.loads(
-                    (tmp_path / "results" / "unresolved_names.json").read_text()
+                    (run_dir / "unresolved_names.json").read_text()
                 )))
                 expected_unresolved = _sort_records(_normalize_urls(
                     _load_golden("unresolved_names.json")
@@ -286,21 +297,20 @@ async def test_e2e_from_html():
                 )
 
                 # 3. output.json (seeds as dicts)
-                actual_output = _sort_records([s.to_dict() for s in seeds])
-                expected_output = _sort_records(_load_golden("output.json"))
+                actual_output = _sort_records(_normalize_urls(
+                    [s.to_dict() for s in seeds]
+                ))
+                expected_output = _sort_records(_normalize_urls(
+                    _load_golden("output.json")
+                ))
                 assert actual_output == expected_output, (
                     f"output.json mismatch:\n"
                     f"  actual count: {len(actual_output)}\n"
                     f"  expected count: {len(expected_output)}"
                 )
 
-                # 4. report.md (timestamp-stripped)
-                report_dir = tmp_path / "reports"
-                report_files = list(report_dir.glob("*.md"))
-                assert len(report_files) == 1, (
-                    f"Expected 1 report file, got {len(report_files)}"
-                )
-                actual_report = _strip_timestamps(report_files[0].read_text())
+                # 4. report.md
+                actual_report = _strip_timestamps((run_dir / "report.md").read_text())
                 expected_report = _load_golden("report.md")
                 assert actual_report == expected_report, "report.md content mismatch"
 
@@ -321,9 +331,9 @@ async def test_e2e_from_html():
                     f"  expected: {expected_vr}"
                 )
 
-                # 6. Consolidated report dir has all files
-                assert (report_dir / "global_seeds.json").exists()
-                assert (report_dir / "unresolved_names.json").exists()
+                # 6. Run directory has all files
+                assert (run_dir / "seeds.json").exists()
+                assert (run_dir / "unresolved_names.json").exists()
 
                 # 7. Audit trail
                 assert len(audit.entries) > 0, "Audit trail is empty"

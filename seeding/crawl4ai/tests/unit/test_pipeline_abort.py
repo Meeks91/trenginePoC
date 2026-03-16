@@ -121,8 +121,8 @@ class TestPipelineAbort:
 
                 asyncio.run(runner.run([_make_job("FailedSub")]))
 
-            mock_assembler.save_report_directory.assert_called_once()
-            call_kwargs = mock_assembler.save_report_directory.call_args
+            mock_assembler.save_run_report.assert_called_once()
+            call_kwargs = mock_assembler.save_run_report.call_args
             passed_errored = call_kwargs.kwargs.get("errored_configs", [])
             assert len(passed_errored) == 1
 

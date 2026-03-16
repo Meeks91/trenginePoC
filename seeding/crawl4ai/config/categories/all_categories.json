@@ -35,7 +35,19 @@
         ],
         "platformNotes": "Instagram triggers agency directories. YouTube/TikTok rely heavier on community forums and listicles.",
         "regionNotes": "Both UK and US return abundant results. Region pulls localized marketing agency lists effectively.",
-        "difficulty": "Easy"
+        "difficulty": "Easy",
+        "strictSlugs": [
+          "fitness",
+          "workout",
+          "gym",
+          "trainer",
+          "exercise",
+          "muscle",
+          "hypertrophy",
+          "power",
+          "shape",
+          "work-out"
+        ]
       },
       {
         "subName": "Calisthenics",
@@ -58,7 +70,16 @@
         ],
         "platformNotes": "Reddit threads heavily prioritize YouTube for full-length tutorials.",
         "regionNotes": "UK thinner than US but still viable. This niche leans global — community discussions rarely focus on one region.",
-        "difficulty": "Easy"
+        "difficulty": "Easy",
+        "strictSlugs": [
+          "calisthenics",
+          "bodyweight",
+          "bar",
+          "pullup",
+          "pushup",
+          "street-workout",
+          "gymnastics"
+        ]
       },
       {
         "subName": "Science-Based Training",
@@ -111,7 +132,17 @@
         ],
         "platformNotes": "Instagram frequently surfaces for meet recaps and single heavy lifts.",
         "regionNotes": "US much richer than UK. Both return viable results.",
-        "difficulty": "Easy"
+        "difficulty": "Easy",
+        "strictSlugs": [
+          "powerlifting",
+          "strength",
+          "deadlift",
+          "squat",
+          "bench",
+          "barbell",
+          "strongman",
+          "power"
+        ]
       },
       {
         "subName": "Women's Fitness",
@@ -135,7 +166,17 @@
         ],
         "platformNotes": "Must use 'female fitness' or 'gym influencers' — 'women's fitness' returns generic wellness content.",
         "regionNotes": "Both UK and US are highly abundant.",
-        "difficulty": "Easy"
+        "difficulty": "Easy",
+        "strictSlugs": [
+          "fitness",
+          "women",
+          "female",
+          "workout",
+          "gym",
+          "shape",
+          "tone",
+          "glute"
+        ]
       },
       {
         "subName": "Yoga / Mobility",
@@ -157,7 +198,16 @@
         ],
         "platformNotes": "Search splits between full-length follow-along classes (YouTube) and quick flows (TikTok/IG).",
         "regionNotes": "Both UK and US abundant. Let yoga dominate — 'mobility' alone is too thin.",
-        "difficulty": "Easy"
+        "difficulty": "Easy",
+        "strictSlugs": [
+          "yoga",
+          "mobility",
+          "flexibility",
+          "stretch",
+          "pilates",
+          "mindful",
+          "flow"
+        ]
       }
     ]
   },
@@ -193,7 +243,18 @@
         ],
         "platformNotes": "YouTube returns long-form chefs. IG/TikTok return fast-paced aesthetic cooks.",
         "regionNotes": "Both UK and US return rich results. Localized marketing agency lists surface well with region.",
-        "difficulty": "Easy"
+        "difficulty": "Easy",
+        "strictSlugs": [
+          "food",
+          "cooking",
+          "recipe",
+          "chef",
+          "kitchen",
+          "meal",
+          "cook",
+          "baking",
+          "cuisine"
+        ]
       },
       {
         "subName": "Quick Recipes",
@@ -213,7 +274,17 @@
         ],
         "platformNotes": "YouTube indexes heavily for bulk prep. Short-form focuses on 15-minute daily meals.",
         "regionNotes": "Both UK and US return solid results. No major difference with or without region.",
-        "difficulty": "Easy"
+        "difficulty": "Easy",
+        "strictSlugs": [
+          "recipe",
+          "quick",
+          "easy",
+          "minute",
+          "meal-prep",
+          "weeknight",
+          "dinner",
+          "lunch"
+        ]
       },
       {
         "subName": "Protein / Macros",
@@ -261,7 +332,17 @@
         ],
         "platformNotes": "Overlaps with registered dietitians on IG. YouTube favors 'What I Eat in a Day' format.",
         "regionNotes": "Diet trends fluctuate by region — UK and US have different popular diets, both return well.",
-        "difficulty": "Easy"
+        "difficulty": "Easy",
+        "strictSlugs": [
+          "healthy",
+          "diet",
+          "clean-eating",
+          "nutrition",
+          "vegan",
+          "keto",
+          "whole",
+          "plant-based"
+        ]
       },
       {
         "subName": "Restaurant Reviews",
@@ -316,7 +397,16 @@
         ],
         "platformNotes": "'Vloggers' triggers YouTube long-form docs. 'Creators' triggers quick TikTok bites.",
         "regionNotes": "Highly region-dependent — street food culture differs massively by country. Region is essential.",
-        "difficulty": "Easy"
+        "difficulty": "Easy",
+        "strictSlugs": [
+          "street-food",
+          "food-tour",
+          "food-truck",
+          "hawker",
+          "market",
+          "vendor",
+          "eats"
+        ]
       }
     ]
   },
@@ -526,7 +616,17 @@
         ],
         "platformNotes": "Instagram and TikTok dominate heavily. YouTube for long-form tutorials and hauls.",
         "regionNotes": "Regional searches perfectly isolate local PR lists and brand ambassadors. Both UK and US very rich.",
-        "difficulty": "Easy"
+        "difficulty": "Easy",
+        "strictSlugs": [
+          "beauty",
+          "makeup",
+          "skincare",
+          "cosmetic",
+          "routine",
+          "glow",
+          "look",
+          "foundation"
+        ]
       },
       {
         "subName": "Makeup Tutorials",
@@ -545,7 +645,17 @@
         ],
         "platformNotes": "'MUA' (Makeup Artist) is a crucial keyword for Instagram and TikTok searches.",
         "regionNotes": "Product availability varies by region — UK vs US drugstore brands differ. Both return well.",
-        "difficulty": "Easy"
+        "difficulty": "Easy",
+        "strictSlugs": [
+          "makeup",
+          "tutorial",
+          "look",
+          "contour",
+          "eyeshadow",
+          "lipstick",
+          "glam",
+          "concealer"
+        ]
       },
       {
         "subName": "Skincare Routines",
@@ -565,7 +675,17 @@
         ],
         "platformNotes": "TikTok drives rapid viral trends. YouTube is preferred for active ingredient deep-dives.",
         "regionNotes": "Highlights local dermatologists and region-specific product availability. Both UK and US rich.",
-        "difficulty": "Easy"
+        "difficulty": "Easy",
+        "strictSlugs": [
+          "skincare",
+          "routine",
+          "serum",
+          "moisturizer",
+          "cleanser",
+          "acne",
+          "spf",
+          "retinol"
+        ]
       },
       {
         "subName": "Haircare",
@@ -583,7 +703,17 @@
         ],
         "platformNotes": "Instagram thrives on visual transformations. TikTok favors quick maintenance tips.",
         "regionNotes": "Both UK and US return excellent results.",
-        "difficulty": "Easy"
+        "difficulty": "Easy",
+        "strictSlugs": [
+          "haircare",
+          "hair",
+          "curly",
+          "straight",
+          "color",
+          "shampoo",
+          "styling",
+          "braid"
+        ]
       },
       {
         "subName": "Budget / Dupes",
@@ -672,7 +802,16 @@
         ],
         "platformNotes": "YouTube favors cinematic tech reviews. TikTok favors rapid-fire unboxings.",
         "regionNotes": "Separates massive global creators from regional PR. Both UK and US return well, but US is significantly richer.",
-        "difficulty": "Easy"
+        "difficulty": "Easy",
+        "strictSlugs": [
+          "tech",
+          "technology",
+          "gadget",
+          "review",
+          "unboxing",
+          "device",
+          "gear"
+        ]
       },
       {
         "subName": "Smartphones",
@@ -693,7 +832,17 @@
         ],
         "platformNotes": "TikTok focuses heavily on camera tests and comparisons. YouTube on full spec deep-dives.",
         "regionNotes": "Brand availability varies massively by region (e.g. carrier-locked phones). Region is important here.",
-        "difficulty": "Easy"
+        "difficulty": "Easy",
+        "strictSlugs": [
+          "smartphone",
+          "phone",
+          "iphone",
+          "android",
+          "samsung",
+          "pixel",
+          "mobile",
+          "camera"
+        ]
       },
       {
         "subName": "Laptops & Desktop Reviews",
@@ -777,7 +926,16 @@
         ],
         "platformNotes": "TikTok dominates with '3 apps you need' hooks. YouTube for in-depth walkthroughs.",
         "regionNotes": "Regional SaaS tools and apps differ by market — some tools are US-only or UK-focused.",
-        "difficulty": "Easy"
+        "difficulty": "Easy",
+        "strictSlugs": [
+          "app",
+          "software",
+          "productivity",
+          "tool",
+          "ios",
+          "android",
+          "saas"
+        ]
       },
       {
         "subName": "Wearables / Smart Home",
@@ -799,7 +957,17 @@
         ],
         "platformNotes": "Instagram and TikTok dominate for aesthetic 'smart home setup' showcases.",
         "regionNotes": "Smart home protocols and electrical standards are region-locked (e.g. Matter, Z-Wave frequencies). Region matters.",
-        "difficulty": "Easy"
+        "difficulty": "Easy",
+        "strictSlugs": [
+          "wearable",
+          "smartwatch",
+          "smart-home",
+          "alexa",
+          "ring",
+          "nest",
+          "iot",
+          "watch"
+        ]
       }
     ]
   },
@@ -828,7 +996,16 @@
         ],
         "platformNotes": "TikTok/Instagram surface quick-tip creators; YouTube surfaces deep-dive analysts.",
         "regionNotes": "Both UK and US return rich results. Localized marketing agency lists and PR roundups surface well with region.",
-        "difficulty": "Easy"
+        "difficulty": "Easy",
+        "strictSlugs": [
+          "business",
+          "finance",
+          "money",
+          "wealth",
+          "income",
+          "entrepreneur",
+          "financial"
+        ]
       },
       {
         "subName": "Personal Finance / Saving",
@@ -849,7 +1026,16 @@
         ],
         "platformNotes": "Reddit heavily prefers the term 'creators' or 'channels' over 'influencers' (which communities often distrust).",
         "regionNotes": "Tax laws and saving vehicles (ISA vs. Roth IRA) are strictly region-locked. Region is essential here.",
-        "difficulty": "Easy"
+        "difficulty": "Easy",
+        "strictSlugs": [
+          "personal-finance",
+          "saving",
+          "budget",
+          "debt",
+          "credit",
+          "frugal",
+          "money"
+        ]
       },
       {
         "subName": "Investing",
@@ -1021,7 +1207,18 @@
         ],
         "platformNotes": "TikTok dominates for short-form, rapid-fire hacks. YouTube is better for long-form 'testing viral hacks' videos.",
         "regionNotes": "Life hacks often depend on regionally available products or store chains. Both UK and US return well.",
-        "difficulty": "Easy"
+        "difficulty": "Easy",
+        "strictSlugs": [
+          "life-hack",
+          "hack",
+          "tip",
+          "trick",
+          "lifehack",
+          "productivity",
+          "routine",
+          "learnt",
+          "save"
+        ]
       },
       {
         "subName": "Money Saving / Budget Hacks",
@@ -1043,7 +1240,17 @@
         ],
         "platformNotes": "TikTok is the absolute king of quick money-saving tips. YouTube for full budget breakdowns and 'no spend' challenges.",
         "regionNotes": "Currency, tax systems, and store availability are strictly regional. Region essential.",
-        "difficulty": "Easy"
+        "difficulty": "Easy",
+        "strictSlugs": [
+          "money-saving",
+          "budget",
+          "frugal",
+          "coupon",
+          "deal",
+          "discount",
+          "save",
+          "learnt"
+        ]
       },
       {
         "subName": "CleanTok / Cleaning",
@@ -1066,7 +1273,18 @@
         ],
         "platformNotes": "TikTok is THE platform for CleanTok (#CleanTok 71B+ views). Instagram for aesthetic 'before and after' content.",
         "regionNotes": "Cleaning products and brands differ massively by region (e.g. Mrs Hinch UK vs. Go Clean Co US). Region important.",
-        "difficulty": "Easy"
+        "difficulty": "Easy",
+        "strictSlugs": [
+          "cleaning",
+          "clean",
+          "cleantok",
+          "organize",
+          "tidy",
+          "laundry",
+          "home",
+          "learnt",
+          "save"
+        ]
       },
       {
         "subName": "Home Organisation / Decluttering",
@@ -1088,7 +1306,18 @@
         ],
         "platformNotes": "Instagram and TikTok dominate for satisfying 'before and after' transformations. YouTube for full room makeovers.",
         "regionNotes": "Storage products (IKEA, Target, etc.) are region-specific. Both UK and US return well.",
-        "difficulty": "Easy"
+        "difficulty": "Easy",
+        "strictSlugs": [
+          "organize",
+          "declutter",
+          "storage",
+          "minimalist",
+          "konmari",
+          "home",
+          "closet",
+          "learnt",
+          "save"
+        ]
       },
       {
         "subName": "DIY / Home Repair",
@@ -1139,7 +1368,18 @@
         ],
         "platformNotes": "TikTok for viral quick tips. YouTube for structured productivity systems and morning routines.",
         "regionNotes": "Productivity tools and apps can be region-specific. Both UK and US return well.",
-        "difficulty": "Easy"
+        "difficulty": "Easy",
+        "strictSlugs": [
+          "productivity",
+          "routine",
+          "morning",
+          "habit",
+          "planner",
+          "journal",
+          "focus",
+          "learnt",
+          "save"
+        ]
       }
     ]
   },
@@ -1171,7 +1411,15 @@
         ],
         "platformNotes": "YouTube completely dominates the concept of 'reaction channels.' TikTok is primarily known for 'duets' and 'stitches' rather than full reactions.",
         "regionNotes": "Both UK and US return useful results, though the biggest reactors tend to be globally recognized. Region helps surface local-language creators.",
-        "difficulty": "Easy"
+        "difficulty": "Easy",
+        "strictSlugs": [
+          "reaction",
+          "react",
+          "reacts",
+          "reactor",
+          "first-time",
+          "watching"
+        ]
       },
       {
         "subName": "Film / TV Reactions",
@@ -1195,7 +1443,16 @@
         ],
         "platformNotes": "YouTube is mandatory here because of copyright constraints and the need for long-form picture-in-picture commentary.",
         "regionNotes": "Audiences frequently watch creators from around the world for diverse cultural perspectives on Western cinema. Region still useful for local-language creators.",
-        "difficulty": "Easy"
+        "difficulty": "Easy",
+        "strictSlugs": [
+          "reaction",
+          "movie",
+          "film",
+          "tv",
+          "trailer",
+          "scene",
+          "watching"
+        ]
       },
       {
         "subName": "Music Reactions",
@@ -1271,7 +1528,15 @@
         ],
         "platformNotes": "TikTok is the absolute king of the 'trying weird food' reaction format.",
         "regionNotes": "Fast-food menus and grocery store snacks differ wildly by region — makes this highly localized. Region essential.",
-        "difficulty": "Easy"
+        "difficulty": "Easy",
+        "strictSlugs": [
+          "reaction",
+          "trying",
+          "taste-test",
+          "food",
+          "first-time",
+          "review"
+        ]
       },
       {
         "subName": "Celebrity News & Gossip",
@@ -1329,7 +1594,22 @@
         ],
         "platformNotes": "Instagram is the dominant platform for static high-fashion photography. TikTok leads for quick styling and trend-cycles.",
         "regionNotes": "Highly effective for isolating domestic PR lists and localized marketing agencies. Both UK and US return well.",
-        "difficulty": "Easy"
+        "difficulty": "Easy",
+        "strictSlugs": [
+          "fashion",
+          "style",
+          "outfit",
+          "wear",
+          "trend",
+          "look",
+          "wardrobe",
+          "ootd",
+          "summer",
+          "autumn",
+          "winter",
+          "spring",
+          "season"
+        ]
       },
       {
         "subName": "Women's Fashion",
@@ -1349,7 +1629,21 @@
         ],
         "platformNotes": "The community frequently searches by body type (e.g., 'midsize fashion creators,' 'petite style influencers') rather than just 'women's fashion'.",
         "regionNotes": "Sizing metrics and brand availability vary wildly by region (UK vs US sizing). Region matters.",
-        "difficulty": "Easy"
+        "difficulty": "Easy",
+        "strictSlugs": [
+          "fashion",
+          "women",
+          "outfit",
+          "dress",
+          "style",
+          "trend",
+          "wardrobe",
+          "summer",
+          "autumn",
+          "winter",
+          "spring",
+          "season"
+        ]
       },
       {
         "subName": "Women's Hauls / Try-Ons",
@@ -1392,7 +1686,21 @@
         ],
         "platformNotes": "'Sustainable fashion creators' is the heavily preferred industry/PR term. 'Thrift influencers' surfaces Poshmark/Depop resellers on IG/TikTok.",
         "regionNotes": "Thrifting culture and second-hand apps (Vinted vs. ThredUp) are highly region-specific. Region matters.",
-        "difficulty": "Easy"
+        "difficulty": "Easy",
+        "strictSlugs": [
+          "thrift",
+          "budget",
+          "secondhand",
+          "vintage",
+          "affordable",
+          "styling",
+          "haul",
+          "summer",
+          "autumn",
+          "winter",
+          "spring",
+          "season"
+        ]
       },
       {
         "subName": "Men's Fashion / Style",
@@ -1441,7 +1749,26 @@
         ],
         "platformNotes": "Instagram is heavily utilized for 'on-foot' sneaker photography and drops. YouTube is the primary hub for unboxings and authenticating fakes.",
         "regionNotes": "Sneaker drop availability, SNKRS app access, and local streetwear boutiques are entirely region-locked. Region essential.",
-        "difficulty": "Easy"
+        "difficulty": "Easy",
+        "strictSlugs": [
+          "sneaker",
+          "streetwear",
+          "hype",
+          "jordan",
+          "nike",
+          "drop",
+          "kicks",
+          "shoe",
+          "boots",
+          "smart-wear",
+          "office",
+          "timberland",
+          "summer",
+          "autumn",
+          "winter",
+          "spring",
+          "season"
+        ]
       }
     ]
   },
@@ -1471,7 +1798,20 @@
         ],
         "platformNotes": "YouTube dominates for long-form essays/reviews; Twitch is the live-streaming hub; TikTok/IG are mostly short clips and meme formats.",
         "regionNotes": "While major creators are global, regional searches surface local-language creators and localized marketing agencies. Both UK and US return well.",
-        "difficulty": "Easy"
+        "difficulty": "Easy",
+        "strictSlugs": [
+          "gaming",
+          "gamer",
+          "game",
+          "play",
+          "console",
+          "pc-gaming",
+          "stream",
+          "ps5",
+          "xbox",
+          "steam",
+          "nintendo"
+        ]
       },
       {
         "subName": "Game Reviews",
@@ -1553,7 +1893,19 @@
         ],
         "platformNotes": "Twitch and YouTube Live are primary. 'Let's Play' specifically triggers VOD content on YouTube.",
         "regionNotes": "Streaming audiences are highly segmented by language and time zone. Region matters for local streamers.",
-        "difficulty": "Easy"
+        "difficulty": "Easy",
+        "strictSlugs": [
+          "stream",
+          "lets-play",
+          "twitch",
+          "live",
+          "gameplay",
+          "playthrough",
+          "ps5",
+          "xbox",
+          "steam",
+          "nintendo"
+        ]
       },
       {
         "subName": "Esports / Competitive",
@@ -1604,7 +1956,20 @@
         ],
         "platformNotes": "TikTok, YouTube Shorts, and Instagram Reels completely own this subcategory.",
         "regionNotes": "Gaming memes frequently cross regional borders, but region still helps surface local-language compilation creators.",
-        "difficulty": "Easy"
+        "difficulty": "Easy",
+        "strictSlugs": [
+          "clip",
+          "highlight",
+          "montage",
+          "gaming",
+          "kill",
+          "clutch",
+          "gameplay",
+          "ps5",
+          "xbox",
+          "steam",
+          "nintendo"
+        ]
       }
     ]
   },
@@ -1634,7 +1999,18 @@
         ],
         "platformNotes": "Instagram is the dominant platform for aesthetic 'wellness' routines. YouTube is favored for long-form lifestyle vlogs.",
         "regionNotes": "Localized marketing agency lists and medical/wellness PR roundups surface well. Both UK and US return rich results.",
-        "difficulty": "Easy"
+        "difficulty": "Easy",
+        "strictSlugs": [
+          "health",
+          "wellness",
+          "wellbeing",
+          "holistic",
+          "self-care",
+          "mindfulness",
+          "doctor",
+          "nutritionist",
+          "dietician"
+        ]
       },
       {
         "subName": "Supplements / Biohacking",
@@ -1692,7 +2068,19 @@
         ],
         "platformNotes": "TikTok is the absolute hub for this niche under the umbrella term 'TherapyTok.'",
         "regionNotes": "Therapy licensing, mental health resources, and cultural stigma differ significantly across regions. Region helps surface local licensed professionals.",
-        "difficulty": "Easy"
+        "difficulty": "Easy",
+        "strictSlugs": [
+          "mental-health",
+          "anxiety",
+          "therapy",
+          "stress",
+          "mindset",
+          "self-care",
+          "depression",
+          "doctor",
+          "nutritionist",
+          "dietician"
+        ]
       },
       {
         "subName": "Longevity / Anti-Aging",
@@ -1784,7 +2172,19 @@
         ],
         "platformNotes": "TikTok and Instagram heavily drive community sharing regarding specific conditions like PCOS and endometriosis.",
         "regionNotes": "Healthcare systems and maternal health standards are strictly regional. Both UK and US return well.",
-        "difficulty": "Easy"
+        "difficulty": "Easy",
+        "strictSlugs": [
+          "womens-health",
+          "hormone",
+          "pcos",
+          "fertility",
+          "pregnancy",
+          "period",
+          "menopause",
+          "doctor",
+          "nutritionist",
+          "dietician"
+        ]
       }
     ]
   },
@@ -1817,7 +2217,19 @@
         ],
         "platformNotes": "Instagram is heavily favored for luxury and aesthetic travel. YouTube is the absolute standard for long-form destination guides and vlogs.",
         "regionNotes": "Highly effective for isolating domestic travel creators versus global jet-setters. Both UK and US rich.",
-        "difficulty": "Easy"
+        "difficulty": "Easy",
+        "strictSlugs": [
+          "travel",
+          "destination",
+          "trip",
+          "explore",
+          "wanderlust",
+          "vacation",
+          "flight",
+          "getaway",
+          "hotel",
+          "star"
+        ]
       },
       {
         "subName": "Budget Travel Tips",
@@ -1842,7 +2254,18 @@
         ],
         "platformNotes": "TikTok dominates the 'budget travel hack' space with short, viral tips. YouTube is used for full budget breakdowns.",
         "regionNotes": "Regional currency strength and flight hubs (Ryanair in EU vs. Spirit in US) dictate budget content. Region essential.",
-        "difficulty": "Easy"
+        "difficulty": "Easy",
+        "strictSlugs": [
+          "budget-travel",
+          "cheap",
+          "affordable",
+          "backpack",
+          "hostel",
+          "flight-deal",
+          "getaway",
+          "hotel",
+          "star"
+        ]
       },
       {
         "subName": "City Guides",
@@ -1899,7 +2322,19 @@
         ],
         "platformNotes": "'Point hacking' (credit card travel rewards) is a massive sub-niche here, heavily debated on Reddit and YouTube.",
         "regionNotes": "Credit card reward systems and airline loyalty programs are entirely region-locked. Region essential.",
-        "difficulty": "Easy"
+        "difficulty": "Easy",
+        "strictSlugs": [
+          "travel-hack",
+          "packing",
+          "airport",
+          "flight",
+          "luggage",
+          "tip",
+          "trick",
+          "getaway",
+          "hotel",
+          "star"
+        ]
       },
       {
         "subName": "Solo / Digital Nomad",
@@ -1957,7 +2392,20 @@
         ],
         "platformNotes": "YouTube is the primary hub for long-form trekking documentaries and gear reviews. Instagram surfaces extreme sports photography.",
         "regionNotes": "Access to specific national parks, mountain ranges, and seasonal weather dictates the content. Region important.",
-        "difficulty": "Easy"
+        "difficulty": "Easy",
+        "strictSlugs": [
+          "adventure",
+          "outdoor",
+          "hiking",
+          "camping",
+          "trek",
+          "nature",
+          "trail",
+          "climb",
+          "getaway",
+          "hotel",
+          "star"
+        ]
       }
     ]
   }

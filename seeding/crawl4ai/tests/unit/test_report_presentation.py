@@ -18,20 +18,19 @@ def _empty_stats() -> PipelineStats:
 def _generate_report(**kwargs) -> str:
     """Generate report to temp dir and return content."""
     from services.reporting.PipelineReporter import PipelineReporter
-    with patch.object(PipelineReporter, "__init__", lambda self: None):
-        reporter = PipelineReporter()
+    reporter = PipelineReporter()
     import tempfile
     with tempfile.TemporaryDirectory() as tmpdir:
-        with patch("services.reporting.PipelineReporter.REPORTS_DIR", Path(tmpdir)):
-            path = reporter.generate(
-                stats=kwargs.get("stats", _empty_stats()),
-                validation_results=kwargs.get("validation_results", {}),
-                model="test",
-                mode="test",
-                **{k: v for k, v in kwargs.items()
-                   if k not in ("stats", "validation_results")},
-            )
-            return path.read_text()
+        path = reporter.generate(
+            run_dir=Path(tmpdir),
+            stats=kwargs.get("stats", _empty_stats()),
+            validation_results=kwargs.get("validation_results", {}),
+            model="test",
+            mode="test",
+            **{k: v for k, v in kwargs.items()
+               if k not in ("stats", "validation_results")},
+        )
+        return path.read_text()
 
 
 # ── Seed Table ──────────────────────────────────────────────────────────────

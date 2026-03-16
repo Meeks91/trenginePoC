@@ -150,12 +150,22 @@ def test_strict_inurl_ddg_operator_or_clause():
             f"Missing OR clause in: {q.query}"
 
 
-def test_easy_no_inurl_ddg_operator():
-    """Easy → no inurl: in any query, even if slugs are provided."""
+def test_easy_with_slugs_gets_inurl():
+    """Easy + slugs defined → inurl: appears in all queries."""
     qb = _build(search_prompt="fitness influencers",
                 alt_search_terms=["gym"],
                 known_sources=["modash.io"],
                 difficulty=Difficulty.EASY, inurl_slugs=["fitness"])
+    for q in qb.build_all():
+        assert "inurl:fitness" in q.query, f"Missing inurl: in: {q.query}"
+
+
+def test_easy_without_slugs_no_inurl():
+    """Easy + no slugs → no inurl: in any query."""
+    qb = _build(search_prompt="fitness influencers",
+                alt_search_terms=["gym"],
+                known_sources=["modash.io"],
+                difficulty=Difficulty.EASY, inurl_slugs=[])
     for q in qb.build_all():
         assert "inurl:" not in q.query, f"Unexpected inurl: in: {q.query}"
 

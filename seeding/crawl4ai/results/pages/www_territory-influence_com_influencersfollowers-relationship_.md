@@ -1,0 +1,19 @@
+#### Written by [Juliette Maumelat](https://www.territory-influence.com/author/juliette/)
+#### 
+#### March 10, 2022
+As advertising is often being related to intrusive and shady practices, trust in it is plummeting. Consumers need more authenticity, not only in terms of content, messages but also in the partnerships made with creators.**51% think that cooperating with influencers who share their personal experiences of a product makes them trust more the brand ads**(2021, Territory Survey, 52.500 respondents). Therefore, it’s becoming more and more critical for brands to team up with third parties and encourage authenticity.
+## 72% of consumers seek to have more transparency
+> “The market has totally changed in that way. I think people see through a lot easier. I think the number of followers is not such a thing anymore, for me it’s more about the relationship between the followers and the person. And it’s so key to have the relatable content for my audience so they trust me.“ _**Bethan Thomas, British Micro-Influencer @bethantomo,** during our_
+Content creators are usually trustworthy and reliable voices that speak to engaged audiences that know them. By interacting directly with their community, and offering useful or entertaining content on a daily basis, they manage to build a bond of proximity. In the situation of brand collaboration, the influencer’s credibility can be easily transferred to the concerned product or service IF the look & feel of the posts reflect the account reality (e.g. similar tone, aesthetics…) – meaning that both parts do take risks when cooperating.
+We observe thus more and more demanding types of creators, focused on respecting their relationships with their followers and, of course, their content editorial line. Such as**Charlène Le Mer, French[Macro-Influencer](https://www.territory-influence.com/influencers/) @charlene_lemer**: “ _I always choose the brands I work with; I like to test the products for a while before deciding, and telling my community about them so they can see that it’s really part of my daily life. They love the proximity that we have; they can easily identify themselves and engage with us. Once a week I like to do a Q &A session in Instagram stories to answer regularly their questions. My account is not at all a product showcase, I like to show my daily life, my family… That’s why people follow me._“
+Transparency also means complying with legal rules and using the appropriate**#advertising hashtags and partnership** mentions**65% of our survey respondents actually noticed an increased usage in 2021**
+## 4 learnings for marketers in 2022
+  * Give guidance or make sure your influencer (marketing agency) follows the**social media platform regulations.**
+  * Allow creators to produce consistent content,**aligned with their values and editorial strategy.**
+  * **Build long-term relationships** , and thus collaborations with influencers to give it more credits.
+  * **Create media synergies**
+
+
+> “As a brand, l _everage not only the content but also the insights that you’ve gathered through influencer campaigns in your traditional media communications because that will add this tremendously strong effect of creating awareness and trust. That will definitely drive better conversion._ ” explained _**Zoltan Palotai, Executive Director at Territory Influence** , during our. _
+Are you interested in authentic collaborations to optimize your marketing strategy in 2022? From nano, micro, macro to star influencers, we can manage it all. 71% of consumers do not think that trust is connected to the amount of followers, anyone can win them over, as long as the campaign management is done well. Contact our expert to benefit from it this year!
+[Contact our experts!](https://www.territory-influence.com/contact-us/)

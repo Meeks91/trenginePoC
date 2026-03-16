@@ -125,3 +125,66 @@ class TestInfluencerMergerToSeeds:
         ]
         result = InfluencerMerger.to_seeds(entries)
         assert len(result) == 0, "Handleless seeds should be filtered out"
+
+    def test_to_seeds_carries_enrichment_fields(self):
+        """to_seeds() must carry source_urls and extraction_methods to SeedInfluencer."""
+        entries = [
+            (
+                Influencer(
+                    name="Kayla Itsines",
+                    handles={Platform.Instagram: "kayla_itsines"},
+                    source_urls={"https://modash.io/yoga", "https://favikon.com/fitness"},
+                    extraction_methods={"regex", "llm"},
+                ),
+                "FITNESS",
+            ),
+        ]
+        result = InfluencerMerger.to_seeds(entries)
+        assert len(result) == 1
+        seed = result[0]
+        assert seed.source_urls == sorted({"https://modash.io/yoga", "https://favikon.com/fitness"})
+        assert seed.extraction_methods == sorted({"llm", "regex"})
+        assert seed.citation_count == 2
+
+    def test_to_seeds_unions_enrichment_across_configs(self):
+        """Same handle in 2 configs → source_urls and extraction_methods unioned."""
+        entries = [
+            (
+                Influencer(
+                    name="Kayla",
+                    handles={Platform.Instagram: "kayla_itsines"},
+                    source_urls={"https://a.com"},
+                    extraction_methods={"regex"},
+                ),
+                "FITNESS",
+            ),
+            (
+                Influencer(
+                    name="Kayla Itsines",
+                    handles={Platform.Instagram: "kayla_itsines"},
+                    source_urls={"https://b.com"},
+                    extraction_methods={"llm"},
+                ),
+                "FOOD",
+            ),
+        ]
+        result = InfluencerMerger.to_seeds(entries)
+        assert len(result) == 1
+        seed = result[0]
+        assert sorted(seed.source_urls) == ["https://a.com", "https://b.com"]
+        assert sorted(seed.extraction_methods) == ["llm", "regex"]
+        assert seed.citation_count == 2
+
+    def test_seed_to_dict_includes_enrichment(self):
+        """SeedInfluencer.to_dict() must include enrichment fields."""
+        seed = SeedInfluencer(
+            name="Kayla Itsines",
+            ig_handle="kayla_itsines",
+            categories=["FITNESS"],
+            source_urls=["https://a.com"],
+            extraction_methods=["regex"],
+        )
+        d = seed.to_dict()
+        assert d["source_urls"] == ["https://a.com"]
+        assert d["extraction_methods"] == ["regex"]
+        assert d["citation_count"] == 1

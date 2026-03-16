@@ -150,9 +150,10 @@ async def main():
             with (
                 patch("services.crawling.CrawlService.PAGES_DIR", tmp_path / "pages"),
                 patch("services.extraction.LLMExtractionService.RAW_DIR", tmp_path / "raw"),
-                patch("services.reporting.PipelineReporter.REPORTS_DIR", tmp_path / "reports"),
                 patch("services.reporting.ResultAssembler.REPORTS_DIR", tmp_path / "reports"),
                 patch("services.reporting.ResultAssembler.RESULTS_DIR", tmp_path / "results"),
+                patch("base_pipeline.RESULTS_DIR", tmp_path / "results"),
+                patch("base_pipeline.REPORTS_DIR", tmp_path / "reports"),
                 patch("base_pipeline.AUDIT_DIR", tmp_path / "audit"),
             ):
                 audit = AuditLog(tmp_path / "audit", "e2e_html_test")
@@ -174,15 +175,21 @@ async def main():
                 # Save golden fixtures
                 GOLDEN_DIR.mkdir(parents=True, exist_ok=True)
 
-                # global_seeds.json
-                seeds_data = json.loads((tmp_path / "results" / "global_seeds.json").read_text())
+                # Find run directory
+                results_dir = tmp_path / "results"
+                run_dirs = [d for d in results_dir.iterdir() if d.is_dir()]
+                assert len(run_dirs) == 1, f"Expected 1 run dir, got {len(run_dirs)}"
+                run_dir = run_dirs[0]
+
+                # global_seeds.json (from seeds.json)
+                seeds_data = json.loads((run_dir / "seeds.json").read_text())
                 (GOLDEN_DIR / "global_seeds.json").write_text(
                     json.dumps(seeds_data, indent=2, ensure_ascii=False)
                 )
                 print(f"  Saved global_seeds.json ({len(seeds_data)} records)")
 
                 # unresolved_names.json
-                unresolved_data = json.loads((tmp_path / "results" / "unresolved_names.json").read_text())
+                unresolved_data = json.loads((run_dir / "unresolved_names.json").read_text())
                 (GOLDEN_DIR / "unresolved_names.json").write_text(
                     json.dumps(unresolved_data, indent=2, ensure_ascii=False)
                 )
@@ -196,17 +203,11 @@ async def main():
                 print(f"  Saved output.json ({len(output_data)} records)")
 
                 # report — strip timestamps for stable comparison
-                report_dir = tmp_path / "reports"
-                report_files = list(report_dir.glob("*.md"))
-                if report_files:
-                    report_text = report_files[0].read_text()
-                    # Strip all timestamps/dates for stable comparison
-                    stable = re.sub(r"\d{4}-\d{2}-\d{2}[T_]\d{2}[:\d]*\S*", "<TIMESTAMP>", report_text)
-                    stable = re.sub(r"Generated: .*", "Generated: <TIMESTAMP>", stable)
-                    (GOLDEN_DIR / "report.md").write_text(stable)
-                    print(f"  Saved report.md ({len(stable)} chars)")
-                else:
-                    print(f"  WARNING: No report files found in {report_dir}")
+                report_text = (run_dir / "report.md").read_text()
+                stable = re.sub(r"\d{4}-\d{2}-\d{2}[T_]\d{2}[:\d]*\S*", "<TIMESTAMP>", report_text)
+                stable = re.sub(r"Generated: .*", "Generated: <TIMESTAMP>", stable)
+                (GOLDEN_DIR / "report.md").write_text(stable)
+                print(f"  Saved report.md ({len(stable)} chars)")
 
                 # validation results
                 vr = runner.validation_results

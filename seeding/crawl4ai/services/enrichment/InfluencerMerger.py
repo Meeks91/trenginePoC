@@ -176,10 +176,14 @@ class InfluencerMerger:
                         handle=handle_lower,
                         platform=plat,
                         categories={category},
+                        source_urls=set(inf.source_urls),
+                        extraction_methods=set(inf.extraction_methods),
                     )
                 else:
                     entry = merged[key]
                     entry.categories.add(category)
+                    entry.source_urls.update(inf.source_urls)
+                    entry.extraction_methods.update(inf.extraction_methods)
                     if _is_better_name(inf.name, entry.best_name, handle_lower):
                         entry.best_name = inf.name
 
@@ -209,6 +213,8 @@ class InfluencerMerger:
             seed = SeedInfluencer(
                 name=entry.best_name,
                 categories=sorted(entry.categories),
+                source_urls=sorted(entry.source_urls),
+                extraction_methods=sorted(entry.extraction_methods),
             )
 
             # Assign handle to correct platform column
@@ -384,6 +390,8 @@ class _SeedEntry:
     platform: Platform
     alt_handles: dict[str, str] = field(default_factory=dict)  # {platform_value: handle}
     categories: set[str] = field(default_factory=set)
+    source_urls: set[str] = field(default_factory=set)
+    extraction_methods: set[str] = field(default_factory=set)
 
 
 def _assign_platform_handle(
