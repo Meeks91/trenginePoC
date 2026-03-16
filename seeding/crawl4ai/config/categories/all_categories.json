@@ -114,13 +114,13 @@
         ]
       },
       {
-        "subName": "Powerlifting / Strength",
+        "subName": "Powerlifting",
         "isTopLevel": false,
         "searchPrompt": "top powerlifting influencers",
         "altSearchTerms": [
           "favorite powerlifting accounts",
           "strength training influencers",
-          "most popular powerlifting / strength influencers"
+          "most popular powerlifting influencers"
         ],
         "knownSources": [
           "reddit.com/r/powerlifting",
@@ -179,13 +179,14 @@
         ]
       },
       {
-        "subName": "Yoga / Mobility",
+        "subName": "Yoga",
         "isTopLevel": false,
         "searchPrompt": "top yoga influencers",
         "altSearchTerms": [
           "favorite yoga creators",
           "mobility flow accounts",
-          "most popular yoga / mobility influencers"
+          "most popular yoga influencers",
+          "mobility flow influencers"
         ],
         "knownSources": [
           "reddit.com/r/yoga",
@@ -215,13 +216,14 @@
     "category": "FOOD_AND_COOKING",
     "subs": [
       {
-        "subName": "Food & Cooking",
+        "subName": "Cooking",
         "isTopLevel": true,
         "searchPrompt": "top food creators",
         "altSearchTerms": [
           "favorite cooking influencers",
           "best culinary accounts",
-          "most popular food & cooking influencers"
+          "most popular cooking influencers",
+          "food influencers"
         ],
         "knownSources": [
           "theinfluenceagency.com",
@@ -287,13 +289,14 @@
         ]
       },
       {
-        "subName": "Protein / Macros",
+        "subName": "Macros",
         "isTopLevel": false,
         "searchPrompt": "high protein recipe creators",
         "altSearchTerms": [
           "fitness meal prep accounts",
           "macro friendly food influencers",
-          "most popular protein / macros influencers"
+          "most popular macros influencers",
+          "protein influencers"
         ],
         "knownSources": [
           "grocerslist.com",
@@ -313,13 +316,14 @@
         ]
       },
       {
-        "subName": "Healthy / Diet",
+        "subName": "Diet",
         "isTopLevel": false,
         "searchPrompt": "healthy eating influencers",
         "altSearchTerms": [
           "plant based food creators",
           "diet recipe accounts",
-          "most popular healthy / diet influencers"
+          "most popular diet influencers",
+          "healthy eating influencers"
         ],
         "knownSources": [
           "digitalvoices.com",
@@ -448,13 +452,14 @@
         ]
       },
       {
-        "subName": "AI Tools & Reviews",
+        "subName": "AI Tools",
         "isTopLevel": false,
         "searchPrompt": "top AI tool reviewers",
         "altSearchTerms": [
           "new AI tools creators",
           "AI software review accounts",
-          "most popular ai tools & reviews influencers"
+          "most popular ai tools influencers",
+          "AI review creators"
         ],
         "knownSources": [
           "reddit.com/r/ChatGPT",
@@ -473,13 +478,14 @@
         ]
       },
       {
-        "subName": "AI News & Commentary",
+        "subName": "AI News",
         "isTopLevel": false,
         "searchPrompt": "AI news creators",
         "altSearchTerms": [
           "artificial intelligence commentary accounts",
           "top AI update influencers",
-          "most popular ai news & commentary influencers"
+          "most popular ai news influencers",
+          "AI commentary creators"
         ],
         "knownSources": [
           "reddit.com/r/singularity",
@@ -527,13 +533,14 @@
         ]
       },
       {
-        "subName": "AI Coding / Dev Tools",
+        "subName": "AI Coding",
         "isTopLevel": false,
         "searchPrompt": "AI coding tutorial creators",
         "altSearchTerms": [
           "machine learning dev influencers",
           "AI programming accounts",
-          "most popular ai coding / dev tools influencers"
+          "most popular ai coding influencers",
+          "dev tools influencers"
         ],
         "knownSources": [
           "reddit.com/r/LocalLLaMA",
@@ -561,13 +568,14 @@
         ]
       },
       {
-        "subName": "AI Automation / Agents",
+        "subName": "AI Agents",
         "isTopLevel": false,
         "searchPrompt": "AI automation creators",
         "altSearchTerms": [
           "top AI agent workflow influencers",
           "Zapier Make tutorial accounts",
-          "most popular ai automation / agents influencers"
+          "most popular ai agents influencers",
+          "AI automation creators"
         ],
         "knownSources": [
           "reddit.com/r/Automate",
@@ -716,13 +724,14 @@
         ]
       },
       {
-        "subName": "Budget / Dupes",
+        "subName": "Beauty Dupes",
         "isTopLevel": false,
         "searchPrompt": "drugstore makeup creators",
         "altSearchTerms": [
           "affordable beauty influencers",
           "beauty dupe accounts",
-          "most popular budget / dupes influencers"
+          "most popular beauty dupes influencers",
+          "budget beauty influencers"
         ],
         "knownSources": [
           "reddit.com/r/drugstoreMUA",
@@ -845,13 +854,15 @@
         ]
       },
       {
-        "subName": "Laptops & Desktop Reviews",
+        "subName": "PC Reviews",
         "isTopLevel": false,
         "searchPrompt": "top PC hardware reviewers",
         "altSearchTerms": [
           "best laptop reviewers",
           "custom PC builder accounts",
-          "most popular laptops & desktop reviews influencers"
+          "most popular pc reviews influencers",
+          "laptop review influencers",
+          "desktop review creators"
         ],
         "knownSources": [
           "reddit.com/r/pcmasterrace",
@@ -878,13 +889,14 @@
         ]
       },
       {
-        "subName": "Audio / Headphones",
+        "subName": "Headphones",
         "isTopLevel": false,
         "searchPrompt": "best audiophile reviewers",
         "altSearchTerms": [
           "top headphone reviewers",
           "hi-fi audio creators",
-          "most popular audio / headphones influencers"
+          "most popular headphones influencers",
+          "audiophile review creators"
         ],
         "knownSources": [
           "reddit.com/r/headphones",
@@ -907,13 +919,14 @@
         ]
       },
       {
-        "subName": "Apps / Software",
+        "subName": "Software",
         "isTopLevel": false,
         "searchPrompt": "top SaaS influencers",
         "altSearchTerms": [
           "best software review creators",
           "productivity app influencers",
-          "most popular apps / software influencers"
+          "most popular software influencers",
+          "app review influencers"
         ],
         "knownSources": [
           "wdcweb.com",
@@ -938,13 +951,14 @@
         ]
       },
       {
-        "subName": "Wearables / Smart Home",
+        "subName": "Smart Home",
         "isTopLevel": false,
         "searchPrompt": "top smart home influencers",
         "altSearchTerms": [
           "wearable tech creators",
           "home automation accounts",
-          "most popular wearables / smart home influencers"
+          "most popular smart home influencers",
+          "wearable tech influencers"
         ],
         "knownSources": [
           "reddit.com/r/smarthome",
@@ -975,13 +989,14 @@
     "category": "BUSINESS_AND_FINANCE",
     "subs": [
       {
-        "subName": "Business & Finance",
+        "subName": "Finance",
         "isTopLevel": true,
         "searchPrompt": "top finance influencers",
         "altSearchTerms": [
           "favorite finance creators",
           "best financial accounts",
-          "most popular business & finance influencers"
+          "most popular finance influencers",
+          "business influencers"
         ],
         "knownSources": [
           "favikon.com",
@@ -1008,13 +1023,14 @@
         ]
       },
       {
-        "subName": "Personal Finance / Saving",
+        "subName": "Personal Finance",
         "isTopLevel": false,
         "searchPrompt": "best personal finance creators",
         "altSearchTerms": [
           "top saving money accounts",
           "favorite budgeting channels",
-          "most popular personal finance / saving influencers"
+          "most popular personal finance influencers",
+          "saving money influencers"
         ],
         "knownSources": [
           "reddit.com/r/personalfinance",
@@ -1071,13 +1087,14 @@
         ]
       },
       {
-        "subName": "Side Hustles / Entrepreneurship",
+        "subName": "Entrepreneurship",
         "isTopLevel": false,
         "searchPrompt": "best entrepreneurship channels",
         "altSearchTerms": [
           "top startup creators",
           "business case study accounts",
-          "most popular side hustles / entrepreneurship influencers"
+          "most popular entrepreneurship influencers",
+          "side hustle influencers"
         ],
         "knownSources": [
           "reddit.com/r/Entrepreneur",
@@ -1104,13 +1121,14 @@
         ]
       },
       {
-        "subName": "Career / Productivity",
+        "subName": "Career",
         "isTopLevel": false,
         "searchPrompt": "best career advice creators",
         "altSearchTerms": [
           "top career influencers",
           "interview tip accounts",
-          "most popular career / productivity influencers"
+          "most popular career influencers",
+          "productivity influencers"
         ],
         "knownSources": [
           "novoresume.de",
@@ -1132,13 +1150,14 @@
         ]
       },
       {
-        "subName": "Financial News / Commentary",
+        "subName": "Financial News",
         "isTopLevel": false,
         "searchPrompt": "financial commentary creators",
         "altSearchTerms": [
           "market analysis influencers",
           "top economic news accounts",
-          "most popular financial news / commentary influencers"
+          "most popular financial news influencers",
+          "market commentary creators"
         ],
         "knownSources": [
           "reddit.com/r/stocks",
@@ -1221,13 +1240,14 @@
         ]
       },
       {
-        "subName": "Money Saving / Budget Hacks",
+        "subName": "Budget Hacks",
         "isTopLevel": false,
         "searchPrompt": "best money saving tip creators",
         "altSearchTerms": [
           "top cash stuffing influencers",
           "budget hack accounts",
-          "most popular money saving / budget hacks influencers"
+          "most popular budget hacks influencers",
+          "money saving influencers"
         ],
         "knownSources": [
           "reddit.com/r/Frugal",
@@ -1253,13 +1273,14 @@
         ]
       },
       {
-        "subName": "CleanTok / Cleaning",
+        "subName": "CleanTok",
         "isTopLevel": false,
         "searchPrompt": "top CleanTok creators",
         "altSearchTerms": [
           "best cleaning influencers",
           "favorite cleaning hack accounts",
-          "most popular cleantok / cleaning influencers"
+          "most popular cleantok influencers",
+          "cleaning influencers"
         ],
         "knownSources": [
           "socialbook.io",
@@ -1287,13 +1308,14 @@
         ]
       },
       {
-        "subName": "Home Organisation / Decluttering",
+        "subName": "Decluttering",
         "isTopLevel": false,
         "searchPrompt": "best home organization influencers",
         "altSearchTerms": [
           "top decluttering creators",
           "favorite pantry organization accounts",
-          "most popular home organisation / decluttering influencers"
+          "most popular decluttering influencers",
+          "home organization influencers"
         ],
         "knownSources": [
           "feedspot.com",
@@ -1320,13 +1342,14 @@
         ]
       },
       {
-        "subName": "DIY / Home Repair",
+        "subName": "DIY",
         "isTopLevel": false,
         "searchPrompt": "top DIY home repair creators",
         "altSearchTerms": [
           "best home renovation influencers",
           "favorite handyman accounts",
-          "most popular diy / home repair influencers"
+          "most popular diy influencers",
+          "home repair influencers"
         ],
         "knownSources": [
           "influencer-hero.com",
@@ -1349,13 +1372,14 @@
         ]
       },
       {
-        "subName": "Life & Productivity Hacks",
+        "subName": "Life Hacks",
         "isTopLevel": false,
         "searchPrompt": "best productivity hack creators",
         "altSearchTerms": [
           "top everyday tips influencers",
           "life hack accounts",
-          "most popular life & productivity hacks influencers"
+          "most popular life hacks influencers",
+          "productivity hack influencers"
         ],
         "knownSources": [
           "favikon.com",
@@ -1422,13 +1446,14 @@
         ]
       },
       {
-        "subName": "Film / TV Reactions",
+        "subName": "Film Reactions",
         "isTopLevel": false,
         "searchPrompt": "best movie reaction channels",
         "altSearchTerms": [
           "top tv reaction creators",
           "favorite film reactors",
-          "most popular film / tv reactions influencers"
+          "most popular film reactions influencers",
+          "TV reaction creators"
         ],
         "knownSources": [
           "reddit.com/r/movies",
@@ -1510,13 +1535,14 @@
         ]
       },
       {
-        "subName": "Food / Try Reactions",
+        "subName": "Food Reactions",
         "isTopLevel": false,
         "searchPrompt": "best food reaction creators",
         "altSearchTerms": [
           "top taste test channels",
           "favorite food try accounts",
-          "most popular food / try reactions influencers"
+          "most popular food reactions influencers",
+          "taste test creators"
         ],
         "knownSources": [
           "reddit.com/r/StupidFood",
@@ -1539,13 +1565,14 @@
         ]
       },
       {
-        "subName": "Celebrity News & Gossip",
+        "subName": "Celebrity Gossip",
         "isTopLevel": false,
         "searchPrompt": "top pop culture commentary channels",
         "altSearchTerms": [
           "best celebrity tea accounts",
           "favorite pop culture youtubers",
-          "most popular celebrity news & gossip influencers"
+          "most popular celebrity gossip influencers",
+          "pop culture news creators"
         ],
         "knownSources": [
           "reddit.com/r/popculturechat",
@@ -1646,13 +1673,14 @@
         ]
       },
       {
-        "subName": "Women's Hauls / Try-Ons",
+        "subName": "Haul Videos",
         "isTopLevel": false,
         "searchPrompt": "best clothing haul creators",
         "altSearchTerms": [
           "top try on haul influencers",
           "favorite outfit try on channels",
-          "most popular women's hauls / try-ons influencers"
+          "most popular haul videos influencers",
+          "try on haul influencers"
         ],
         "knownSources": [
           "aspire.io",
@@ -1671,13 +1699,14 @@
         ]
       },
       {
-        "subName": "Women's Thrift / Budget Styling",
+        "subName": "Thrift Fashion",
         "isTopLevel": false,
         "searchPrompt": "top sustainable fashion creators",
         "altSearchTerms": [
           "best thrift influencers",
           "budget style channels",
-          "most popular women's thrift / budget styling influencers"
+          "most popular thrift fashion influencers",
+          "women's budget styling influencers"
         ],
         "knownSources": [
           "corq.studio",
@@ -1703,13 +1732,14 @@
         ]
       },
       {
-        "subName": "Men's Fashion / Style",
+        "subName": "Menswear",
         "isTopLevel": false,
         "searchPrompt": "best menswear channels",
         "altSearchTerms": [
           "top men's style creators",
           "favorite male fashion youtubers",
-          "most popular men's fashion / style influencers"
+          "most popular menswear influencers",
+          "men's style influencers"
         ],
         "knownSources": [
           "neoreach.com",
@@ -1731,13 +1761,15 @@
         ]
       },
       {
-        "subName": "Men's Sneakers / Streetwear",
+        "subName": "Streetwear",
         "isTopLevel": false,
         "searchPrompt": "top sneakerhead influencers",
         "altSearchTerms": [
           "best streetwear creators",
           "favorite sneaker channels",
-          "most popular men's sneakers / streetwear influencers"
+          "most popular streetwear influencers",
+          "sneaker influencers",
+          "streetwear influencers"
         ],
         "knownSources": [
           "upfluence.com",
@@ -1842,13 +1874,14 @@
         ]
       },
       {
-        "subName": "Gaming Guides / Tutorials",
+        "subName": "Gaming Guides",
         "isTopLevel": false,
         "searchPrompt": "best gaming tutorial channels",
         "altSearchTerms": [
           "top video game guide creators",
           "favorite game walkthrough accounts",
-          "most popular gaming guides / tutorials influencers"
+          "most popular gaming guides influencers",
+          "game tutorial creators"
         ],
         "knownSources": [
           "reddit.com/r/2007scape",
@@ -1873,13 +1906,14 @@
         ]
       },
       {
-        "subName": "Streaming / Let's Play",
+        "subName": "Gaming Streams",
         "isTopLevel": false,
         "searchPrompt": "top lets play channels",
         "altSearchTerms": [
           "best twitch streamers",
           "favorite livestreaming creators",
-          "most popular streaming / let's play influencers"
+          "most popular gaming streams influencers",
+          "let's play creators"
         ],
         "knownSources": [
           "twitchstats.net",
@@ -1908,13 +1942,14 @@
         ]
       },
       {
-        "subName": "Esports / Competitive",
+        "subName": "Esports",
         "isTopLevel": false,
         "searchPrompt": "top esports influencers",
         "altSearchTerms": [
           "best competitive gaming creators",
           "pro player accounts",
-          "most popular esports / competitive influencers"
+          "most popular esports influencers",
+          "competitive gaming influencers"
         ],
         "knownSources": [
           "influencermarketinghub.com",
@@ -1977,13 +2012,14 @@
     "category": "HEALTH_AND_WELLNESS",
     "subs": [
       {
-        "subName": "Health & Wellness",
+        "subName": "Wellness",
         "isTopLevel": true,
         "searchPrompt": "top health and wellness influencers",
         "altSearchTerms": [
           "best wellness creators",
           "favorite holistic health accounts",
-          "most popular health & wellness influencers"
+          "most popular wellness influencers",
+          "health influencers"
         ],
         "knownSources": [
           "feedspot.com",
@@ -2013,13 +2049,14 @@
         ]
       },
       {
-        "subName": "Supplements / Biohacking",
+        "subName": "Biohacking",
         "isTopLevel": false,
         "searchPrompt": "best biohacking channels",
         "altSearchTerms": [
           "top supplement influencers",
           "biohacker creators",
-          "most popular supplements / biohacking influencers"
+          "most popular biohacking influencers",
+          "supplement influencers"
         ],
         "knownSources": [
           "feedspot.com",
@@ -2045,13 +2082,13 @@
         ]
       },
       {
-        "subName": "Mental Health Tips",
+        "subName": "Mental Health",
         "isTopLevel": false,
         "searchPrompt": "top TherapyTok creators",
         "altSearchTerms": [
           "best mental health influencers",
           "licensed therapist accounts",
-          "most popular mental health tips influencers"
+          "most popular mental health influencers"
         ],
         "knownSources": [
           "hireinfluence.com",
@@ -2083,13 +2120,14 @@
         ]
       },
       {
-        "subName": "Longevity / Anti-Aging",
+        "subName": "Longevity",
         "isTopLevel": false,
         "searchPrompt": "top longevity influencers",
         "altSearchTerms": [
           "best anti aging creators",
           "healthy lifespan accounts",
-          "most popular longevity / anti-aging influencers"
+          "most popular longevity influencers",
+          "anti-aging influencers"
         ],
         "knownSources": [
           "feedspot.com",
@@ -2232,13 +2270,13 @@
         ]
       },
       {
-        "subName": "Budget Travel Tips",
+        "subName": "Budget Travel",
         "isTopLevel": false,
         "searchPrompt": "best budget travel channels",
         "altSearchTerms": [
           "top shoestring travel influencers",
           "cheap travel creators",
-          "most popular budget travel tips influencers"
+          "most popular budget travel influencers"
         ],
         "knownSources": [
           "influencer-hero.com",
@@ -2337,13 +2375,14 @@
         ]
       },
       {
-        "subName": "Solo / Digital Nomad",
+        "subName": "Digital Nomad",
         "isTopLevel": false,
         "searchPrompt": "best digital nomad channels",
         "altSearchTerms": [
           "top solo travel influencers",
           "favorite solo female travel accounts",
-          "most popular solo / digital nomad influencers"
+          "most popular digital nomad influencers",
+          "solo travel influencers"
         ],
         "knownSources": [
           "feedspot.com",
@@ -2370,13 +2409,14 @@
         ]
       },
       {
-        "subName": "Adventure / Outdoor",
+        "subName": "Adventure Travel",
         "isTopLevel": false,
         "searchPrompt": "top adventure travel influencers",
         "altSearchTerms": [
           "best outdoor creators",
           "favorite hiking channels",
-          "most popular adventure / outdoor influencers"
+          "most popular adventure travel influencers",
+          "outdoor travel influencers"
         ],
         "knownSources": [
           "thesocialcat.com",
