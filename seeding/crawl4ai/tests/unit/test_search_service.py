@@ -296,6 +296,68 @@ def test_relevant_passes_empty_slugs():
     assert SearchService._is_relevant("Best Yoga Channels", "https://example.com/page", job) is True
 
 
+def test_relevant_rejects_irrelevant_domain_support_google():
+    """support.google.com should be rejected even when title contains mandatory word."""
+    job = _make_job()
+    assert SearchService._is_relevant(
+        "How to favorite a folder",
+        "https://support.google.com/files/thread/242300312",
+        job,
+    ) is False
+
+
+def test_relevant_rejects_irrelevant_domain_wikipedia():
+    """wikipedia.org should be rejected even when title contains sub_name."""
+    job = _make_job(sub_name="Calisthenics")
+    assert SearchService._is_relevant(
+        "Calisthenics",
+        "https://en.wikipedia.org/wiki/Calisthenics",
+        job,
+    ) is False
+
+
+def test_relevant_rejects_irrelevant_domain_tophat():
+    """tophat.com should be rejected — false positive on 'top' mandatory word."""
+    job = _make_job()
+    assert SearchService._is_relevant(
+        "TopHat Portal",
+        "https://app.tophat.com/login",
+        job,
+    ) is False
+
+
+def test_relevant_still_accepts_legit_domain_with_mandatory_word():
+    """Legit domains with mandatory words should still pass."""
+    job = _make_job()
+    assert SearchService._is_relevant(
+        "Top Fitness Influencers 2026",
+        "https://favikon.com/blog/fitness-influencers",
+        job,
+    ) is True
+
+
+def test_discover_urls_blocks_irrelevant_domains(tmp_path):
+    """End-to-end: irrelevant domains should be filtered out in discover_urls."""
+    raw = [
+        _make_raw("https://favikon.com/top-fitness-influencers", "Top Fitness Influencers"),
+        _make_raw("https://support.google.com/files/thread/123", "How to favorite a folder"),
+        _make_raw("https://en.wikipedia.org/wiki/Fitness", "Fitness"),
+        _make_raw("https://app.tophat.com/login", "TopHat Portal"),
+    ]
+    audit = AuditLog(tmp_path, "test")
+    client = _make_mock_client(raw)
+    svc = SearchService(audit, client=client)
+    job = _make_job()
+
+    results = svc.discover_urls(job)
+
+    urls = [u for u, _ in results.url_query_pairs]
+    assert "https://favikon.com/top-fitness-influencers" in urls
+    assert "https://support.google.com/files/thread/123" not in urls
+    assert "https://en.wikipedia.org/wiki/Fitness" not in urls
+    assert "https://app.tophat.com/login" not in urls
+
+
 def test_discover_urls_relevance_filter_integration(tmp_path):
     """End-to-end: relevance filter rejects pages with no signals, accepts relevant ones."""
     raw = [

@@ -42,6 +42,21 @@ AD_DOMAINS = {
     "linkedin.com",
 }
 
+IRRELEVANT_DOMAINS = {
+    "support.google.com", "accounts.google.com",
+    "tophat.com", "app.tophat.com",
+    "wikipedia.org", "en.wikipedia.org",
+    "britannica.com",
+    "sciencenews.org",
+    "coursehero.com", "cliffsnotes.com",
+    "computerhope.com", "ebalbharati.in",
+    "scribd.com", "kagi.com",
+    "healthline.com", "webmd.com", "mayoclinic.org",
+    "nike.com", "health.harvard.edu",
+    "openpowerlifting.org",
+    "fitnessavenue.ca",
+}
+
 _PLATFORM_DOMAINS = {
     "instagram.com", "instagr.am", "tiktok.com", "youtube.com",
     "twitter.com", "x.com",
@@ -173,7 +188,9 @@ class SearchService:
         5. Title contains the category_key (e.g. "FITNESS", "TECH")
         """
         try:
-            domain = urlparse(url).netloc.lower()
+            domain = urlparse(url).netloc.lower().removeprefix("www.")
+            if any(ir in domain for ir in IRRELEVANT_DOMAINS):
+                return False
             if any(rd in domain for rd in _REDDIT_DOMAINS):
                 return True
 
