@@ -1,5 +1,0 @@
-Log in - Asana
-## Welcome to Asana
-### To get started, please sign in
-Continue with Google
-This site is protected by reCAPTCHA and the Google [Privacy Policy](https://policies.google.com/privacy) and [Terms of Service](https://policies.google.com/terms) apply.

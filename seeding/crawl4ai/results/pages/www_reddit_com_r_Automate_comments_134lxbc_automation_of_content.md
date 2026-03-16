@@ -1,2 +1,0 @@
-# Prove your humanity
-We’re committed to safety and security. But not for bots. Complete the challenge below and let us know you’re a real person. 

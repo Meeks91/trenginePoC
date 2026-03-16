@@ -14,6 +14,9 @@ Discovers and extracts influencer handles across **N platforms × N regions × N
 | Playwright (auto-installed by Crawl4AI) | latest |
 | Gemini API key | `GEMINI_API_KEY` env var |
 
+> [!NOTE]
+> **English only.** Search queries, title-matching, and slug-matching are currently English-only. Multi-language support is not yet implemented.
+
 ## Installation
 
 ```bash

@@ -1,2 +1,0 @@
-##### AI & Marketing News | TikTok's auto captions, Musk tests 1$ X accounts, AI predicts virus mutations
-Harvard Medical School’s AI tool can predict virus mutations, Musk is rolling out tests for $1 accounts on Twitter. TikTok makes auto-captions the default. And Google pledges to defend Cloud AI users in court. Learn what's going on in the world of AI and Marketing and become the smarter marketer in the room.

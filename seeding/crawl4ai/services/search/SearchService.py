@@ -5,13 +5,15 @@ Accepts any SearchClient implementation via dependency injection.
 Applies filtering pipeline on top of raw search results:
   1. Ad filtering
   2. Platform URL handle extraction (DDG dorking)
-  3. (Plan 2) Mandatory word filtering
-  4. (Plan 2) Slug matching
+  3. Relevance check: mandatory word in title OR slug in URL OR sub_name/category in title
+     Reddit always passes.
 
 DDG Dorking: When a search client returns platform URLs (instagram.com/handle,
 tiktok.com/@handle, etc.), handles are extracted immediately from the
 search result — no crawling needed. These "direct handles" are returned
 alongside the URL list.
+
+NOTE: English-only language support for now.
 """
 
 from __future__ import annotations
@@ -44,6 +46,15 @@ _PLATFORM_DOMAINS = {
     "instagram.com", "instagr.am", "tiktok.com", "youtube.com",
     "twitter.com", "x.com",
 }
+
+_MANDATORY_WORDS = {
+    "influencer", "influencers",
+    "creator", "creators",
+    "top", "best", "popular", "favourite", "favorite",
+    "list", "ranking", "trending", "famous", "biggest",
+}
+
+_REDDIT_DOMAINS = {"reddit.com"}
 
 
 @dataclass
@@ -110,6 +121,10 @@ class SearchService:
                     print(f"      ⚡ Direct handle: @{handle.handle} ({handle.platform})")
                 continue
 
+            if not self._is_relevant(r.title, r.url, job):
+                self._audit.log_url_rejected(r.url, reason="not_relevant")
+                continue
+
             discovered.append((r.url, r.query))
             self._audit.log_url_accepted(r.url)
             print(f"      + {r.title[:60]}")
@@ -144,5 +159,40 @@ class SearchService:
         try:
             domain = urlparse(url).netloc.lower().removeprefix("www.")
             return any(pd in domain for pd in _PLATFORM_DOMAINS)
+        except Exception:
+            return False
+
+    @staticmethod
+    def _is_relevant(title: str, url: str, job: SeedJob) -> bool:
+        """URL is relevant if ANY of these hold (OR logic):
+
+        1. Domain is reddit.com → always relevant
+        2. Title contains a mandatory word (influencer, top, best, ...)
+        3. URL path contains a configured slug (fitness, workout, ...)
+        4. Title contains the sub_name (e.g. "Fitness", "AI")
+        5. Title contains the category_key (e.g. "FITNESS", "TECH")
+        """
+        try:
+            domain = urlparse(url).netloc.lower()
+            if any(rd in domain for rd in _REDDIT_DOMAINS):
+                return True
+
+            title_lower = title.lower()
+
+            if any(w in title_lower for w in _MANDATORY_WORDS):
+                return True
+
+            if job.sub.strict_slugs:
+                path = urlparse(url).path.lower()
+                if any(slug in path for slug in job.sub.strict_slugs):
+                    return True
+
+            if job.sub.sub_name.lower() in title_lower:
+                return True
+
+            if job.category_key.lower() in title_lower:
+                return True
+
+            return False
         except Exception:
             return False

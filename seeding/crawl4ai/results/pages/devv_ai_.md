@@ -1,8 +1,0 @@
-# Ship AI-powered products. Fast.
-The first coding agent with native integrations—authentication, LLM, database, image generation and more. Built for indie builders and small teams.
-Public
-Integration
-Press Ctrl+Enter to send
-## From the Community
-### [Welcome Tikkah Restaurant Reservation Hub Created by Nadeem Meo1 hours ago ](https://devv.ai/code/preview/ffx2dldimcqo)### [URL Website Replication Tool Created by Mohine Priyadarsani1 hours ago ](https://devv.ai/code/preview/ffx0petcmark)### [Tikka BBQ Restaurant Menu Site Created by Nadeem Meo1 hours ago ](https://devv.ai/code/preview/ffx1l5at8b9c)### [Quito Plastic Filament Sustainability Hub Created by Ariel Esteban Flores Cevallos1 hours ago ](https://devv.ai/code/preview/ffx0teedi22o)### [Warfare Strategy Command Theater Created by Job3 hours ago ](https://devv.ai/code/preview/ffwp1ctqboqo)### [HTML5 Blank Window Button Created by Benjamin Garcia (Student)4 hours ago ](https://devv.ai/code/preview/ffwovcrphvr4)### [Mi Band Interface Customization Kit Created by Álvaro Pirata4 hours ago ](https://devv.ai/code/preview/ffwodxtpgcg0)### [Web Search AI Answer Engine Created by Álvaro Pirata4 hours ago ](https://devv.ai/code/preview/ffwoax15nqps)### [Zen Task Wellbeing Finance Hub Created by Claybirdsound Kookoo4 hours ago ](https://devv.ai/code/preview/ffwjzjwxiccg)### [Electronics Retail Service Inventory Suite Created by Jonathan Osman Bracho4 hours ago ](https://devv.ai/code/preview/ffwk8xdn5zwg)### [Red Black Epoch Image Vault Created by 17734139904345 hours ago ](https://devv.ai/code/preview/ffwj62uqql8g)### [Frazzaya AI Model Chat Interface Created by FrAz ZaYa5 hours ago ](https://devv.ai/code/preview/ffwg7r2uq7sw)
-Show More

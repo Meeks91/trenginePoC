@@ -21,12 +21,24 @@ from services.search.SearchService import SearchService
 
 # ── Helpers ──
 
-def _make_raw_results(urls: list[str], query: str = "test query") -> list[RawSearchResult]:
-    """Create RawSearchResult list from URLs."""
+def _make_raw_results(
+    urls: list[str],
+    query: str = "test query",
+    title: str = "Top Fitness Influencers List",
+) -> list[RawSearchResult]:
+    """Create RawSearchResult list from URLs.
+
+    Default title contains mandatory words so results pass relevance filter.
+    """
     return [
-        RawSearchResult(url=url, title=f"Result for {url}", query=query)
+        RawSearchResult(url=url, title=title, query=query)
         for url in urls
     ]
+
+
+def _make_raw(url: str, title: str, query: str = "test query") -> RawSearchResult:
+    """Create a single RawSearchResult with explicit title."""
+    return RawSearchResult(url=url, title=title, query=query)
 
 
 def _make_job(**overrides) -> SeedJob:
@@ -165,10 +177,10 @@ def test_discover_urls_max_cap(tmp_path):
 
 def test_discover_urls_audit_logging(tmp_path):
     """discovery should log accepted/rejected URLs to audit trail."""
-    raw = _make_raw_results([
-        "https://favikon.com/ai-page",
-        "https://bing.com/ad",
-    ])
+    raw = [
+        _make_raw("https://favikon.com/top-fitness-influencers", "Top Fitness Influencers"),
+        _make_raw("https://bing.com/ad", "Ad Page"),
+    ]
     audit = AuditLog(tmp_path, "test")
     client = _make_mock_client(raw)
     svc = SearchService(audit, client=client)
@@ -225,6 +237,85 @@ def test_client_receives_seed_job(tmp_path):
     svc.discover_urls(job)
 
     client.search.assert_called_once_with(job)
+
+
+# ── _is_relevant() OR logic ──
+
+def test_relevant_passes_mandatory_word_in_title():
+    """Title with mandatory word (influencer) → relevant."""
+    job = _make_job()
+    assert SearchService._is_relevant("Top Fitness Influencers 2026", "https://favikon.com/page", job) is True
+
+
+def test_relevant_passes_favourite_in_title():
+    """Title with 'favourite' → relevant (expanded mandatory word)."""
+    job = _make_job()
+    assert SearchService._is_relevant("Our Favourite Gym Channels", "https://example.com/page", job) is True
+
+
+def test_relevant_rejects_generic_title_no_signals():
+    """Title without mandatory word, sub_name, category, or slug → not relevant."""
+    job = _make_job(sub_name="Yoga", category_key="WELLNESS", strict_slugs=["yoga"])
+    assert SearchService._is_relevant("Healthy Eating Tips 2026", "https://example.com/cooking", job) is False
+
+
+def test_relevant_passes_reddit_always():
+    """Reddit URLs always pass regardless of title content."""
+    job = _make_job()
+    assert SearchService._is_relevant("Random thread about nothing", "https://www.reddit.com/r/random", job) is True
+
+
+def test_relevant_passes_slug_in_url_path():
+    """URL path containing a configured slug → relevant (even without mandatory title word)."""
+    job = _make_job(strict_slugs=["fitness", "workout"])
+    assert SearchService._is_relevant("Some Page About Gyms", "https://example.com/blog/fitness-tips", job) is True
+
+
+def test_relevant_rejects_slug_not_in_path():
+    """Slug not in URL path AND no mandatory word → not relevant."""
+    job = _make_job(sub_name="Yoga", category_key="WELLNESS", strict_slugs=["yoga"])
+    assert SearchService._is_relevant("Some Random Page", "https://example.com/blog/cooking", job) is False
+
+
+def test_relevant_passes_sub_name_in_title():
+    """Title containing sub_name → relevant (even without mandatory word or slug)."""
+    job = _make_job(sub_name="Calisthenics", strict_slugs=["calisthenics"])
+    assert SearchService._is_relevant("Calisthenics YouTubers You Need to Follow", "https://example.com/page", job) is True
+
+
+def test_relevant_passes_category_key_in_title():
+    """Title containing category_key → relevant."""
+    job = _make_job(category_key="FITNESS")
+    assert SearchService._is_relevant("Getting Into Fitness This Year", "https://example.com/blog/random", job) is True
+
+
+def test_relevant_passes_empty_slugs():
+    """When no slugs configured, slug check is skipped — still needs other signal."""
+    job = _make_job(strict_slugs=[], sub_name="Yoga", category_key="WELLNESS")
+    assert SearchService._is_relevant("Random Page Title", "https://example.com/page", job) is False
+    assert SearchService._is_relevant("Best Yoga Channels", "https://example.com/page", job) is True
+
+
+def test_discover_urls_relevance_filter_integration(tmp_path):
+    """End-to-end: relevance filter rejects pages with no signals, accepts relevant ones."""
+    raw = [
+        _make_raw("https://favikon.com/top-fitness-influencers", "Top Fitness Influencers"),
+        _make_raw("https://example.com/cooking-tips", "Healthy Cooking Tips 2026"),
+        _make_raw("https://reddit.com/r/fitness/top", "Random fitness thread"),
+        _make_raw("https://example.com/blog/fitness-guide", "Complete Guide to Getting Started"),
+    ]
+    audit = AuditLog(tmp_path, "test")
+    client = _make_mock_client(raw)
+    svc = SearchService(audit, client=client)
+    job = _make_job(strict_slugs=["fitness"])
+
+    results = svc.discover_urls(job)
+
+    urls = [u for u, _ in results.url_query_pairs]
+    assert "https://favikon.com/top-fitness-influencers" in urls, "Mandatory word match should pass"
+    assert "https://example.com/cooking-tips" not in urls, "No relevance signals should be rejected"
+    assert "https://reddit.com/r/fitness/top" in urls, "Reddit always passes"
+    assert "https://example.com/blog/fitness-guide" in urls, "Slug match in URL should pass"
 
 
 # ── Pipeline Cache DI Guard ──
