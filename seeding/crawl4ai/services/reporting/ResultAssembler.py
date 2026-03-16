@@ -13,8 +13,9 @@ from __future__ import annotations
 
 import json
 import os
-from datetime import datetime, timezone
+from datetime import datetime
 from pathlib import Path
+from zoneinfo import ZoneInfo
 
 from config import RESULTS_DIR, SEARCH_DIR, REPORTS_DIR
 from config.schema import (
@@ -98,7 +99,7 @@ class ResultAssembler:
         Format: YYYY-MM-DD_H.MMam/pm_{region}
         Example: 2026-03-15_1.48pm_US
         """
-        now = datetime.now(timezone.utc)
+        now = datetime.now(ZoneInfo("Europe/London"))
         hour_12 = now.strftime("%-I")
         minute = now.strftime("%M")
         am_pm = now.strftime("%p").lower()
