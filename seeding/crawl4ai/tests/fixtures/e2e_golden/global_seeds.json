@@ -8,7 +8,7 @@
       "FITNESS"
     ],
     "source_urls": [
-      "http://127.0.0.1:53647/gymfluencers_uk_fitness.html"
+      "http://127.0.0.1:55290/gymfluencers_uk_fitness.html"
     ],
     "extraction_methods": [
       "llm"
@@ -24,7 +24,7 @@
       "FITNESS"
     ],
     "source_urls": [
-      "http://127.0.0.1:53647/gymfluencers_uk_fitness.html"
+      "http://127.0.0.1:55290/gymfluencers_uk_fitness.html"
     ],
     "extraction_methods": [
       "llm",
@@ -41,7 +41,7 @@
       "FITNESS"
     ],
     "source_urls": [
-      "http://127.0.0.1:53647/gymfluencers_uk_fitness.html"
+      "http://127.0.0.1:55290/gymfluencers_uk_fitness.html"
     ],
     "extraction_methods": [
       "llm",
@@ -58,7 +58,7 @@
       "FITNESS"
     ],
     "source_urls": [
-      "http://127.0.0.1:53647/gymfluencers_uk_fitness.html"
+      "http://127.0.0.1:55290/gymfluencers_uk_fitness.html"
     ],
     "extraction_methods": [
       "llm",
@@ -75,7 +75,7 @@
       "FITNESS"
     ],
     "source_urls": [
-      "http://127.0.0.1:53647/gymfluencers_uk_fitness.html"
+      "http://127.0.0.1:55290/gymfluencers_uk_fitness.html"
     ],
     "extraction_methods": [
       "llm",
@@ -92,7 +92,7 @@
       "FITNESS"
     ],
     "source_urls": [
-      "http://127.0.0.1:53647/gymfluencers_uk_fitness.html"
+      "http://127.0.0.1:55290/gymfluencers_uk_fitness.html"
     ],
     "extraction_methods": [
       "llm",
@@ -109,7 +109,7 @@
       "FITNESS"
     ],
     "source_urls": [
-      "http://127.0.0.1:53647/gymfluencers_uk_fitness.html"
+      "http://127.0.0.1:55290/gymfluencers_uk_fitness.html"
     ],
     "extraction_methods": [
       "llm",
@@ -126,7 +126,7 @@
       "FITNESS"
     ],
     "source_urls": [
-      "http://127.0.0.1:53647/gymfluencers_uk_fitness.html"
+      "http://127.0.0.1:55290/gymfluencers_uk_fitness.html"
     ],
     "extraction_methods": [
       "llm",
@@ -143,7 +143,7 @@
       "FITNESS"
     ],
     "source_urls": [
-      "http://127.0.0.1:53647/gymfluencers_uk_fitness.html"
+      "http://127.0.0.1:55290/gymfluencers_uk_fitness.html"
     ],
     "extraction_methods": [
       "regex"
@@ -159,7 +159,7 @@
       "FITNESS"
     ],
     "source_urls": [
-      "http://127.0.0.1:53647/gymfluencers_uk_fitness.html"
+      "http://127.0.0.1:55290/gymfluencers_uk_fitness.html"
     ],
     "extraction_methods": [
       "regex"
@@ -175,7 +175,7 @@
       "FITNESS"
     ],
     "source_urls": [
-      "http://127.0.0.1:53647/gymfluencers_uk_fitness.html"
+      "http://127.0.0.1:55290/gymfluencers_uk_fitness.html"
     ],
     "extraction_methods": [
       "regex"
@@ -191,7 +191,7 @@
       "FITNESS"
     ],
     "source_urls": [
-      "http://127.0.0.1:53647/gymfluencers_uk_fitness.html"
+      "http://127.0.0.1:55290/gymfluencers_uk_fitness.html"
     ],
     "extraction_methods": [
       "regex"
@@ -207,7 +207,7 @@
       "FITNESS"
     ],
     "source_urls": [
-      "http://127.0.0.1:53647/gymfluencers_uk_fitness.html"
+      "http://127.0.0.1:55290/gymfluencers_uk_fitness.html"
     ],
     "extraction_methods": [
       "regex"
@@ -223,7 +223,7 @@
       "FITNESS"
     ],
     "source_urls": [
-      "http://127.0.0.1:53647/gymfluencers_uk_fitness.html"
+      "http://127.0.0.1:55290/gymfluencers_uk_fitness.html"
     ],
     "extraction_methods": [
       "regex"
@@ -231,10 +231,10 @@
     "citation_count": 1
   },
   {
-    "name": "LucyDavisFit",
+    "name": "seancaseyfitness111",
     "ig_handle": "",
     "tk_handle": "",
-    "yt_handle": "lucydavisfit",
+    "yt_handle": "seancaseyfitness111",
     "categories": [
       "FITNESS"
     ],
@@ -243,10 +243,10 @@
     "citation_count": 0
   },
   {
-    "name": "seancaseyfitness111",
+    "name": "LucyDavisFit",
     "ig_handle": "",
     "tk_handle": "",
-    "yt_handle": "seancaseyfitness111",
+    "yt_handle": "lucydavisfit",
     "categories": [
       "FITNESS"
     ],

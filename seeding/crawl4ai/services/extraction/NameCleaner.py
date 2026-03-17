@@ -80,6 +80,10 @@ _GENERIC_BLOCKLIST = frozenset({
     "get started", "try free", "book demo", "download app",
     "browse all", "contact us", "explore more", "view all",
     "continue reading", "related articles",
+    # Generic job titles / roles
+    "personal trainer", "fitness model", "fitness influencer",
+    "fitness coach", "yoga teacher", "yoga instructor",
+    "brand ambassador", "beauty guru",
 })
 
 # Non-content-creator celebrities — NOT Arnold, The Rock, Gordon Ramsay
@@ -137,7 +141,7 @@ class NameCleaner:
             return None
 
         extracted = match.group(1).strip()
-        if not extracted:
+        if not extracted or len(extracted) <= 3:
             return None
 
         if _is_non_person(extracted):

@@ -282,6 +282,7 @@ _IGNORE_BRANDS_FASHION = frozenset({
     "victoriassecret", "fentybeauty", "elfcosmetics", "sephora",
     "lorealparis", "maybelline", "maccosmetics", "nars", "rarebeauty",
     "gymshark", "lululemon",
+    "ehplabs", "insanelabz", "aloyoga", "hooters",
 })
 
 # ── Brands: Food & drink ──

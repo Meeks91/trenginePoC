@@ -128,3 +128,30 @@ class TestIsValidHandle:
 
     def test_rejects_empty(self):
         assert NameCleaner.is_valid_handle("") is False
+
+
+class TestBlocklistAdditions:
+    """Regression tests for blocklist additions (2026-03-17)."""
+
+    # ── Generic job titles ──
+
+    def test_rejects_personal_trainer(self):
+        assert NameCleaner.clean_name("Personal Trainer") is None
+
+    def test_rejects_fitness_model(self):
+        assert NameCleaner.clean_name("Fitness Model") is None
+
+    def test_rejects_yoga_teacher(self):
+        assert NameCleaner.clean_name("Yoga Teacher") is None
+
+    def test_rejects_brand_ambassador(self):
+        assert NameCleaner.clean_name("Brand Ambassador") is None
+
+    # ── Min-length check (≤3 chars rejected) ──
+
+    def test_rejects_short_name_the(self):
+        assert NameCleaner.clean_name("The") is None
+
+    def test_accepts_four_char_name(self):
+        assert NameCleaner.clean_name("Emi Wong") == "Emi Wong"
+
