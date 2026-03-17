@@ -2,7 +2,7 @@
 
 > **Audience**: Developers, code reviewers, and future maintainers.
 > **Scope**: Every decision rule the crawler applies from DDG search → final JSON output.
-> **Last updated**: 2026-03-15
+> **Last updated**: 2026-03-17
 
 ---
 
@@ -35,8 +35,10 @@ graph TD
     B --> C["② Crawl<br/>Crawl4AI → markdown"]
     C --> D["③ Extract<br/>Regex → Classify → LLM"]
     D --> E["④ Enrich<br/>DDG handle backfill"]
-    E --> F["⑤ Name Resolution<br/>Reddit names → DDG → handles"]
-    F --> G["⑥ Output<br/>JSON + Report + Audit"]
+    E --> F1["④½ Pre-NR Merge<br/>merge() dedup"]
+    F1 --> F["⑤ Name Resolution<br/>KnownNameIndex → DDG → handles"]
+    F --> F2["⑤½ Post-NR Merge<br/>merge() fold resolved"]
+    F2 --> G["⑥ Output<br/>JSON + Report + Audit"]
 
     style A fill:#2d1b69,color:#fff
     style B fill:#1a3a5c,color:#fff
@@ -179,14 +181,14 @@ Every extracted handle must pass these checks:
 ```
 ✅ PASS conditions:
    - ≥ 2 characters long
-   - Not in _IGNORE_HANDLES (200+ entries)
+   - Not in _IGNORE_HANDLES (~520 entries)
    - No prefix match (utm_, ig_, ref=, img_)
    - Not pure numeric (post IDs)
    - No consecutive dots (..)
    - No domain suffixes (.com, .co.uk, etc.)  
    - No .com mid-string (email fragments)
 
-❌ BLOCKED categories (200+ entries):
+❌ BLOCKED categories (~520 entries):
    - URL path segments: p, reel, stories, explore, foryou, watch...
    - CSS/JSON-LD: @context, @type, @media, @font, @keyframes...
    - Tailwind breakpoints: @sm, @md, @lg, @xl, @2xl...  
@@ -209,20 +211,21 @@ Every extracted handle must pass these checks:
 **Service**: `NameCleaner.py`
 **Injected into**: `LLMResponseParser` + `NameExtractor`
 
-All names pass through a shared cleanup pipeline before entering the system:
+All names pass through regex extraction + blocklist filtering:
 
 ```
-Pipeline:
-  1. Strip markdown bold (**name**)
-  2. Strip markdown links [text](url)
-  3. Strip leading number prefix (1. Name, 2) Name)
-  4. Decode URL-encoded strings (%20 etc.) — reject if still garbled
-  5. Reject non-person entities via blocklists:
-     - Brands/tools: Canva, Peloton, Nike, ChatGPT, Gymshark...
-     - Countries: Bangladesh, India, United States...
-     - News orgs: BBC, CNN, Forbes, TechCrunch...
-     - Generic phrases: Content Creator, Engagement Rate...
-  6. Reject LinkedIn slugs (first-last-1234567 patterns)
+Extraction:
+  1. _NAME_RE.search(): extracts first 2-word proper name
+     Pattern: [A-ZÀ-ÖØ-Þ][a-zA-Zà-öø-ÿ'-]+\s[A-ZÀ-ÖØ-Þ][a-zA-Zà-öø-ÿ'-]+
+     Supports accented characters (À-ÖØ-Þ, à-öø-ÿ)
+
+Blocklist filtering (reject if match):
+  - Brands/tools: Canva, Peloton, Nike, ChatGPT, Gymshark...
+  - Countries: Bangladesh, India, United States...
+  - News orgs: BBC, CNN, Forbes, TechCrunch...
+  - CTA phrases: Free Trial, Sign Up, Read More, View Profile...
+  - Generic phrases: Content Creator, Engagement Rate...
+  - LinkedIn slugs (first-last-1234567 patterns)
 ```
 
 #### Name Assignment from Headings
@@ -350,8 +353,8 @@ Extracts candidate influencer **names** (not handles) from text — targets Redd
 #### Name Extraction Rules
 
 ```
-Regex: 2-3 consecutive capitalized words
-       [A-Z][a-zA-Z'-]+(\s[A-Z][a-zA-Z'-]+){1,2}
+Regex: 2 consecutive capitalized words (supports accented chars)
+       [A-ZÀ-ÖØ-Þ][a-zA-Zà-öø-ÿ'-]+(\s[A-ZÀ-ÖØ-Þ][a-zA-Zà-öø-ÿ'-]+)
 
 Filters (must pass ALL):
   ✅ 4+ characters total
@@ -486,7 +489,7 @@ Duplicates: source_urls unioned, handles merged into surviving entry.
 ## Phase 4½ — Identity Merge & Dedup
 
 **Service**: `InfluencerMerger.py`
-**When**: After enrichment, before final output
+**When**: Runs **twice** — pre-NR (Step 3 in `run()`) and post-NR (Step 5)
 **Cost**: FREE (pure computation)
 
 ### Handle Normalization
@@ -541,10 +544,14 @@ Global dedup key: `(handle_lower, platform_lower)`.
 
 ## Phase 5 — Deferred Name Resolution
 
-**Service**: `NameResolver.py` + `NameMentionTracker.py`
-**When**: After ALL jobs complete (pipeline-level, not per-job)
+**Service**: `NameResolver.py` + `NameMentionTracker.py` + `KnownNameIndex.py`
+**When**: After pre-NR merge, before post-NR merge
 **Cost**: FREE (DDG) but rate-limited
 **Default**: **OFF** (enable with `--name-resolution`)
+
+### KnownNameIndex Pre-filter
+
+Before NR DDG lookups, `KnownNameIndex` checks if each candidate name already has handles in the merged influencer pool. Names that match an existing influencer (exact or handle-as-name) are skipped — avoiding redundant DDG queries.
 
 ### Flow
 
