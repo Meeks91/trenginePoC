@@ -102,6 +102,7 @@ class InfluencerMerger:
                 original_index=idx,
                 source_urls=set(inf.source_urls),
                 extraction_methods=set(inf.extraction_methods),
+                categories_found_in=list(inf.categories_found_in),
             )
 
             if key in buckets:
@@ -129,6 +130,8 @@ class InfluencerMerger:
                         else:
                             _merge_groups(buckets, key, dot_key)
 
+
+
         # ── Step 2: Deduplicate bucket aliases ──
         seen_ids: set[int] = set()
         unique_groups: list[list[_Entry]] = []
@@ -149,87 +152,43 @@ class InfluencerMerger:
 
     @staticmethod
     def to_seeds(
-        entries: list[tuple[Influencer, str]],
+        influencers: list[Influencer],
         handle_filter: Callable[[str], bool] = is_blocked_handle,
     ) -> list[SeedInfluencer]:
-        """Convert category-tagged Influencers to DB-ready SeedInfluencer records.
+        """Convert merged Influencers to DB-ready SeedInfluencer records.
 
-        Deduplicates by (handle_lower, platform), picks best name, merges
-        categories and cross-platform handles.
+        Expects already-merged input (one Influencer per person).
+        Each Influencer → one SeedInfluencer with platform handle columns.
 
         Args:
-            entries: List of (Influencer, category_key) tuples.
+            influencers: Merged list where each person appears once.
+            handle_filter: Callable to check if a handle is blocked.
 
         Returns:
-            Deduped list of SeedInfluencer records.
+            List of SeedInfluencer records.
         """
-        merged: dict[tuple[str, str], _SeedEntry] = {}
-
-        for inf, category in entries:
-            for plat, handle in inf.handles.items():
-                handle_lower = handle.lower().lstrip("@")
-                key = (handle_lower, plat.value.lower())
-
-                if key not in merged:
-                    merged[key] = _SeedEntry(
-                        best_name=inf.name,
-                        handle=handle_lower,
-                        platform=plat,
-                        categories={category},
-                        source_urls=set(inf.source_urls),
-                        extraction_methods=set(inf.extraction_methods),
-                    )
-                else:
-                    entry = merged[key]
-                    entry.categories.add(category)
-                    entry.source_urls.update(inf.source_urls)
-                    entry.extraction_methods.update(inf.extraction_methods)
-                    if _is_better_name(inf.name, entry.best_name, handle_lower):
-                        entry.best_name = inf.name
-
-                # Merge other handles as alt handles
-                for other_plat, other_handle in inf.handles.items():
-                    if other_plat != plat:
-                        merged[key].alt_handles[other_plat.value] = (
-                            other_handle.lower().lstrip("@")
-                        )
-
-            # Handle influencers with no handles (name-only)
-            if not inf.handles:
-                name_key = ("", inf.name.lower().strip())
-                if name_key not in merged:
-                    merged[name_key] = _SeedEntry(
-                        best_name=inf.name,
-                        handle="",
-                        platform=Platform.Instagram,  # Default
-                        categories={category},
-                    )
-                else:
-                    merged[name_key].categories.add(category)
-
-        # Convert to SeedInfluencer records
         results: list[SeedInfluencer] = []
-        for entry in merged.values():
+
+        for inf in influencers:
+            if not inf.handles:
+                continue
+
             seed = SeedInfluencer(
-                name=entry.best_name,
-                categories=sorted(entry.categories),
-                source_urls=sorted(entry.source_urls),
-                extraction_methods=sorted(entry.extraction_methods),
+                name=inf.name,
+                categories=sorted(inf.categories_found_in),
+                source_urls=sorted(inf.source_urls),
+                extraction_methods=sorted(inf.extraction_methods),
             )
 
-            # Assign handle to correct platform column
-            _assign_platform_handle(seed, entry.platform.value, entry.handle)
+            # Assign handles to platform columns
+            for plat, handle in inf.handles.items():
+                clean = handle.lower().lstrip("@")
+                _assign_platform_handle(seed, plat.value, clean)
 
-            # Assign alt handles to their platform columns
-            for plat_value, alt_handle in entry.alt_handles.items():
-                _assign_platform_handle(seed, plat_value, alt_handle)
+            if _has_any_handle(seed) and not _is_blocked_seed(seed, handle_filter):
+                results.append(seed)
 
-            results.append(seed)
-
-        return [
-            s for s in results
-            if _has_any_handle(s) and not _is_blocked_seed(s, handle_filter)
-        ]
+        return results
 
 
 # ══════════════════════════════════════════════════════════════════════
@@ -279,6 +238,7 @@ class _Entry:
     __slots__ = (
         "handles", "name", "name_lower",
         "original_index", "source_urls", "extraction_methods",
+        "categories_found_in",
     )
 
     def __init__(
@@ -289,6 +249,7 @@ class _Entry:
         original_index: int,
         source_urls: set[str] | None = None,
         extraction_methods: set[str] | None = None,
+        categories_found_in: list[str] | None = None,
     ) -> None:
         self.handles = handles
         self.name = name
@@ -296,6 +257,7 @@ class _Entry:
         self.original_index = original_index
         self.source_urls = source_urls or set()
         self.extraction_methods = extraction_methods or set()
+        self.categories_found_in = categories_found_in or []
 
     @property
     def has_supported_platform(self) -> bool:
@@ -316,6 +278,8 @@ def _merge_groups(
     for k, v in buckets.items():
         if v is group_a or v is group_b:
             buckets[k] = combined
+
+
 
 
 def _build_grouped_influencer(
@@ -370,11 +334,17 @@ def _build_grouped_influencer(
         all_sources |= entry.source_urls
         all_methods |= entry.extraction_methods
 
+    # Union categories_found_in from ALL entries
+    all_categories: set[str] = set()
+    for entry in entries:
+        all_categories.update(entry.categories_found_in)
+
     return Influencer(
         name=best_name,
         handles=merged_handles,
         source_urls=all_sources,
         extraction_methods=all_methods,
+        categories_found_in=sorted(all_categories),
     )
 
 

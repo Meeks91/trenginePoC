@@ -98,13 +98,13 @@ class PhasePipelineRunner(BasePipelineRunner):
         # Phase 3: Crawl unique URLs
         pages, page_map = await self._crawl_all(unique_urls)
 
-        # Phase 4: Extract + build influencer_to_category
-        influencer_to_category, name_tracker = await self._extract_and_build_entries(
+        # Phase 4: Extract + build influencers list
+        influencers, name_tracker = await self._extract_and_build_entries(
             pages, page_map, jobs, self._all_direct_handles,
         )
 
         return GatherResult(
-            influencer_to_category=influencer_to_category,
+            influencers=influencers,
             name_tracker=name_tracker,
             job_outcomes=outcomes,
         )
@@ -198,10 +198,10 @@ class PhasePipelineRunner(BasePipelineRunner):
         page_map: dict[str, tuple[PageResult, TaggedURL]],
         jobs: list[SeedJob],
         direct_handles: list[tuple[ExtractedHandle, str]],
-    ) -> tuple[list[tuple[Influencer, str]], NameMentionTracker | None]:
+    ) -> tuple[list[Influencer], NameMentionTracker | None]:
         """Extract handles from all pages, tag with categories.
 
-        Returns (influencer_to_category, name_tracker).
+        Returns (influencers, name_tracker).
         """
         from services.extraction.NameMentionTracker import NameMentionTracker
 
@@ -248,7 +248,7 @@ class PhasePipelineRunner(BasePipelineRunner):
         )
 
         # Tag each influencer with categories from ALL pages that found it
-        influencer_to_category: list[tuple[Influencer, str]] = []
+        all_influencers: list[Influencer] = []
         for inf in unique:
             # Try to find which categories this handle came from via page_map
             handle_strs = {h.lower().lstrip("@") for h in inf.handles.values()}
@@ -263,17 +263,18 @@ class PhasePipelineRunner(BasePipelineRunner):
             if not found_categories:
                 found_categories = {primary_category}
 
-            for cat in found_categories:
-                influencer_to_category.append((inf, cat))
+            inf.categories_found_in = sorted(found_categories)
+            all_influencers.append(inf)
 
         # Add direct handles with their categories
         for handle, category in direct_handles:
             inf = Influencer(
                 name=handle.handle,
                 handles=_to_handles(handle.handle, handle.platform),
+                categories_found_in=[category],
             )
-            influencer_to_category.append((inf, category))
+            all_influencers.append(inf)
 
-        logger.info("  Phase 4 complete: %d handles → %d entries", len(unique), len(influencer_to_category))
+        logger.info("  Phase 4 complete: %d handles → %d entries", len(unique), len(all_influencers))
 
-        return influencer_to_category, extract_result.name_tracker
+        return all_influencers, extract_result.name_tracker

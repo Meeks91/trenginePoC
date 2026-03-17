@@ -11,9 +11,15 @@ import re
 from urllib.parse import unquote
 
 
-_MARKDOWN_BOLD_RE = re.compile(r'\*\*(.+?)\*\*')
-_MARKDOWN_LINK_RE = re.compile(r'\[([^\]]+)\]\([^)]+\)')
-_NUMBER_PREFIX_RE = re.compile(r'^\d+[.)\-]\s*')
+
+# Regex: exactly 2 capitalized words, allowing hyphens, apostrophes, and accented chars.
+# Uses broader ranges than NameExtractor since LLM output contains international names.
+_NAME_RE = re.compile(
+    r"\b("
+    r"[A-ZÀ-ÖØ-Þ][a-zA-ZÀ-ÖØ-öø-ÿ'\u2019-]+"  # First word
+    r"\s[A-ZÀ-ÖØ-Þ][a-zA-ZÀ-ÖØ-öø-ÿ'\u2019-]+"  # Second word
+    r")\b"
+)
 _URL_ENCODED_RE = re.compile(r'%[0-9A-Fa-f]{2}')
 
 # Brands / companies / tools / products — not people
@@ -25,10 +31,11 @@ _BRAND_BLOCKLIST = frozenset({
     "google", "apple", "microsoft", "amazon", "meta", "tiktok",
     "instagram", "youtube", "twitter", "facebook", "snapchat",
     "netflix", "spotify", "uber", "airbnb", "tesla",
-    "nike training club", "firecrawl", "scrapegraph ai",
+    "nike training club", "nike training", "firecrawl", "scrapegraph ai",
     "meta ai", "inworld ai", "jasper ai", "stability ai",
     "copy ai", "synthesia ai", "runway ml", "perplexity ai",
     "gymshark", "claude", "gemini", "dalle",
+    "modash", "favikon", "collabstr",
 })
 
 # Countries / regions — not people
@@ -103,19 +110,13 @@ class NameCleaner:
         """Clean a raw name. Returns None to reject.
 
         Pipeline:
-          1. Strip markdown bold (**name**)
-          2. Strip markdown links [text](url)
-          3. Strip leading number prefix (1. Name)
-          4. Decode URL-encoded strings (reject if still garbled)
-          5. Reject non-person entities (countries, brands, news orgs)
-          6. Strip whitespace
+          1. Decode URL-encoded strings (reject if still garbled)
+          2. Extract name via _NAME_RE.search() — two CamelCase words
+             (cuts through bold, numbering, emoji, markdown garbage)
+          3. Reject non-person entities (countries, brands, news orgs)
         """
         if not name or not name.strip():
             return None
-
-        name = _MARKDOWN_BOLD_RE.sub(r'\1', name)
-        name = _MARKDOWN_LINK_RE.sub(r'\1', name)
-        name = _NUMBER_PREFIX_RE.sub('', name)
 
         if _URL_ENCODED_RE.search(name):
             decoded = unquote(name)
@@ -125,14 +126,18 @@ class NameCleaner:
                 return None
             name = decoded
 
-        name = name.strip()
-        if not name:
+        match = _NAME_RE.search(name)
+        if not match:
             return None
 
-        if _is_non_person(name):
+        extracted = match.group(1).strip()
+        if not extracted:
             return None
 
-        return name
+        if _is_non_person(extracted):
+            return None
+
+        return extracted
 
     @staticmethod
     def is_valid_handle(handle: str) -> bool:

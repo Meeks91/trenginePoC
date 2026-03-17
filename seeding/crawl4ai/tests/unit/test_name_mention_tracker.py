@@ -204,8 +204,8 @@ class TestTopRedditNamesByGroup:
         _record(tracker, "Jeff Nippard", 5, "https://reddit.com/1",
                 SourceType.REDDIT, sub="Gym", category="FITNESS",
                 platform="Instagram", region="US")
-        result = tracker.top_reddit_names_by_group(
-            max_candidates_per_group=10, min_mentions=1,
+        result = tracker.top_unresolved_reddit_names_by_group(
+            max_candidates_per_group=10, min_mentions=1, known_influencers=[],
         )
         assert len(result) == 1
         key = ("Instagram", "FITNESS", "Gym", "US")
@@ -219,8 +219,8 @@ class TestTopRedditNamesByGroup:
                 SourceType.REDDIT, sub="Gym")
         _record(tracker, "High Person", 10, "https://reddit.com/2",
                 SourceType.REDDIT, sub="Gym")
-        result = tracker.top_reddit_names_by_group(
-            max_candidates_per_group=10, min_mentions=1,
+        result = tracker.top_unresolved_reddit_names_by_group(
+            max_candidates_per_group=10, min_mentions=1, known_influencers=[],
         )
         group = list(result.values())[0]
         assert group[0].canonical == "High Person"
@@ -232,8 +232,8 @@ class TestTopRedditNamesByGroup:
                 SourceType.REDDIT, sub="Gym")
         _record(tracker, "Popular Person", 5, "https://reddit.com/2",
                 SourceType.REDDIT, sub="Gym")
-        result = tracker.top_reddit_names_by_group(
-            max_candidates_per_group=10, min_mentions=3,
+        result = tracker.top_unresolved_reddit_names_by_group(
+            max_candidates_per_group=10, min_mentions=3, known_influencers=[],
         )
         group = list(result.values())[0]
         assert len(group) == 1
@@ -244,8 +244,8 @@ class TestTopRedditNamesByGroup:
         for i in range(10):
             _record(tracker, f"Person {i}", 10 - i, f"https://reddit.com/{i}",
                     SourceType.REDDIT, sub="Gym")
-        result = tracker.top_reddit_names_by_group(
-            max_candidates_per_group=3, min_mentions=1,
+        result = tracker.top_unresolved_reddit_names_by_group(
+            max_candidates_per_group=3, min_mentions=1, known_influencers=[],
         )
         group = list(result.values())[0]
         assert len(group) == 3
@@ -254,8 +254,8 @@ class TestTopRedditNamesByGroup:
         tracker = NameMentionTracker()
         _record(tracker, "Blog Only", 100, "https://blog.com/1",
                 SourceType.NON_REDDIT, sub="Gym")
-        result = tracker.top_reddit_names_by_group(
-            max_candidates_per_group=10, min_mentions=1,
+        result = tracker.top_unresolved_reddit_names_by_group(
+            max_candidates_per_group=10, min_mentions=1, known_influencers=[],
         )
         assert len(result) == 0
 
@@ -265,8 +265,8 @@ class TestTopRedditNamesByGroup:
                 SourceType.REDDIT, sub="Gym")
         _record(tracker, "Yoga Person", 5, "https://reddit.com/2",
                 SourceType.REDDIT, sub="Yoga")
-        result = tracker.top_reddit_names_by_group(
-            max_candidates_per_group=10, min_mentions=1,
+        result = tracker.top_unresolved_reddit_names_by_group(
+            max_candidates_per_group=10, min_mentions=1, known_influencers=[],
         )
         assert len(result) == 2
 

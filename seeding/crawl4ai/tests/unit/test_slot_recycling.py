@@ -243,9 +243,9 @@ class TestBuildKnownHandles:
         from base_pipeline import BasePipelineRunner
         runner = MagicMock(spec=BasePipelineRunner)
 
-        data: list[tuple[Influencer, str]] = [
-            (Influencer(name="Jeff", handles={Platform.Instagram: "JeffNippard"}), "cat"),
-            (Influencer(name="Sean", handles={Platform.YouTube: "SeanNal"}), "cat"),
+        data: list[Influencer] = [
+            Influencer(name="Jeff", handles={Platform.Instagram: "JeffNippard"}),
+            Influencer(name="Sean", handles={Platform.YouTube: "SeanNal"}),
         ]
         result = BasePipelineRunner._build_known_handles(runner, data)
         assert result == {"jeffnippard", "seannal"}
@@ -254,8 +254,8 @@ class TestBuildKnownHandles:
         from base_pipeline import BasePipelineRunner
         runner = MagicMock(spec=BasePipelineRunner)
 
-        data: list[tuple[Influencer, str]] = [
-            (Influencer(name="No Handle", handles={}), "cat"),
+        data: list[Influencer] = [
+            Influencer(name="No Handle", handles={}),
         ]
         result = BasePipelineRunner._build_known_handles(runner, data)
         assert result == set()

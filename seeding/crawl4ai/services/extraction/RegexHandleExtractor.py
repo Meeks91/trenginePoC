@@ -322,6 +322,8 @@ _IGNORE_BRANDS_RETAIL = frozenset({
 # ── Generic non-person terms ──
 _IGNORE_GENERIC = frozenset({
     "hotel", "hotels", "hostel", "resort",
+    # Scraped data labels (not handles)
+    "followers", "followers.weekly",
     # Country names & codes
     "usa", "uk", "nz", "au", "ca", "de", "fr", "es", "it", "jp",
     "australia", "canada", "germany", "france", "spain", "italy",

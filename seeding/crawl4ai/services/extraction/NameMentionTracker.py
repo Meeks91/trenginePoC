@@ -33,7 +33,7 @@ from collections import defaultdict, deque
 from collections.abc import Iterator
 from dataclasses import dataclass, field
 
-from config.schema import SourceType
+from config.schema import Influencer, SourceType
 
 # Type aliases for bucket parallel-list elements
 type VariantCounts = dict[str, int]
@@ -80,6 +80,31 @@ NOISE_NAMES: frozenset[str] = frozenset({
     "Download App",
     "Browse All",
     "Social Media",
+    # UI/CTA noise (high-volume from report)
+    "Continue Reading", "Related Articles", "Make Money",
+    "View All", "Explore More", "Start Your",
+    "World Champion", "Real Estate", "Black Friday",
+    "Pro Tip", "Case Studies", "Final Thoughts",
+    "Managing Director", "Marketing Agency", "Award Winning",
+    "Yoga With", "Description The",
+    "Youtuber Name", "Hair YouTubers", "Hair TikTokers",
+    "Male YouTubers", "Calisthenics YouTubers", "Gym TikTokers",
+    "Content Style", "Domain Rating", "Avg Likes",
+    "Second Test", "Second Bio", "Male Request",
+    # Site chrome
+    "Favikon Democratizing", "Favikon Built", "Social Snowball",
+    "Social Shepherd", "Sprout Social", "Imagen Insights",
+    "Zen Planner", "FeedSpot Reader",
+    # Cookie consent noise
+    "NecessaryAlways Active", "Analytics Analytical",
+    "Performance Performance", "Strictly Necessary",
+    # Posts *Niche patterns
+    "Posts CoachNiche", "Posts AthleteNiche", "Posts Personal",
+    # Duplicate noise
+    "Functional Functional",
+    # Misc
+    "Influence Operations", "Supporting Information",
+    "Refund Policy", "Find Local",
 })
 
 _NOISE_LOWER: frozenset[str] = frozenset(n.lower() for n in NOISE_NAMES)
@@ -288,20 +313,26 @@ class NameMentionTracker:
         selected.sort(key=lambda m: m.mention_count, reverse=True)
         return selected
 
-    def top_reddit_names_by_group(
+    def top_unresolved_reddit_names_by_group(
         self,
         max_candidates_per_group: int,
         min_mentions: int,
+        known_influencers: list[Influencer],
     ) -> dict[GroupKey, deque[NameMention]]:
         """Per-group ranked queues for slot recycling.
 
         Returns up to max_candidates_per_group candidates per group,
         sorted by total mention_count DESC. Reddit gate applied
         (only names with at least one reddit source included).
+        Names already known (have handles in extracted data) are excluded.
         """
+        from services.extraction.KnownNameIndex import KnownNameIndex
+        name_index = KnownNameIndex(known_influencers)
+
         reddit = [m for m in self.reddit_names
                   if m.mention_count >= min_mentions
-                  and m.canonical.lower() not in _NOISE_LOWER]
+                  and m.canonical.lower() not in _NOISE_LOWER
+                  and not name_index.has_handles(m.canonical)]
 
         groups: dict[GroupKey, list[NameMention]] = defaultdict(list)
         for mention in reddit:

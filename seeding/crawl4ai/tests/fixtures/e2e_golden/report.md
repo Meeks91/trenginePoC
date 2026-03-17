@@ -15,30 +15,26 @@
 | **Configs** | **1 succeeded, 0 failed (1 total)** |
 
 ## Global Seed DB (Deduped)
-**20 unique seeds** across all configs
+**16 unique seeds** across all configs
 
 | # | IG Handle | TK Handle | YT Handle | Categories |
 |---|-----------|-----------|-----------|------------|
 | 1 | — | — | adammaxted2262 | FITNESS |
 | 2 | — | — | adammaxted | FITNESS |
 | 3 | alex.beattie | alex.beattie | — | FITNESS |
-| 4 | alex.beattie | alex.beattie | — | FITNESS |
-| 5 | — | courtney | — | FITNESS |
-| 6 | courtneyblackfitness | courtneyblackfitness | — | FITNESS |
-| 7 | courtneyblackfitness | courtneyblackfitness | — | FITNESS |
-| 8 | esgfitness | — | esgfitness | FITNESS |
-| 9 | esgfitness | — | esgfitness | FITNESS |
-| 10 | thebodycoach | — | — | FITNESS |
-| 11 | — | bblisacross | — | FITNESS |
-| 12 | — | — | lucy | FITNESS |
-| 13 | — | — | lucydavisfit | FITNESS |
-| 14 | — | — | michael | FITNESS |
-| 15 | — | — | mac_griffiths | FITNESS |
-| 16 | — | — | sean | FITNESS |
-| 17 | — | — | seancaseyfitness111 | FITNESS |
-| 18 | — | — | the | FITNESS |
-| 19 | — | — | thebodycoachtv | FITNESS |
-| 20 | — | victorianiamh | — | FITNESS |
+| 4 | — | courtney | — | FITNESS |
+| 5 | courtneyblackfitness | courtneyblackfitness | — | FITNESS |
+| 6 | esgfitness | — | esgfitness | FITNESS |
+| 7 | thebodycoach | — | thebodycoachtv | FITNESS |
+| 8 | — | bblisacross | — | FITNESS |
+| 9 | — | — | lucy | FITNESS |
+| 10 | — | — | lucydavisfit | FITNESS |
+| 11 | — | — | michael | FITNESS |
+| 12 | — | — | mac_griffiths | FITNESS |
+| 13 | — | — | sean | FITNESS |
+| 14 | — | — | seancaseyfitness111 | FITNESS |
+| 15 | — | — | the | FITNESS |
+| 16 | — | victorianiamh | — | FITNESS |
 
 ## Canary Validation
 | Sub | Canary | Found? |

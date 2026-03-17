@@ -45,7 +45,7 @@ class PerJobPipelineRunner(BasePipelineRunner):
     def __init__(self, **kwargs) -> None:
         super().__init__(**kwargs)
         # Cross-job accumulator for the per-job loop
-        self._all_influencer_entries: list[tuple[Influencer, str]] = []
+        self._all_influencers: list[Influencer] = []
         # Cross-job name tracker for deferred resolution
         self._global_name_tracker = NameMentionTracker()
 
@@ -55,14 +55,14 @@ class PerJobPipelineRunner(BasePipelineRunner):
         self, jobs: list[SeedJob],
     ) -> GatherResult:
         """Per-job strategy: base runs search, we crawl+extract per job."""
-        self._all_influencer_entries.clear()
+        self._all_influencers.clear()
         self._global_name_tracker = NameMentionTracker()
 
         # Base class owns search iteration + circuit breaker
         outcomes = await self._search_all_configs(jobs)
 
         return GatherResult(
-            influencer_to_category=list(self._all_influencer_entries),
+            influencers=list(self._all_influencers),
             name_tracker=self._global_name_tracker,
             job_outcomes=outcomes,
         )
@@ -136,9 +136,10 @@ class PerJobPipelineRunner(BasePipelineRunner):
 
         logger.info("  Audit log: %s", audit.path)
 
-        # Accumulate for global dedup (category_key only, not full job key)
+        # Accumulate for global dedup
         for inf in unique:
-            self._all_influencer_entries.append((inf, job.category_key))
+            inf.categories_found_in = [job.category_key]
+            self._all_influencers.append(inf)
 
     # ── run_jobs (legacy wrapper) ────────────────────────────────────────
 
@@ -231,7 +232,7 @@ class PerJobPipelineRunner(BasePipelineRunner):
             audit=audit,
             sub_name=sub_name,
             platform=Platform(platform),
-            influencer_to_category=[],
+            influencers=[],
         )
 
         # Enrich

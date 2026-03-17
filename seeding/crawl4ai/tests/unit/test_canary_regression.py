@@ -88,14 +88,14 @@ def test_pipeline_canary_validation_finds_cross_platform_canaries():
 
     # Simulate accumulated influencer entries (what run_job builds up)
     for inf in IG_INFLUENCERS:
-        runner._all_influencer_entries.append((inf, "AI"))
+        runner._all_influencers.append(inf)
     for inf in YT_INFLUENCERS:
-        runner._all_influencer_entries.append((inf, "AI"))
+        runner._all_influencers.append(inf)
     for inf in TK_INFLUENCERS:
-        runner._all_influencer_entries.append((inf, "AI"))
+        runner._all_influencers.append(inf)
 
     # Run validation the same way pipeline.py does
-    all_influencers = [inf for inf, _ in runner._all_influencer_entries]
+    all_influencers = list(runner._all_influencers)
     validator = IngestionValidator()
     canary_key = "AI_AI_US"
     vr = validator.validate(

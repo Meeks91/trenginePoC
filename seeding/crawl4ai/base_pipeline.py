@@ -63,7 +63,7 @@ class GatherResult:
     Both pipeline strategies (per-job and phase) produce this same shape
     after their search+crawl+extract phase completes.
     """
-    influencer_to_category: list[tuple[Influencer, str]] = field(default_factory=list)
+    influencers: list[Influencer] = field(default_factory=list)
     name_tracker: NameMentionTracker | None = None
     job_outcomes: list[JobOutcome] = field(default_factory=list)
 
@@ -144,27 +144,37 @@ class BasePipelineRunner(abc.ABC):
             )
             self._stats.stats.configs_aborted = len(errored_configs)
 
-        # Step 3: Deferred name resolution
+        # Step 3: Merge identity groups before NR
+        merged = InfluencerMerger.merge(gather.influencers)
+        logger.info(
+            "  Pre-NR merge: %d entries → %d identities",
+            len(gather.influencers), len(merged),
+        )
+
+        # Step 4: Deferred name resolution
         audit = AuditLog(AUDIT_DIR, "name_resolution")
         name_records = self._run_deferred_name_resolution(
             tracker=gather.name_tracker,
             audit=audit,
             sub_name="Influencer",
             platform=jobs[0].platform if jobs else Platform.Instagram,
-            influencer_to_category=gather.influencer_to_category,
+            influencers=merged,
         )
 
-        # Step 4: Global dedup
-        seeds = InfluencerMerger.to_seeds(gather.influencer_to_category)
+        # Step 5: Post-NR merge (fold resolved names into identities)
+        merged = InfluencerMerger.merge(merged)
+
+        # Step 6: Global dedup → seeds
+        seeds = InfluencerMerger.to_seeds(merged)
         logger.info(
-            "  Global dedup: %d entries → %d unique seeds",
-            len(gather.influencer_to_category), len(seeds),
+            "  Global dedup: %d identities → %d seeds",
+            len(merged), len(seeds),
         )
 
-        # Step 5: Canary validation
-        self._run_canary_validation(jobs, gather.influencer_to_category)
+        # Step 7: Canary validation
+        self._run_canary_validation(jobs, merged)
 
-        # Step 6: Report
+        # Step 8: Report
         yield_warnings = self._stats.check_yield_warnings()
         region_label = jobs[0].region.code.value if jobs else "UNKNOWN"
         run_id = self._assembler.generate_run_id(region_label)
@@ -184,7 +194,7 @@ class BasePipelineRunner(abc.ABC):
             total_configs=len(jobs),
         )
 
-        # Step 7: Save all output into run directory
+        # Step 9: Save all output into run directory
         self._assembler.save_run_report(
             run_dir=run_dir,
             seeds=seeds,
@@ -364,14 +374,13 @@ class BasePipelineRunner(abc.ABC):
     def _run_canary_validation(
         self,
         jobs: list[SeedJob],
-        influencer_to_category: list[tuple[Influencer, str]],
+        influencers: list[Influencer],
     ) -> None:
         """Validate all accumulated influencers against canary lists.
 
         Runs once per unique (category, sub, region) combination.
         Results are stored in self._stats.validation_results.
         """
-        all_influencers = [inf for inf, _ in influencer_to_category]
         validator = IngestionValidator()
         seen_canary_keys: set[str] = set()
 
@@ -382,7 +391,7 @@ class BasePipelineRunner(abc.ABC):
             seen_canary_keys.add(canary_key)
 
             vr = validator.validate(
-                influencers=all_influencers,
+                influencers=influencers,
                 category_key=job.category_key,
                 sub_name=job.sub.sub_name,
                 region=job.region.code.value,
@@ -399,11 +408,11 @@ class BasePipelineRunner(abc.ABC):
 
     def _build_known_handles(
         self,
-        influencer_to_category: list[tuple[Influencer, str]],
+        influencers: list[Influencer],
     ) -> set[str]:
         """Build set of already-resolved lowercase handles for collision detection."""
         known: set[str] = set()
-        for inf, _cat in influencer_to_category:
+        for inf in influencers:
             for _plat, handle in inf.handles.items():
                 if handle:
                     known.add(handle.lower())
@@ -416,7 +425,7 @@ class BasePipelineRunner(abc.ABC):
         audit: AuditLog,
         sub_name: str,
         platform: Platform,
-        influencer_to_category: list[tuple[Influencer, str]],
+        influencers: list[Influencer],
     ) -> list[NameMentionRecord]:
         """Run deferred name → handle resolution with slot recycling.
 
@@ -444,11 +453,12 @@ class BasePipelineRunner(abc.ABC):
                 for m in tracker.all_names
             ]
 
-        known_handles = self._build_known_handles(influencer_to_category)
+        known_handles = self._build_known_handles(influencers)
 
-        group_queues = tracker.top_reddit_names_by_group(
+        group_queues = tracker.top_unresolved_reddit_names_by_group(
             max_candidates_per_group=40,
             min_mentions=self.name_resolution_min_mentions,
+            known_influencers=influencers,
         )
 
         svc = NameToHandleService(audit)
@@ -461,7 +471,8 @@ class BasePipelineRunner(abc.ABC):
         )
 
         for inf in resolved_influencers:
-            influencer_to_category.append((inf, "NAME_RESOLUTION"))
+            inf.categories_found_in = ["NAME_RESOLUTION"]
+            influencers.append(inf)
 
         # Append records for names that were not queued (audit completeness)
         queued_canonicals = {r.canonical for r in records}

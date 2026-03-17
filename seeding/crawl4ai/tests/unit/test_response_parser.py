@@ -25,16 +25,16 @@ def test_parse_standard_response():
 
 def test_parse_chunked_response():
     """Chunked response: [{"influencers": [...]}, {"influencers": [...]}]."""
-    json_str = '[{"influencers": [{"name": "A", "handle": "@a_handle"}]}, {"influencers": [{"name": "B", "handle": "@b_handle"}]}]'
+    json_str = '[{"influencers": [{"name": "Alex Beattie", "handle": "@a_handle"}]}, {"influencers": [{"name": "Ben Carter", "handle": "@b_handle"}]}]'
     result = LLMResponseParser.parse(json_str)
     assert len(result) == 2
-    assert result[0].name == "A"
-    assert result[1].name == "B"
+    assert result[0].name == "Alex Beattie"
+    assert result[1].name == "Ben Carter"
 
 
 def test_parse_direct_list():
     """Direct list: [{"name": "...", "handle": "..."}, ...]."""
-    json_str = '[{"name": "X", "handle": "@x_user"}, {"name": "Y", "handle": "@y_user"}]'
+    json_str = '[{"name": "Xander Yale", "handle": "@x_user"}, {"name": "Yuri Marks", "handle": "@y_user"}]'
     result = LLMResponseParser.parse(json_str)
     assert len(result) == 2
 
@@ -47,18 +47,18 @@ def test_parse_invalid_json():
 
 def test_parse_empty_names_skipped():
     """Influencers with empty names should be skipped."""
-    json_str = '{"influencers": [{"name": "", "handle": "@ghost"}, {"name": "Real", "handle": "@real"}]}'
+    json_str = '{"influencers": [{"name": "", "handle": "@ghost"}, {"name": "Real Person", "handle": "@real"}]}'
     result = LLMResponseParser.parse(json_str)
     assert len(result) == 1
-    assert result[0].name == "Real"
+    assert result[0].name == "Real Person"
 
 
 def test_parse_error_responses_ignored():
     """Error responses in chunked list should be ignored."""
-    json_str = '[{"error": true, "content": "rate limit"}, {"influencers": [{"name": "OK", "handle": "@ok_handle"}]}]'
+    json_str = '[{"error": true, "content": "rate limit"}, {"influencers": [{"name": "Oliver Knox", "handle": "@ok_handle"}]}]'
     result = LLMResponseParser.parse(json_str)
     assert len(result) == 1
-    assert result[0].name == "OK"
+    assert result[0].name == "Oliver Knox"
 
 
 def test_parse_strips_whitespace():
@@ -134,7 +134,7 @@ def test_parse_valid_handle_kept():
 
 def test_parse_consecutive_dots_cleared():
     """Handle with consecutive dots → cleared (lorey rule)."""
-    json_str = '{"influencers": [{"name": "Dotty", "handle": "bad..handle"}]}'
+    json_str = '{"influencers": [{"name": "Dorothy Mills", "handle": "bad..handle"}]}'
     result = LLMResponseParser.parse(json_str)
     assert len(result) == 1
     assert not result[0].handles

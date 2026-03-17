@@ -79,7 +79,7 @@ class TestResolutionDisabled:
             audit=audit,
             sub_name="Fitness",
             platform=Platform.Instagram,
-            influencer_to_category=[],
+            influencers=[],
         )
         assert len(records) == 1
         assert records[0].canonical == "Jeff Nippard"
@@ -96,7 +96,7 @@ class TestResolutionDisabled:
             audit=MagicMock(),
             sub_name="Fitness",
             platform=Platform.Instagram,
-            influencer_to_category=[],
+            influencers=[],
         )
         assert len(records[0].source_urls) > 0
 
@@ -113,7 +113,7 @@ class TestResolutionDisabled:
             audit=audit,
             sub_name="Fitness",
             platform=Platform.Instagram,
-            influencer_to_category=[],
+            influencers=[],
         )
         mock_resolve.assert_not_called()
 
@@ -124,7 +124,7 @@ class TestResolutionDisabled:
             audit=MagicMock(),
             sub_name="Fitness",
             platform=Platform.Instagram,
-            influencer_to_category=[],
+            influencers=[],
         )
         assert records == []
 
@@ -160,7 +160,7 @@ class TestResolutionEnabled:
             audit=audit,
             sub_name="Fitness",
             platform=Platform.Instagram,
-            influencer_to_category=[],
+            influencers=[],
         )
 
         assert len(records) == 1
@@ -192,7 +192,7 @@ class TestResolutionEnabled:
             audit=audit,
             sub_name="Fitness",
             platform=Platform.Instagram,
-            influencer_to_category=[],
+            influencers=[],
         )
 
         assert len(records) == 1
@@ -225,13 +225,13 @@ class TestResolutionEnabled:
             audit=audit,
             sub_name="Fitness",
             platform=Platform.Instagram,
-            influencer_to_category=entries,
+            influencers=entries,
         )
 
         assert len(entries) == 1
-        inf, category = entries[0]
+        inf = entries[0]
         assert "alexleonidas" in inf.handles.values()
-        assert category == "NAME_RESOLUTION"
+        assert inf.categories_found_in == ["NAME_RESOLUTION"]
 
 
 # ══════════════════════════════════════════════════════════════════════
@@ -252,7 +252,7 @@ class TestNameMentionRecordOutput:
             audit=MagicMock(),
             sub_name="Fitness",
             platform=Platform.Instagram,
-            influencer_to_category=[],
+            influencers=[],
         )
 
         assert len(records) == 2

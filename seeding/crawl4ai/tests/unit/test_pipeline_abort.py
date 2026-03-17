@@ -68,7 +68,7 @@ class TestPipelineAbort:
     def test_errored_configs_passed_to_reporter(self):
         errored = _make_errored_config("FailedSub")
         gather = GatherResult(
-            influencer_to_category=[],
+            influencers=[],
             name_tracker=None,
             job_outcomes=[
                 JobOutcome(job=_make_job("FailedSub"), search_results=None, errored=errored),
@@ -99,7 +99,7 @@ class TestPipelineAbort:
     def test_errored_configs_passed_to_assembler(self):
         errored = _make_errored_config("FailedSub")
         gather = GatherResult(
-            influencer_to_category=[],
+            influencers=[],
             name_tracker=None,
             job_outcomes=[
                 JobOutcome(job=_make_job("FailedSub"), search_results=None, errored=errored),
@@ -129,10 +129,11 @@ class TestPipelineAbort:
     def test_mixed_success_and_failure(self):
         success_inf = Influencer(
             name="Good Creator", handles={Platform.Instagram: "goodcreator"},
+            categories_found_in=["TEST"],
         )
         errored = _make_errored_config("FailedSub")
         gather = GatherResult(
-            influencer_to_category=[(success_inf, "TEST")],
+            influencers=[success_inf],
             name_tracker=None,
             job_outcomes=[
                 JobOutcome(job=_make_job("GoodSub"), search_results=None, errored=None),

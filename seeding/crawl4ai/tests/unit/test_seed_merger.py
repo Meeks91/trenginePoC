@@ -1,109 +1,161 @@
-"""Tests for InfluencerMerger.to_seeds — cross-config handle merging."""
+"""Tests for InfluencerMerger.to_seeds — merged Influencer → SeedInfluencer.
+
+to_seeds() now accepts list[Influencer] (already merged, one per person).
+Deduplication is done by merge() upstream.
+"""
 
 from config.schema import Influencer, Platform, SeedInfluencer
 from services.enrichment.InfluencerMerger import InfluencerMerger
 
 
 class TestInfluencerMergerToSeeds:
-    """Tests for the InfluencerMerger.to_seeds() method."""
+    """Tests for the simplified InfluencerMerger.to_seeds() method."""
 
-    def test_same_handle_different_configs_deduped(self):
-        """Same handle found in Fitness and Food → 1 entry with both categories."""
-        entries = [
-            (Influencer(name="Kayla Itsines", handles={Platform.Instagram: "kayla_itsines"}), "FITNESS"),
-            (Influencer(name="Kayla Itsines", handles={Platform.Instagram: "kayla_itsines"}), "FOOD"),
+    def test_single_influencer_single_platform(self):
+        """One person with one platform → 1 seed."""
+        influencers = [
+            Influencer(
+                name="Kayla Itsines",
+                handles={Platform.Instagram: "kayla_itsines"},
+                categories_found_in=["FITNESS"],
+            ),
         ]
-        result = InfluencerMerger.to_seeds(entries)
+        result = InfluencerMerger.to_seeds(influencers)
         assert len(result) == 1
         assert result[0].ig_handle == "kayla_itsines"
-        assert sorted(result[0].categories) == ["FITNESS", "FOOD"]
+        assert result[0].categories == ["FITNESS"]
 
-    def test_different_platforms_preserved(self):
-        """Same person on IG and TikTok → 2 separate entries (different platform key)."""
-        entries = [
-            (Influencer(name="Kayla", handles={Platform.Instagram: "kayla_itsines"}), "FITNESS"),
-            (Influencer(name="Kayla", handles={Platform.TikTok: "kayla_itsines"}), "FITNESS"),
+    def test_multi_platform_single_seed(self):
+        """One person with handles on 3 platforms → 1 seed with all handles."""
+        influencers = [
+            Influencer(
+                name="Adriene Mishler",
+                handles={
+                    Platform.Instagram: "adrienelouise",
+                    Platform.YouTube: "yogawithadriene",
+                    Platform.TikTok: "adrienelouise",
+                },
+                categories_found_in=["FITNESS", "YOGA"],
+            ),
         ]
-        result = InfluencerMerger.to_seeds(entries)
-        assert len(result) == 2
-
-    def test_best_name_kept(self):
-        """When one entry has real name and another has handle-as-name, keep real name."""
-        entries = [
-            (Influencer(name="kayla_itsines", handles={Platform.Instagram: "kayla_itsines"}), "FITNESS"),
-            (Influencer(name="Kayla Itsines", handles={Platform.Instagram: "kayla_itsines"}), "FOOD"),
-        ]
-        result = InfluencerMerger.to_seeds(entries)
+        result = InfluencerMerger.to_seeds(influencers)
         assert len(result) == 1
-        assert result[0].name == "Kayla Itsines"
+        assert result[0].ig_handle == "adrienelouise"
+        assert result[0].yt_handle == "yogawithadriene"
+        assert result[0].tk_handle == "adrienelouise"
+        assert sorted(result[0].categories) == ["FITNESS", "YOGA"]
 
-    def test_alt_handles_merged(self):
-        """Handles from multiple platform entries are merged into the seed record."""
-        entries = [
-            (Influencer(name="Adriene Mishler", handles={Platform.Instagram: "adrienelouise"}), "FITNESS"),
-            (Influencer(name="Adriene Mishler", handles={Platform.YouTube: "yogawithadriene"}), "FITNESS"),
-            (Influencer(name="Adriene Mishler", handles={Platform.TikTok: "adrienelouise"}), "YOGA"),
+    def test_merge_then_to_seeds_deduplicates(self):
+        """merge() + to_seeds() pipeline: same person on 3 platforms → 1 seed."""
+        raw = [
+            Influencer(
+                name="Adriene Mishler",
+                handles={Platform.Instagram: "adrienelouise"},
+                categories_found_in=["FITNESS"],
+            ),
+            Influencer(
+                name="Adriene Mishler",
+                handles={Platform.YouTube: "yogawithadriene"},
+                categories_found_in=["FITNESS"],
+            ),
+            Influencer(
+                name="Adriene Mishler",
+                handles={Platform.TikTok: "adrienelouise"},
+                categories_found_in=["YOGA"],
+            ),
         ]
-        result = InfluencerMerger.to_seeds(entries)
-        # InfluencerMerger.to_seeds keys by (handle_lower, platform_value), so:
-        #   IG "adrienelouise" and TK "adrienelouise" are on different platforms → 2 entries
-        #   YT "yogawithadriene" is unique → 1 entry
-        # But cross-platform alt handles get merged into each seed's other columns
-        assert len(result) == 3  # 3 distinct (handle, platform) keys
+        merged = InfluencerMerger.merge(raw)
+        result = InfluencerMerger.to_seeds(merged)
+        assert len(result) == 1
+        assert result[0].ig_handle == "adrienelouise"
+        assert result[0].yt_handle == "yogawithadriene"
+        assert result[0].tk_handle == "adrienelouise"
+        assert sorted(result[0].categories) == ["FITNESS", "YOGA"]
 
-        # Verify platform handles are correctly assigned
-        ig_seeds = [s for s in result if s.ig_handle == "adrienelouise"]
-        assert len(ig_seeds) == 1
-
-        yt_seeds = [s for s in result if s.yt_handle == "yogawithadriene"]
-        assert len(yt_seeds) == 1
-
-        tk_seeds = [s for s in result if s.tk_handle == "adrienelouise"]
-        assert len(tk_seeds) == 1
-
-        # All categories present across seeds
-        all_cats = set()
-        for s in result:
-            all_cats.update(s.categories)
-        assert "FITNESS" in all_cats
-        assert "YOGA" in all_cats
-
-    def test_categories_tracked(self):
-        """Handle found in 3 categories → all 3 categories in output."""
-        entries = [
-            (Influencer(name="X", handles={Platform.Instagram: "chef_x"}), "FOOD"),
-            (Influencer(name="X", handles={Platform.Instagram: "chef_x"}), "FITNESS"),
-            (Influencer(name="X", handles={Platform.Instagram: "chef_x"}), "HEALTH"),
+    def test_categories_from_influencer(self):
+        """Categories read from categories_found_in, not tuple."""
+        influencers = [
+            Influencer(
+                name="X",
+                handles={Platform.Instagram: "chef_x"},
+                categories_found_in=["FOOD", "FITNESS", "HEALTH"],
+            ),
         ]
-        result = InfluencerMerger.to_seeds(entries)
+        result = InfluencerMerger.to_seeds(influencers)
         assert len(result) == 1
         assert sorted(result[0].categories) == ["FITNESS", "FOOD", "HEALTH"]
 
-    def test_case_insensitive_dedup(self):
-        """Handles are deduped case-insensitively."""
-        entries = [
-            (Influencer(name="X", handles={Platform.Instagram: "ChefAnna"}), "FOOD"),
-            (Influencer(name="X", handles={Platform.Instagram: "chefanna"}), "FOOD"),
-        ]
-        result = InfluencerMerger.to_seeds(entries)
-        assert len(result) == 1
-
     def test_at_sign_stripped(self):
-        """Leading @ is stripped before dedup."""
-        entries = [
-            (Influencer(name="X", handles={Platform.Instagram: "@chefanna"}), "FOOD"),
-            (Influencer(name="X", handles={Platform.Instagram: "chefanna"}), "FOOD"),
+        """Leading @ is stripped."""
+        influencers = [
+            Influencer(
+                name="X",
+                handles={Platform.Instagram: "@chefanna"},
+                categories_found_in=["FOOD"],
+            ),
         ]
-        result = InfluencerMerger.to_seeds(entries)
+        result = InfluencerMerger.to_seeds(influencers)
         assert len(result) == 1
         assert result[0].ig_handle == "chefanna"
 
-    def test_empty_entries(self):
+    def test_empty_input(self):
         """Empty input returns empty output."""
-        result = InfluencerMerger.to_seeds([])
-        assert result == []
+        assert InfluencerMerger.to_seeds([]) == []
 
-    def test_seed_influencer_to_dict(self):
+    def test_handleless_influencer_skipped(self):
+        """Influencer with no handles → skipped."""
+        influencers = [
+            Influencer(name="X", handles={}, categories_found_in=["FOOD"]),
+        ]
+        result = InfluencerMerger.to_seeds(influencers)
+        assert len(result) == 0
+
+    def test_enrichment_fields_carried(self):
+        """source_urls and extraction_methods carried to SeedInfluencer."""
+        influencers = [
+            Influencer(
+                name="Kayla Itsines",
+                handles={Platform.Instagram: "kayla_itsines"},
+                source_urls={"https://modash.io/yoga", "https://favikon.com/fitness"},
+                extraction_methods={"regex", "llm"},
+                categories_found_in=["FITNESS"],
+            ),
+        ]
+        result = InfluencerMerger.to_seeds(influencers)
+        assert len(result) == 1
+        seed = result[0]
+        assert sorted(seed.source_urls) == ["https://favikon.com/fitness", "https://modash.io/yoga"]
+        assert sorted(seed.extraction_methods) == ["llm", "regex"]
+        assert seed.citation_count == 2
+
+    def test_merge_unions_enrichment(self):
+        """merge() + to_seeds(): source_urls and extraction_methods unioned."""
+        raw = [
+            Influencer(
+                name="Kayla",
+                handles={Platform.Instagram: "kayla_itsines"},
+                source_urls={"https://a.com"},
+                extraction_methods={"regex"},
+                categories_found_in=["FITNESS"],
+            ),
+            Influencer(
+                name="Kayla Itsines",
+                handles={Platform.Instagram: "kayla_itsines"},
+                source_urls={"https://b.com"},
+                extraction_methods={"llm"},
+                categories_found_in=["FOOD"],
+            ),
+        ]
+        merged = InfluencerMerger.merge(raw)
+        result = InfluencerMerger.to_seeds(merged)
+        assert len(result) == 1
+        seed = result[0]
+        assert sorted(seed.source_urls) == ["https://a.com", "https://b.com"]
+        assert sorted(seed.extraction_methods) == ["llm", "regex"]
+        assert seed.citation_count == 2
+        assert seed.name == "Kayla Itsines"
+
+    def test_seed_to_dict(self):
         """SeedInfluencer.to_dict() produces DB-ready shape."""
         seed = SeedInfluencer(
             name="Kayla Itsines",
@@ -111,80 +163,14 @@ class TestInfluencerMergerToSeeds:
             tk_handle="kayla_tt",
             yt_handle="kaylayt",
             categories=["FITNESS", "FOOD"],
+            source_urls=["https://a.com"],
+            extraction_methods=["regex"],
         )
         d = seed.to_dict()
         assert d["ig_handle"] == "kayla_itsines"
         assert d["tk_handle"] == "kayla_tt"
         assert d["yt_handle"] == "kaylayt"
         assert d["categories"] == ["FITNESS", "FOOD"]
-
-    def test_unknown_platform_handle_not_assigned(self):
-        """Handles with unknown platform → filtered out (no valid handles)."""
-        entries = [
-            (Influencer(name="X", handles={}), "FOOD"),
-        ]
-        result = InfluencerMerger.to_seeds(entries)
-        assert len(result) == 0, "Handleless seeds should be filtered out"
-
-    def test_to_seeds_carries_enrichment_fields(self):
-        """to_seeds() must carry source_urls and extraction_methods to SeedInfluencer."""
-        entries = [
-            (
-                Influencer(
-                    name="Kayla Itsines",
-                    handles={Platform.Instagram: "kayla_itsines"},
-                    source_urls={"https://modash.io/yoga", "https://favikon.com/fitness"},
-                    extraction_methods={"regex", "llm"},
-                ),
-                "FITNESS",
-            ),
-        ]
-        result = InfluencerMerger.to_seeds(entries)
-        assert len(result) == 1
-        seed = result[0]
-        assert seed.source_urls == sorted({"https://modash.io/yoga", "https://favikon.com/fitness"})
-        assert seed.extraction_methods == sorted({"llm", "regex"})
-        assert seed.citation_count == 2
-
-    def test_to_seeds_unions_enrichment_across_configs(self):
-        """Same handle in 2 configs → source_urls and extraction_methods unioned."""
-        entries = [
-            (
-                Influencer(
-                    name="Kayla",
-                    handles={Platform.Instagram: "kayla_itsines"},
-                    source_urls={"https://a.com"},
-                    extraction_methods={"regex"},
-                ),
-                "FITNESS",
-            ),
-            (
-                Influencer(
-                    name="Kayla Itsines",
-                    handles={Platform.Instagram: "kayla_itsines"},
-                    source_urls={"https://b.com"},
-                    extraction_methods={"llm"},
-                ),
-                "FOOD",
-            ),
-        ]
-        result = InfluencerMerger.to_seeds(entries)
-        assert len(result) == 1
-        seed = result[0]
-        assert sorted(seed.source_urls) == ["https://a.com", "https://b.com"]
-        assert sorted(seed.extraction_methods) == ["llm", "regex"]
-        assert seed.citation_count == 2
-
-    def test_seed_to_dict_includes_enrichment(self):
-        """SeedInfluencer.to_dict() must include enrichment fields."""
-        seed = SeedInfluencer(
-            name="Kayla Itsines",
-            ig_handle="kayla_itsines",
-            categories=["FITNESS"],
-            source_urls=["https://a.com"],
-            extraction_methods=["regex"],
-        )
-        d = seed.to_dict()
         assert d["source_urls"] == ["https://a.com"]
         assert d["extraction_methods"] == ["regex"]
         assert d["citation_count"] == 1

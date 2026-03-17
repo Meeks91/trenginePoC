@@ -75,6 +75,14 @@ _WORD_BLOCKLIST = frozenset({
     # UI elements
     "login", "register", "signup", "subscribe",
     "cookie", "cookies", "privacy", "preferences",
+    # Nationality+gender patterns (favikon.com noise)
+    "female", "male",
+    # Platform-type suffixes
+    "youtubers", "tiktokers",
+    # UI/CTA fragments
+    "calculator", "generator",
+    # Site chrome
+    "favikon", "modash", "collabstr",
 })
 
 # Common proper noun phrases to skip (not influencer names)

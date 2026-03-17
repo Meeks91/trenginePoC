@@ -52,9 +52,9 @@ def test_both_sites_use_same_is_blocked_handle():
 # ══════════════════════════════════════════════════════════════════════
 
 def test_ignore_handles_total_count():
-    """Combined blocklist has exactly 521 entries."""
-    assert len(_IGNORE_HANDLES) == 521, \
-        f"Expected 521 entries in _IGNORE_HANDLES, got {len(_IGNORE_HANDLES)}"
+    """Combined blocklist has exactly 523 entries."""
+    assert len(_IGNORE_HANDLES) == 523, \
+        f"Expected 523 entries in _IGNORE_HANDLES, got {len(_IGNORE_HANDLES)}"
 
 
 def test_ignore_substrings_contains_profanity():
@@ -144,7 +144,7 @@ def test_regex_blocks_uncensored_substring():
 
 def test_merger_blocks_news_handle():
     """foxnews handle → filtered out of seeds."""
-    entries = [(Influencer(name="Fox", handles={Platform.YouTube: "foxnews"}), "AI")]
+    entries = [Influencer(name="Fox", handles={Platform.YouTube: "foxnews"}, categories_found_in=["AI"])]
     seeds = InfluencerMerger.to_seeds(entries)
     assert not any(s.yt_handle == "foxnews" for s in seeds), \
         "foxnews should be blocked by merger"
@@ -152,14 +152,14 @@ def test_merger_blocks_news_handle():
 
 def test_merger_blocks_uncensored_substring():
     """Substring filter also works at merger level."""
-    entries = [(Influencer(name="Pod", handles={Platform.YouTube: "uncensoredpod"}), "AI")]
+    entries = [Influencer(name="Pod", handles={Platform.YouTube: "uncensoredpod"}, categories_found_in=["AI"])]
     seeds = InfluencerMerger.to_seeds(entries)
     assert not any(s.yt_handle == "uncensoredpod" for s in seeds)
 
 
 def test_merger_allows_non_blocked():
     """Non-blocked handle passes through."""
-    entries = [(Influencer(name="Matt Wolfe", handles={Platform.YouTube: "mattwolfe"}), "AI")]
+    entries = [Influencer(name="Matt Wolfe", handles={Platform.YouTube: "mattwolfe"}, categories_found_in=["AI"])]
     seeds = InfluencerMerger.to_seeds(entries)
     assert any(s.yt_handle == "mattwolfe" for s in seeds), \
         "mattwolfe should NOT be blocked"
@@ -168,10 +168,10 @@ def test_merger_allows_non_blocked():
 def test_merger_blocks_on_any_platform():
     """If ANY handle (ig/tk/yt) is blocked, the seed is removed."""
     entries = [
-        (Influencer(name="X", handles={
+        Influencer(name="X", handles={
             Platform.Instagram: "foxnews",
             Platform.YouTube: "legit_handle",
-        }), "AI"),
+        }, categories_found_in=["AI"]),
     ]
     seeds = InfluencerMerger.to_seeds(entries)
     blocked_handles = {s.ig_handle for s in seeds} | {s.yt_handle for s in seeds}
@@ -188,14 +188,14 @@ from unittest.mock import MagicMock
 
 def test_handleless_seed_filtered_from_to_seeds():
     """Name-only influencer (no handles) → excluded from seeds."""
-    entries = [(Influencer(name="Evelina Khanoyan", handles={}), "AI")]
+    entries = [Influencer(name="Evelina Khanoyan", handles={}, categories_found_in=["AI"])]
     seeds = InfluencerMerger.to_seeds(entries)
     assert len(seeds) == 0, f"Expected 0 seeds for handleless entry, got {len(seeds)}"
 
 
 def test_seed_with_handle_kept():
     """Influencer with at least one handle → kept in seeds."""
-    entries = [(Influencer(name="Andrew Ng", handles={Platform.Instagram: "andrewyng"}), "AI")]
+    entries = [Influencer(name="Andrew Ng", handles={Platform.Instagram: "andrewyng"}, categories_found_in=["AI"])]
     seeds = InfluencerMerger.to_seeds(entries)
     assert len(seeds) == 1
     assert seeds[0].ig_handle == "andrewyng"
@@ -213,7 +213,7 @@ def test_has_any_handle_helper():
 def test_to_seeds_calls_injected_handle_filter():
     """Verify to_seeds() calls the injected handle_filter (DI wiring test)."""
     mock_filter = MagicMock(return_value=False)
-    entries = [(Influencer(name="X", handles={Platform.Instagram: "test_handle"}), "AI")]
+    entries = [Influencer(name="X", handles={Platform.Instagram: "test_handle"}, categories_found_in=["AI"])]
     seeds = InfluencerMerger.to_seeds(entries, handle_filter=mock_filter)
     assert mock_filter.called, "handle_filter should have been called"
     assert len(seeds) == 1
@@ -222,7 +222,7 @@ def test_to_seeds_calls_injected_handle_filter():
 def test_to_seeds_injected_filter_can_block():
     """Injected filter returning True → seed is blocked."""
     always_block = lambda h: True
-    entries = [(Influencer(name="X", handles={Platform.Instagram: "anything"}), "AI")]
+    entries = [Influencer(name="X", handles={Platform.Instagram: "anything"}, categories_found_in=["AI"])]
     seeds = InfluencerMerger.to_seeds(entries, handle_filter=always_block)
     assert len(seeds) == 0
 

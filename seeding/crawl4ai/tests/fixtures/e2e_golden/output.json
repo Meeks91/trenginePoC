@@ -3,12 +3,12 @@
     "name": "Joe Wicks",
     "ig_handle": "thebodycoach",
     "tk_handle": "",
-    "yt_handle": "",
+    "yt_handle": "thebodycoachtv",
     "categories": [
       "FITNESS"
     ],
     "source_urls": [
-      "http://127.0.0.1:49154/gymfluencers_uk_fitness.html"
+      "http://127.0.0.1:50684/gymfluencers_uk_fitness.html"
     ],
     "extraction_methods": [
       "llm"
@@ -24,23 +24,7 @@
       "FITNESS"
     ],
     "source_urls": [
-      "http://127.0.0.1:49154/gymfluencers_uk_fitness.html"
-    ],
-    "extraction_methods": [
-      "llm"
-    ],
-    "citation_count": 1
-  },
-  {
-    "name": "Alex Beattie",
-    "ig_handle": "alex.beattie",
-    "tk_handle": "alex.beattie",
-    "yt_handle": "",
-    "categories": [
-      "FITNESS"
-    ],
-    "source_urls": [
-      "http://127.0.0.1:49154/gymfluencers_uk_fitness.html"
+      "http://127.0.0.1:50684/gymfluencers_uk_fitness.html"
     ],
     "extraction_methods": [
       "llm",
@@ -57,23 +41,7 @@
       "FITNESS"
     ],
     "source_urls": [
-      "http://127.0.0.1:49154/gymfluencers_uk_fitness.html"
-    ],
-    "extraction_methods": [
-      "llm"
-    ],
-    "citation_count": 1
-  },
-  {
-    "name": "Courtney Black",
-    "ig_handle": "courtneyblackfitness",
-    "tk_handle": "courtneyblackfitness",
-    "yt_handle": "",
-    "categories": [
-      "FITNESS"
-    ],
-    "source_urls": [
-      "http://127.0.0.1:49154/gymfluencers_uk_fitness.html"
+      "http://127.0.0.1:50684/gymfluencers_uk_fitness.html"
     ],
     "extraction_methods": [
       "llm",
@@ -90,7 +58,7 @@
       "FITNESS"
     ],
     "source_urls": [
-      "http://127.0.0.1:49154/gymfluencers_uk_fitness.html"
+      "http://127.0.0.1:50684/gymfluencers_uk_fitness.html"
     ],
     "extraction_methods": [
       "llm",
@@ -107,23 +75,7 @@
       "FITNESS"
     ],
     "source_urls": [
-      "http://127.0.0.1:49154/gymfluencers_uk_fitness.html"
-    ],
-    "extraction_methods": [
-      "llm"
-    ],
-    "citation_count": 1
-  },
-  {
-    "name": "Emma Storey-Gordon",
-    "ig_handle": "esgfitness",
-    "tk_handle": "",
-    "yt_handle": "esgfitness",
-    "categories": [
-      "FITNESS"
-    ],
-    "source_urls": [
-      "http://127.0.0.1:49154/gymfluencers_uk_fitness.html"
+      "http://127.0.0.1:50684/gymfluencers_uk_fitness.html"
     ],
     "extraction_methods": [
       "llm",
@@ -140,7 +92,7 @@
       "FITNESS"
     ],
     "source_urls": [
-      "http://127.0.0.1:49154/gymfluencers_uk_fitness.html"
+      "http://127.0.0.1:50684/gymfluencers_uk_fitness.html"
     ],
     "extraction_methods": [
       "llm",
@@ -157,7 +109,7 @@
       "FITNESS"
     ],
     "source_urls": [
-      "http://127.0.0.1:49154/gymfluencers_uk_fitness.html"
+      "http://127.0.0.1:50684/gymfluencers_uk_fitness.html"
     ],
     "extraction_methods": [
       "llm",
@@ -174,7 +126,7 @@
       "FITNESS"
     ],
     "source_urls": [
-      "http://127.0.0.1:49154/gymfluencers_uk_fitness.html"
+      "http://127.0.0.1:50684/gymfluencers_uk_fitness.html"
     ],
     "extraction_methods": [
       "llm",
@@ -191,7 +143,7 @@
       "FITNESS"
     ],
     "source_urls": [
-      "http://127.0.0.1:49154/gymfluencers_uk_fitness.html"
+      "http://127.0.0.1:50684/gymfluencers_uk_fitness.html"
     ],
     "extraction_methods": [
       "regex"
@@ -207,7 +159,7 @@
       "FITNESS"
     ],
     "source_urls": [
-      "http://127.0.0.1:49154/gymfluencers_uk_fitness.html"
+      "http://127.0.0.1:50684/gymfluencers_uk_fitness.html"
     ],
     "extraction_methods": [
       "regex"
@@ -223,7 +175,7 @@
       "FITNESS"
     ],
     "source_urls": [
-      "http://127.0.0.1:49154/gymfluencers_uk_fitness.html"
+      "http://127.0.0.1:50684/gymfluencers_uk_fitness.html"
     ],
     "extraction_methods": [
       "regex"
@@ -239,7 +191,7 @@
       "FITNESS"
     ],
     "source_urls": [
-      "http://127.0.0.1:49154/gymfluencers_uk_fitness.html"
+      "http://127.0.0.1:50684/gymfluencers_uk_fitness.html"
     ],
     "extraction_methods": [
       "regex"
@@ -255,7 +207,7 @@
       "FITNESS"
     ],
     "source_urls": [
-      "http://127.0.0.1:49154/gymfluencers_uk_fitness.html"
+      "http://127.0.0.1:50684/gymfluencers_uk_fitness.html"
     ],
     "extraction_methods": [
       "regex"
@@ -271,7 +223,7 @@
       "FITNESS"
     ],
     "source_urls": [
-      "http://127.0.0.1:49154/gymfluencers_uk_fitness.html"
+      "http://127.0.0.1:50684/gymfluencers_uk_fitness.html"
     ],
     "extraction_methods": [
       "regex"
@@ -295,18 +247,6 @@
     "ig_handle": "",
     "tk_handle": "",
     "yt_handle": "lucydavisfit",
-    "categories": [
-      "FITNESS"
-    ],
-    "source_urls": [],
-    "extraction_methods": [],
-    "citation_count": 0
-  },
-  {
-    "name": "TheBodyCoachTV",
-    "ig_handle": "",
-    "tk_handle": "",
-    "yt_handle": "thebodycoachtv",
     "categories": [
       "FITNESS"
     ],

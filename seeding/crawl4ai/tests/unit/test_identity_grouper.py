@@ -149,6 +149,51 @@ class TestNameGrouping:
         assert len(result) == 2
 
 
+
+
+# ══════════════════════════════════════════════════════════════════════
+# Categories union
+# ══════════════════════════════════════════════════════════════════════
+
+class TestCategoriesUnion:
+
+    def test_categories_merged_across_platforms(self):
+        """categories_found_in unioned when entries merge."""
+        influencers = [
+            Influencer(
+                name="Jeff Nippard",
+                handles={Platform.Instagram: "jeffnippard"},
+                categories_found_in=["Fitness"],
+            ),
+            Influencer(
+                name="Jeff Nippard",
+                handles={Platform.YouTube: "jeffnippard"},
+                categories_found_in=["Bodybuilding"],
+            ),
+        ]
+        result = InfluencerMerger.merge(influencers)
+        assert len(result) == 1
+        assert sorted(result[0].categories_found_in) == ["Bodybuilding", "Fitness"]
+
+    def test_categories_deduplicated(self):
+        """Duplicate category strings are deduplicated."""
+        influencers = [
+            Influencer(
+                name="Jeff Nippard",
+                handles={Platform.Instagram: "jeffnippard"},
+                categories_found_in=["Fitness"],
+            ),
+            Influencer(
+                name="Jeff Nippard",
+                handles={Platform.TikTok: "jeffnippard"},
+                categories_found_in=["Fitness"],
+            ),
+        ]
+        result = InfluencerMerger.merge(influencers)
+        assert len(result) == 1
+        assert result[0].categories_found_in == ["Fitness"]
+
+
 # ══════════════════════════════════════════════════════════════════════
 # Platform filtering
 # ══════════════════════════════════════════════════════════════════════

@@ -109,7 +109,7 @@ def test_crawl_service_counters_initialised():
 def test_to_seeds_accepts_custom_filter():
     """InfluencerMerger.to_seeds() handle_filter must accept a typed callable."""
     entries = [
-        (Influencer(name="Test", handles={Platform.Instagram: "@test_user"}), "CAT"),
+        Influencer(name="Test", handles={Platform.Instagram: "@test_user"}, categories_found_in=["CAT"]),
     ]
     # Pass a custom filter that blocks nothing
     seeds = InfluencerMerger.to_seeds(entries, handle_filter=lambda h: False)

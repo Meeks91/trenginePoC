@@ -170,9 +170,10 @@ class _E2EPipelineRunner(BasePipelineRunner):
             retries=enrich_svc.retries, failures=enrich_svc.failures,
         )
 
-        entries = [(inf, job.category_key) for inf in unique]
+        for inf in unique:
+            inf.categories_found_in = [job.category_key]
         return GatherResult(
-            influencer_to_category=entries,
+            influencers=unique,
             name_tracker=extract_result.name_tracker,
             job_outcomes=[JobOutcome(job=job, search_results=None, errored=None)],
         )
