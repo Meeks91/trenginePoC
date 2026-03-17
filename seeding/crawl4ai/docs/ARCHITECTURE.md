@@ -1,7 +1,7 @@
 # Crawl4AI Seed Crawler — Architecture
 
 > Exhaustive reference for the crawl4ai CLI seed pipeline.
-> Last updated: 2026-03-16
+> Last updated: 2026-03-17
 
 ---
 
@@ -64,11 +64,14 @@ Jobs are generated from `all_categories.json` by `seed_schema.generate_seed_jobs
 │                                                                                │
 │  Template: run(jobs)                                                           │
 │    1. _search_and_extract_influencers(jobs) → GatherResult  ◄─ ABSTRACT        │
-│    2. Deferred name resolution                                                 │
-│    3. Global dedup (InfluencerMerger.to_seeds)                                 │
-│    4. Canary validation (IngestionValidator)                                   │
-│    5. Report (PipelineReporter)                                                │
-│    6. Save seeds (ResultAssembler)                                             │
+│    2. Error collection from circuit breaker                                    │
+│    3. Pre-NR merge (InfluencerMerger.merge)                                    │
+│    4. Deferred name resolution (KnownNameIndex pre-filter)                     │
+│    5. Post-NR merge (InfluencerMerger.merge)                                   │
+│    6. Global dedup (InfluencerMerger.to_seeds)                                 │
+│    7. Canary validation (IngestionValidator)                                   │
+│    8. Report (PipelineReporter)                                                │
+│    9. Save seeds (ResultAssembler)                                             │
 └────────────────────────────────┬────────────────────────────────────────────────┘
                                  │ Composes these services:
                      ▼
@@ -87,9 +90,9 @@ Jobs are generated from `all_categories.json` by `seed_schema.generate_seed_jobs
 │  ┌─────────────────┐  ┌──────────────────┐  │    ├── NameCleaner           │   │
 │  │  enrichment/     │  │    audit/         │  │    ├── NameExtractor         │   │
 │  │                  │  │                   │  │    ├── NameMentionTracker   │   │
-│  │  InfluencerMerger│  │  AuditService     │  │    ├── NameResolver         │   │
-│  │  NameToHandleSvc │  │  (JSONL logging)  │  │    ├── LLMResponseParser    │   │
-│  │  patterns        │  │                   │  │    └── prompts              │   │
+│  │  InfluencerMerger│  │  AuditService     │  │    ├── NameMentionTracker   │   │
+│  │  NameToHandleSvc │  │  (JSONL logging)  │  │    ├── KnownNameIndex       │   │
+│  │  patterns        │  │                   │  │    ├── NameResolver         │   │
 │  └─────────────────┘  └──────────────────┘  └──────────────────────────────┘   │
 │                                                                                │
 │  ┌─────────────────┐  ┌──────────────────┐                                     │
@@ -228,17 +231,23 @@ then after ALL jobs finish, deferred resolution + global dedup runs.
 │ │ accumulator (tagged with category "NAME_RESOLUTION").    │                      │
 │ └──────────────────────────────────────────────────────────┘                      │
 │                                                                                  │
-│ STEP 7: GLOBAL MERGE + DEDUP (InfluencerMerger.to_seeds)                         │
+│ STEP 6½: PRE-NR MERGE (InfluencerMerger.merge)                                   │
 │ ┌──────────────────────────────────────────────────────────┐                      │
-│ │ InfluencerMerger.to_seeds() runs on the FULL list:      │                      │
+│ │ Before name resolution, merge() collapses duplicates    │                      │
+│ │ from different jobs (same handle/name → one identity).   │                      │
+│ │ KnownNameIndex pre-filters: names already resolved      │                      │
+│ │ with handles are skipped from NR DDG lookups.            │                      │
+│ └──────────────────────────────────────────────────────────┘                      │
+│                                                                                  │
+│ STEP 7: POST-NR MERGE + GLOBAL DEDUP                                             │
+│ ┌──────────────────────────────────────────────────────────┐                      │
+│ │ After NR, merge() runs again to fold resolved names     │                      │
+│ │ into existing identities.                                │                      │
 │ │                                                          │                      │
-│ │   ALL per-job influencers                                │                      │
-│ │     + newly-resolved name influencers from Step 6        │                      │
-│ │     = one combined list                                  │                      │
-│ │                                                          │                      │
-│ │ Deduplicates by (handle, platform). Merges cross-        │                      │
-│ │ platform handles. Picks best name. Flattens to           │                      │
-│ │ SeedInfluencer records with ig/tk/yt handle columns.     │                      │
+│ │ Then to_seeds() flattens to DB-ready SeedInfluencer:     │                      │
+│ │   • Dedup by (handle, platform)                          │                      │
+│ │   • Merge cross-platform handles                         │                      │
+│ │   • Pick best name, flatten to ig/tk/yt columns          │                      │
 │ │                                                          │                      │
 │ │ OUTPUT → global_seeds.json (DB-ready)                    │                      │
 │ └──────────────────────────────────────────────────────────┘                      │
@@ -258,18 +267,24 @@ then after ALL jobs finish, deferred resolution + global dedup runs.
 └──────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-### Key insight: The merger runs AFTER name resolution
+### Key insight: Three-pass merge ensures full dedup
 
 ```
-  Per-Job Influencers ─────┐
-    (from Steps 1-5)       │
-                           ├──► InfluencerMerger.to_seeds() ──► global_seeds.json
-  Name-Resolved Infs ──────┘
-    (from Step 6)
+  Per-Job Influencers ──► merge() ──► Pre-NR identities
+    (from Steps 1-5)                       │
+                                           ├──► NR (KnownNameIndex skips resolved)
+                                           │
+  Name-Resolved Infs ──────────────────────┘
+    (from Step 6)                          │
+                                           ▼
+                                     merge() ──► Post-NR identities
+                                           │
+                                           ▼
+                                     to_seeds() ──► global_seeds.json
 ```
 
-So newly-found handles from deferred name resolution are included in the final
-merged output. They're not siloed — they go into the same dedup pool.
+`merge()` runs **twice** (pre-NR + post-NR) so newly-resolved names fold into
+existing identities. `KnownNameIndex` pre-filters NR to skip wasted DDG lookups.
 
 ---
 
@@ -461,14 +476,15 @@ crawl4ai/
 │   │
 │   ├── extraction/
 │   │   ├── HandleExtractionService.py  # Orchestrator: regex → clean → classify → YT → LLM → merge
-│   │   ├── RegexHandleExtractor.py     # 10 regex patterns, ~200-entry ignore list, heading names
+│   │   ├── RegexHandleExtractor.py     # 10 regex patterns, ~520-entry ignore list, heading names
 │   │   ├── PlatformClassifier.py       # Mechanical 5-step cascade for naked @handles
 │   │   ├── HandleClassifier.py         # LLM fallback for ambiguous naked @handles
 │   │   ├── LLMExtractionService.py     # LLM full-page extraction via litellm → Gemini
-│   │   ├── NameCleaner.py              # Shared name cleanup: brand/country/news/generic blocklists
+│   │   ├── NameCleaner.py              # Regex extraction + brand/country/news/CTA blocklists
 │   │   ├── YouTubeChannelResolver.py   # /channel/UC... → @handle via HTTP
-│   │   ├── NameExtractor.py            # Proper-name regex with blocklists
+│   │   ├── NameExtractor.py            # Proper-name regex with word + name blocklists
 │   │   ├── NameMentionTracker.py       # Cross-page fuzzy name aggregation (≥90% similarity)
+│   │   ├── KnownNameIndex.py           # NR pre-filter: skip names already resolved with handles
 │   │   ├── NameResolver.py             # DDG name → handle resolution + confidence check
 │   │   ├── LLMResponseParser.py        # LLM JSON → Influencer[] with handle validation
 │   │   └── prompts.py                  # LLM prompt template
@@ -544,12 +560,13 @@ crawl4ai/
 | `HandleClassifier` | LLM fallback for ambiguous naked handles (2+ platforms, zero URL handles). |
 | `LLMExtractionService` | Full-page LLM extraction (Gemini via litellm). Pydantic structured output. |
 | `YouTubeChannelResolver` | `/channel/UC...` → `@handle` via HTTP. Checks redirects, canonical link, JS data. |
-| `NameExtractor` | Proper-name regex (2-3 capitalized words). Sentence-starter filter, word + name blocklists. |
-| `NameMentionTracker` | Cross-page fuzzy name aggregation (difflib ≥ 90%). Tracks canonical, variants, counts, sources. |
+| `NameExtractor` | Proper-name regex (2 capitalized words, accented chars). Sentence-starter filter, word + name blocklists. |
+| `NameMentionTracker` | Cross-page fuzzy name aggregation (difflib ≥ 90%). Tracks canonical, variants, counts, sources. ~30-entry noise names set. |
+| `KnownNameIndex` | NR pre-filter. Maps normalized influencer names → known handles. `has_handles()` skips redundant DDG lookups. |
 | `NameResolver` | DDG name → handle. Confidence check (name word in result title). 4 zero-result retries. |
 | `ResponseParser` | LLM JSON → Influencer[]. Handles 3 response shapes. Validates handles via NameCleaner. |
-| `NameCleaner` | Shared name cleanup injected into LLMResponseParser + NameExtractor. Brand/country/news/generic blocklists, markdown strip, URL-decode, LinkedIn slug rejection. |
-| `InfluencerMerger` | `merge()`: identity grouping by normalized handle/name. `to_seeds()`: flattens to DB-ready SeedInfluencer. |
+| `NameCleaner` | Regex extraction (`_NAME_RE.search()`) replaces stripping pipeline. Brand/country/news/CTA blocklists, URL-decode, LinkedIn slug rejection. |
+| `InfluencerMerger` | `merge()`: identity grouping by normalized handle/name (called pre-NR + post-NR). `to_seeds()`: flattens to DB-ready SeedInfluencer. |
 | `NameToHandleService` | **THE single DDG gate.** Mode 1: per-job cross-platform enrichment. Mode 2: post-all-jobs name resolution. |
 | `AuditService` | JSONL logging of every pipeline decision. |
 | `PipelineReporter` | Markdown report with summary, breakdown, roster, seeds, canaries, name mentions, token usage. |

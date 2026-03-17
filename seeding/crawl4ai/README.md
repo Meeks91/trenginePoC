@@ -1,6 +1,6 @@
 # Seed Crawler Pipeline v6
 
-> Last updated: 2026-03-16
+> Last updated: 2026-03-17
 
 ## What This Does
 
@@ -74,16 +74,17 @@ seeding/crawl4ai/
 │   │   └── filters.py ··········· PruningContentFilter factory
 │   ├── extraction/
 │   │   ├── HandleExtractionService.py  Orchestrates regex → classify → YT → clean → LLM → merge
-│   │   ├── RegexHandleExtractor.py ··· 10 regex patterns, ~200-entry ignore list
+│   │   ├── RegexHandleExtractor.py ··· 10 regex patterns, ~520-entry ignore list
 │   │   ├── PlatformClassifier.py ····· Mechanical 5-step cascade for naked @handles
 │   │   ├── HandleClassifier.py ······· LLM fallback for ambiguous naked @handles
 │   │   ├── LLMExtractionService.py ··· LLM full-page extraction (Gemini 2.5 Flash Lite)
-│   │   ├── NameCleaner.py ············ Shared name cleanup + brand/country/news blocklists
+│   │   ├── NameCleaner.py ············ Regex extraction + brand/country/news/CTA blocklists
 │   │   ├── LLMResponseParser.py ······ LLM JSON → Influencer[] with handle validation
 │   │   ├── PageTruncator.py ·········· Fit-markdown token budget truncation
 │   │   ├── YouTubeChannelResolver.py · UC... → @handle via HTTP
 │   │   ├── NameExtractor.py ·········· Reddit name extraction (regex + blocklists)
 │   │   ├── NameMentionTracker.py ····· Cross-page name frequency + sub grouping
+│   │   ├── KnownNameIndex.py ········· NR pre-filter: skip names already resolved
 │   │   ├── NameResolver.py ··········· DDG name → handle resolution + confidence check
 │   │   └── prompts.py ················ LLM prompt template
 │   ├── enrichment/
@@ -104,7 +105,7 @@ seeding/crawl4ai/
 │   └── business_rules.md ········ Comprehensive decision rules reference
 │
 ├── tests/
-│   ├── unit/ ················· 40+ suites, ~720 tests (no API calls)
+│   ├── unit/ ················· 40+ suites, ~733 tests (no API calls)
 │   ├── integration/ ·········· 15 suites, ~260 tests (mocked DDG/LLM)
 │   ├── e2e/ ·················· Live crawl tests
 │   └── fixtures/ ············· 61 saved real pages
@@ -117,8 +118,9 @@ seeding/crawl4ai/
 ```
 SearchClient (DDG or Serper) → SearchService (ad/platform/relevance filter)
     → Crawl4AI → Regex Extract → NameCleaner → Classify Handles → LLM Fallback
-    → Name Tracking → Enrich (DDG backfill) → Deferred Name Resolution
-    → Global Merge + Dedup → Output
+    → Name Tracking → Enrich (DDG backfill)
+    → Pre-NR Merge → Deferred Name Resolution (KnownNameIndex pre-filter)
+    → Post-NR Merge → Global Dedup → Output
 ```
 
 > **📖 For complete business rules**, see **[docs/business_rules.md](docs/business_rules.md)** — covers every decision rule with diagrams, examples, and the full blocklist.
@@ -137,14 +139,14 @@ SearchClient (DDG or Serper) → SearchService (ad/platform/relevance filter)
 | **Search** | DDG circuit breaker: skip config if ≥50% queries fail; kill after 3 consecutive failures | Free |
 | **Crawl** | Crawl4AI + PruningContentFilter → 20-60% token reduction | Free |
 | **Regex** | 10 patterns: IG embeds, URL patterns, @mentions | Free |
-| **Regex** | ~200-entry ignore list + profanity substring filter (CSS, JS, brands, cities, platforms) | Free |
-| **NameCleaner** | Brand/country/news/generic blocklists, markdown strip, URL decode, LinkedIn slug rejection | Free |
+| **Regex** | ~520-entry ignore list + profanity substring filter (CSS, JS, brands, cities, platforms) | Free |
+| **NameCleaner** | Regex extraction (`_NAME_RE.search()`) + brand/country/news/CTA blocklists | Free |
 | **Classify** | 5-step cascade: page count → window → closest kw → URL → skip | Free |
 | **Classify** | LLM fallback: only when 2+ platforms + 0 URL-handles + ambiguous | ~$0.001 |
 | **LLM Extract** | Only when 0 handles + listicle URL keyword | ~$0.0003/pg |
 | **Enrich** | DDG handle backfill for name-only influencers | Free |
 | **Name Resolution** | Reddit names → fuzzy group → top 5/sub → DDG resolve | Free |
-| **Merge** | Global identity dedup by normalized handle + cross-platform merge | Free |
+| **Merge** | Pre-NR merge + post-NR merge + global identity dedup by normalized handle | Free |
 
 ## Usage
 

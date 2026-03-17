@@ -74,6 +74,12 @@ _GENERIC_BLOCKLIST = frozenset({
     "trust and transparency", "company", "videos",
     "strength training:", "pilates:", "free webinar",
     "people brands and", "gaming and esport",
+    # CTA phrases that match _NAME_RE (two CamelCase words)
+    "free trial", "free webinar", "sign up", "read more", "see more",
+    "load more", "show more", "view profile", "watch now",
+    "get started", "try free", "book demo", "download app",
+    "browse all", "contact us", "explore more", "view all",
+    "continue reading", "related articles",
 })
 
 # Non-content-creator celebrities — NOT Arnold, The Rock, Gordon Ramsay
