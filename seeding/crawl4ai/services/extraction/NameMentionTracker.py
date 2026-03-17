@@ -44,6 +44,47 @@ type BucketRow = tuple[
 ]
 type GroupKey = tuple[str, str, str, str]  # (platform, category, sub, region)
 
+# Generic phrases / UI text that pass the regex name extractor but are
+# not real influencer names.  These waste DDG name-resolution slots.
+NOISE_NAMES: frozenset[str] = frozenset({
+    "Free Trial",
+    "Full Profile",
+    "Click Analytic",
+    "Average Reel",
+    "Authority Score",
+    "Personal Trainer",
+    "How To",
+    "Frequently Asked",
+    "Learn How",
+    "Use AI-powered",
+    "Have Questions",
+    "About Starting",
+    "Join Our",
+    "Get Email",
+    "Campaign Success",
+    "Why Follow",
+    "Highly Rated",
+    "Female TikTokers",
+    "South African",
+    "Watch Now",
+    "Sign Up",
+    "View Profile",
+    "Read More",
+    "See More",
+    "Load More",
+    "Show More",
+    "Contact Us",
+    "Get Started",
+    "Try Free",
+    "Book Demo",
+    "Download App",
+    "Browse All",
+    "Social Media",
+})
+
+_NOISE_LOWER: frozenset[str] = frozenset(n.lower() for n in NOISE_NAMES)
+
+
 
 # ══════════════════════════════════════════════════════════════════════
 # Data Model
@@ -222,7 +263,9 @@ class NameMentionTracker:
         Ranked by total mention_count (reddit + listicle combined) so
         cross-source validation boosts genuine influencers above noise.
         """
-        reddit = [m for m in self.reddit_names if m.mention_count >= min_mentions]
+        reddit = [m for m in self.reddit_names
+                  if m.mention_count >= min_mentions
+                  and m.canonical.lower() not in _NOISE_LOWER]
 
         groups: dict[tuple[str, ...], list[NameMention]] = defaultdict(list)
         for mention in reddit:
@@ -257,7 +300,8 @@ class NameMentionTracker:
         (only names with at least one reddit source included).
         """
         reddit = [m for m in self.reddit_names
-                  if m.mention_count >= min_mentions]
+                  if m.mention_count >= min_mentions
+                  and m.canonical.lower() not in _NOISE_LOWER]
 
         groups: dict[GroupKey, list[NameMention]] = defaultdict(list)
         for mention in reddit:
