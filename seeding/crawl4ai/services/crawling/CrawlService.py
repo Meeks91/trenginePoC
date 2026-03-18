@@ -8,6 +8,8 @@ internal links from the markdown and crawl them too (depth-limited).
 
 from __future__ import annotations
 
+import logging
+
 import os
 import re
 from urllib.parse import urlparse, urljoin
@@ -22,6 +24,9 @@ from config.settings import BFS_MAX_DEPTH, BFS_MAX_PAGES, CRAWL_MAX_RETRIES
 from config.schema import PageResult, count_handles_in_html
 from services.crawling.filters import create_markdown_generator
 
+
+
+logger = logging.getLogger(__name__)
 
 # Link patterns in markdown output: [text](url)
 _MD_LINK = re.compile(r'\[([^\]]*)\]\((https?://[^\)]+)\)')
@@ -75,12 +80,6 @@ class CrawlService:
         _dispatcher = importlib.import_module("crawl4ai.async_dispatcher")
         SemaphoreDispatcher = _dispatcher.SemaphoreDispatcher
         RateLimiter = _dispatcher.RateLimiter
-        # Use importlib to bypass pytest's import rewriting — the project dir
-        # 'crawl4ai' shadows the pip package during test collection.
-        import importlib
-        _dispatcher = importlib.import_module("crawl4ai.async_dispatcher")
-        SemaphoreDispatcher = _dispatcher.SemaphoreDispatcher
-        RateLimiter = _dispatcher.RateLimiter
 
         rate_limiter = RateLimiter(
             base_delay=(1.0, 3.0),
@@ -96,7 +95,7 @@ class CrawlService:
         results: list[PageResult] = []
         total_retries = 0
 
-        print(f"\n  --- Crawling {len(urls)} URLs (max_concurrent={CRAWL_CONCURRENCY}, max_retries={CRAWL_MAX_RETRIES}) ---")
+        logger.info(f"\n  --- Crawling {len(urls)} URLs (max_concurrent={CRAWL_CONCURRENCY}, max_retries={CRAWL_MAX_RETRIES}) ---")
 
         async with AsyncWebCrawler(config=BrowserConfig(headless=True)) as crawler:
             crawl_results = await crawler.arun_many(
@@ -119,7 +118,7 @@ class CrawlService:
 
                 if not result.success:
                     error_msg = str(result.error_message) if hasattr(result, 'error_message') else "unknown"
-                    print(f"    FAIL {url}: {error_msg}")
+                    logger.warning(f"{url}: {error_msg}")
                     self._audit.log_page_failed(url, error_msg)
                     results.append(PageResult(
                         url=url, query=query,
@@ -139,7 +138,7 @@ class CrawlService:
                 md_path = self._save_markdown(url, fit)
 
                 self._audit.log_page_success(url, raw_tokens, fit_tokens)
-                print(f"    OK {url}  ({raw_tokens:,} -> {fit_tokens:,} tokens, -{reduction:.0f}%)")
+                logger.info(f"    OK {url}  ({raw_tokens:,} -> {fit_tokens:,} tokens, -{reduction:.0f}%)")
 
                 source_handles = count_handles_in_html(raw)
 
@@ -155,12 +154,12 @@ class CrawlService:
         dropped_urls = set(urls) - result_urls
         for dropped_url in dropped_urls:
             self._audit.log_page_failed(dropped_url, "dropped_by_crawler")
-            print(f"    DROP {dropped_url}: silently dropped by arun_many")
+            logger.info(f"    DROP {dropped_url}: silently dropped by arun_many")
 
         successes = sum(1 for r in results if r.success)
         failures = sum(1 for r in results if not r.success)
         dropped = len(dropped_urls)
-        print(f"\n  Crawled {successes}/{len(urls)} pages ({failures} failed, {dropped} dropped, {total_retries} retries)")
+        logger.info(f"\n  Crawled {successes}/{len(urls)} pages ({failures} failed, {dropped} dropped, {total_retries} retries)")
 
         # Store counts for pipeline stats
         self._dropped_count = dropped
@@ -234,7 +233,7 @@ class CrawlService:
             if not links_to_crawl:
                 break
 
-            print(f"\n  --- BFS Depth {depth + 1}: {len(links_to_crawl)} internal links ---")
+            logger.info(f"\n  --- BFS Depth {depth + 1}: {len(links_to_crawl)} internal links ---")
             bfs_results = await self.crawl_urls(links_to_crawl)
             all_results.extend(bfs_results)
             extra_crawled += len(bfs_results)
@@ -243,7 +242,7 @@ class CrawlService:
                 break
 
         if extra_crawled > 0:
-            print(f"\n  BFS: crawled {extra_crawled} extra pages from link-following")
+            logger.info(f"\n  BFS: crawled {extra_crawled} extra pages from link-following")
         return all_results
 
     @staticmethod

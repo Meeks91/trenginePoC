@@ -80,10 +80,14 @@ _GENERIC_BLOCKLIST = frozenset({
     "get started", "try free", "book demo", "download app",
     "browse all", "contact us", "explore more", "view all",
     "continue reading", "related articles",
+    "start your", "make money", "join our", "get email",
+    "learn how", "how to", "find local", "about starting",
     # Generic job titles / roles
     "personal trainer", "fitness model", "fitness influencer",
     "fitness coach", "yoga teacher", "yoga instructor",
     "brand ambassador", "beauty guru",
+    "managing director", "marketing agency", "award winning",
+    "world champion",
     # Section heading phrases (listicle headings now pass through clean_name)
     "food influencers", "beauty influencers", "travel influencers",
     "fitness influencers", "fashion influencers", "lifestyle influencers",
@@ -91,6 +95,30 @@ _GENERIC_BLOCKLIST = frozenset({
     "beauty bloggers", "travel bloggers", "fashion bloggers",
     "food creators", "beauty creators", "travel creators",
     "fitness creators", "fashion creators", "lifestyle creators",
+    # Niche-list headings / aggregator noise
+    "female tiktokers", "hair tiktokers", "gym tiktokers",
+    "hair youtubers", "male youtubers", "calisthenics youtubers",
+    "youtuber name",
+    # Analytics/scraper tool metrics
+    "authority score", "average reel", "avg likes",
+    "click analytic", "content style", "domain rating",
+    "full profile", "campaign success", "why follow",
+    "highly rated", "pro tip", "case studies", "final thoughts",
+    "have questions", "frequently asked", "use ai-powered",
+    "real estate", "black friday",
+    # Site chrome / aggregator brands
+    "favikon democratizing", "favikon built",
+    "social snowball", "social shepherd", "sprout social",
+    "imagen insights", "zen planner", "feedspot reader",
+    # Cookie consent / privacy banners
+    "necessaryalways active", "analytics analytical",
+    "performance performance", "strictly necessary",
+    "refund policy", "influence operations", "supporting information",
+    # Scraper artifacts
+    "description the", "yoga with",
+    "posts coachniche", "posts athleteniche", "posts personal",
+    "functional functional", "south african",
+    "second test", "second bio", "male request",
 })
 
 # Non-content-creator celebrities — NOT Arnold, The Rock, Gordon Ramsay

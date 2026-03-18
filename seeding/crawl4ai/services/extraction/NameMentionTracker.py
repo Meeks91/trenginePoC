@@ -44,70 +44,12 @@ type BucketRow = tuple[
 ]
 type GroupKey = tuple[str, str, str, str]  # (platform, category, sub, region)
 
-# Generic phrases / UI text that pass the regex name extractor but are
-# not real influencer names.  These waste DDG name-resolution slots.
-NOISE_NAMES: frozenset[str] = frozenset({
-    "Free Trial",
-    "Full Profile",
-    "Click Analytic",
-    "Average Reel",
-    "Authority Score",
-    "Personal Trainer",
-    "How To",
-    "Frequently Asked",
-    "Learn How",
-    "Use AI-powered",
-    "Have Questions",
-    "About Starting",
-    "Join Our",
-    "Get Email",
-    "Campaign Success",
-    "Why Follow",
-    "Highly Rated",
-    "Female TikTokers",
-    "South African",
-    "Watch Now",
-    "Sign Up",
-    "View Profile",
-    "Read More",
-    "See More",
-    "Load More",
-    "Show More",
-    "Contact Us",
-    "Get Started",
-    "Try Free",
-    "Book Demo",
-    "Download App",
-    "Browse All",
-    "Social Media",
-    # UI/CTA noise (high-volume from report)
-    "Continue Reading", "Related Articles", "Make Money",
-    "View All", "Explore More", "Start Your",
-    "World Champion", "Real Estate", "Black Friday",
-    "Pro Tip", "Case Studies", "Final Thoughts",
-    "Managing Director", "Marketing Agency", "Award Winning",
-    "Yoga With", "Description The",
-    "Youtuber Name", "Hair YouTubers", "Hair TikTokers",
-    "Male YouTubers", "Calisthenics YouTubers", "Gym TikTokers",
-    "Content Style", "Domain Rating", "Avg Likes",
-    "Second Test", "Second Bio", "Male Request",
-    # Site chrome
-    "Favikon Democratizing", "Favikon Built", "Social Snowball",
-    "Social Shepherd", "Sprout Social", "Imagen Insights",
-    "Zen Planner", "FeedSpot Reader",
-    # Cookie consent noise
-    "NecessaryAlways Active", "Analytics Analytical",
-    "Performance Performance", "Strictly Necessary",
-    # Posts *Niche patterns
-    "Posts CoachNiche", "Posts AthleteNiche", "Posts Personal",
-    # Duplicate noise
-    "Functional Functional",
-    # Misc
-    "Influence Operations", "Supporting Information",
-    "Refund Policy", "Find Local",
-})
+from services.extraction.NameCleaner import _ALL_NON_PERSON as _CLEANER_BLOCKLIST
 
-_NOISE_LOWER: frozenset[str] = frozenset(n.lower() for n in NOISE_NAMES)
+# Belt-and-suspenders: names in _CLEANER_BLOCKLIST are already filtered
+# upstream by NameCleaner.clean_name(), but we re-check here to guard
+# against any code path that bypasses the cleaner.
+_NOISE_LOWER: frozenset[str] = _CLEANER_BLOCKLIST
 
 
 
@@ -149,6 +91,7 @@ class NameMentionTracker:
         self._platforms: list[set[str]] = []
         self._categories: list[set[str]] = []
         self._regions: list[set[str]] = []
+        self._norm_index: dict[str, int] = {}
 
     # ── Public API ─────────────────────────────────────────────────────
 
@@ -176,6 +119,7 @@ class NameMentionTracker:
         for name, count in names_with_counts.items():
             idx = self._find_bucket(name)
             if idx is None:
+                new_idx = len(self._buckets)
                 self._buckets.append({name: count})
                 self._searched.append(False)
                 self._source_types.append({source_type.value})
@@ -184,6 +128,7 @@ class NameMentionTracker:
                 self._platforms.append({platform} if platform else set())
                 self._categories.append({category} if category else set())
                 self._regions.append({region} if region else set())
+                self._register_bucket(name, new_idx)
             else:
                 self._buckets[idx][name] = (
                     self._buckets[idx].get(name, 0) + count
@@ -387,8 +332,27 @@ class NameMentionTracker:
             self._categories, self._regions,
         )
 
+    @staticmethod
+    def _normalize_key(name: str) -> str:
+        """Collapse whitespace and lowercase for exact-match indexing."""
+        return " ".join(name.lower().split())
+
+    def _register_bucket(self, name: str, idx: int) -> None:
+        """Add a normalized key → bucket index mapping."""
+        self._norm_index[self._normalize_key(name)] = idx
+
     def _find_bucket(self, name: str) -> int | None:
-        """Return index of an existing bucket that name fuzzy-matches, or None."""
+        """Return index of an existing bucket matching this name.
+
+        Uses a two-tier strategy:
+          1. O(1) exact lookup via normalized key index (handles 95%+ of cases)
+          2. O(N) fuzzy fallback for genuinely novel names (rare after warmup)
+        """
+        norm = self._normalize_key(name)
+        idx = self._norm_index.get(norm)
+        if idx is not None:
+            return idx
+
         name_lower = name.lower()
         for idx, bucket in enumerate(self._buckets):
             canonical = max(bucket, key=lambda v: bucket[v])
@@ -396,5 +360,6 @@ class NameMentionTracker:
                 None, name_lower, canonical.lower()
             ).ratio()
             if ratio >= _FUZZY_THRESHOLD:
+                self._norm_index[norm] = idx
                 return idx
         return None

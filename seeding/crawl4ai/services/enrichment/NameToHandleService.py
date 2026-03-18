@@ -117,9 +117,9 @@ class NameToHandleService:
         Returns:
             The enriched list (same list, possibly with new entries appended).
         """
-        print(f"\n  --- Resolve Handles ({platform.value}) ---")
+        logger.info(f"\n  --- Resolve Handles ({platform.value}) ---")
         if skip_cross_platform:
-            print("  Cross-platform lookup: SKIPPED (--no-cross-platform-lookup)")
+            logger.info("  Cross-platform lookup: SKIPPED (--no-cross-platform-lookup)")
             return influencers
 
         # Only enrich cross-platform: has handle on another platform, needs target
@@ -142,7 +142,7 @@ class NameToHandleService:
         capped = len(qualified) - len(to_resolve)
 
         name_only_count = sum(1 for inf in influencers if not inf.handles)
-        print(f"  {len(candidates)} need cross-platform, "
+        logger.info(f"  {len(candidates)} need cross-platform, "
               f"{below_threshold} below min sources ({min_sources}), "
               f"{len(to_resolve)} queued (top {max_lookups} by frequency), "
               f"{name_only_count} name-only deferred to tracker")
@@ -165,7 +165,7 @@ class NameToHandleService:
         domain = PLATFORM_DOMAINS.get(platform)
         if not entries or not domain:
             if not domain and entries:
-                print(f"  WARN: Unknown platform '{platform.value}' — skipping handle backfill")
+                logger.warning(f"Unknown platform '{platform.value}' — skipping handle backfill")
             return []
 
         new_entries: list[Influencer] = []
@@ -180,10 +180,10 @@ class NameToHandleService:
                     handles={platform: handle.lstrip("@")},
                 ))
                 self._audit.log_handle_found(inf.name, handle)
-                print(f"    {inf.name} -> {handle} (kept {existing_summary})")
+                logger.info(f"    {inf.name} -> {handle} (kept {existing_summary})")
             time.sleep(self._delay)
 
-        print(f"\n  Filled {len(new_entries)}/{len(entries)} cross-platform handles")
+        logger.info(f"\n  Filled {len(new_entries)}/{len(entries)} cross-platform handles")
         return new_entries
 
     # ── Mode 2: Post-All-Jobs Tracker-Filtered Resolution ──
@@ -226,8 +226,8 @@ class NameToHandleService:
         names_to_resolve = [m.canonical for m in top_mentions]
 
         all_mentions = tracker.all_names
-        print(f"\n  --- Name → Handle Resolution ---")
-        print(f"  {len(all_mentions)} total name buckets, "
+        logger.info(f"\n  --- Name → Handle Resolution ---")
+        logger.info(f"  {len(all_mentions)} total name buckets, "
               f"{len(names_to_resolve)} qualify "
               f"(≥{min_mentions} mentions, top {max_per_group}/group, reddit-sourced)")
 
@@ -274,7 +274,7 @@ class NameToHandleService:
                 resolved_platform=plat_str,
             ))
 
-        print(f"  Resolved: {len(resolved_map)}/{len(names_to_resolve)} names → handles")
+        logger.info(f"  Resolved: {len(resolved_map)}/{len(names_to_resolve)} names → handles")
         return resolved_influencers, records
 
     def resolve_with_recycling(
@@ -310,8 +310,8 @@ class NameToHandleService:
         total_collisions = 0
         total_new = 0
 
-        print(f"\n  --- Slot Recycling Name Resolution ---")
-        print(f"  {len(group_queues)} groups, "
+        logger.info(f"\n  --- Slot Recycling Name Resolution ---")
+        logger.info(f"  {len(group_queues)} groups, "
               f"max {max_slots_per_group} slots/group, "
               f"{len(known_handles)} known handles")
 
@@ -384,7 +384,7 @@ class NameToHandleService:
                     group_key, group_collisions,
                 )
 
-        print(f"  Recycling complete: {total_new} new handles, "
+        logger.info(f"  Recycling complete: {total_new} new handles, "
               f"{total_collisions} collisions recycled")
         return all_resolved, all_records
 

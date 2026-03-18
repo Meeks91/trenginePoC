@@ -74,7 +74,7 @@ class StrictSearchClient:
         results: list[RawSearchResult] = []
 
         for i, sq in enumerate(queries, 1):
-            print(f"  [{i}/{len(queries)}] ({sq.query_type}) {sq.query}")
+            logger.info(f"  [{i}/{len(queries)}] ({sq.query_type}) {sq.query}")
             raw = self._execute(sq)
             results.extend(raw)
             self._audit.log(

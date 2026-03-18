@@ -119,14 +119,14 @@ class LLMExtractionService:
         eligible = [p for p in pages if p.success and p.fit_markdown.strip()]
 
         if sample_n is not None and sample_n < len(eligible):
-            print(f"\n  Sampling {sample_n}/{len(eligible)} pages for LLM extraction")
+            logger.info(f"\n  Sampling {sample_n}/{len(eligible)} pages for LLM extraction")
             eligible = random.sample(eligible, sample_n)
 
         if not eligible:
-            print("  WARN: No pages eligible for extraction")
+            logger.warning("No pages eligible for extraction")
             return {}, 0, 0
 
-        print(f"\n  --- LLM Extraction ({len(eligible)} pages) ---")
+        logger.info(f"\n  --- LLM Extraction ({len(eligible)} pages) ---")
 
         prompt = EXTRACTION_PROMPT.format(
             platform=platform,
@@ -142,7 +142,7 @@ class LLMExtractionService:
         total_output_tokens = 0
 
         for i, page in enumerate(eligible, 1):
-            print(f"\n    [{i}/{len(eligible)}] {page.url}")
+            logger.info(f"\n    [{i}/{len(eligible)}] {page.url}")
 
             try:
                 influencers, in_tok, out_tok = await self._extract_page(page, prompt)
@@ -228,7 +228,7 @@ class LLMExtractionService:
 
         raw_content = response.choices[0].message.content
         if not raw_content:
-            print(f"      WARN: LLM returned empty response")
+            logger.warning(f"LLM returned empty response")
             return [], input_tokens, output_tokens or 0
 
         # Save raw response

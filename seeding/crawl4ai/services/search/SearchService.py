@@ -133,7 +133,7 @@ class SearchService:
                         "search", "direct_handle",
                         handle=handle.handle, platform=handle.platform, url=r.url,
                     )
-                    print(f"      ⚡ Direct handle: @{handle.handle} ({handle.platform})")
+                    logger.info(f"      ⚡ Direct handle: @{handle.handle} ({handle.platform})")
                 continue
 
             if not self._is_relevant(r.title, r.url, job):
@@ -142,15 +142,15 @@ class SearchService:
 
             discovered.append((r.url, r.query))
             self._audit.log_url_accepted(r.url)
-            print(f"      + {r.title[:60]}")
-            print(f"        {r.url}")
+            logger.info(f"      + {r.title[:60]}")
+            logger.info(f"        {r.url}")
 
         if len(discovered) > MAX_URLS_PER_JOB:
             discovered = discovered[:MAX_URLS_PER_JOB]
 
-        print(f"\n  Discovered {len(discovered)} URLs")
+        logger.info(f"\n  Discovered {len(discovered)} URLs")
         if direct_handles:
-            print(f"  ⚡ {len(direct_handles)} handles extracted directly from URLs")
+            logger.info(f"  ⚡ {len(direct_handles)} handles extracted directly from URLs")
 
         return SearchResults(
             url_query_pairs=discovered,

@@ -72,7 +72,7 @@ class OpenSearchClient:
         results: list[RawSearchResult] = []
 
         for i, sq in enumerate(queries, 1):
-            print(f"  [{i}/{len(queries)}] ({sq.query_type}) {sq.query}")
+            logger.info(f"  [{i}/{len(queries)}] ({sq.query_type}) {sq.query}")
             raw, _retries, _failed = self._execute_with_retry(sq)
             results.extend(raw)
             time.sleep(self._delay)

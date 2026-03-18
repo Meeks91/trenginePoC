@@ -11,6 +11,8 @@ All output from a single run is consolidated into a single directory:
 
 from __future__ import annotations
 
+import logging
+
 import json
 import os
 from datetime import datetime
@@ -22,6 +24,8 @@ from config.schema import (
     Influencer, NameMentionRecord, SourceResult,
     PageResult, SubResult, RegionResult, ErroredConfig,
 )
+
+logger = logging.getLogger(__name__)
 
 
 class ResultAssembler:
@@ -87,7 +91,7 @@ class ResultAssembler:
         self._write_errors(run_dir, errored_configs)
         self._copy_report(run_dir, report_path)
 
-        print(f"  Run output saved: {run_dir}")
+        logger.info(f"  Run output saved: {run_dir}")
         return run_dir
 
     # ── Internal ──
@@ -112,7 +116,7 @@ class ResultAssembler:
                 [s.to_dict() for s in seeds],
                 f, indent=2, ensure_ascii=False,
             )
-        print(f"  Seeds saved: {run_dir / 'seeds.json'} ({len(seeds)} records)")
+        logger.info(f"  Seeds saved: {run_dir / 'seeds.json'} ({len(seeds)} records)")
 
     @staticmethod
     def _write_unresolved_names(
@@ -125,9 +129,9 @@ class ResultAssembler:
                 [r.to_dict() for r in unresolved],
                 f, indent=2, ensure_ascii=False,
             )
-        print(
-            f"  Unresolved names saved: {run_dir / 'unresolved_names.json'} "
-            f"({len(unresolved)} of {len(records)} names)"
+        logger.info(
+            "Unresolved names saved: %s (%d of %d names)",
+            run_dir / "unresolved_names.json", len(unresolved), len(records),
         )
 
     @staticmethod

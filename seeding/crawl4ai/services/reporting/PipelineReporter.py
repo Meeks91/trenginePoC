@@ -4,6 +4,7 @@ PipelineReporter — Generates human-readable pipeline report as markdown.
 
 from __future__ import annotations
 
+import logging
 import os
 from datetime import datetime, timezone
 from pathlib import Path
@@ -16,12 +17,16 @@ from config.schema import (
 from services.enrichment.InfluencerMerger import InfluencerMerger
 from services.validation.IngestionValidator import ValidationResult
 
+logger = logging.getLogger(__name__)
+
 
 class PipelineReporter:
     """Generates pipeline_report.md after a run."""
 
     def __init__(self) -> None:
         self.last_report_path: Path | None = None
+
+    # ── API ──
 
     def generate(
         self,
@@ -41,14 +46,42 @@ class PipelineReporter:
     ) -> Path:
         """Generate a human-readable report. Returns path to the report file."""
         os.makedirs(run_dir, exist_ok=True)
-        ts = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%S")
         report_path = run_dir / "report.md"
 
+        lines: list[str] = []
+        lines.extend(self._summary_section(stats, total_configs, errored_configs))
+        lines.extend(self._warnings_section(warnings))
+        lines.extend(self._job_breakdown_section(job_results))
+        lines.extend(self._influencer_roster_section(influencers))
+        lines.extend(self._global_seeds_section(global_seeds))
+        lines.extend(self._canary_section(validation_results))
+        lines.extend(self._name_mentions_section(name_mentions))
+        lines.extend(self._token_usage_section(stats, model, mode))
+        lines.extend(self._reliability_section(stats))
+        lines.extend(self._errored_configs_section(errored_configs))
+
+        report_content = "\n".join(lines)
+
+        with open(report_path, "w") as f:
+            f.write(report_content)
+
+        self.last_report_path = report_path
+        logger.info("Report saved: %s", report_path)
+        return report_path
+
+    # ── Internal section builders ──
+
+    @staticmethod
+    def _summary_section(
+        stats: PipelineStats,
+        total_configs: int,
+        errored_configs: list[ErroredConfig] | None,
+    ) -> list[str]:
+        ts = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%S")
         handle_fill_rate = (
             f"{stats.handles_filled}/{stats.influencers_deduped}"
             if stats.influencers_deduped > 0 else "N/A"
         )
-
         input_cost = stats.total_input_tokens * INPUT_COST_PER_1M / 1_000_000
         output_cost = stats.total_output_tokens * OUTPUT_COST_PER_1M / 1_000_000
         total_cost = input_cost + output_cost
@@ -68,8 +101,6 @@ class PipelineReporter:
             f"| **Handle retrieval** | **{stats.handles_retrieved}/{stats.handles_in_source}** |",
             f"| Estimated LLM cost | ${total_cost:.4f} |",
         ]
-
-        # Yield metric in summary (always shown, informational)
         if stats.pages_crawled > 0:
             yield_ratio = stats.regex_handles_total / stats.pages_crawled
             lines.append(f"| Regex yield | {yield_ratio:.1f} handles/page |")
@@ -80,114 +111,138 @@ class PipelineReporter:
             succeeded = total_configs - failed
             lines.append(f"| **Configs** | **{succeeded} succeeded, {failed} failed ({total_configs} total)** |")
         lines.append("")
+        return lines
 
-        # ── Warnings ──
-        if warnings:
-            lines.extend([
-                "## ⚠️ Warnings",
-                "",
-            ])
-            for w in warnings:
-                lines.append(f"- {w}")
-            lines.append("")
+    @staticmethod
+    def _warnings_section(warnings: list[str] | None) -> list[str]:
+        if not warnings:
+            return []
+        lines = ["## ⚠️ Warnings", ""]
+        for w in warnings:
+            lines.append(f"- {w}")
+        lines.append("")
+        return lines
 
-        # ── Per-Job Breakdown ──
-        if job_results:
-            lines.extend([
-                "## Breakdown by Job",
-                "| Region | Platform | Category | Sub | Influencers | Handles | Pages |",
-                "|--------|----------|----------|-----|-------------|---------|-------|",
-            ])
-            for job in sorted(job_results, key=lambda j: (j.region, j.platform, j.category, j.sub)):
-                lines.append(
-                    f"| {job.region} | {job.platform} | {job.category} | {job.sub} "
-                    f"| {job.influencers_found} | {job.handles_filled} | {job.pages_crawled} |"
-                )
-            lines.append("")
+    @staticmethod
+    def _job_breakdown_section(job_results: list[JobBreakdown] | None) -> list[str]:
+        if not job_results:
+            return []
+        lines = [
+            "## Breakdown by Job",
+            "| Region | Platform | Category | Sub | Influencers | Handles | Pages |",
+            "|--------|----------|----------|-----|-------------|---------|-------|",
+        ]
+        for job in sorted(job_results, key=lambda j: (j.region, j.platform, j.category, j.sub)):
+            lines.append(
+                f"| {job.region} | {job.platform} | {job.category} | {job.sub} "
+                f"| {job.influencers_found} | {job.handles_filled} | {job.pages_crawled} |"
+            )
+        lines.append("")
+        return lines
 
-        # ── Full Influencer Roster (grouped by identity) ──
-        if influencers:
-            grouped = InfluencerMerger.merge(influencers)
-            grouped.sort(key=lambda inf: len(inf.source_urls), reverse=True)
-            lines.extend([
-                "## Influencers Found",
-                f"**{len(grouped)} unique people** (grouped from {len(influencers)} raw entries)",
-                "",
-                "| # | Name | IG Handle | TK Handle | YT Handle | Cites |",
-                "|---|------|-----------|-----------|-----------|-------|",
-            ])
-            for i, inf in enumerate(grouped, 1):
-                ig = inf.handles.get(Platform.Instagram, "—")
-                tk = inf.handles.get(Platform.TikTok, "—")
-                yt = inf.handles.get(Platform.YouTube, "—")
-                cites = len(inf.source_urls)
-                lines.append(f"| {i} | {inf.name} | {ig} | {tk} | {yt} | {cites} |")
-            lines.append("")
+    @staticmethod
+    def _influencer_roster_section(influencers: list[Influencer] | None) -> list[str]:
+        if not influencers:
+            return []
+        grouped = InfluencerMerger.merge(influencers)
+        grouped.sort(key=lambda inf: len(inf.source_urls), reverse=True)
+        lines = [
+            "## Influencers Found",
+            f"**{len(grouped)} unique people** (grouped from {len(influencers)} raw entries)",
+            "",
+            "| # | Name | IG Handle | TK Handle | YT Handle | Cites |",
+            "|---|------|-----------|-----------|-----------|-------|",
+        ]
+        for i, inf in enumerate(grouped, 1):
+            ig = inf.handles.get(Platform.Instagram, "—")
+            tk = inf.handles.get(Platform.TikTok, "—")
+            yt = inf.handles.get(Platform.YouTube, "—")
+            cites = len(inf.source_urls)
+            lines.append(f"| {i} | {inf.name} | {ig} | {tk} | {yt} | {cites} |")
+        lines.append("")
+        return lines
 
-        # ── Global Seed DB (Deduped across configs) ──
-        if global_seeds:
-            lines.extend([
-                "## Global Seed DB (Deduped)",
-                f"**{len(global_seeds)} unique seeds** across all configs",
-                "",
-                "| # | IG Handle | TK Handle | YT Handle | Categories |",
-                "|---|-----------|-----------|-----------|------------|",
-            ])
-            for i, seed in enumerate(sorted(global_seeds, key=lambda s: s.name.lower()), 1):
-                ig = seed.ig_handle or "—"
-                tk = seed.tk_handle or "—"
-                yt = seed.yt_handle or "—"
-                cats = ", ".join(sorted(seed.categories_found_in)) if seed.categories_found_in else "—"
-                lines.append(f"| {i} | {ig} | {tk} | {yt} | {cats} |")
-            lines.append("")
+    @staticmethod
+    def _global_seeds_section(global_seeds: list[Influencer] | None) -> list[str]:
+        if not global_seeds:
+            return []
+        lines = [
+            "## Global Seed DB (Deduped)",
+            f"**{len(global_seeds)} unique seeds** across all configs",
+            "",
+            "| # | IG Handle | TK Handle | YT Handle | Categories |",
+            "|---|-----------|-----------|-----------|------------|",
+        ]
+        for i, seed in enumerate(sorted(global_seeds, key=lambda s: s.name.lower()), 1):
+            ig = seed.ig_handle or "—"
+            tk = seed.tk_handle or "—"
+            yt = seed.yt_handle or "—"
+            cats = ", ".join(sorted(seed.categories_found_in)) if seed.categories_found_in else "—"
+            lines.append(f"| {i} | {ig} | {tk} | {yt} | {cats} |")
+        lines.append("")
+        return lines
 
-        # ── Canary Validation ──
+    @staticmethod
+    def _canary_section(
+        validation_results: dict[str, ValidationResult | None],
+    ) -> list[str]:
         valid_results = {k: v for k, v in validation_results.items() if v is not None}
-        if valid_results:
-            lines.extend([
-                "## Canary Validation",
-                "| Sub | Canary | Found? |",
-                "|-----|--------|--------|",
-            ])
-            total_expected = 0
-            total_found = 0
-            for sub_key, vr in valid_results.items():
-                total_expected += len(vr.expected)
-                total_found += len(vr.found)
-                for name in vr.found:
-                    lines.append(f"| {sub_key} | {name} | YES |")
-                for name in vr.missing:
-                    lines.append(f"| {sub_key} | {name} | MISSING |")
-
-            overall_rate = total_found / total_expected if total_expected else 0
-            lines.extend([
-                f"| **Overall** | **{total_found}/{total_expected}** | **{overall_rate:.0%}** |",
-                "",
-            ])
-
-        # ── Name Mentions ──
-        if name_mentions:
-            lines.extend([
-                "## Name Mentions",
-                f"**{len(name_mentions)} names** tracked across all pages",
-                "",
-                "| # | Name | Mentions | Source | URLs | Resolved? | Handle |",
-                "|---|------|----------|--------|------|-----------|--------|",
-            ])
-            for i, nm in enumerate(sorted(name_mentions, key=lambda x: x.mention_count, reverse=True), 1):
-                source = ", ".join(nm.source_types) if nm.source_types else "—"
-                url_count = len(nm.source_urls) if nm.source_urls else 0
-                if nm.was_searched and nm.resolved_handle:
-                    resolved = f"✅ @{nm.resolved_handle} ({nm.resolved_platform})"
-                elif nm.was_searched:
-                    resolved = "✅ (no match)"
-                else:
-                    resolved = "❌"
-                lines.append(f"| {i} | {nm.canonical} | {nm.mention_count} | {source} | {url_count} | {resolved} |")
-            lines.append("")
-
-        # ── Token Usage ──
+        if not valid_results:
+            return []
+        lines = [
+            "## Canary Validation",
+            "| Sub | Canary | Found? |",
+            "|-----|--------|--------|",
+        ]
+        total_expected = 0
+        total_found = 0
+        for sub_key, vr in valid_results.items():
+            total_expected += len(vr.expected)
+            total_found += len(vr.found)
+            for name in vr.found:
+                lines.append(f"| {sub_key} | {name} | YES |")
+            for name in vr.missing:
+                lines.append(f"| {sub_key} | {name} | MISSING |")
+        overall_rate = total_found / total_expected if total_expected else 0
         lines.extend([
+            f"| **Overall** | **{total_found}/{total_expected}** | **{overall_rate:.0%}** |",
+            "",
+        ])
+        return lines
+
+    @staticmethod
+    def _name_mentions_section(
+        name_mentions: list[NameMentionRecord] | None,
+    ) -> list[str]:
+        if not name_mentions:
+            return []
+        lines = [
+            "## Name Mentions",
+            f"**{len(name_mentions)} names** tracked across all pages",
+            "",
+            "| # | Name | Mentions | Source | URLs | Resolved? | Handle |",
+            "|---|------|----------|--------|------|-----------|--------|",
+        ]
+        for i, nm in enumerate(sorted(name_mentions, key=lambda x: x.mention_count, reverse=True), 1):
+            source = ", ".join(nm.source_types) if nm.source_types else "—"
+            url_count = len(nm.source_urls) if nm.source_urls else 0
+            if nm.was_searched and nm.resolved_handle:
+                resolved = f"✅ @{nm.resolved_handle} ({nm.resolved_platform})"
+            elif nm.was_searched:
+                resolved = "✅ (no match)"
+            else:
+                resolved = "❌"
+            lines.append(f"| {i} | {nm.canonical} | {nm.mention_count} | {source} | {url_count} | {resolved} |")
+        lines.append("")
+        return lines
+
+    @staticmethod
+    def _token_usage_section(
+        stats: PipelineStats,
+        model: str,
+        mode: str,
+    ) -> list[str]:
+        return [
             "## Token Usage",
             "| Metric | Value |",
             "|--------|-------|",
@@ -196,54 +251,53 @@ class PipelineReporter:
             f"| Model | {model} |",
             f"| Mode | {mode} |",
             "",
-        ])
+        ]
 
-        # ── Reliability (only shown if there were issues) ──
+    @staticmethod
+    def _reliability_section(stats: PipelineStats) -> list[str]:
         total_retries = stats.search_retries + stats.enrich_retries + stats.llm_retries + stats.crawl_retries
         total_failures = stats.search_failures + stats.enrich_failures + stats.llm_failures + stats.pages_failed + stats.pages_dropped
-        if total_retries > 0 or total_failures > 0:
-            lines.extend([
-                "## Reliability",
-                "| Metric | Value |",
-                "|--------|-------|",
-            ])
-            if stats.search_retries or stats.search_failures:
-                lines.append(f"| DDG search retries | {stats.search_retries} |")
-                lines.append(f"| DDG search failures | {stats.search_failures} |")
-            if stats.enrich_retries or stats.enrich_failures:
-                lines.append(f"| DDG enrich retries | {stats.enrich_retries} |")
-                lines.append(f"| DDG enrich failures | {stats.enrich_failures} |")
-            if stats.llm_retries or stats.llm_failures:
-                lines.append(f"| LLM retries | {stats.llm_retries} |")
-                lines.append(f"| LLM failures | {stats.llm_failures} |")
-            if stats.pages_failed or stats.pages_dropped or stats.crawl_retries:
-                lines.append(f"| Crawl failures | {stats.pages_failed} |")
-                lines.append(f"| Crawl dropped | {stats.pages_dropped} |")
-                lines.append(f"| Crawl retries | {stats.crawl_retries} |")
-            lines.append("")
+        if total_retries == 0 and total_failures == 0:
+            return []
+        lines = [
+            "## Reliability",
+            "| Metric | Value |",
+            "|--------|-------|",
+        ]
+        if stats.search_retries or stats.search_failures:
+            lines.append(f"| DDG search retries | {stats.search_retries} |")
+            lines.append(f"| DDG search failures | {stats.search_failures} |")
+        if stats.enrich_retries or stats.enrich_failures:
+            lines.append(f"| DDG enrich retries | {stats.enrich_retries} |")
+            lines.append(f"| DDG enrich failures | {stats.enrich_failures} |")
+        if stats.llm_retries or stats.llm_failures:
+            lines.append(f"| LLM retries | {stats.llm_retries} |")
+            lines.append(f"| LLM failures | {stats.llm_failures} |")
+        if stats.pages_failed or stats.pages_dropped or stats.crawl_retries:
+            lines.append(f"| Crawl failures | {stats.pages_failed} |")
+            lines.append(f"| Crawl dropped | {stats.pages_dropped} |")
+            lines.append(f"| Crawl retries | {stats.crawl_retries} |")
+        lines.append("")
+        return lines
 
-        # ── Errored Configs ──
-        if errored_configs:
-            lines.extend([
-                "## ❌ Errored Configs",
-                f"**{len(errored_configs)} config(s)** failed due to DDG search errors",
-                "",
-                "| # | Config | Failures | Attempted | Rate | Reason |",
-                "|---|--------|----------|-----------|------|--------|",
-            ])
-            for i, ec in enumerate(errored_configs, 1):
-                lines.append(
-                    f"| {i} | {ec.config_key} | {ec.failure_count} "
-                    f"| {ec.queries_attempted} "
-                    f"| {ec.failure_threshold_percentage:.0%} | {ec.reason} |"
-                )
-            lines.append("")
-
-        report_content = "\n".join(lines)
-
-        with open(report_path, "w") as f:
-            f.write(report_content)
-
-        self.last_report_path = report_path
-        print(f"\n  Report saved: {report_path}")
-        return report_path
+    @staticmethod
+    def _errored_configs_section(
+        errored_configs: list[ErroredConfig] | None,
+    ) -> list[str]:
+        if not errored_configs:
+            return []
+        lines = [
+            "## ❌ Errored Configs",
+            f"**{len(errored_configs)} config(s)** failed due to DDG search errors",
+            "",
+            "| # | Config | Failures | Attempted | Rate | Reason |",
+            "|---|--------|----------|-----------|------|--------|",
+        ]
+        for i, ec in enumerate(errored_configs, 1):
+            lines.append(
+                f"| {i} | {ec.config_key} | {ec.failure_count} "
+                f"| {ec.queries_attempted} "
+                f"| {ec.failure_threshold_percentage:.0%} | {ec.reason} |"
+            )
+        lines.append("")
+        return lines

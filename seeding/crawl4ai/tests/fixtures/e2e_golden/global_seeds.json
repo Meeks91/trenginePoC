@@ -3,15 +3,16 @@
     "name": "Joe Wicks",
     "ig_handle": "thebodycoach",
     "tk_handle": "",
-    "yt_handle": "thebodycoachtv",
+    "yt_handle": "TheBodyCoachTV",
     "categories": [
       "FITNESS"
     ],
     "source_urls": [
-      "http://127.0.0.1:55290/gymfluencers_uk_fitness.html"
+      "http://127.0.0.1:52587/gymfluencers_uk_fitness.html"
     ],
     "extraction_methods": [
-      "llm"
+      "llm",
+      "regex"
     ],
     "citation_count": 1
   },
@@ -24,7 +25,7 @@
       "FITNESS"
     ],
     "source_urls": [
-      "http://127.0.0.1:55290/gymfluencers_uk_fitness.html"
+      "http://127.0.0.1:52587/gymfluencers_uk_fitness.html"
     ],
     "extraction_methods": [
       "llm",
@@ -41,7 +42,7 @@
       "FITNESS"
     ],
     "source_urls": [
-      "http://127.0.0.1:55290/gymfluencers_uk_fitness.html"
+      "http://127.0.0.1:52587/gymfluencers_uk_fitness.html"
     ],
     "extraction_methods": [
       "llm",
@@ -58,7 +59,7 @@
       "FITNESS"
     ],
     "source_urls": [
-      "http://127.0.0.1:55290/gymfluencers_uk_fitness.html"
+      "http://127.0.0.1:52587/gymfluencers_uk_fitness.html"
     ],
     "extraction_methods": [
       "llm",
@@ -75,7 +76,7 @@
       "FITNESS"
     ],
     "source_urls": [
-      "http://127.0.0.1:55290/gymfluencers_uk_fitness.html"
+      "http://127.0.0.1:52587/gymfluencers_uk_fitness.html"
     ],
     "extraction_methods": [
       "llm",
@@ -92,7 +93,7 @@
       "FITNESS"
     ],
     "source_urls": [
-      "http://127.0.0.1:55290/gymfluencers_uk_fitness.html"
+      "http://127.0.0.1:52587/gymfluencers_uk_fitness.html"
     ],
     "extraction_methods": [
       "llm",
@@ -109,7 +110,7 @@
       "FITNESS"
     ],
     "source_urls": [
-      "http://127.0.0.1:55290/gymfluencers_uk_fitness.html"
+      "http://127.0.0.1:52587/gymfluencers_uk_fitness.html"
     ],
     "extraction_methods": [
       "llm",
@@ -126,106 +127,10 @@
       "FITNESS"
     ],
     "source_urls": [
-      "http://127.0.0.1:55290/gymfluencers_uk_fitness.html"
+      "http://127.0.0.1:52587/gymfluencers_uk_fitness.html"
     ],
     "extraction_methods": [
       "llm",
-      "regex"
-    ],
-    "citation_count": 1
-  },
-  {
-    "name": "The",
-    "ig_handle": "",
-    "tk_handle": "",
-    "yt_handle": "the",
-    "categories": [
-      "FITNESS"
-    ],
-    "source_urls": [
-      "http://127.0.0.1:55290/gymfluencers_uk_fitness.html"
-    ],
-    "extraction_methods": [
-      "regex"
-    ],
-    "citation_count": 1
-  },
-  {
-    "name": "Lucy",
-    "ig_handle": "",
-    "tk_handle": "",
-    "yt_handle": "lucy",
-    "categories": [
-      "FITNESS"
-    ],
-    "source_urls": [
-      "http://127.0.0.1:55290/gymfluencers_uk_fitness.html"
-    ],
-    "extraction_methods": [
-      "regex"
-    ],
-    "citation_count": 1
-  },
-  {
-    "name": "Courtney",
-    "ig_handle": "",
-    "tk_handle": "courtney",
-    "yt_handle": "",
-    "categories": [
-      "FITNESS"
-    ],
-    "source_urls": [
-      "http://127.0.0.1:55290/gymfluencers_uk_fitness.html"
-    ],
-    "extraction_methods": [
-      "regex"
-    ],
-    "citation_count": 1
-  },
-  {
-    "name": "Michael",
-    "ig_handle": "",
-    "tk_handle": "",
-    "yt_handle": "michael",
-    "categories": [
-      "FITNESS"
-    ],
-    "source_urls": [
-      "http://127.0.0.1:55290/gymfluencers_uk_fitness.html"
-    ],
-    "extraction_methods": [
-      "regex"
-    ],
-    "citation_count": 1
-  },
-  {
-    "name": "adammaxted",
-    "ig_handle": "",
-    "tk_handle": "",
-    "yt_handle": "adammaxted",
-    "categories": [
-      "FITNESS"
-    ],
-    "source_urls": [
-      "http://127.0.0.1:55290/gymfluencers_uk_fitness.html"
-    ],
-    "extraction_methods": [
-      "regex"
-    ],
-    "citation_count": 1
-  },
-  {
-    "name": "Sean",
-    "ig_handle": "",
-    "tk_handle": "",
-    "yt_handle": "sean",
-    "categories": [
-      "FITNESS"
-    ],
-    "source_urls": [
-      "http://127.0.0.1:55290/gymfluencers_uk_fitness.html"
-    ],
-    "extraction_methods": [
       "regex"
     ],
     "citation_count": 1
@@ -246,7 +151,7 @@
     "name": "LucyDavisFit",
     "ig_handle": "",
     "tk_handle": "",
-    "yt_handle": "lucydavisfit",
+    "yt_handle": "LucyDavisFit",
     "categories": [
       "FITNESS"
     ],

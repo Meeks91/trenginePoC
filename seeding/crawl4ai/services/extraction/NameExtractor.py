@@ -136,6 +136,43 @@ _NAME_BLOCKLIST = frozenset({
 
 
 # ══════════════════════════════════════════════════════════════════════
+# Internal
+# ══════════════════════════════════════════════════════════════════════
+
+def _clean_and_filter(name: str) -> str | None:
+    """Clean a raw regex match and apply all blocklist/heuristic filters.
+
+    Returns the cleaned name if it passes all filters, or None.
+    """
+    name = name.strip()
+    if name.endswith("\u2019s") or name.endswith("'s"):
+        name = name[:-2].rstrip()
+    cleaned = NameCleaner.clean_name(name)
+    if not cleaned or len(cleaned) < 4:
+        return None
+    key = cleaned.lower()
+    first_word = key.split()[0] if key.split() else ""
+    if key in _NAME_BLOCKLIST:
+        return None
+    words = set(key.split())
+    if words & _WORD_BLOCKLIST:
+        return None
+    if first_word in _SENTENCE_STARTERS:
+        return None
+    if any(w.isupper() and len(w) > 1 for w in cleaned.split()):
+        return None
+    if cleaned[-1] in ".:!?,;":
+        return None
+    return cleaned
+
+
+def _prepare_text(text: str) -> list[str]:
+    """Normalize text and extract raw regex matches."""
+    text = text.replace("\n", " ").replace("\r", " ")
+    return _NAME_RE.findall(text)
+
+
+# ══════════════════════════════════════════════════════════════════════
 # Public API
 # ══════════════════════════════════════════════════════════════════════
 
@@ -152,42 +189,18 @@ def extract_candidate_names(text: str, max_names: int = MAX_NAMES_PER_PAGE) -> l
     if not text:
         return []
 
-    # Normalize newlines to spaces — prevents cross-line matches
-    # like "Parkrun\nLearn More" or "Commenter\nAlex Leonidas"
-    text = text.replace("\n", " ").replace("\r", " ")
-
-    matches = _NAME_RE.findall(text)
-
-    # Deduplicate case-insensitively, preserving first occurrence
+    matches = _prepare_text(text)
     seen: set[str] = set()
     unique: list[str] = []
     for name in matches:
-        name = name.strip()
-        if name.endswith("\u2019s") or name.endswith("'s"):
-            name = name[:-2].rstrip()
-        cleaned = NameCleaner.clean_name(name)
-        if not cleaned:
+        cleaned = _clean_and_filter(name)
+        if cleaned is None:
             continue
-        name = cleaned
-        key = name.lower()
-        first_word = key.split()[0] if key.split() else ""
+        key = cleaned.lower()
         if key in seen:
             continue
-        if key in _NAME_BLOCKLIST:
-            continue
-        words = set(key.split())
-        if words & _WORD_BLOCKLIST:
-            continue
-        if first_word in _SENTENCE_STARTERS:
-            continue
-        if len(name) < 4:
-            continue
-        if any(w.isupper() and len(w) > 1 for w in name.split()):
-            continue
-        if name[-1] in ".:!?,;":
-            continue
         seen.add(key)
-        unique.append(name)
+        unique.append(cleaned)
 
     return unique[:max_names]
 
@@ -209,37 +222,14 @@ def extract_candidate_names_with_counts(
     if not text:
         return {}
 
-    text = text.replace("\n", " ").replace("\r", " ")
-    matches = _NAME_RE.findall(text)
-
-    # Count all occurrences (before dedup), respecting blocklist
+    matches = _prepare_text(text)
     raw_counts: dict[str, int] = {}
     for name in matches:
-        name = name.strip()
-        if name.endswith("\u2019s") or name.endswith("'s"):
-            name = name[:-2].rstrip()
-        cleaned = NameCleaner.clean_name(name)
-        if not cleaned:
+        cleaned = _clean_and_filter(name)
+        if cleaned is None:
             continue
-        name = cleaned
-        if not name or len(name) < 4:
-            continue
-        key = name.lower()
-        first_word = key.split()[0] if key.split() else ""
-        if key in _NAME_BLOCKLIST:
-            continue
-        words = set(key.split())
-        if words & _WORD_BLOCKLIST:
-            continue
-        if first_word in _SENTENCE_STARTERS:
-            continue
-        if any(w.isupper() and len(w) > 1 for w in name.split()):
-            continue
-        if name[-1] in ".:!?,;":
-            continue
-        raw_counts[name] = raw_counts.get(name, 0) + 1
+        raw_counts[cleaned] = raw_counts.get(cleaned, 0) + 1
 
-    # Sort by count desc, cap
     sorted_items = sorted(raw_counts.items(), key=lambda x: x[1], reverse=True)
     return dict(sorted_items[:max_names])
 
@@ -250,4 +240,5 @@ def is_reddit_page(url: str) -> bool:
         return "reddit.com" in urlparse(url).netloc.lower()
     except Exception:
         return False
+
 

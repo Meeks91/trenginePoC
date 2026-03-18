@@ -59,9 +59,6 @@ async def resolve_youtube_channels(
     Sends GET requests to youtube.com/channel/UC... and extracts
     the @handle from redirects or page content.
 
-    # TODO: Consider YouTube Data API v3 fallback (free tier, 10k units/day)
-    #       for improved reliability over HTML scraping.
-
     Args:
         channel_ids: List of channel IDs (e.g. "UC4qk9TtGhBKCkoWz5qGJcGg").
         concurrency: Max concurrent requests.
