@@ -38,7 +38,7 @@ class PipelineReporter:
         target_platform: str = "Instagram",
         job_results: list[JobBreakdown] | None = None,
         influencers: list[Influencer] | None = None,
-        global_seeds: list[Influencer] | None = None,
+        seeds: list[Influencer] | None = None,
         name_mentions: list[NameMentionRecord] | None = None,
         warnings: list[str] | None = None,
         errored_configs: list[ErroredConfig] | None = None,
@@ -53,7 +53,7 @@ class PipelineReporter:
         lines.extend(self._warnings_section(warnings))
         lines.extend(self._job_breakdown_section(job_results))
         lines.extend(self._influencer_roster_section(influencers))
-        lines.extend(self._global_seeds_section(global_seeds))
+        lines.extend(self._seeds_section(seeds))
         lines.extend(self._canary_section(validation_results))
         lines.extend(self._name_mentions_section(name_mentions))
         lines.extend(self._token_usage_section(stats, model, mode))
@@ -163,17 +163,17 @@ class PipelineReporter:
         return lines
 
     @staticmethod
-    def _global_seeds_section(global_seeds: list[Influencer] | None) -> list[str]:
-        if not global_seeds:
+    def _seeds_section(seeds: list[Influencer] | None) -> list[str]:
+        if not seeds:
             return []
         lines = [
             "## Global Seed DB (Deduped)",
-            f"**{len(global_seeds)} unique seeds** across all configs",
+            f"**{len(seeds)} unique seeds** across all configs",
             "",
             "| # | IG Handle | TK Handle | YT Handle | Categories |",
             "|---|-----------|-----------|-----------|------------|",
         ]
-        for i, seed in enumerate(sorted(global_seeds, key=lambda s: s.name.lower()), 1):
+        for i, seed in enumerate(sorted(seeds, key=lambda s: s.name.lower()), 1):
             ig = seed.ig_handle or "—"
             tk = seed.tk_handle or "—"
             yt = seed.yt_handle or "—"

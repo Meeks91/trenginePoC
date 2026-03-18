@@ -187,7 +187,7 @@ class BasePipelineRunner(abc.ABC):
             validation_results=self.validation_results,
             model=LLM_PROVIDER,
             mode=self._report_mode(),
-            global_seeds=seeds,
+            seeds=seeds,
             name_mentions=name_records,
             warnings=yield_warnings,
             errored_configs=errored_configs,

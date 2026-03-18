@@ -271,12 +271,12 @@ async def test_e2e_from_html():
                 )
                 run_dir = run_dirs[0]
 
-                # 1. seeds.json (was global_seeds.json)
+                # 1. seeds.json
                 actual_seeds = _sort_records(_normalize_urls(json.loads(
                     (run_dir / "seeds.json").read_text()
                 )))
                 expected_seeds = _sort_records(_normalize_urls(
-                    _load_golden("global_seeds.json")
+                    _load_golden("seeds.json")
                 ))
                 assert actual_seeds == expected_seeds, (
                     f"seeds.json mismatch:\n"

@@ -182,12 +182,12 @@ async def main():
                 assert len(run_dirs) == 1, f"Expected 1 run dir, got {len(run_dirs)}"
                 run_dir = run_dirs[0]
 
-                # global_seeds.json (from seeds.json)
+                # seeds.json
                 seeds_data = json.loads((run_dir / "seeds.json").read_text())
-                (GOLDEN_DIR / "global_seeds.json").write_text(
+                (GOLDEN_DIR / "seeds.json").write_text(
                     json.dumps(seeds_data, indent=2, ensure_ascii=False)
                 )
-                print(f"  Saved global_seeds.json ({len(seeds_data)} records)")
+                print(f"  Saved seeds.json ({len(seeds_data)} records)")
 
                 # unresolved_names.json
                 unresolved_data = json.loads((run_dir / "unresolved_names.json").read_text())
