@@ -1,0 +1,1581 @@
+[
+  {
+    "sub": "Fitness",
+    "category": "FITNESS",
+    "positive": [
+      "sharing my fitness journey and daily workout motivation",
+      "get fit tips and tricks for anyone starting at the gym",
+      "workout of the day full body burn no equipment needed",
+      "fitness lifestyle vlogs showing my routine meals and progress",
+      "simple exercises you can do at home to stay active and healthy",
+      "mixed training combining cardio weights and flexibility work",
+      "no fixed routine just consistent movement and healthy habits"
+    ],
+    "negative": [
+      "breaking down peer-reviewed studies on optimal training volume and rep ranges",
+      "chasing a 600 pound deadlift total at my next powerlifting meet",
+      "handstand progressions and front lever tutorials for calisthenics athletes",
+      "guided yoga flows for hip opening and shoulder mobility",
+      "glute focused lower body workout plan designed for women",
+      "marathon training running plans and endurance cardio programming",
+      "CrossFit WODs functional training and AMRAPs combining lifts and cardio"
+    ]
+  },
+  {
+    "sub": "Calisthenics",
+    "category": "FITNESS",
+    "positive": [
+      "teaching you to move your bodyweight with strength and control",
+      "from zero pullups to muscle up in 90 days",
+      "no gym no excuses just bars and discipline",
+      "handstands front levers planche progressions for every level",
+      "street workout culture and calisthenics lifestyle",
+      "calisthenics park workouts and outdoor training in every weather",
+      "building impressive skills like the human flag and back lever"
+    ],
+    "negative": [
+      "heavy barbell squats and deadlifts for powerlifting competition prep",
+      "analyzing the latest hypertrophy research from peer-reviewed journals",
+      "guided vinyasa yoga flow for flexibility and stress relief",
+      "general gym workout tips and fitness motivation for beginners",
+      "glute focused training and female fitness transformation content",
+      "marathon training running plans and endurance cardio programming",
+      "CrossFit WODs functional training and AMRAPs combining lifts and cardio"
+    ]
+  },
+  {
+    "sub": "Science-Based Training",
+    "category": "FITNESS",
+    "positive": [
+      "breaking down the latest hypertrophy research so you train smarter",
+      "what the science actually says about optimal rep ranges and volume",
+      "evidence-based training principles backed by peer-reviewed studies",
+      "analyzing research papers on muscle growth and recovery protocols",
+      "debunking fitness myths with actual scientific literature",
+      "reviewing new meta analyses and translating them into practical programming",
+      "comparing bro science versus actual research with honest conclusions"
+    ],
+    "negative": [
+      "sharing my fitness journey and daily gym motivation vlogs",
+      "muscle up tutorials and calisthenics skill progression guides",
+      "powerlifting meet day content and one rep max attempts",
+      "pilates and yoga routines for core strength and flexibility",
+      "women who lift empowerment and female fitness transformations",
+      "marathon training running plans and endurance cardio programming",
+      "CrossFit WODs functional training and AMRAPs combining lifts and cardio"
+    ]
+  },
+  {
+    "sub": "Powerlifting / Strength",
+    "category": "FITNESS",
+    "positive": [
+      "chasing a bigger squat bench and deadlift total every meet",
+      "powerlifting programming and peaking strategies for competition day",
+      "heavy barbell training and strength building for raw lifters",
+      "strongman events atlas stones log press and carry medleys",
+      "one rep max attempts and powerlifting meet day content",
+      "training logs tracking progressive overload and program reviews",
+      "equipped versus raw lifting and the culture around both formats"
+    ],
+    "negative": [
+      "bodyweight calisthenics progressions and street workout culture",
+      "evidence-based training analysis breaking down research papers",
+      "gentle yoga flows and deep stretching for recovery and mobility",
+      "general fitness tips and workout of the day for beginners",
+      "women's fitness transformations and glute focused training plans",
+      "marathon training running plans and endurance cardio programming",
+      "CrossFit WODs functional training and AMRAPs combining lifts and cardio"
+    ]
+  },
+  {
+    "sub": "Women's Fitness",
+    "category": "FITNESS",
+    "positive": [
+      "empowering women to build strength and confidence in the gym",
+      "glute focused workouts and lower body training for women",
+      "female fitness transformation journeys and body recomposition",
+      "women who lift breaking stereotypes about women and weights",
+      "workout plans designed for women balancing fitness and lifestyle",
+      "prenatal and postpartum fitness routines for active mothers",
+      "addressing misconceptions about women and heavy weight training"
+    ],
+    "negative": [
+      "powerlifting meet recaps and heavy barbell one rep max attempts",
+      "calisthenics muscle up tutorials and front lever progressions",
+      "peer-reviewed research analysis on optimal training volume",
+      "general fitness journey vlogs and workout of the day content",
+      "yoga and pilates flows for flexibility and mindful movement",
+      "marathon training running plans and endurance cardio programming",
+      "CrossFit WODs functional training and AMRAPs combining lifts and cardio"
+    ]
+  },
+  {
+    "sub": "Yoga / Mobility",
+    "category": "FITNESS",
+    "positive": [
+      "guided yoga flows for flexibility strength and inner calm",
+      "daily mobility routines to fix tight hips and stiff shoulders",
+      "pilates and mindful movement for core stability and posture",
+      "deep stretching sessions for recovery and injury prevention",
+      "breathwork and yoga practice for mind body connection",
+      "yoga for athletes and active recovery between training sessions",
+      "joint mobility drills and movement prep for everyday aches and stiffness"
+    ],
+    "negative": [
+      "heavy barbell squats deadlifts and bench press for strength",
+      "calisthenics planche muscle up and handstand skill training",
+      "evidence-based hypertrophy research and training volume studies",
+      "general gym fitness motivation and workout of the day content",
+      "glute focused lower body training designed for women lifters",
+      "marathon training running plans and endurance cardio programming",
+      "CrossFit WODs functional training and AMRAPs combining lifts and cardio"
+    ]
+  },
+  {
+    "sub": "Running / Cardio",
+    "category": "FITNESS",
+    "positive": [
+      "marathon half marathon and race training plans for every distance",
+      "running tips for beginners going from couch to 5K and beyond",
+      "trail running and exploring new routes through nature and cities",
+      "tracking miles splits and progress with Strava and GPS watches",
+      "endurance sports covering running cycling and triathlon training",
+      "ultra marathon training and pushing the limits of endurance running",
+      "running form drills cadence work and techniques to get faster safely"
+    ],
+    "negative": [
+      "bodyweight calisthenics progressions and street workout culture",
+      "heavy barbell training and powerlifting competition prep",
+      "evidence-based hypertrophy research and training volume studies",
+      "sharing my general fitness journey and daily gym motivation vlogs",
+      "guided yoga flows and deep stretching for recovery and mobility"
+    ]
+  },
+  {
+    "sub": "CrossFit / Functional Training",
+    "category": "FITNESS",
+    "positive": [
+      "CrossFit workouts WODs and box culture for everyday athletes",
+      "functional training combining Olympic lifts gymnastics and cardio",
+      "AMRAP EMOM and time cap workouts that test your fitness across domains",
+      "CrossFit competition content and scaling workouts to your level",
+      "building a home gym for functional training and garage WODs",
+      "CrossFit athlete vlogs showing training nutrition and recovery",
+      "functional fitness training for people who want athleticism not just aesthetics"
+    ],
+    "negative": [
+      "bodyweight only calisthenics progressions and street workout skills",
+      "pure powerlifting programming and peaking for one rep max attempts",
+      "evidence-based hypertrophy research and optimal rep range studies",
+      "general fitness journey content and workout of the day for beginners",
+      "marathon training running plans and endurance cardio programming"
+    ]
+  },
+  {
+    "sub": "Food & Cooking",
+    "category": "FOOD_AND_COOKING",
+    "positive": [
+      "sharing my favorite recipes and kitchen experiments with you",
+      "cooking tutorials from scratch for everyday home cooks",
+      "meal ideas and kitchen tips for anyone who loves to cook",
+      "cooking vlogs showing the full process from prep to plate",
+      "food content and eating adventures for people who love to eat",
+      "sharing the meals I make whether they turn out perfect or not",
+      "recipe development and food content for all skill levels"
+    ],
+    "negative": [
+      "fifteen minute meal prep recipes for busy weeknight dinners",
+      "high protein macro friendly recipes for gym and fitness goals",
+      "honest reviews of local restaurants and hidden gem eateries",
+      "street food tours exploring vendors and markets around the world",
+      "clean eating plant based recipes for weight loss and gut health",
+      "baking tutorials sourdough bread and pastry dessert recipes"
+    ]
+  },
+  {
+    "sub": "Quick Recipes",
+    "category": "FOOD_AND_COOKING",
+    "positive": [
+      "fifteen minute meals that are fast cheap and actually delicious",
+      "meal prep sunday batch cooking for the entire week ahead",
+      "easy weeknight dinner ideas for busy parents and students",
+      "one pot one pan recipes that minimize cleanup time",
+      "5 ingredient recipes that anyone can make tonight",
+      "cooking hacks and shortcuts that actually work",
+      "lazy dinner ideas for nights when you have zero motivation to cook"
+    ],
+    "negative": [
+      "from scratch pasta making and long slow braise cooking tutorials",
+      "high protein macro counted meals for bodybuilders and lifters",
+      "reviewing the best new restaurants and fine dining experiences",
+      "street food vendor tours across Southeast Asia and Latin America",
+      "raw vegan detox recipes and elimination diet guides",
+      "baking tutorials sourdough bread and pastry dessert recipes"
+    ]
+  },
+  {
+    "sub": "Protein / Macros",
+    "category": "FOOD_AND_COOKING",
+    "positive": [
+      "high protein recipes that actually taste good and hit your macros",
+      "meal prep for lifters and athletes tracking protein carbs and fats",
+      "macro friendly meals designed for muscle building and body recomp",
+      "simple high protein meals for people trying to eat better",
+      "protein first meals that don't taste like diet food",
+      "fitness meal prep showing exact macros and calorie breakdowns",
+      "anabolic kitchen recipes that hit high protein without bland chicken and rice"
+    ],
+    "negative": [
+      "cooking tutorials and recipe development for home cooks of all levels",
+      "fifteen minute easy dinners for busy families on a budget",
+      "honest restaurant reviews and local foodie recommendations",
+      "street food adventures and market tours around the world",
+      "plant based clean eating and anti inflammatory diet recipes",
+      "baking tutorials sourdough bread and pastry dessert recipes"
+    ]
+  },
+  {
+    "sub": "Healthy / Diet",
+    "category": "FOOD_AND_COOKING",
+    "positive": [
+      "clean eating recipes focused on whole foods and balanced nutrition",
+      "plant based meals that are simple nutritious and satisfying",
+      "anti inflammatory recipes and gut health focused cooking",
+      "healthy meal ideas for weight loss without feeling deprived",
+      "vegan and plant based recipes for ethical and health reasons",
+      "gluten free and allergy friendly cooking for sensitive diets",
+      "mediterranean diet recipes and longevity focused nutrition"
+    ],
+    "negative": [
+      "from scratch cooking tutorials and general kitchen tips for beginners",
+      "quick easy meals you can prep in under twenty minutes",
+      "high protein macro tracked recipes for gym performance and gains",
+      "restaurant review content rating menus and dining experiences",
+      "street food tours trying deep fried and indulgent local specialties",
+      "baking tutorials sourdough bread and pastry dessert recipes"
+    ]
+  },
+  {
+    "sub": "Restaurant Reviews",
+    "category": "FOOD_AND_COOKING",
+    "positive": [
+      "honest reviews of restaurants cafes and hidden gem eateries",
+      "local foodie exploring the best spots to eat in my city",
+      "rating menus tasting dishes and giving you the real verdict",
+      "fine dining experiences and casual eats reviewed and ranked",
+      "restaurant guides helping you decide where to eat next",
+      "sit down dining experiences rated on food service and atmosphere",
+      "brutally honest restaurant verdicts including the ones I would not go back to"
+    ],
+    "negative": [
+      "home cooking recipes and kitchen tutorials for everyday meals",
+      "quick batch meal prep for busy weeknights and lunch boxes",
+      "macro friendly high protein recipes for fitness and muscle goals",
+      "healthy plant based cooking and clean eating recipe content",
+      "street food vendor tours and outdoor market food adventures",
+      "travel city guides that happen to mention where to eat alongside other activities",
+      "baking tutorials sourdough bread and pastry dessert recipes"
+    ]
+  },
+  {
+    "sub": "Street Food",
+    "category": "FOOD_AND_COOKING",
+    "positive": [
+      "street food tours exploring vendors carts and outdoor markets",
+      "tasting the best local street food across different countries",
+      "outdoor food markets and night market food adventures",
+      "street food culture showing the people and stories behind each dish",
+      "exploring the street food scene in my own city",
+      "local market vendors and popup food stalls worth knowing",
+      "affordable eats from food trucks carts and popup stalls in my city"
+    ],
+    "negative": [
+      "home cooking tutorials and recipe development for everyday cooks",
+      "fast easy meal prep ideas for busy schedules and tight budgets",
+      "high protein macro counted meals for bodybuilders and athletes",
+      "clean eating plant based recipes for health and weight management",
+      "sit down restaurant reviews and fine dining experiences",
+      "food taste test challenges and reaction style eating content",
+      "baking tutorials sourdough bread and pastry dessert recipes"
+    ]
+  },
+  {
+    "sub": "Baking / Pastry / Desserts",
+    "category": "FOOD_AND_COOKING",
+    "positive": [
+      "baking tutorials and recipes for breads cakes cookies and pastries",
+      "sourdough starters artisan bread and the science of fermentation baking",
+      "decorating cakes and creating stunning desserts for special occasions",
+      "pastry techniques from lamination to tempering chocolate like a pro",
+      "cozy baking content and the joy of making something from flour and butter",
+      "testing viral baking trends and dessert recipes from the internet",
+      "holiday baking seasonal treats and celebration desserts for every occasion"
+    ],
+    "negative": [
+      "savoury cooking tutorials and everyday dinner recipes from scratch",
+      "quick weeknight meals and fast meal prep for busy schedules",
+      "high protein macro counted meals for fitness and muscle goals",
+      "restaurant review content rating menus and dining experiences",
+      "street food vendor tours and outdoor market food adventures"
+    ]
+  },
+  {
+    "sub": "AI",
+    "category": "AI",
+    "positive": [
+      "making artificial intelligence accessible and understandable for everyone",
+      "exploring how AI is changing the world and what it means for you",
+      "AI content covering tools trends and the future of technology",
+      "breaking down AI concepts so anyone can follow along",
+      "covering everything happening in the AI space from models to ethics",
+      "reacting to the latest AI demos and what they mean for the future",
+      "AI is moving fast and I'm here to keep up with it alongside you"
+    ],
+    "negative": [
+      "hands on reviews comparing the latest AI tools and software products",
+      "breaking AI news analysis and weekly industry commentary",
+      "creating AI generated art with Midjourney and Stable Diffusion tutorials",
+      "building AI powered apps and coding with machine learning frameworks",
+      "no code AI automation workflows using Zapier Make and agents"
+    ]
+  },
+  {
+    "sub": "AI Tools & Reviews",
+    "category": "AI",
+    "positive": [
+      "reviewing and comparing the latest AI tools and software products",
+      "testing new AI apps so you know which ones are actually worth using",
+      "honest verdicts on AI productivity tools and their real world value",
+      "AI tools for writing video editing design and productivity",
+      "the best AI tools for small business owners and solopreneurs",
+      "trying every new AI tool so you don't have to",
+      "comparing free versus paid tiers of AI tools to find the best value"
+    ],
+    "negative": [
+      "exploring how AI is changing the world at a big picture level",
+      "AI industry news roundups and weekly commentary on developments",
+      "creating AI generated art and learning Midjourney prompt engineering",
+      "writing Python code and building machine learning models from scratch",
+      "automating business workflows with AI agents and no code platforms",
+      "general software reviews and SaaS platform comparisons for business productivity"
+    ]
+  },
+  {
+    "sub": "AI News & Commentary",
+    "category": "AI",
+    "positive": [
+      "breaking AI news analysis and what the latest developments mean",
+      "weekly AI industry roundups covering launches research and regulation",
+      "commentary on AI policy ethics and where the industry is heading",
+      "keeping you informed on the biggest stories in artificial intelligence",
+      "my honest take on where AI is going and who gets left behind",
+      "contrarian views on AI hype and what the industry gets wrong",
+      "tracking which AI labs are shipping real products versus just dropping papers"
+    ],
+    "negative": [
+      "general AI education content explaining concepts for beginners",
+      "hands on testing and reviewing the latest AI tools and products",
+      "AI art generation tutorials and creative workflow guides",
+      "coding tutorials for building AI applications and ML pipelines",
+      "setting up automated AI agent workflows for business tasks"
+    ]
+  },
+  {
+    "sub": "AI Creative Tools",
+    "category": "AI",
+    "positive": [
+      "creating stunning AI generated art with Midjourney and Stable Diffusion",
+      "AI video generation tutorials and creative editing workflows",
+      "prompt engineering tips for getting the best results from image models",
+      "generative AI for designers illustrators and creative professionals",
+      "AI video tools for content creators and YouTubers",
+      "using AI to speed up my video editing and content production",
+      "pushing the boundaries of what AI can do for visual storytelling"
+    ],
+    "negative": [
+      "broad AI trends and general education about artificial intelligence",
+      "reviewing and comparing AI productivity apps chatbots and business software",
+      "AI news coverage and weekly industry update commentary",
+      "writing code and building ML models with Python and frameworks",
+      "automating repetitive tasks with AI agents and workflow builders"
+    ]
+  },
+  {
+    "sub": "AI Coding / Dev Tools",
+    "category": "AI",
+    "positive": [
+      "building AI powered applications with Python and machine learning frameworks",
+      "coding tutorials for developers working with LLMs and foundation models",
+      "running local models and fine tuning open source AI on your own hardware",
+      "AI developer tools and IDE integrations that speed up your workflow",
+      "using Cursor Copilot and AI tools to code faster as a solo developer",
+      "vibe coding with AI and building apps without being a senior engineer",
+      "evaluating AI code assistants and how they change the development workflow"
+    ],
+    "negative": [
+      "making AI accessible for non technical audiences and beginners",
+      "reviewing consumer AI tools and comparing chatbot products",
+      "AI news roundups and commentary on industry trends and policy",
+      "creating AI art and generating visual content with prompt engineering",
+      "no code AI automation using Zapier Make and agent builders"
+    ]
+  },
+  {
+    "sub": "AI Automation / Agents",
+    "category": "AI",
+    "positive": [
+      "no code AI automation workflows using Zapier Make and n8n",
+      "building AI agents that handle repetitive business tasks for you",
+      "automating your workflow with AI powered tools and integrations",
+      "AI agent tutorials showing real world automation use cases",
+      "replacing hours of manual work with AI automations anyone can build",
+      "running a one person business with AI agents doing the heavy lifting",
+      "building custom GPTs and agent workflows that actually save time in practice"
+    ],
+    "negative": [
+      "general AI education and big picture content about the technology",
+      "reviewing standalone AI tools and comparing consumer chatbot products",
+      "AI news analysis commentary and weekly industry roundups",
+      "creating generative AI art and visual content with image models",
+      "writing code and building ML models with Python and data science tools"
+    ]
+  },
+  {
+    "sub": "Beauty",
+    "category": "BEAUTY",
+    "positive": [
+      "all things beauty from makeup to skincare to self care routines",
+      "beauty content for anyone who loves playing with products and looks",
+      "sharing my beauty routine and favorite products with you",
+      "beauty lifestyle content covering trends hauls and honest reviews",
+      "trying the latest beauty products and sharing what actually works",
+      "beauty as self expression and confidence not just products",
+      "celebrating beauty in all its forms across cultures and skin tones"
+    ],
+    "negative": [
+      "step by step makeup tutorials and full glam transformation looks",
+      "skincare routines and product recommendations for your skin type",
+      "haircare tips and styling tutorials for every hair texture",
+      "drugstore dupes and affordable beauty finds under twenty dollars",
+      "men's grooming skincare and style tips for the modern guy",
+      "nail art tutorials gel manicures and nail care routines"
+    ]
+  },
+  {
+    "sub": "Makeup Tutorials",
+    "category": "BEAUTY",
+    "positive": [
+      "step by step makeup tutorials from everyday looks to full glam",
+      "teaching you how to blend contour and create any look you want",
+      "makeup artist sharing techniques and tips for flawless application",
+      "transformation makeup showing the power of color and technique",
+      "get ready with me GRWM makeup for everyday and special occasions",
+      "60 second makeup transformations and quick glam tutorials",
+      "creative and editorial makeup looks pushing artistic boundaries"
+    ],
+    "negative": [
+      "general beauty content covering trends hauls and product reviews",
+      "skincare routines and ingredient breakdowns for healthy skin",
+      "hair styling tutorials and haircare product recommendations",
+      "affordable beauty finds and drugstore product alternatives",
+      "men's skincare grooming and facial hair styling content",
+      "nail art tutorials gel manicures and nail care routines"
+    ]
+  },
+  {
+    "sub": "Skincare Routines",
+    "category": "BEAUTY",
+    "positive": [
+      "skincare routines and product recommendations for every skin type",
+      "breaking down ingredients so you know what actually works on your skin",
+      "morning and evening skincare routines that get real results",
+      "treating acne hyperpigmentation and sensitive skin with the right products",
+      "understanding retinol niacinamide hyaluronic acid and what they do",
+      "skincare science explained so you can build a routine that actually works",
+      "dermatologist approved tips and evidence based skincare advice"
+    ],
+    "negative": [
+      "beauty content covering makeup trends hauls and lifestyle",
+      "full glam makeup tutorials and step by step application guides",
+      "hair treatments masks and styling tutorials for all textures",
+      "budget beauty hauls and drugstore dupe recommendations",
+      "men's grooming beard care and cologne recommendations",
+      "nail art tutorials gel manicures and nail care routines"
+    ]
+  },
+  {
+    "sub": "Haircare",
+    "category": "BEAUTY",
+    "positive": [
+      "haircare tips and product recommendations for every hair texture",
+      "curly hair routines wash day tutorials and styling for natural hair",
+      "hair treatments masks and repair routines for damaged hair",
+      "hairstyle tutorials from everyday looks to special occasion styles",
+      "color treated hair care and maintaining healthy bleached or dyed hair",
+      "protective styles braids twists and natural hair growth tips",
+      "4c hair routines and products that work for kinky coily textures"
+    ],
+    "negative": [
+      "general beauty trends hauls and product reviews across categories",
+      "makeup application tutorials and cosmetics technique guides",
+      "skincare routines ingredient breakdowns and acne treatment content",
+      "affordable beauty finds and drugstore makeup alternatives",
+      "men's grooming skincare and beard maintenance content",
+      "nail art tutorials gel manicures and nail care routines"
+    ]
+  },
+  {
+    "sub": "Budget / Dupes",
+    "category": "BEAUTY",
+    "positive": [
+      "drugstore makeup and skincare finds that rival high end products",
+      "affordable beauty hauls showing the best products under twenty dollars",
+      "dupe alerts finding cheap alternatives to luxury beauty products",
+      "budget beauty tips so you can look amazing without breaking the bank",
+      "testing viral affordable products to see if they actually deliver",
+      "high low beauty comparisons showing where to save and where to splurge",
+      "side by side swatch comparisons proving the dupe performs like the original"
+    ],
+    "negative": [
+      "general beauty content and luxury product unboxings and hauls",
+      "professional makeup techniques and artistry transformation tutorials",
+      "clinical skincare routines with prescription and medical grade products",
+      "salon quality haircare treatments and professional styling guides",
+      "men's grooming and premium skincare recommendations for guys",
+      "nail art tutorials gel manicures and nail care routines"
+    ]
+  },
+  {
+    "sub": "Men's Grooming",
+    "category": "BEAUTY",
+    "positive": [
+      "men's skincare routines and product recommendations for guys",
+      "beard care grooming tips and facial hair styling tutorials",
+      "men's grooming essentials from haircare to cologne to style",
+      "helping men build a simple effective grooming routine they'll stick to",
+      "barber content and men's hairstyle guides for every face shape",
+      "men's skincare for different skin types from oily to sensitive",
+      "at home grooming routines that keep you looking sharp between barber visits"
+    ],
+    "negative": [
+      "general beauty lifestyle content and makeup product reviews",
+      "step by step makeup tutorials and full glam transformations",
+      "full coverage foundation and contouring tutorials for glam looks",
+      "feminine skincare focused on hormonal acne and period skin changes",
+      "drugstore dupes and affordable beauty product alternatives",
+      "nail art tutorials gel manicures and nail care routines"
+    ]
+  },
+  {
+    "sub": "Nail Art / Manicure",
+    "category": "BEAUTY",
+    "positive": [
+      "nail art tutorials and creative manicure designs for every skill level",
+      "gel nails acrylic nails and press on nail application and removal",
+      "satisfying nail transformation videos from bare nails to finished art",
+      "at home manicure routines and the tools you need for salon quality nails",
+      "nail health cuticle care and building strong natural nails without extensions",
+      "nail care tips for healthy strong nails and fixing common nail problems",
+      "intricate freehand nail designs and miniature art painted on nails"
+    ],
+    "negative": [
+      "full face makeup tutorials and cosmetics application techniques",
+      "skincare routines ingredient breakdowns and acne treatment content",
+      "haircare tips wash day routines and styling for all hair textures",
+      "drugstore beauty dupes and affordable makeup product alternatives",
+      "men's grooming skincare and beard maintenance content"
+    ]
+  },
+  {
+    "sub": "Tech",
+    "category": "TECH",
+    "positive": [
+      "covering the latest in consumer technology from gadgets to software",
+      "tech content for people who want to make smarter buying decisions",
+      "unboxing reviewing and comparing the tech products everyone is talking about",
+      "technology news and product launches explained in plain language",
+      "tech news and my honest opinions on where the industry is heading",
+      "geeking out over the latest tech releases whether I recommend them or not",
+      "general tech content covering everything from phones to PCs to apps"
+    ],
+    "negative": [
+      "in depth smartphone reviews camera tests and mobile comparison videos",
+      "custom PC builds laptop reviews and desktop hardware benchmarks",
+      "audiophile headphone reviews and hi fi audio equipment deep dives",
+      "SaaS software reviews and productivity app comparisons",
+      "smart home setups wearable tech reviews and home automation guides"
+    ]
+  },
+  {
+    "sub": "Smartphones",
+    "category": "TECH",
+    "positive": [
+      "in depth smartphone reviews covering camera performance and battery life",
+      "comparing the latest iPhones Samsung Galaxy and Pixel phones side by side",
+      "mobile tech coverage including new phone launches and feature breakdowns",
+      "camera comparison tests showing real world photo and video quality",
+      "smartphone tips tricks and hidden features you probably didn't know about",
+      "teardowns durability tests and repairability scores for new phones",
+      "drop tests scratch tests and real world durability content"
+    ],
+    "negative": [
+      "general tech reviews covering a wide range of gadgets and products",
+      "custom PC builds laptop benchmarks and desktop hardware reviews",
+      "headphone reviews speaker tests and audiophile gear comparisons",
+      "app reviews and productivity software recommendations",
+      "smart home device reviews and home automation setup guides"
+    ]
+  },
+  {
+    "sub": "Laptops & Desktop Reviews",
+    "category": "TECH",
+    "positive": [
+      "laptop reviews and buying guides for every budget and use case",
+      "custom PC builds and desktop hardware reviews for gamers and creators",
+      "benchmarking CPUs GPUs and components to find the best performance per dollar",
+      "comparing MacBooks Windows laptops and Chromebooks for different workflows",
+      "gaming PC builds optimized for frame rates and budget performance",
+      "best GPUs for gaming in 2025 and how to pick your next card",
+      "workstation and creator laptop reviews for video editing and development"
+    ],
+    "negative": [
+      "general tech product reviews and gadget coverage across categories",
+      "smartphone reviews camera tests and mobile phone comparisons",
+      "hi fi audio gear reviews and headphone buying guides",
+      "software reviews and SaaS productivity tool comparisons",
+      "smart home devices wearable tech and home automation content",
+      "gaming desk setups RGB lighting and peripheral collection showcases"
+    ]
+  },
+  {
+    "sub": "Audio / Headphones",
+    "category": "TECH",
+    "positive": [
+      "headphone reviews and comparisons for every price point and use case",
+      "audiophile gear reviews covering DACs amps and hi fi speakers",
+      "testing earbuds headphones and speakers with real music and detailed analysis",
+      "sound quality comparisons breaking down what you actually hear for the price",
+      "best earbuds under fifty dollars for commuting and working out",
+      "AirPods versus everything else for normal people who just want good sound",
+      "home audio setups and speaker recommendations for music lovers"
+    ],
+    "negative": [
+      "general tech reviews covering gadgets and consumer electronics broadly",
+      "smartphone camera tests and mobile phone comparison videos",
+      "laptop benchmarks custom PC builds and desktop hardware content",
+      "app reviews and productivity software recommendations for workflows",
+      "smart home automation and wearable fitness tracker reviews"
+    ]
+  },
+  {
+    "sub": "Apps / Software",
+    "category": "TECH",
+    "positive": [
+      "software reviews and app recommendations for productivity and workflows",
+      "SaaS tool comparisons helping you pick the right platform for your needs",
+      "productivity app reviews and workflow optimization tips",
+      "reviewing the best apps for project management note taking and communication",
+      "my entire Mac and Windows setup the apps extensions and tools I use daily",
+      "the software stack I use to run my business and create content",
+      "deep dives into Notion Obsidian and other knowledge management tools"
+    ],
+    "negative": [
+      "general tech gadget reviews and consumer electronics coverage",
+      "smartphone reviews and mobile hardware comparison content",
+      "laptop reviews custom PC builds and desktop benchmark analysis",
+      "headphone and speaker reviews for audiophiles and music listeners",
+      "AI powered tools and chatbot product comparisons"
+    ]
+  },
+  {
+    "sub": "Wearables / Smart Home",
+    "category": "TECH",
+    "positive": [
+      "smart home setups and home automation guides for every budget",
+      "wearable tech reviews covering smartwatches and fitness trackers",
+      "building a connected home with smart speakers lights and security cameras",
+      "Apple Watch Garmin and Fitbit comparisons for health and fitness tracking",
+      "home automation tutorials using HomeKit Alexa and Google Home",
+      "smart home tours showing real setups and the gear that makes them work",
+      "comparing smart home ecosystems and which one locks you in the least"
+    ],
+    "negative": [
+      "general tech product reviews and gadget coverage across categories",
+      "smartphone reviews camera tests and mobile phone comparisons",
+      "laptop reviews PC builds and desktop hardware benchmark content",
+      "headphone speaker and hi fi audio equipment deep dives",
+      "software reviews app recommendations and SaaS tool comparisons"
+    ]
+  },
+  {
+    "sub": "Business & Finance",
+    "category": "BUSINESS_AND_FINANCE",
+    "positive": [
+      "making money business and finance topics accessible and actionable",
+      "financial education and business insights for everyday people",
+      "covering money management investing and business building in one place",
+      "breaking down finance and business concepts without the jargon",
+      "building wealth and changing your relationship with money",
+      "financial freedom content for people who want to escape the rat race",
+      "general business and finance content from budgets to markets to careers"
+    ],
+    "negative": [
+      "budgeting tips and saving strategies for everyday money management",
+      "stock market analysis portfolio building and investment strategies",
+      "side hustle ideas and startup building for aspiring entrepreneurs",
+      "career advice productivity systems and interview prep content",
+      "financial news commentary and economic market analysis"
+    ]
+  },
+  {
+    "sub": "Personal Finance / Saving",
+    "category": "BUSINESS_AND_FINANCE",
+    "positive": [
+      "budgeting strategies and saving tips for real people with real bills",
+      "debt payoff journeys and strategies for becoming debt free",
+      "how to build an emergency fund and manage your money month to month",
+      "cash stuffing envelope budgeting and hands on money management systems",
+      "teaching financial literacy and money management from the basics up",
+      "FIRE movement financial independence and retiring early strategies",
+      "extreme frugality and intentional spending to reach financial freedom"
+    ],
+    "negative": [
+      "broad business and finance education covering multiple topics",
+      "stock picks portfolio strategies and investment analysis content",
+      "side hustle income ideas and building a business from scratch",
+      "career growth productivity hacks and job interview preparation",
+      "market news economic commentary and financial industry analysis",
+      "extreme couponing cashback apps and everyday money saving hacks"
+    ]
+  },
+  {
+    "sub": "Investing",
+    "category": "BUSINESS_AND_FINANCE",
+    "positive": [
+      "stock market investing strategies and portfolio building for growth",
+      "index fund investing and passive wealth building for long term goals",
+      "breaking down investment options from stocks to bonds to ETFs",
+      "real estate investing strategies from rental properties to REITs",
+      "Bitcoin Ethereum and crypto market analysis for serious investors",
+      "DeFi NFTs and the evolving landscape of digital assets",
+      "teaching beginners how to start investing with any amount of money"
+    ],
+    "negative": [
+      "general finance education covering budgets savings and money basics",
+      "budgeting cash stuffing and debt payoff strategies for everyday life",
+      "business building side hustles and entrepreneurship content",
+      "career advice and workplace productivity optimization",
+      "financial news headlines and economic policy commentary"
+    ]
+  },
+  {
+    "sub": "Side Hustles / Entrepreneurship",
+    "category": "BUSINESS_AND_FINANCE",
+    "positive": [
+      "side hustle ideas and income streams you can start with zero capital",
+      "building a business from scratch and sharing the real journey",
+      "entrepreneur lifestyle documenting wins failures and lessons learned",
+      "how to turn a side project into a full time income",
+      "making money as a content creator and building income from your audience",
+      "monetising social media and turning followers into revenue",
+      "making money online through ecommerce freelancing and digital products"
+    ],
+    "negative": [
+      "broad personal finance education and money management basics",
+      "saving strategies budgeting systems and debt elimination plans",
+      "stock market investing and passive portfolio building",
+      "resume writing interview prep and corporate career advancement",
+      "economic news analysis and financial market commentary"
+    ]
+  },
+  {
+    "sub": "Career / Productivity",
+    "category": "BUSINESS_AND_FINANCE",
+    "positive": [
+      "career advice and strategies for advancing in your professional life",
+      "interview tips resume building and landing the job you actually want",
+      "salary negotiation and knowing your worth in the job market",
+      "navigating office politics and getting promoted faster",
+      "remote work tips and building a career in the digital economy",
+      "professional development and skills that make you more valuable at work",
+      "corporate career strategies and how to stand out in competitive industries"
+    ],
+    "negative": [
+      "general finance and business content across multiple money topics",
+      "budgeting saving and personal money management strategies",
+      "investment strategies stock picks and portfolio management",
+      "building a business or side hustle outside of traditional employment",
+      "market news economic trends and financial industry commentary",
+      "personal life organisation morning routines and household management systems"
+    ]
+  },
+  {
+    "sub": "Financial News / Commentary",
+    "category": "BUSINESS_AND_FINANCE",
+    "positive": [
+      "financial market news and analysis of what's moving the economy",
+      "commentary on economic policy interest rates and market trends",
+      "breaking down financial headlines so you understand what they mean",
+      "my take on the stock market economy and where money is flowing",
+      "how global events geopolitics and policy decisions move financial markets",
+      "the economic forces most people ignore that shape your financial future",
+      "connecting the dots between macro data releases and what they mean for your wallet"
+    ],
+    "negative": [
+      "general finance education and introductory money management content",
+      "personal budgeting debt payoff and everyday saving strategies",
+      "beginner investing tutorials and how to start building a portfolio",
+      "side hustle income ideas and business startup journeys",
+      "career advice interview prep and workplace productivity tips"
+    ]
+  },
+  {
+    "sub": "Life Hackers",
+    "category": "LIFE_HACKERS",
+    "positive": [
+      "life hacks tips and tricks that make everyday tasks easier and faster",
+      "sharing clever solutions for common problems around the house and life",
+      "general life hack content from cleaning to organizing to saving time",
+      "practical tips that simplify your daily routine and save you money",
+      "testing viral life hacks to see if they actually work",
+      "mythbusting popular hacks and finding the ones worth keeping",
+      "the kind of useful content you immediately want to try at home"
+    ],
+    "negative": [
+      "extreme couponing cashback deals and everyday money saving hacks",
+      "CleanTok cleaning hacks and satisfying deep clean transformations",
+      "home organization pantry makeovers and decluttering systems",
+      "DIY home repair projects and handyman fix it tutorials",
+      "productivity systems time blocking and digital workflow optimization"
+    ]
+  },
+  {
+    "sub": "Money Saving / Budget Hacks",
+    "category": "LIFE_HACKERS",
+    "positive": [
+      "everyday money saving hacks tips and deals you can use right now",
+      "extreme couponing cashback apps and finding the best deals",
+      "frugal living tips that cut your spending without cutting your quality of life",
+      "grocery hauls on a budget and strategies for spending less on food",
+      "reducing your monthly outgoings without sacrificing the things you love",
+      "second hand shopping thrift stores and charity shops and buying preloved to save money",
+      "finding deals discounts and free stuff that most people miss"
+    ],
+    "negative": [
+      "general life hacks and clever shortcuts for everyday tasks",
+      "CleanTok deep cleaning hacks and satisfying cleaning transformations",
+      "pantry makeovers organizing bins and whole home decluttering",
+      "DIY furniture builds and hands on home renovation projects",
+      "debt payoff strategies financial planning and investment portfolios"
+    ]
+  },
+  {
+    "sub": "CleanTok / Cleaning",
+    "category": "LIFE_HACKERS",
+    "positive": [
+      "CleanTok satisfying deep cleans and cleaning motivation content",
+      "cleaning hacks and product recommendations that actually work",
+      "clean with me videos showing my whole house cleaning routine",
+      "speed cleaning challenges and before and after transformations",
+      "testing cleaning products so you know which ones are worth buying",
+      "deep cleaning neglected spaces and the satisfaction of restoring them to new",
+      "laundry hacks stain removal tips and fabric care secrets"
+    ],
+    "negative": [
+      "general life hacks and tips for simplifying your daily routine",
+      "extreme couponing deals and everyday money saving strategies",
+      "pantry makeovers closet organization and decluttering systems",
+      "DIY home repair projects plumbing electrical and renovation work",
+      "productivity apps time management and digital life optimization"
+    ]
+  },
+  {
+    "sub": "Home Organisation / Decluttering",
+    "category": "LIFE_HACKERS",
+    "positive": [
+      "home organization tips and satisfying pantry fridge and closet makeovers",
+      "decluttering your space and creating a minimalist functional home",
+      "organizing systems bins labels and storage solutions that actually work",
+      "whole home organization projects room by room from chaos to calm",
+      "creating beautiful organised spaces that are as pretty as they are functional",
+      "aesthetic organisation and colour coordinated storage that sparks joy",
+      "small space organization hacks for apartments and tight storage"
+    ],
+    "negative": [
+      "general life hacks and clever shortcuts for everyday problems",
+      "money saving tips coupons and frugal everyday spending hacks",
+      "deep cleaning routines CleanTok motivation and cleaning product reviews",
+      "DIY furniture builds home renovation and handyman repair tutorials",
+      "digital productivity tools and workflow optimization systems"
+    ]
+  },
+  {
+    "sub": "DIY / Home Repair",
+    "category": "LIFE_HACKERS",
+    "positive": [
+      "DIY home repair tutorials that save you money on calling a pro",
+      "home renovation projects from start to finish documented on camera",
+      "fix it yourself plumbing electrical and carpentry for homeowners",
+      "budget friendly DIY projects to upgrade your space",
+      "renter friendly DIY upgrades that don't damage walls or break your lease",
+      "apartment DIY transformations on a budget without permanent changes",
+      "tool reviews and workshop tours for the home DIY enthusiast"
+    ],
+    "negative": [
+      "general life hack tips and clever everyday problem solving",
+      "money saving deals coupons and frugal spending strategies",
+      "cleaning hacks product reviews and CleanTok deep clean content",
+      "home organization decluttering and storage system makeovers",
+      "time management productivity apps and digital workflow hacks"
+    ]
+  },
+  {
+    "sub": "Life & Productivity Hacks",
+    "category": "LIFE_HACKERS",
+    "positive": [
+      "productivity hacks and time management tips that actually change your routine",
+      "morning routines systems and habits that help you get more done",
+      "life optimization tips for managing your time energy and focus",
+      "personal life systems for managing your home family and free time",
+      "getting your personal life organised not just your work life",
+      "phone hacks app shortcuts and little known tech tricks for daily use",
+      "bullet journaling habit tracking and analogue systems for getting organised"
+    ],
+    "negative": [
+      "general life hacks and viral tips for everyday household problems",
+      "extreme couponing deal hunting and money saving tips",
+      "deep cleaning routines and CleanTok transformation content",
+      "pantry makeovers storage solutions and home decluttering systems",
+      "career advancement salary negotiation and workplace productivity"
+    ]
+  },
+  {
+    "sub": "Reactors",
+    "category": "REACTORS",
+    "positive": [
+      "reacting to videos music and content from around the internet",
+      "genuine first time reactions and honest opinions on what I watch",
+      "reaction content across movies music sports and viral videos",
+      "watching things for the first time and sharing my real reactions",
+      "reaction and commentary content where I watch and break it down",
+      "part reactor part commentator sharing opinions not just responses",
+      "blind reactions and commentary on content my audience sends me"
+    ],
+    "negative": [
+      "first time watching iconic movies and reacting to TV show episodes",
+      "reacting to albums songs and music videos across all genres",
+      "live game reactions and fan commentary on sports moments",
+      "trying foods from different cultures and reacting to taste tests",
+      "pop culture commentary celebrity drama and entertainment gossip"
+    ]
+  },
+  {
+    "sub": "Film / TV Reactions",
+    "category": "REACTORS",
+    "positive": [
+      "first time watching classic and iconic movies and sharing my reactions",
+      "TV show reactions episode by episode with genuine emotional responses",
+      "blind movie reactions reacting to films my audience has been recommending",
+      "binge watching new series and sharing my real time thoughts and theories",
+      "anime reactions watching classic and new series for the first time",
+      "documentary reactions and learning something new while sharing the experience",
+      "movie commentary and in depth reactions to plot twists and endings"
+    ],
+    "negative": [
+      "reacting to music albums and songs across genres and decades",
+      "general reaction content covering whatever is trending online",
+      "live sports reactions and game day fan commentary",
+      "food taste tests and trying international cuisine for the first time",
+      "celebrity gossip pop culture drama and entertainment news commentary"
+    ]
+  },
+  {
+    "sub": "Music Reactions",
+    "category": "REACTORS",
+    "positive": [
+      "reacting to albums songs and music videos across every genre",
+      "hearing iconic songs for the first time and sharing my genuine reaction",
+      "music reaction videos covering hip hop rock pop kpop and more",
+      "breaking down lyrics production and artistry while reacting to tracks",
+      "older music fan reacting to modern artists for the first time",
+      "younger listener hearing classic rock soul and jazz for the first time",
+      "reacting to music my audience recommends from genres I've never heard"
+    ],
+    "negative": [
+      "movie and TV show reactions watching series and films for the first time",
+      "general reaction content covering viral videos and internet trends",
+      "sports fan reactions and live game commentary",
+      "trying new foods and reacting to flavor challenges and taste tests",
+      "pop culture gossip celebrity news and entertainment industry commentary"
+    ]
+  },
+  {
+    "sub": "Sports Reactions",
+    "category": "REACTORS",
+    "positive": [
+      "live game reactions and fan commentary for football basketball and more",
+      "reacting to the biggest sports moments plays and highlights",
+      "sports fan content sharing my hype frustration and post game breakdowns",
+      "Premier League NFL and match day reactions and weekly sports commentary",
+      "reacting to the biggest moments in football cricket and rugby",
+      "game day reactions trash talk and rivalry content between fan bases",
+      "draft reactions trade reactions and breaking sports news hot takes"
+    ],
+    "negative": [
+      "movie and TV show reactions and first time watching classic films",
+      "music reaction videos and album first listen content",
+      "general reaction content covering viral internet videos and trends",
+      "food taste tests and trying cuisine from around the world",
+      "celebrity drama commentary and pop culture entertainment gossip"
+    ]
+  },
+  {
+    "sub": "Food / Try Reactions",
+    "category": "REACTORS",
+    "positive": [
+      "trying foods from different cultures and reacting to the flavors",
+      "taste test challenges and blind food comparison reactions",
+      "trying viral food trends and reacting to whether they live up to the hype",
+      "international snack box unboxings and first time tasting reactions",
+      "eating massive portions and reacting to oversized food challenges",
+      "mukbang style eating content with honest reactions and commentary",
+      "reacting to food not reviewing it pure honest first impressions"
+    ],
+    "negative": [
+      "movie and TV show reactions and binge watching commentary",
+      "music reaction videos hearing songs and albums for the first time",
+      "sports fan reactions and live game day commentary",
+      "general reactor content covering internet videos and trending clips",
+      "celebrity gossip entertainment news and pop culture hot takes",
+      "street food vendor tours and market exploration without the reaction format"
+    ]
+  },
+  {
+    "sub": "Celebrity News & Gossip",
+    "category": "REACTORS",
+    "positive": [
+      "pop culture commentary celebrity drama and entertainment tea",
+      "breaking down the latest celebrity news and what everyone is talking about",
+      "YouTube drama commentary and creator controversy coverage",
+      "my honest takes on celebrity behavior and public figure controversies",
+      "the celebrity internet is never boring and I cover all of it",
+      "stan culture beef drama and the parasocial world of celebrity fandom",
+      "influencer accountability and the double standards of internet fame"
+    ],
+    "negative": [
+      "first time movie and TV show reactions and watching classics blind",
+      "music reaction videos and first listen album breakdowns",
+      "live sports reactions and game day fan commentary",
+      "food taste tests trying new cuisines and eating challenges",
+      "general reactor content covering viral internet videos and clips"
+    ]
+  },
+  {
+    "sub": "Fashion",
+    "category": "FASHION",
+    "positive": [
+      "fashion content covering style trends and outfit ideas for every occasion",
+      "fashion commentary and coverage across the full spectrum of style culture",
+      "fashion hauls try ons and honest reviews of clothing brands",
+      "style advice for real people who want to look good without overthinking it",
+      "covering fast fashion ethics alongside actual style content and what to wear instead",
+      "fashion content that asks questions about where our clothes come from",
+      "covering everything in fashion from streetwear to luxury to everyday style"
+    ],
+    "negative": [
+      "streetwear culture sneaker releases and hype drop coverage",
+      "thrift hauls vintage finds and second hand clothing shopping",
+      "daily outfit inspiration OOTD and styled look content",
+      "luxury fashion designer hauls and high end brand reviews",
+      "men's fashion style guides and wardrobe building for guys"
+    ]
+  },
+  {
+    "sub": "Streetwear / Sneakers",
+    "category": "FASHION",
+    "positive": [
+      "streetwear culture sneaker reviews and hype drop coverage",
+      "sneaker collection tours unboxings and release day pickups",
+      "fit checks and streetwear styling showing how to put outfits together",
+      "covering the latest drops from Nike Jordan Yeezy and New Balance",
+      "local streetwear brands and the grassroots fashion scene in your city",
+      "independent and underground streetwear brands defining street culture in their city",
+      "sneaker reselling culture and the economics of hype fashion"
+    ],
+    "negative": [
+      "general fashion content covering multiple style categories and trends",
+      "thrift store hauls vintage clothing and second hand shopping finds",
+      "everyday outfit ideas OOTD and casual style inspiration",
+      "luxury designer fashion high end hauls and runway commentary",
+      "men's wardrobe essentials and classic menswear style guides"
+    ]
+  },
+  {
+    "sub": "Thrifting / Vintage",
+    "category": "FASHION",
+    "positive": [
+      "thrift hauls and second hand clothing finds from thrift stores charity shops and vintage stores",
+      "styling vintage and thrifted pieces into modern outfits",
+      "sustainable fashion through thrifting and buying preloved clothing",
+      "come thrift with me shopping vlogs at goodwill and local thrift stores",
+      "thrift flipping and reselling vintage pieces for profit on resale platforms and secondhand marketplaces",
+      "building a vintage reselling business from thrift store and charity shop finds",
+      "upcycling and DIY clothing transformations from thrifted pieces"
+    ],
+    "negative": [
+      "general fashion hauls and try ons from mainstream clothing brands",
+      "streetwear drops sneaker unboxings and hype brand reviews",
+      "daily outfit posts and polished styled look inspiration",
+      "luxury designer hauls and high fashion runway content",
+      "men's fashion wardrobe building and menswear style guides"
+    ]
+  },
+  {
+    "sub": "Outfit Inspiration / OOTD",
+    "category": "FASHION",
+    "positive": [
+      "daily outfit inspiration and outfit of the day styled content",
+      "OOTD posts showing how I put together looks for every occasion",
+      "capsule wardrobe ideas and maximizing your closet with fewer pieces",
+      "seasonal style lookbooks and outfit ideas for what to wear right now",
+      "outfit inspiration for plus size and curvy women who love fashion",
+      "inclusive style content showing fashion works for every body",
+      "aesthetic outfit boards and curated visual style inspiration"
+    ],
+    "negative": [
+      "broad fashion coverage across categories trends and industry news",
+      "streetwear culture sneaker drops and hype brand content",
+      "thrift store shopping hauls and vintage second hand finds",
+      "luxury designer purchases and high fashion brand analysis",
+      "men's style guides and wardrobe essentials for guys specifically"
+    ]
+  },
+  {
+    "sub": "Luxury / High Fashion",
+    "category": "FASHION",
+    "positive": [
+      "luxury fashion hauls and designer brand reviews and unboxings",
+      "high fashion runway analysis and commentary on designer collections",
+      "investment pieces and building a luxury wardrobe over time",
+      "luxury fashion content for people who dream about it not just those who own it",
+      "reviewing luxury items and deciding what is actually worth saving up for",
+      "fashion week coverage and the world of haute couture and ready to wear",
+      "the culture and craftsmanship behind iconic fashion houses"
+    ],
+    "negative": [
+      "general fashion content covering everyday style and affordable brands",
+      "streetwear drops sneaker reviews and hype culture content",
+      "thrift hauls vintage finds and sustainable second hand fashion",
+      "daily outfit ideas and styling tips for casual everyday dressing",
+      "men's fashion basics wardrobe staples and accessible menswear"
+    ]
+  },
+  {
+    "sub": "Men's Fashion",
+    "category": "FASHION",
+    "positive": [
+      "men's fashion style guides and wardrobe building for guys",
+      "outfit ideas and fit checks for men who want to elevate their style",
+      "men's wardrobe essentials and how to build a timeless closet on any budget",
+      "helping men dress better with practical style advice they can use today",
+      "cologne reviews and building a fragrance wardrobe for different occasions",
+      "affordable men's fashion hauls and proving you don't need to spend big to dress well",
+      "men's seasonal lookbooks and outfit inspiration for every occasion"
+    ],
+    "negative": [
+      "general fashion trends hauls and style content across all genders",
+      "streetwear sneaker drops and hype culture content",
+      "thrift hauls and vintage clothing finds and second hand shopping",
+      "women's outfit inspiration OOTD and daily styled look content",
+      "men's grooming skincare and beard care routines"
+    ]
+  },
+  {
+    "sub": "Gaming",
+    "category": "GAMING",
+    "positive": [
+      "gaming content covering everything from new releases to retro classics",
+      "video game culture commentary and the gaming community",
+      "general gaming channel playing whatever I'm excited about",
+      "gaming as a lifestyle and connecting with people through the games we love",
+      "streaming games live and building a community through shared play",
+      "Twitch and YouTube gaming content creator sharing the full journey",
+      "gaming content that spans formats because great games deserve all kinds of coverage"
+    ],
+    "negative": [
+      "let's play walkthroughs and full gameplay series with commentary",
+      "esports competitive gaming and tournament coverage",
+      "in depth game reviews and gaming industry news analysis",
+      "retro gaming classic consoles and nostalgia driven gaming content",
+      "gaming desk setups peripherals and streaming gear recommendations"
+    ]
+  },
+  {
+    "sub": "Let's Play / Walkthroughs",
+    "category": "GAMING",
+    "positive": [
+      "let's play series and full gameplay walkthroughs with commentary",
+      "playing through games start to finish and sharing the experience",
+      "blind playthroughs and first time reactions to games my audience picks",
+      "horror game playthroughs and reacting to jump scares with genuine fear",
+      "co-op gaming content playing with friends and the chaos that follows",
+      "cozy gaming streams playing relaxing games and building community",
+      "completionist walkthroughs and 100 percent guides for every secret"
+    ],
+    "negative": [
+      "broad gaming content covering news culture and multiple formats",
+      "esports tournament coverage and ranked competitive gameplay",
+      "game reviews scored opinions and industry news reporting",
+      "retro gaming challenges and classic console nostalgia content",
+      "gaming setup tours desk builds and peripheral recommendations"
+    ]
+  },
+  {
+    "sub": "Esports / Competitive",
+    "category": "GAMING",
+    "positive": [
+      "competitive gaming ranked climbs and tournament preparation content",
+      "esports coverage including match analysis and team breakdowns",
+      "rank improvement guides and the mental game of competitive play",
+      "breaking down pro player decisions and what you can learn from them",
+      "FPS competitive content covering Valorant CS2 and Apex Legends",
+      "fighting game community content covering combos tech and tournaments",
+      "competitive MOBA content covering League of Legends and Dota 2"
+    ],
+    "negative": [
+      "general gaming culture and casual gameplay across genres",
+      "casual let's play series and story focused walkthrough content",
+      "game review scores and gaming news industry analysis",
+      "retro gaming and playing classic titles for nostalgia",
+      "gaming setup builds peripherals and streaming equipment reviews"
+    ]
+  },
+  {
+    "sub": "Game Reviews & News",
+    "category": "GAMING",
+    "positive": [
+      "in depth game reviews with honest opinions and thoughtful analysis",
+      "gaming news coverage of launches delays and industry developments",
+      "is this game worth buying honest reviews before you spend your money",
+      "gaming industry analysis and commentary on where the business is heading",
+      "long form video essays exploring game design narrative and industry history",
+      "why certain games succeed or fail examined through deep critical analysis",
+      "comparing different opinions on the same game to give you the full picture"
+    ],
+    "negative": [
+      "broad gaming content covering culture and community topics",
+      "let's play gameplay footage and walkthrough commentary series",
+      "esports tournament analysis and competitive ranked content",
+      "retro gaming nostalgia content and classic console collections",
+      "gaming setup tours and peripheral hardware recommendations"
+    ]
+  },
+  {
+    "sub": "Retro / Nostalgia Gaming",
+    "category": "GAMING",
+    "positive": [
+      "retro gaming content celebrating classic consoles and the games we grew up with",
+      "playing classic games from the 90s and 2000s and reliving the nostalgia",
+      "retro console collections and vintage gaming hardware showcases",
+      "revisiting childhood games and seeing if they hold up today",
+      "vintage game collecting hunting for rare cartridges and complete in box games",
+      "retro game room tours and the hunt for physical gaming history",
+      "hidden gems and underrated classics from gaming history"
+    ],
+    "negative": [
+      "general gaming content covering modern releases and current trends",
+      "let's play series and walkthroughs of current generation games",
+      "competitive esports and ranked gameplay in modern titles",
+      "reviews and news covering newly released and upcoming games",
+      "modern gaming setup tours and current peripherals and tech"
+    ]
+  },
+  {
+    "sub": "Gaming Setup / Tech",
+    "category": "GAMING",
+    "positive": [
+      "gaming setup tours showing my desk PC and peripheral collection",
+      "gaming room builds and creating the ultimate at home gaming space",
+      "gaming peripheral reviews covering keyboards mice monitors and controllers",
+      "streaming setup guides and the gear you need to start content creation",
+      "building a capable gaming setup on a tight budget without sacrificing performance",
+      "starter setup guides for people just getting into PC gaming",
+      "RGB lighting builds cable management and the aesthetics of gaming spaces"
+    ],
+    "negative": [
+      "general gaming culture content and broad gaming community coverage",
+      "let's play gameplay series and walkthrough commentary content",
+      "competitive esports matches and ranked ladder gameplay",
+      "game reviews and gaming industry news analysis and reporting",
+      "retro gaming classic console collections and nostalgia content",
+      "laptop reviews and general purpose PC buying guides not aimed at gamers"
+    ]
+  },
+  {
+    "sub": "Health & Wellness",
+    "category": "HEALTH_AND_WELLNESS",
+    "positive": [
+      "health and wellness content covering mind body and overall wellbeing",
+      "holistic health tips and lifestyle advice for living your best life",
+      "making health information accessible and easy to act on",
+      "wellness lifestyle content from morning routines to mindful living",
+      "health content from someone navigating chronic illness and finding what works",
+      "wellness that acknowledges not everyone starts from the same place",
+      "covering health topics that affect real people not just fitness enthusiasts"
+    ],
+    "negative": [
+      "supplement stacks biohacking protocols and optimisation deep dives",
+      "mental health tips therapy insights and emotional wellbeing strategies",
+      "longevity research anti aging protocols and lifespan extension science",
+      "nutrition science evidence based dietary recommendations and metabolic studies",
+      "women's health covering hormonal balance fertility and reproductive wellness"
+    ]
+  },
+  {
+    "sub": "Supplements / Biohacking",
+    "category": "HEALTH_AND_WELLNESS",
+    "positive": [
+      "supplement reviews stacks and evidence based recommendations",
+      "biohacking protocols and optimising your body and brain performance",
+      "testing the latest biohacking tools from cold plunge to red light therapy",
+      "nootropics cognitive enhancement and brain performance optimisation",
+      "cold exposure sauna protocols and the science behind thermal stress adaptation",
+      "tracking biomarkers with blood panels and wearables to measure what actually moves the needle",
+      "wearable health data and using devices like Whoop and Oura to optimise"
+    ],
+    "negative": [
+      "general health and wellness lifestyle content and holistic tips",
+      "therapy techniques mental health coping strategies and emotional wellbeing",
+      "longevity research and anti aging protocols for lifespan extension",
+      "nutrition science dietary guidelines and evidence based eating",
+      "women's specific health topics hormonal conditions and fertility"
+    ]
+  },
+  {
+    "sub": "Mental Health Tips",
+    "category": "HEALTH_AND_WELLNESS",
+    "positive": [
+      "mental health tips and emotional wellbeing advice from a compassionate voice",
+      "TherapyTok content making therapy concepts accessible to everyone",
+      "coping strategies for anxiety depression and everyday mental health challenges",
+      "ADHD autism and neurodivergent content helping people understand their brains",
+      "late diagnosed ADHD and navigating life with a newly understood mind",
+      "self care routines journaling prompts and emotional regulation techniques",
+      "attachment styles boundaries and relationship psychology explained"
+    ],
+    "negative": [
+      "general health and wellness lifestyle content and holistic wellbeing",
+      "supplement reviews biohacking tools and physical optimisation protocols",
+      "anti aging research longevity protocols and lifespan science",
+      "macronutrient science dietary research and clinical nutrition evidence",
+      "reproductive health hormonal conditions and women's physical wellness"
+    ]
+  },
+  {
+    "sub": "Longevity / Anti-Aging",
+    "category": "HEALTH_AND_WELLNESS",
+    "positive": [
+      "longevity research and the science of living longer and healthier",
+      "anti aging protocols backed by the latest research in geroscience",
+      "Bryan Johnson inspired content and the quest to reverse biological aging",
+      "simple evidence backed habits for living longer that anyone can actually do",
+      "longevity tips that don't require a six figure biohacking budget",
+      "the science of aging and what we can actually do to slow it down",
+      "longevity supplements and interventions evaluated by the evidence"
+    ],
+    "negative": [
+      "general health and wellness advice and holistic lifestyle content",
+      "biohacking tools and cognitive performance optimisation stacks",
+      "mental health coping strategies and emotional wellbeing content",
+      "nutrition science for everyday healthy eating and dietary guidelines",
+      "women's health hormonal balance and reproductive wellness topics"
+    ]
+  },
+  {
+    "sub": "Nutrition Science",
+    "category": "HEALTH_AND_WELLNESS",
+    "positive": [
+      "evidence based nutrition science and what the research actually says",
+      "registered dietitian content breaking down dietary studies and myths",
+      "the science behind macronutrients micronutrients and metabolic health",
+      "cutting through nutrition influencer misinformation with actual evidence",
+      "what registered dietitians actually think about popular diet trends",
+      "gut health microbiome science and the food gut brain connection",
+      "translating complex nutrition research into actionable eating advice"
+    ],
+    "negative": [
+      "general health and wellness lifestyle tips and holistic content",
+      "supplement stacks biohacking protocols and performance optimisation",
+      "mental health strategies therapy insights and emotional coping techniques",
+      "anti aging longevity protocols and lifespan extension science",
+      "women's specific health conditions hormonal balance and fertility"
+    ]
+  },
+  {
+    "sub": "Women's Health",
+    "category": "HEALTH_AND_WELLNESS",
+    "positive": [
+      "women's health covering hormonal balance periods and reproductive wellness",
+      "PCOS endometriosis and hormonal conditions explained and supported",
+      "fertility content and navigating the trying to conceive journey",
+      "menopause perimenopause and the health changes women don't talk about enough",
+      "postpartum mental health and the emotional reality of new motherhood",
+      "maternal mental health and supporting women through pregnancy and beyond",
+      "pelvic floor health postpartum recovery and women's physical wellness"
+    ],
+    "negative": [
+      "general health and wellness lifestyle content for all audiences",
+      "biohacking cognitive optimisation and supplement stack reviews",
+      "mental health coping strategies and therapy based content",
+      "longevity research anti aging science and lifespan extension protocols",
+      "nutrition science macronutrient research and dietary evidence reviews"
+    ]
+  },
+  {
+    "sub": "Travel",
+    "category": "TRAVEL",
+    "positive": [
+      "travel content inspiring you to explore the world near and far",
+      "sharing my travels and the experiences that make each trip worth it",
+      "travel vlogs guides and tips for every kind of traveller",
+      "travel content spanning everything from budget backpacking to five star luxury",
+      "the full spectrum of travel from hostels to hotels and everything in between",
+      "travel as a way of life and showing the world through my lens",
+      "sharing the planning process itinerary building and the reality of travel logistics"
+    ],
+    "negative": [
+      "budget travel tips and how to see the world without spending a fortune",
+      "detailed city guides and local insider recommendations",
+      "travel hacks points and miles strategies and flight deal alerts",
+      "solo travel and the digital nomad lifestyle working from anywhere",
+      "adventure travel hiking and outdoor exploration in the wild",
+      "luxury hotel reviews first class flights and five star resort experiences"
+    ]
+  },
+  {
+    "sub": "Budget Travel Tips",
+    "category": "TRAVEL",
+    "positive": [
+      "budget travel tips and strategies for seeing the world on any income",
+      "how to find cheap flights affordable accommodation and free activities",
+      "backpacking on a budget and proving you don't need money to travel",
+      "slow travel staying longer spending less and actually living in each place",
+      "long term travel and how to sustain life abroad on a minimal budget",
+      "hostels house sitting and creative ways to travel for almost nothing",
+      "travelling on a student budget and making every dollar count"
+    ],
+    "negative": [
+      "general travel vlogs and destination content without budget focus",
+      "local city guides and insider recommendations for specific destinations",
+      "points hacking miles strategies and premium travel rewards",
+      "solo travel and digital nomad remote work lifestyle content",
+      "adventure sports hiking and outdoor expedition travel content",
+      "luxury hotel reviews first class flights and five star resort experiences"
+    ]
+  },
+  {
+    "sub": "City Guides",
+    "category": "TRAVEL",
+    "positive": [
+      "detailed city guides covering the best things to do eat and see",
+      "local insider tips and hidden gems for popular travel destinations",
+      "neighbourhood by neighbourhood guides for experiencing cities like a local",
+      "food focused city guides finding the best local spots to eat in every city",
+      "art museums nightlife and cultural experiences worth planning your trip around",
+      "48 hours in content showing how to make the most of a short city trip",
+      "seasonal city guides and the best time to visit each destination"
+    ],
+    "negative": [
+      "broad travel content covering multiple destinations and travel styles",
+      "budget travel strategies and how to travel cheaply across regions",
+      "flight hacks points strategies and travel reward optimisation",
+      "solo travel stories and digital nomad lifestyle and remote work",
+      "outdoor adventure travel hiking and nature exploration content",
+      "dedicated restaurant review content rating individual dining experiences in detail",
+      "luxury hotel reviews first class flights and five star resort experiences"
+    ]
+  },
+  {
+    "sub": "Travel Hacks",
+    "category": "TRAVEL",
+    "positive": [
+      "travel hacks and insider tricks that save time and money on every trip",
+      "points and miles strategies for flying business class on a budget",
+      "credit card reward hacking and maximising travel loyalty programmes",
+      "visa guides entry requirements and the paperwork side of international travel",
+      "travel insurance sim cards and the boring logistics that make trips work",
+      "airport lounge access hacks and upgrades most travellers don't know about",
+      "flight deal alerts and how to find mistake fares and hidden city ticketing"
+    ],
+    "negative": [
+      "general travel vlogs and destination inspiration content",
+      "overall budget travel tips and backpacking on a shoestring",
+      "city specific guides and local recommendation content",
+      "solo travel stories and working remotely as a digital nomad",
+      "hiking camping and outdoor adventure expedition travel",
+      "luxury hotel reviews first class flights and five star resort experiences"
+    ]
+  },
+  {
+    "sub": "Solo / Digital Nomad",
+    "category": "TRAVEL",
+    "positive": [
+      "solo travel content and the freedom of exploring the world alone",
+      "digital nomad lifestyle working remotely while travelling the world",
+      "solo female travel tips safety advice and empowering solo journeys",
+      "the honest truth about solo travel loneliness and finding connection abroad",
+      "building friendships and community while constantly moving",
+      "building a location independent career and working from anywhere",
+      "best cities and countries for digital nomads and remote workers"
+    ],
+    "negative": [
+      "general travel vlogs and destination content for all travel styles",
+      "budget travel tips and strategies for travelling cheaply",
+      "city guides and local insider recommendations for specific places",
+      "points hacking flight deals and travel reward strategies",
+      "outdoor adventure travel hiking and nature expedition content",
+      "luxury hotel reviews first class flights and five star resort experiences"
+    ]
+  },
+  {
+    "sub": "Adventure / Outdoor",
+    "category": "TRAVEL",
+    "positive": [
+      "adventure travel hiking and exploring the world's most stunning trails",
+      "outdoor content covering camping backpacking and wilderness experiences",
+      "travel content for people who'd rather sleep in a tent than a hotel",
+      "hiking iconic trails and national parks across the country and beyond",
+      "wild camping and sleeping under the stars and finding adventure close to home",
+      "national park guides and the best outdoor destinations around the world",
+      "van life overland travel and road trip adventures off the beaten path"
+    ],
+    "negative": [
+      "general travel vlogs and destination content covering cities and culture",
+      "budget travel tips and saving money on flights and accommodation",
+      "city guides restaurant recommendations and urban travel content",
+      "points hacking miles strategies and flight deal alerts",
+      "solo travel stories and digital nomad remote work lifestyle",
+      "luxury hotel reviews first class flights and five star resort experiences"
+    ]
+  },
+  {
+    "sub": "Luxury Travel",
+    "category": "TRAVEL",
+    "positive": [
+      "luxury hotel reviews and five star resort experiences around the world",
+      "first class and business class flight reviews and airline comparisons",
+      "luxury travel experiences that show what premium hospitality looks like",
+      "resort tours spa experiences and high end destination reviews",
+      "luxury cruise reviews and premium travel experiences on the water",
+      "is it worth the price honest luxury travel reviews for aspirational travellers",
+      "luxury travel for people who save and plan for the trips that matter most"
+    ],
+    "negative": [
+      "budget travel tips and strategies for seeing the world on any income",
+      "detailed city guides covering the best things to do eat and see locally",
+      "points hacking flight deals and travel reward strategies",
+      "solo travel stories and digital nomad remote work lifestyle content",
+      "outdoor adventure travel hiking and nature expedition content"
+    ]
+  }
+]
