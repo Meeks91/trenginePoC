@@ -10,7 +10,7 @@ from pathlib import Path
 
 from config import INPUT_COST_PER_1M, OUTPUT_COST_PER_1M
 from config.schema import (
-    PipelineStats, JobBreakdown, Influencer, SeedInfluencer,
+    PipelineStats, JobBreakdown, Influencer,
     NameMentionRecord, Platform, ErroredConfig,
 )
 from services.enrichment.InfluencerMerger import InfluencerMerger
@@ -33,7 +33,7 @@ class PipelineReporter:
         target_platform: str = "Instagram",
         job_results: list[JobBreakdown] | None = None,
         influencers: list[Influencer] | None = None,
-        global_seeds: list[SeedInfluencer] | None = None,
+        global_seeds: list[Influencer] | None = None,
         name_mentions: list[NameMentionRecord] | None = None,
         warnings: list[str] | None = None,
         errored_configs: list[ErroredConfig] | None = None,
@@ -137,7 +137,7 @@ class PipelineReporter:
                 ig = seed.ig_handle or "—"
                 tk = seed.tk_handle or "—"
                 yt = seed.yt_handle or "—"
-                cats = ", ".join(seed.categories) if seed.categories else "—"
+                cats = ", ".join(sorted(seed.categories_found_in)) if seed.categories_found_in else "—"
                 lines.append(f"| {i} | {ig} | {tk} | {yt} | {cats} |")
             lines.append("")
 

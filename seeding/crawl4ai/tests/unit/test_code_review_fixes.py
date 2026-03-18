@@ -106,18 +106,18 @@ def test_crawl_service_counters_initialised():
 
 # ── Fix 5: callable → Callable[[str], bool] ──
 
-def test_to_seeds_accepts_custom_filter():
-    """InfluencerMerger.to_seeds() handle_filter must accept a typed callable."""
+def test_filter_blocked_accepts_custom_filter():
+    """InfluencerMerger.filter_blocked() handle_filter must accept a typed callable."""
     entries = [
         Influencer(name="Test", handles={Platform.Instagram: "@test_user"}, categories_found_in=["CAT"]),
     ]
     # Pass a custom filter that blocks nothing
-    seeds = InfluencerMerger.to_seeds(entries, handle_filter=lambda h: False)
-    assert len(seeds) >= 1, "Custom filter should allow all handles through"
+    result = InfluencerMerger.filter_blocked(entries, handle_filter=lambda h: False)
+    assert len(result) >= 1, "Custom filter should allow all handles through"
 
     # Pass a custom filter that blocks everything
-    seeds_blocked = InfluencerMerger.to_seeds(entries, handle_filter=lambda h: True)
-    assert len(seeds_blocked) == 0, "Filter returning True should block all handles"
+    result_blocked = InfluencerMerger.filter_blocked(entries, handle_filter=lambda h: True)
+    assert len(result_blocked) == 0, "Filter returning True should block all handles"
 
 
 # ── Fix 8: Shared NameCleaner ──

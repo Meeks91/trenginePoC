@@ -15,7 +15,7 @@ from unittest.mock import patch, MagicMock, AsyncMock
 import pytest
 
 from config.schema import (
-    Influencer, Platform, ErroredConfig, SeedInfluencer,
+    Influencer, Platform, ErroredConfig,
 )
 from config.seed_schema import (
     SeedJob, SubCategory, Region, RegionCode, Difficulty,

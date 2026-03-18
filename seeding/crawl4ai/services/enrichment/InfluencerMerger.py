@@ -1,15 +1,14 @@
 """InfluencerMerger — Single class for all influencer dedup/merge operations.
 
-Unifies IdentityGrouper (identity-based grouping) and SeedMerger (DB-ready
-flattening) into one class with two public methods:
+Unifies identity-based grouping and blocked-handle filtering into one class
+with two public methods:
 
   merge(list[Influencer]) → list[Influencer]
       Groups same-person entries by normalized handle or name.
       Merges handles dicts, picks best name, unions source_urls.
 
-  to_seeds(list[tuple[Influencer, str]]) → list[SeedInfluencer]
-      Deduplicates category-tagged influencers and converts to
-      DB-ready SeedInfluencer records with ig/tk/yt handle columns.
+  filter_blocked(list[Influencer]) → list[Influencer]
+      Removes handleless entries and entries with blocked handles.
 
 Identity rules:
   1. Two entries have the same NORMALIZED handle → same person
@@ -30,7 +29,7 @@ import re
 from dataclasses import dataclass, field
 from typing import Callable
 
-from config.schema import Influencer, Platform, SeedInfluencer
+from config.schema import Influencer, Platform
 from services.extraction.RegexHandleExtractor import is_blocked_handle
 
 
@@ -151,44 +150,24 @@ class InfluencerMerger:
         return result
 
     @staticmethod
-    def to_seeds(
+    def filter_blocked(
         influencers: list[Influencer],
         handle_filter: Callable[[str], bool] = is_blocked_handle,
-    ) -> list[SeedInfluencer]:
-        """Convert merged Influencers to DB-ready SeedInfluencer records.
-
-        Expects already-merged input (one Influencer per person).
-        Each Influencer → one SeedInfluencer with platform handle columns.
+    ) -> list[Influencer]:
+        """Remove handleless entries and entries with any blocked handle.
 
         Args:
             influencers: Merged list where each person appears once.
-            handle_filter: Callable to check if a handle is blocked.
+            handle_filter: Callable returning True if a handle is blocked.
 
         Returns:
-            List of SeedInfluencer records.
+            Filtered list — only entries with at least one non-blocked handle.
         """
-        results: list[SeedInfluencer] = []
-
-        for inf in influencers:
-            if not inf.handles:
-                continue
-
-            seed = SeedInfluencer(
-                name=inf.name,
-                categories=sorted(inf.categories_found_in),
-                source_urls=sorted(inf.source_urls),
-                extraction_methods=sorted(inf.extraction_methods),
-            )
-
-            # Assign handles to platform columns
-            for plat, handle in inf.handles.items():
-                clean = handle.lower().lstrip("@")
-                _assign_platform_handle(seed, plat.value, clean)
-
-            if _has_any_handle(seed) and not _is_blocked_seed(seed, handle_filter):
-                results.append(seed)
-
-        return results
+        return [
+            inf for inf in influencers
+            if inf.handles
+            and not any(handle_filter(h) for h in inf.handles.values())
+        ]
 
 
 # ══════════════════════════════════════════════════════════════════════
@@ -348,52 +327,4 @@ def _build_grouped_influencer(
     )
 
 
-# ══════════════════════════════════════════════════════════════════════
-# to_seeds() internals
-# ══════════════════════════════════════════════════════════════════════
-
-@dataclass
-class _SeedEntry:
-    """Internal accumulator for seed merging."""
-    best_name: str
-    handle: str
-    platform: Platform
-    alt_handles: dict[str, str] = field(default_factory=dict)  # {platform_value: handle}
-    categories: set[str] = field(default_factory=set)
-    source_urls: set[str] = field(default_factory=set)
-    extraction_methods: set[str] = field(default_factory=set)
-
-
-def _assign_platform_handle(
-    seed: SeedInfluencer, platform: str, handle: str,
-) -> None:
-    """Assign a handle to the correct platform column on SeedInfluencer."""
-    plat_lower = platform.lower()
-    if plat_lower in ("instagram", ""):
-        if not seed.ig_handle:
-            seed.ig_handle = handle
-    elif plat_lower == "tiktok":
-        if not seed.tk_handle:
-            seed.tk_handle = handle
-    elif plat_lower == "youtube":
-        if not seed.yt_handle:
-            seed.yt_handle = handle
-
-
-def _has_any_handle(seed: SeedInfluencer) -> bool:
-    """Return True if the seed has at least one non-empty handle."""
-    return bool(seed.ig_handle or seed.tk_handle or seed.yt_handle)
-
-
-def _is_blocked_seed(
-    seed: SeedInfluencer,
-    handle_filter: Callable[[str], bool] = is_blocked_handle,
-) -> bool:
-    """Check if any handle on a seed is blocked by the injected filter."""
-    for handle in (seed.ig_handle, seed.tk_handle, seed.yt_handle):
-        if not handle:
-            continue
-        if handle_filter(handle):
-            return True
-    return False
 

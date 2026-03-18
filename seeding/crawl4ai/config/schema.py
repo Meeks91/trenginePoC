@@ -61,9 +61,37 @@ class Influencer:
     extraction_methods: set[str] = field(default_factory=set)
 
     @property
+    def ig_handle(self) -> str:
+        """Instagram handle (empty string if not present)."""
+        return self.handles.get(Platform.Instagram, "")
+
+    @property
+    def tk_handle(self) -> str:
+        """TikTok handle (empty string if not present)."""
+        return self.handles.get(Platform.TikTok, "")
+
+    @property
+    def yt_handle(self) -> str:
+        """YouTube handle (empty string if not present)."""
+        return self.handles.get(Platform.YouTube, "")
+
+    @property
     def citation_count(self) -> int:
         """Number of distinct source pages citing this influencer."""
         return len(self.source_urls)
+
+    def to_dict(self) -> dict:
+        """Serialize to DB-ready dict with flattened platform handle columns."""
+        return {
+            "name": self.name,
+            "ig_handle": self.ig_handle,
+            "tk_handle": self.tk_handle,
+            "yt_handle": self.yt_handle,
+            "categories": sorted(self.categories_found_in),
+            "source_urls": sorted(self.source_urls),
+            "extraction_methods": sorted(self.extraction_methods),
+            "citation_count": self.citation_count,
+        }
 
 
 # ── Name Mention Output ──
@@ -150,41 +178,6 @@ class ConfigResult:
             "influencers": {h: ir.to_dict() for h, ir in self.influencers.items()},
         }
 
-
-# ── DB-Ready Global Output ──
-
-@dataclass
-class SeedInfluencer:
-    """Deduped, DB-ready influencer record.
-
-    Maps directly to: influencers(ig_handle, tk_handle, yt_handle, name)
-    + influencer_categories junction table.
-    Includes provenance: source_urls, extraction_methods, citation_count.
-    """
-    name: str
-    ig_handle: str = ""
-    tk_handle: str = ""
-    yt_handle: str = ""
-    categories: list[str] = field(default_factory=list)
-    source_urls: list[str] = field(default_factory=list)
-    extraction_methods: list[str] = field(default_factory=list)
-
-    @property
-    def citation_count(self) -> int:
-        """Number of distinct source pages citing this influencer."""
-        return len(self.source_urls)
-
-    def to_dict(self) -> dict:
-        return {
-            "name": self.name,
-            "ig_handle": self.ig_handle,
-            "tk_handle": self.tk_handle,
-            "yt_handle": self.yt_handle,
-            "categories": self.categories,
-            "source_urls": self.source_urls,
-            "extraction_methods": self.extraction_methods,
-            "citation_count": self.citation_count,
-        }
 
 
 # ── Per-Sub Results ──

@@ -15,15 +15,16 @@ from pathlib import Path
 import pytest
 
 from config.schema import (
-    ErroredConfig, NameMentionRecord, SeedInfluencer,
+    ErroredConfig, NameMentionRecord, Influencer, Platform,
 )
 from services.reporting.ResultAssembler import ResultAssembler
 
 
-def _make_seed(name: str, ig: str = "") -> SeedInfluencer:
-    return SeedInfluencer(
-        name=name, ig_handle=ig, tk_handle="", yt_handle="",
-        categories=["TEST"],
+def _make_seed(name: str, ig: str = "") -> Influencer:
+    handles = {Platform.Instagram: ig} if ig else {}
+    return Influencer(
+        name=name, handles=handles,
+        categories_found_in=["TEST"],
     )
 
 
@@ -146,12 +147,12 @@ class TestSaveRunReport:
         with tempfile.TemporaryDirectory() as tmp:
             run_dir = Path(tmp) / "run"
 
-            seed = SeedInfluencer(
+            seed = Influencer(
                 name="Kayla Itsines",
-                ig_handle="kayla_itsines",
-                categories=["FITNESS"],
-                source_urls=["https://a.com", "https://b.com"],
-                extraction_methods=["regex", "llm"],
+                handles={Platform.Instagram: "kayla_itsines"},
+                categories_found_in=["FITNESS"],
+                source_urls={"https://a.com", "https://b.com"},
+                extraction_methods={"regex", "llm"},
             )
             assembler = ResultAssembler()
             assembler.save_run_report(
@@ -163,7 +164,7 @@ class TestSaveRunReport:
             data = json.loads((run_dir / "seeds.json").read_text())
             assert len(data) == 1
             assert data[0]["source_urls"] == ["https://a.com", "https://b.com"]
-            assert data[0]["extraction_methods"] == ["regex", "llm"]
+            assert data[0]["extraction_methods"] == ["llm", "regex"]
             assert data[0]["citation_count"] == 2
 
 class TestRunDirLocation:

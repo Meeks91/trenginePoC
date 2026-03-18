@@ -526,19 +526,23 @@ Priority: Real name (≠ handle) > longest name > first seen
 
 Handles < 3 chars after normalization → dropped (extraction noise).
 
-### to_seeds() — DB Conversion
+### filter_blocked() — Blocked Handle Removal
+
+`InfluencerMerger.filter_blocked()` removes entries with no handles or any blocked handle.
+Remaining `Influencer` objects serialize via `to_dict()`:
 
 ```python
-SeedInfluencer(
-    name="Kayla Itsines",
-    ig_handle="kayla_itsines",
-    tk_handle="kayla_itsines",
-    yt_handle="",
-    categories=["FITNESS"],
-)
-```
-
-Global dedup key: `(handle_lower, platform_lower)`.
+inf.to_dict()
+# → {
+#     "name": "Kayla Itsines",
+#     "ig_handle": "kayla_itsines",
+#     "tk_handle": "kayla_itsines",
+#     "yt_handle": "",
+#     "categories": ["FITNESS"],
+#     "source_urls": [...],
+#     "extraction_methods": [...],
+#     "citation_count": 2,
+# }
 
 ---
 

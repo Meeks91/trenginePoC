@@ -19,7 +19,7 @@ from zoneinfo import ZoneInfo
 
 from config import RESULTS_DIR, SEARCH_DIR, REPORTS_DIR
 from config.schema import (
-    Influencer, NameMentionRecord, SeedInfluencer, SourceResult,
+    Influencer, NameMentionRecord, SourceResult,
     PageResult, SubResult, RegionResult, ErroredConfig,
 )
 
@@ -65,7 +65,7 @@ class ResultAssembler:
     def save_run_report(
         self,
         run_dir: Path,
-        seeds: list[SeedInfluencer],
+        seeds: list[Influencer],
         errored_configs: list[ErroredConfig],
         name_records: list[NameMentionRecord] | None = None,
         report_path: Path | None = None,
@@ -106,7 +106,7 @@ class ResultAssembler:
         return f"{now.strftime('%Y-%m-%d')}_{hour_12}.{minute}{am_pm}_{region_label}"
 
     @staticmethod
-    def _write_seeds(run_dir: Path, seeds: list[SeedInfluencer]) -> None:
+    def _write_seeds(run_dir: Path, seeds: list[Influencer]) -> None:
         with open(run_dir / "seeds.json", "w") as f:
             json.dump(
                 [s.to_dict() for s in seeds],

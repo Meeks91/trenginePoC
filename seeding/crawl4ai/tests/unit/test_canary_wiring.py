@@ -14,7 +14,7 @@ from unittest.mock import patch, MagicMock
 
 import pytest
 
-from config.schema import Influencer, Platform, SeedInfluencer
+from config.schema import Influencer, Platform
 from config.seed_schema import SeedJob, SubCategory, Region, RegionCode, Difficulty
 from base_pipeline import BasePipelineRunner, GatherResult
 from services.validation.IngestionValidator import ValidationResult

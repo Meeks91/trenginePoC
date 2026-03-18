@@ -7,7 +7,7 @@ with mocked network (DDG search + crawl4ai) but real extraction services.
 
 Uses the gymfluencers_uk_fitness.html fixture as crawl output.
 Verifies that handles from multiple configs are correctly tagged, deduped,
-and merged into SeedInfluencer results.
+and merged into Influencer results.
 """
 
 import asyncio
@@ -164,7 +164,7 @@ class TestPhasePipelineFullFlow:
                 MockEnrichSvc.return_value = mock_enrich
 
                 inf_to_cat, name_tracker = asyncio.run(runner._extract_and_build_entries(pages, page_map, [job_fitness, job_food], []))
-                seeds = InfluencerMerger.to_seeds(inf_to_cat)
+                seeds = InfluencerMerger.filter_blocked(inf_to_cat)
 
         return {
             "url_bag": url_bag,
@@ -195,7 +195,7 @@ class TestPhasePipelineFullFlow:
         assert "https://gymfluencers.agency/influencers/" in pipeline_result["page_map"]
 
     def test_extraction_produces_seeds(self, pipeline_result):
-        """Phase 4 should produce SeedInfluencer results from real extraction."""
+        """Phase 4 should produce Influencer results from real extraction."""
         seeds = pipeline_result["seeds"]
         assert len(seeds) >= 1, "Expected at least 1 seed from gymfluencers fixture"
 
@@ -207,7 +207,7 @@ class TestPhasePipelineFullFlow:
                 if h:
                     all_handles.add(h.lower().lstrip("@").rstrip("."))
 
-        # The gymfluencers fixture has TikTok handles — after InfluencerMerger.to_seeds(),
+        # The gymfluencers fixture has TikTok handles — after filter_blocked(),
         # they should appear in tk_handle or ig_handle fields
         assert len(all_handles) >= 3, (
             f"Expected at least 3 handles in seeds from gymfluencers fixture, "

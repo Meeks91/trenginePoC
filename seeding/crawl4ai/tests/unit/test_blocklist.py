@@ -2,13 +2,13 @@
 Unit Tests: Shared Blocklist
 ==============================
 Tests for blocklist wiring, constant integrity, and end-to-end blocking
-at both injection sites: RegexHandleExtractor and InfluencerMerger.
+at both injection sites: RegexHandleExtractor and InfluencerMerger.filter_blocked().
 
 The blocklist is defined once in RegexHandleExtractor and must be used
 consistently at both sites.
 """
 
-from config.schema import Influencer, Platform, SeedInfluencer
+from config.schema import Influencer, Platform
 from services.extraction.RegexHandleExtractor import (
     _IGNORE_HANDLES,
     _IGNORE_SUBSTRINGS,
@@ -17,10 +17,8 @@ from services.extraction.RegexHandleExtractor import (
     is_blocked_handle,
     extract_handles_from_html,
 )
-from services.enrichment.InfluencerMerger import (
-    InfluencerMerger,
-    _is_blocked_seed,
-)
+from services.enrichment.InfluencerMerger import InfluencerMerger
+from unittest.mock import MagicMock
 
 
 # ══════════════════════════════════════════════════════════════════════
@@ -34,10 +32,11 @@ def test_regex_extractor_uses_shared_blocklist():
 
 
 def test_merger_uses_shared_blocklist():
-    """Every handle in _IGNORE_HANDLES must be blocked by _is_blocked_seed."""
+    """Every handle in _IGNORE_HANDLES must be blocked by filter_blocked."""
     for handle in list(_IGNORE_HANDLES)[:20]:
-        seed = SeedInfluencer(name="X", ig_handle=handle)
-        assert _is_blocked_seed(seed), f"{handle} should be blocked by merger"
+        influencer = Influencer(name="X", handles={Platform.Instagram: handle})
+        result = InfluencerMerger.filter_blocked([influencer])
+        assert len(result) == 0, f"{handle} should be blocked by merger"
 
 
 def test_both_sites_use_same_is_blocked_handle():
@@ -139,90 +138,73 @@ def test_regex_blocks_uncensored_substring():
 
 
 # ══════════════════════════════════════════════════════════════════════
-# Smoke: Post-dedup merger site
+# Smoke: Post-dedup merger site (filter_blocked)
 # ══════════════════════════════════════════════════════════════════════
 
 def test_merger_blocks_news_handle():
-    """foxnews handle → filtered out of seeds."""
+    """foxnews handle → filtered out by filter_blocked."""
     entries = [Influencer(name="Fox", handles={Platform.YouTube: "foxnews"}, categories_found_in=["AI"])]
-    seeds = InfluencerMerger.to_seeds(entries)
-    assert not any(s.yt_handle == "foxnews" for s in seeds), \
-        "foxnews should be blocked by merger"
+    result = InfluencerMerger.filter_blocked(entries)
+    assert len(result) == 0, "foxnews should be blocked by merger"
 
 
 def test_merger_blocks_uncensored_substring():
     """Substring filter also works at merger level."""
     entries = [Influencer(name="Pod", handles={Platform.YouTube: "uncensoredpod"}, categories_found_in=["AI"])]
-    seeds = InfluencerMerger.to_seeds(entries)
-    assert not any(s.yt_handle == "uncensoredpod" for s in seeds)
+    result = InfluencerMerger.filter_blocked(entries)
+    assert len(result) == 0
 
 
 def test_merger_allows_non_blocked():
     """Non-blocked handle passes through."""
     entries = [Influencer(name="Matt Wolfe", handles={Platform.YouTube: "mattwolfe"}, categories_found_in=["AI"])]
-    seeds = InfluencerMerger.to_seeds(entries)
-    assert any(s.yt_handle == "mattwolfe" for s in seeds), \
-        "mattwolfe should NOT be blocked"
+    result = InfluencerMerger.filter_blocked(entries)
+    assert len(result) == 1, "mattwolfe should NOT be blocked"
 
 
 def test_merger_blocks_on_any_platform():
-    """If ANY handle (ig/tk/yt) is blocked, the seed is removed."""
+    """If ANY handle (ig/tk/yt) is blocked, the entry is removed."""
     entries = [
         Influencer(name="X", handles={
             Platform.Instagram: "foxnews",
             Platform.YouTube: "legit_handle",
         }, categories_found_in=["AI"]),
     ]
-    seeds = InfluencerMerger.to_seeds(entries)
-    blocked_handles = {s.ig_handle for s in seeds} | {s.yt_handle for s in seeds}
-    assert "foxnews" not in blocked_handles
+    result = InfluencerMerger.filter_blocked(entries)
+    assert len(result) == 0, "Entry with any blocked handle should be removed"
 
 
 # ══════════════════════════════════════════════════════════════════════
-# Handleless seed filtering
+# Handleless influencer filtering
 # ══════════════════════════════════════════════════════════════════════
 
-from services.enrichment.InfluencerMerger import _has_any_handle
-from unittest.mock import MagicMock
-
-
-def test_handleless_seed_filtered_from_to_seeds():
-    """Name-only influencer (no handles) → excluded from seeds."""
+def test_handleless_influencer_filtered():
+    """Name-only influencer (no handles) → excluded by filter_blocked."""
     entries = [Influencer(name="Evelina Khanoyan", handles={}, categories_found_in=["AI"])]
-    seeds = InfluencerMerger.to_seeds(entries)
-    assert len(seeds) == 0, f"Expected 0 seeds for handleless entry, got {len(seeds)}"
+    result = InfluencerMerger.filter_blocked(entries)
+    assert len(result) == 0, f"Expected 0 results for handleless entry, got {len(result)}"
 
 
-def test_seed_with_handle_kept():
-    """Influencer with at least one handle → kept in seeds."""
+def test_influencer_with_handle_kept():
+    """Influencer with at least one handle → kept."""
     entries = [Influencer(name="Andrew Ng", handles={Platform.Instagram: "andrewyng"}, categories_found_in=["AI"])]
-    seeds = InfluencerMerger.to_seeds(entries)
-    assert len(seeds) == 1
-    assert seeds[0].ig_handle == "andrewyng"
+    result = InfluencerMerger.filter_blocked(entries)
+    assert len(result) == 1
+    assert result[0].ig_handle == "andrewyng"
 
 
-def test_has_any_handle_helper():
-    """_has_any_handle returns True only when at least one handle is set."""
-    assert not _has_any_handle(SeedInfluencer(name="X"))
-    assert _has_any_handle(SeedInfluencer(name="X", ig_handle="a"))
-    assert _has_any_handle(SeedInfluencer(name="X", tk_handle="b"))
-    assert _has_any_handle(SeedInfluencer(name="X", yt_handle="c"))
-    assert not _has_any_handle(SeedInfluencer(name="X", ig_handle="", tk_handle="", yt_handle=""))
-
-
-def test_to_seeds_calls_injected_handle_filter():
-    """Verify to_seeds() calls the injected handle_filter (DI wiring test)."""
+def test_filter_blocked_calls_injected_handle_filter():
+    """Verify filter_blocked() calls the injected handle_filter (DI wiring test)."""
     mock_filter = MagicMock(return_value=False)
     entries = [Influencer(name="X", handles={Platform.Instagram: "test_handle"}, categories_found_in=["AI"])]
-    seeds = InfluencerMerger.to_seeds(entries, handle_filter=mock_filter)
+    result = InfluencerMerger.filter_blocked(entries, handle_filter=mock_filter)
     assert mock_filter.called, "handle_filter should have been called"
-    assert len(seeds) == 1
+    assert len(result) == 1
 
 
-def test_to_seeds_injected_filter_can_block():
-    """Injected filter returning True → seed is blocked."""
+def test_filter_blocked_injected_filter_can_block():
+    """Injected filter returning True → entry is blocked."""
     always_block = lambda h: True
     entries = [Influencer(name="X", handles={Platform.Instagram: "anything"}, categories_found_in=["AI"])]
-    seeds = InfluencerMerger.to_seeds(entries, handle_filter=always_block)
-    assert len(seeds) == 0
-
+    result = InfluencerMerger.filter_blocked(entries, handle_filter=always_block)
+    assert len(result) == 0

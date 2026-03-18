@@ -88,7 +88,7 @@ seeding/crawl4ai/
 │   │   ├── NameResolver.py ··········· DDG name → handle resolution + confidence check
 │   │   └── prompts.py ················ LLM prompt template
 │   ├── enrichment/
-│   │   ├── InfluencerMerger.py ······ Identity merge + SeedInfluencer conversion
+│   │   ├── InfluencerMerger.py ······ Identity merge + blocked-handle filtering
 │   │   ├── NameToHandleService.py ··· DDG gate: cross-platform + deferred name resolution
 │   │   └── patterns.py ·············· Platform URL + @handle text regexes
 │   ├── audit/

@@ -5,7 +5,7 @@ Implements the Template Method pattern:
   2. _on_config_search_finished() — ABSTRACT, subclass-specific post-search
   3. _search_and_extract_influencers(jobs) — ABSTRACT, subclass-specific gather
   4. Deferred name resolution
-  5. Global dedup (InfluencerMerger.to_seeds)
+  5. Global dedup (InfluencerMerger.filter_blocked)
   6. Canary validation (IngestionValidator)
   7. Report generation (PipelineReporter)
   8. Save seeds + errored configs (ResultAssembler)
@@ -27,7 +27,7 @@ from config import (
     DDG_FAILURE_THRESHOLD_PCT, DDG_FAILURE_MIN_QUERIES, DDG_KILL_AFTER_N,
 )
 from config.schema import (
-    Influencer, SeedInfluencer, NameMentionRecord, PipelineStats, Platform,
+    Influencer, NameMentionRecord, PipelineStats, Platform,
     ErroredConfig,
 )
 
@@ -117,7 +117,7 @@ class BasePipelineRunner(abc.ABC):
 
     # ── Template Method ──────────────────────────────────────────────────
 
-    async def run(self, jobs: list[SeedJob]) -> list[SeedInfluencer]:
+    async def run(self, jobs: list[SeedJob]) -> list[Influencer]:
         """Run the full pipeline.
 
         1. Delegate to subclass for search+crawl+extract
@@ -128,7 +128,7 @@ class BasePipelineRunner(abc.ABC):
         6. Report (including errored configs)
         7. Save (seeds + errored_configs.json)
 
-        Returns: list of SeedInfluencer (DB-ready, deduped).
+        Returns: list of Influencer (DB-ready, deduped).
         """
         # Step 1: Subclass-specific search + crawl + extract
         gather = await self._search_and_extract_influencers(jobs)
@@ -165,7 +165,7 @@ class BasePipelineRunner(abc.ABC):
         merged = InfluencerMerger.merge(merged)
 
         # Step 6: Global dedup → seeds
-        seeds = InfluencerMerger.to_seeds(merged)
+        seeds = InfluencerMerger.filter_blocked(merged)
         logger.info(
             "  Global dedup: %d identities → %d seeds",
             len(merged), len(seeds),

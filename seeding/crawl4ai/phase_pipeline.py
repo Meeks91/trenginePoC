@@ -22,7 +22,7 @@ from dataclasses import dataclass, field
 
 from config.seed_schema import SeedJob
 from config import AUDIT_DIR, CURRENT_YEAR
-from config.schema import Influencer, SeedInfluencer, PageResult, Platform
+from config.schema import Influencer, PageResult, Platform
 
 from services.audit.AuditService import AuditLog
 from services.search.SearchService import SearchResults

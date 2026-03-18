@@ -92,7 +92,7 @@ class TestMergeCalledInRun:
             patch("base_pipeline.AuditLog"),
         ):
             mock_merger.merge.side_effect = lambda infs: infs
-            mock_merger.to_seeds.return_value = []
+            mock_merger.filter_blocked.side_effect = lambda infs, **kw: infs
 
             await runner.run([_make_job()])
 
