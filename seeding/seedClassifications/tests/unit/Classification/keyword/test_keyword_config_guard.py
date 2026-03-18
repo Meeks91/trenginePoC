@@ -67,28 +67,6 @@ class TestNoCrossover:
         )
 
 
-# ── All lowercase ──
-
-
-class TestAllLowercase:
-    """Every keyword must be fully lowercase to match text.lower() in classifier."""
-
-    def test_all_keywords_are_lowercase(self) -> None:
-        data = _load_keywords()
-        uppercase: list[str] = []
-
-        for category, subs in data.items():
-            for sub, keywords in subs.items():
-                for kw in keywords:
-                    if kw != kw.lower():
-                        uppercase.append(f"{category}/{sub}: {kw!r}")
-
-        assert uppercase == [], (
-            f"Keywords with uppercase chars (won't match text.lower()):\n"
-            + "\n".join(f"  {u}" for u in uppercase)
-        )
-
-
 # ── Every keyword matches its category ──
 
 

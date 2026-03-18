@@ -1,9 +1,4 @@
-"""
-EmbeddingSeedClassifier — Gemini text-embedding-004 based classification.
 
-Embeds input text and compares against pre-computed centroid vectors.
-Uses positive-negative gap for ranking, positive cosine for thresholding.
-"""
 
 from __future__ import annotations
 
@@ -28,7 +23,7 @@ class EmbeddingSeedClassifier:
         self,
         centroids: list[Centroid],
         embedder: Embedder,
-        threshold: float = DEFAULT_THRESHOLD,
+        threshold: float,
     ) -> None:
         self._centroids = centroids
         self._embedder = embedder
@@ -71,7 +66,7 @@ class EmbeddingSeedClassifier:
         cls,
         path: Path,
         embedder: Embedder,
-        threshold: float = DEFAULT_THRESHOLD,
+        threshold: float,
     ) -> "EmbeddingSeedClassifier":
         """Load centroids.json, embed all slugs, compute mean vectors."""
         with open(path, encoding="utf-8") as f:
@@ -89,7 +84,11 @@ class EmbeddingSeedClassifier:
                 negative_embedding=_mean_vector(neg_vecs),
             ))
 
-        return cls(centroids, embedder, threshold)
+        return cls(
+            centroids=centroids,
+            embedder=embedder,
+            threshold=threshold,
+        )
 
 
 # ── Internal ──

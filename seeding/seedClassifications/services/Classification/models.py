@@ -6,6 +6,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from enum import Enum
+from typing import Protocol
 
 
 class Language(str, Enum):
@@ -26,3 +27,9 @@ class ClassificationResult:
     sub: str
     confidence: float
     method: ClassificationMethod
+
+
+class SeedClassifier(Protocol):
+    """Abstraction for any classification strategy."""
+    def classify(self, text: str) -> ClassificationResult | None: ...
+

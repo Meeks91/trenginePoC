@@ -1,6 +1,4 @@
-"""
-GeminiEmbedder — wraps Gemini text-embedding-004 for vector embedding.
-"""
+
 
 from __future__ import annotations
 
@@ -11,7 +9,7 @@ EMBEDDING_MODEL = "models/gemini-embedding-2-preview"
 
 
 class GeminiEmbedder:
-    """Wraps google.generativeai embed_content for text-embedding-004."""
+
 
     def __init__(self, api_key: str) -> None:
         genai.configure(api_key=api_key)

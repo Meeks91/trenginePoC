@@ -1,33 +1,26 @@
 """
 SeedClassificationService — public orchestrator.
 
-Classifies text by trying keyword match first, then embedding fallback.
+Classifies text by trying each classifier in priority order.
 """
 
 from __future__ import annotations
 
-from services.Classification.embedding.EmbeddingSeedClassifier import (
-    EmbeddingSeedClassifier,
-)
-from services.Classification.keyword.KeywordSeedClassifier import (
-    KeywordSeedClassifier,
-)
-from services.Classification.models import ClassificationResult
+from services.Classification.models import ClassificationResult, SeedClassifier
 
 
 class SeedClassificationService:
-    """Keyword-first → embedding fallback classification."""
+    """Priority-ordered classification: first match wins."""
 
-    def __init__(
-        self,
-        keyword: KeywordSeedClassifier,
-        embedding: EmbeddingSeedClassifier,
-    ) -> None:
-        self._keyword = keyword
-        self._embedding = embedding
+    def __init__(self, classifiers: list[SeedClassifier]) -> None:
+        self._classifiers = classifiers
 
-    # ── API ──
+    # API:
 
     def classify(self, text: str) -> ClassificationResult | None:
-        """Classify text: keyword match (instant) or embedding fallback."""
-        return self._keyword.classify(text) or self._embedding.classify(text)
+        """Classify text using the first classifier that returns a result."""
+        for classifier in self._classifiers:
+            result = classifier.classify(text)
+            if result is not None:
+                return result
+        return None

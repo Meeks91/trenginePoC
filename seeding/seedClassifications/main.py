@@ -11,6 +11,7 @@ import sys
 from pathlib import Path
 
 from services.Classification.embedding.EmbeddingSeedClassifier import (
+    DEFAULT_THRESHOLD,
     EmbeddingSeedClassifier,
 )
 from services.Classification.embedding.GeminiEmbedder import GeminiEmbedder
@@ -33,14 +34,18 @@ def build_service(language: Language) -> SeedClassificationService:
         print("ERROR: GEMINI_API_KEY not set", file=sys.stderr)
         sys.exit(1)
 
-    keyword = KeywordSeedClassifier.from_locale(CONFIG_DIR, language)
+    keyword = KeywordSeedClassifier.from_locale(
+        config_dir=CONFIG_DIR,
+        language=language,
+    )
     embedder = GeminiEmbedder(api_key)
     embedding = EmbeddingSeedClassifier.from_centroids_json(
-        CONFIG_DIR / "centroids.json",
-        embedder,
+        path=CONFIG_DIR / "centroids.json",
+        embedder=embedder,
+        threshold=DEFAULT_THRESHOLD,
     )
 
-    return SeedClassificationService(keyword=keyword, embedding=embedding)
+    return SeedClassificationService(classifiers=[keyword, embedding])
 
 
 SAMPLE_TEXTS = [

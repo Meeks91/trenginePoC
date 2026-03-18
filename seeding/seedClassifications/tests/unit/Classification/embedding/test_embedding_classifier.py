@@ -107,7 +107,11 @@ class TestClassify:
     def test_selects_best_centroid_by_gap(self) -> None:
         """Text vector [1,0,0] → Calisthenics (gap=1) over Powerlifting (gap=-1)."""
         embedder = FakeEmbedder({"calisthenics text": [1.0, 0.0, 0.0]})
-        clf = EmbeddingSeedClassifier(CENTROIDS, embedder, threshold=0.5)
+        clf = EmbeddingSeedClassifier(
+            centroids=CENTROIDS,
+            embedder=embedder,
+            threshold=0.5,
+        )
         result = clf.classify("calisthenics text")
 
         assert result == ClassificationResult(
@@ -120,7 +124,11 @@ class TestClassify:
     def test_selects_powerlifting_for_matching_vector(self) -> None:
         """Text vector [0,1,0] → Powerlifting (gap=1) over Calisthenics (gap=-1)."""
         embedder = FakeEmbedder({"powerlifting text": [0.0, 1.0, 0.0]})
-        clf = EmbeddingSeedClassifier(CENTROIDS, embedder, threshold=0.5)
+        clf = EmbeddingSeedClassifier(
+            centroids=CENTROIDS,
+            embedder=embedder,
+            threshold=0.5,
+        )
         result = clf.classify("powerlifting text")
 
         assert result == ClassificationResult(
@@ -133,7 +141,11 @@ class TestClassify:
     def test_below_threshold_returns_none(self) -> None:
         """Text at [0,0,1] has 0 cosine to both positives — below threshold."""
         embedder = FakeEmbedder({"unrelated text": [0.0, 0.0, 1.0]})
-        clf = EmbeddingSeedClassifier(CENTROIDS, embedder, threshold=0.5)
+        clf = EmbeddingSeedClassifier(
+            centroids=CENTROIDS,
+            embedder=embedder,
+            threshold=0.5,
+        )
         result = clf.classify("unrelated text")
 
         assert result is None
@@ -141,7 +153,11 @@ class TestClassify:
     def test_confidence_equals_positive_cosine(self) -> None:
         vec = [0.8, 0.2, 0.0]
         embedder = FakeEmbedder({"mixed text": vec})
-        clf = EmbeddingSeedClassifier(CENTROIDS, embedder, threshold=0.0)
+        clf = EmbeddingSeedClassifier(
+            centroids=CENTROIDS,
+            embedder=embedder,
+            threshold=0.0,
+        )
         result = clf.classify("mixed text")
 
         expected_cos = _cosine_similarity(vec, CALISTHENICS_POS)
@@ -150,7 +166,11 @@ class TestClassify:
 
     def test_method_is_embedding(self) -> None:
         embedder = FakeEmbedder({"test": [1.0, 0.0, 0.0]})
-        clf = EmbeddingSeedClassifier(CENTROIDS, embedder, threshold=0.5)
+        clf = EmbeddingSeedClassifier(
+            centroids=CENTROIDS,
+            embedder=embedder,
+            threshold=0.5,
+        )
         result = clf.classify("test")
 
         assert result is not None
@@ -158,7 +178,11 @@ class TestClassify:
 
     def test_empty_centroids_returns_none(self) -> None:
         embedder = FakeEmbedder({"test": [1.0, 0.0, 0.0]})
-        clf = EmbeddingSeedClassifier([], embedder, threshold=0.5)
+        clf = EmbeddingSeedClassifier(
+            centroids=[],
+            embedder=embedder,
+            threshold=0.5,
+        )
         result = clf.classify("test")
 
         assert result is None
@@ -166,7 +190,11 @@ class TestClassify:
     def test_threshold_boundary_at_exactly_threshold(self) -> None:
         """At exactly the threshold, should still classify (>= not >)."""
         embedder = FakeEmbedder({"test": [1.0, 0.0, 0.0]})
-        clf = EmbeddingSeedClassifier(CENTROIDS, embedder, threshold=1.0)
+        clf = EmbeddingSeedClassifier(
+            centroids=CENTROIDS,
+            embedder=embedder,
+            threshold=1.0,
+        )
         result = clf.classify("test")
 
         assert result is not None
