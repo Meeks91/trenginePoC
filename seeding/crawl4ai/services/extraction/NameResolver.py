@@ -33,8 +33,7 @@ from config import (
 # Platform domains that indicate a social media profile
 _PLATFORM_DOMAINS = {"instagram.com", "tiktok.com", "youtube.com"}
 
-# DDG query template — site-scoped to force profile page results
-_QUERY_TEMPLATE = '{name} {category} site:instagram.com OR site:tiktok.com OR site:youtube.com'
+
 
 # Internal retry count for DDG queries (all retries handled here, callers don't retry)
 # 5 total attempts with fresh DDGS instances = robust against DDG non-determinism
@@ -45,6 +44,7 @@ def resolve_names_via_ddg(
     names: list[str],
     audit: AuditLog,
     *,
+    query_template: str,
     category: str = "Influencer",
     platform: str = "Instagram",
     max_results_per_query: int = 5,
@@ -75,7 +75,7 @@ def resolve_names_via_ddg(
     seen_handles: set[tuple[str, str]] = set()  # Avoid duplicates across names
 
     for i, name in enumerate(names, 1):
-        query = _QUERY_TEMPLATE.format(name=name, category=category)
+        query = query_template.format(name=name, category=category)
         results = _query_with_retry(query, max_results_per_query)
         handles_for_name = _extract_handles_from_results(results, candidate_name=name)
 

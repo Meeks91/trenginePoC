@@ -84,6 +84,13 @@ _GENERIC_BLOCKLIST = frozenset({
     "personal trainer", "fitness model", "fitness influencer",
     "fitness coach", "yoga teacher", "yoga instructor",
     "brand ambassador", "beauty guru",
+    # Section heading phrases (listicle headings now pass through clean_name)
+    "food influencers", "beauty influencers", "travel influencers",
+    "fitness influencers", "fashion influencers", "lifestyle influencers",
+    "tech influencers", "gaming influencers", "food bloggers",
+    "beauty bloggers", "travel bloggers", "fashion bloggers",
+    "food creators", "beauty creators", "travel creators",
+    "fitness creators", "fashion creators", "lifestyle creators",
 })
 
 # Non-content-creator celebrities — NOT Arnold, The Rock, Gordon Ramsay

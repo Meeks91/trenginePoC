@@ -148,6 +148,7 @@ class TestRedditDDGResolution:
         handles: list[ExtractedHandle] = resolve_names_via_ddg(
             extracted_names,
             audit,
+            query_template='{name} Instagram YouTube TikTok',
             category="Fitness",
         )
 

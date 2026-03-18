@@ -538,17 +538,10 @@ def count_handles(html: str) -> int:
 # Heading-Based Name Extraction
 # ══════════════════════════════════════════════════════════════════════
 
+from services.extraction.NameCleaner import NameCleaner
+
 # Markdown headings: ## or ### (skip # — usually page titles)
 _HEADING_RE = re.compile(r'^#{2,4}\s+(.+?)$', re.MULTILINE)
-
-# Headings that are section titles, not person names
-_HEADING_BLOCKLIST = re.compile(
-    r'(?:top\s*\d+|best\s*\d+|influencer|creator|blogger|'
-    r'food|travel|fitness|beauty|fashion|lifestyle|'
-    r'instagram|tiktok|youtube|london|uk|'
-    r'follow|subscribe|check out|related|also|more)',
-    re.IGNORECASE,
-)
 
 
 def assign_names_from_headings(
@@ -570,23 +563,13 @@ def assign_names_from_headings(
     if not page_text or not handles:
         return
 
-    # Build list of (position, heading_text) tuples
+    # Build list of (position, cleaned_name) tuples via NameCleaner
     headings: list[tuple[int, str]] = []
     for match in _HEADING_RE.finditer(page_text):
-        text = match.group(1).strip()
-        # Strip leading numbering: "1. Martha Stewart" → "Martha Stewart"
-        text = re.sub(r'^\d+[.)\-]\s*', '', text).strip()
-        # Skip section titles
-        if _HEADING_BLOCKLIST.search(text):
-            continue
-        # Should look like a name: 1-5 words, primarily alpha
-        words = text.split()
-        if len(words) < 1 or len(words) > 5:
-            continue
-        # At least one word should be capitalized (or all-caps)
-        if not any(w[0].isupper() for w in words if w):
-            continue
-        headings.append((match.start(), text))
+        raw = match.group(1).strip()
+        cleaned = NameCleaner.clean_name(raw)
+        if cleaned:
+            headings.append((match.start(), cleaned))
 
     if not headings:
         return

@@ -57,10 +57,12 @@ class NameToHandleService:
         self,
         audit: AuditLog,
         *,
+        nr_query_template: str = '{name} Instagram YouTube TikTok',
         ddgs: DDGS | None = None,
         delay_seconds: float = ENRICH_DELAY_SECONDS,
     ):
         self._audit = audit
+        self._nr_query_template = nr_query_template
         self._ddgs = ddgs or DDGS()
         self._delay = delay_seconds
         self.retries = 0    # Total retry attempts this run
@@ -237,6 +239,7 @@ class NameToHandleService:
             from services.extraction.NameResolver import resolve_names_via_ddg
             name_handles = resolve_names_via_ddg(
                 sorted(names_to_resolve), self._audit,
+                query_template=self._nr_query_template,
                 category=sub_name or "Influencer",
                 platform=platform,
             )
@@ -323,6 +326,7 @@ class NameToHandleService:
                 # Resolve single name via DDG
                 name_handles = resolve_names_via_ddg(
                     [name], self._audit,
+                    query_template=self._nr_query_template,
                     category=sub_name or "Influencer",
                     platform=platform,
                 )

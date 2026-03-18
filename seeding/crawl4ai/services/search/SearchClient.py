@@ -44,3 +44,11 @@ class SearchClient(Protocol):
     def search(self, job: SeedJob) -> list[RawSearchResult]:
         """Build queries for job, execute them, return raw results."""
         ...
+
+    def nr_query_template(self) -> str:
+        """Return the query template for Name Resolution DDG searches.
+
+        Template must accept `{name}` and optionally `{category}`.
+        Strict (Google) uses site: scoping; Open (DDG) uses platform keywords.
+        """
+        ...

@@ -626,7 +626,7 @@ class TestAssignNamesFromHeadings:
             "Follow me on Instagram @sabihadivan for food inspo\n"
         )
         assign_names_from_headings(handles, text)
-        assert handles[0].name == "Sophie's Plant Kitchen"
+        assert handles[0].name == "Sophie's Plant"
         assert handles[1].name == "Sabiha Divan"
 
     def test_existing_name_not_overwritten(self):

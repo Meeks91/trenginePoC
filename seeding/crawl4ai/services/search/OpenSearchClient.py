@@ -79,6 +79,10 @@ class OpenSearchClient:
 
         return results
 
+    def nr_query_template(self) -> str:
+        """DDG-optimized NR template — no site: scoping (DDG hates it)."""
+        return '{name} Instagram YouTube TikTok'
+
     # ── Internal ──
 
     def _build_queries(self, job: SeedJob) -> list[SearchQuery]:

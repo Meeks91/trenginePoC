@@ -177,7 +177,10 @@ class TestRedditNameResolutionMocked:
 
         audit = MagicMock()
         audit.log = MagicMock()
-        handles = resolve_names_via_ddg(names, audit)
+        handles = resolve_names_via_ddg(
+            names, audit,
+            query_template='{name} Instagram YouTube TikTok',
+        )
 
         handle_map = {h.handle.lower(): h.platform for h in handles}
         assert "jeffnippard" in handle_map
@@ -218,7 +221,10 @@ class TestRedditNameResolutionMocked:
 
         audit = MagicMock()
         audit.log = MagicMock()
-        handles = resolve_names_via_ddg(["Sean Nalewanyj"], audit)
+        handles = resolve_names_via_ddg(
+            ["Sean Nalewanyj"], audit,
+            query_template='{name} Instagram YouTube TikTok',
+        )
 
         assert len(handles) == 1
         assert handles[0].handle == "sean_nalewanyj"

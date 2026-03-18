@@ -100,7 +100,10 @@ class TestResolveNamesViaDdg:
         mock_ddgs_cls.return_value = mock_ddgs
 
         audit = _mock_audit()
-        handles = resolve_names_via_ddg(["Alex Leonidas"], audit)
+        handles = resolve_names_via_ddg(
+            ["Alex Leonidas"], audit,
+            query_template='{name} Instagram YouTube TikTok',
+        )
 
         assert len(handles) == 1
         assert handles[0].handle == "alexleonidas"
@@ -118,7 +121,10 @@ class TestResolveNamesViaDdg:
         mock_ddgs_cls.return_value = mock_ddgs
 
         audit = _mock_audit()
-        handles = resolve_names_via_ddg(["United States"], audit)
+        handles = resolve_names_via_ddg(
+            ["United States"], audit,
+            query_template='{name} Instagram YouTube TikTok',
+        )
         assert len(handles) == 0
 
     @patch("services.extraction.NameResolver.DDGS")
@@ -134,6 +140,7 @@ class TestResolveNamesViaDdg:
         audit = _mock_audit()
         handles = resolve_names_via_ddg(
             ["Jeff Nippard", "Jeffrey Nippard"], audit,
+            query_template='{name} Instagram YouTube TikTok',
         )
         ig_handles = [h for h in handles if h.handle == "jeffnippard"]
         assert len(ig_handles) == 1
@@ -148,7 +155,10 @@ class TestResolveNamesViaDdg:
         mock_ddgs_cls.return_value = mock_ddgs
 
         audit = _mock_audit()
-        resolve_names_via_ddg(["Name One", "Name Two", "Name Three"], audit)
+        resolve_names_via_ddg(
+            ["Name One", "Name Two", "Name Three"], audit,
+            query_template='{name} Instagram YouTube TikTok',
+        )
 
         # Should have exactly 2 rate-limit sleeps (between 3 queries)
         from config import SEARCH_DELAY_SECONDS
@@ -165,7 +175,10 @@ class TestResolveNamesViaDdg:
     @patch("services.extraction.NameResolver.time.sleep")
     def test_empty_names_returns_empty(self, mock_sleep, mock_ddgs_cls):
         audit = _mock_audit()
-        assert resolve_names_via_ddg([], audit) == []
+        assert resolve_names_via_ddg(
+            [], audit,
+            query_template='{name} Instagram YouTube TikTok',
+        ) == []
 
     @patch("services.extraction.NameResolver.DDGS")
     @patch("services.extraction.NameResolver.time.sleep")
@@ -177,7 +190,10 @@ class TestResolveNamesViaDdg:
 
         audit = _mock_audit()
         # Should not raise, just return empty
-        handles = resolve_names_via_ddg(["Some Name"], audit)
+        handles = resolve_names_via_ddg(
+            ["Some Name"], audit,
+            query_template='{name} Instagram YouTube TikTok',
+        )
         assert len(handles) == 0
 
     @patch("services.extraction.NameResolver.SEARCH_BACKEND", "brave,google")
@@ -194,7 +210,10 @@ class TestResolveNamesViaDdg:
         mock_ddgs_cls.return_value = mock_ddgs
 
         audit = _mock_audit()
-        resolve_names_via_ddg(["Test User"], audit)
+        resolve_names_via_ddg(
+            ["Test User"], audit,
+            query_template='{name} Instagram YouTube TikTok',
+        )
 
         _, kwargs = mock_ddgs.text.call_args
         assert kwargs["backend"] == "brave,google"
@@ -202,35 +221,77 @@ class TestResolveNamesViaDdg:
 
 
 # ══════════════════════════════════════════════════════════════════════
-# Site-scoped DDG queries (item 2a)
+# Polymorphic NR query templates (replaces site-scoped tests)
 # ══════════════════════════════════════════════════════════════════════
 
-class TestSiteScopedQueries:
-    """Verify DDG queries use site: prefix for better results."""
+class TestPolymorphicQueryTemplate:
+    """Verify SearchClient implementations return correct NR templates."""
 
-    def test_query_template_uses_site_prefix(self):
-        """Query template should include site:instagram.com etc."""
-        from services.extraction.NameResolver import _QUERY_TEMPLATE
-        assert "site:instagram.com" in _QUERY_TEMPLATE
-        assert "site:tiktok.com" in _QUERY_TEMPLATE
-        assert "site:youtube.com" in _QUERY_TEMPLATE
+    def test_strict_client_uses_site_scoping(self):
+        """StrictSearchClient template contains site: prefixes for Google."""
+        from services.search.StrictSearchClient import StrictSearchClient
+        from unittest.mock import MagicMock
+        client = StrictSearchClient(MagicMock(), api_key="fake")
+        template = client.nr_query_template()
+        assert "site:instagram.com" in template
+        assert "site:tiktok.com" in template
+        assert "site:youtube.com" in template
+        assert "{name}" in template
+
+    def test_open_client_uses_platform_keywords(self):
+        """OpenSearchClient template uses platform names (no site: scoping)."""
+        from services.search.OpenSearchClient import OpenSearchClient
+        from unittest.mock import MagicMock
+        client = OpenSearchClient(MagicMock())
+        template = client.nr_query_template()
+        assert "site:" not in template
+        assert "Instagram" in template
+        assert "YouTube" in template
+        assert "TikTok" in template
+        assert "{name}" in template
 
     @patch("services.extraction.NameResolver.NAME_DDG_MAX_RETRIES", 0)
     @patch("services.extraction.NameResolver.DDGS")
     @patch("services.extraction.NameResolver.time.sleep")
-    def test_query_contains_name_and_site(self, mock_sleep, mock_ddgs_cls):
-        """Actual DDG query should contain the name and site: prefixes."""
+    def test_injected_template_formats_query(self, mock_sleep, mock_ddgs_cls):
+        """query_template param is used to format the actual DDG query."""
         mock_ddgs = MagicMock()
         mock_ddgs.text.return_value = []
         mock_ddgs_cls.return_value = mock_ddgs
 
         audit = _mock_audit()
-        resolve_names_via_ddg(["Jeff Nippard"], audit, category="Fitness")
+        resolve_names_via_ddg(
+            ["Jeff Nippard"], audit,
+            query_template='{name} Instagram YouTube TikTok',
+            category="Fitness",
+        )
 
         call_args = mock_ddgs.text.call_args
         query = call_args.args[0] if call_args.args else call_args.kwargs.get("keywords", "")
         assert "Jeff Nippard" in query
-        assert "site:" in query
+        assert "Instagram" in query
+        assert "site:" not in query  # DDG template has no site:
+
+    @patch("services.extraction.NameResolver.NAME_DDG_MAX_RETRIES", 0)
+    @patch("services.extraction.NameResolver.DDGS")
+    @patch("services.extraction.NameResolver.time.sleep")
+    def test_strict_template_formats_with_site(self, mock_sleep, mock_ddgs_cls):
+        """When using strict template, query should contain site: prefixes."""
+        mock_ddgs = MagicMock()
+        mock_ddgs.text.return_value = []
+        mock_ddgs_cls.return_value = mock_ddgs
+
+        audit = _mock_audit()
+        resolve_names_via_ddg(
+            ["Jeff Nippard"], audit,
+            query_template='{name} {category} site:instagram.com OR site:tiktok.com OR site:youtube.com',
+            category="Fitness",
+        )
+
+        call_args = mock_ddgs.text.call_args
+        query = call_args.args[0] if call_args.args else call_args.kwargs.get("keywords", "")
+        assert "Jeff Nippard" in query
+        assert "site:instagram.com" in query
 
 
 # ══════════════════════════════════════════════════════════════════════

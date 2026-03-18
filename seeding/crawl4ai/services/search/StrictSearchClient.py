@@ -86,6 +86,10 @@ class StrictSearchClient:
 
         return results
 
+    def nr_query_template(self) -> str:
+        """Google-optimized NR template — site: scoping works on Serper."""
+        return '{name} {category} site:instagram.com OR site:tiktok.com OR site:youtube.com'
+
     # ── Internal ──
 
     def _build_queries(self, job: SeedJob) -> list[SearchQuery]:
