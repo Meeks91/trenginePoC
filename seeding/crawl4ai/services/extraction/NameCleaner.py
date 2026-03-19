@@ -48,6 +48,10 @@ _COUNTRY_BLOCKLIST = frozenset({
     "united states", "united kingdom", "south africa",
     "new zealand", "saudi arabia", "sri lanka",
     "north america", "south america", "latin america",
+    # Nationality adjectives (two-word forms that pass _NAME_RE)
+    "sri lankan", "south korean", "saudi arabian", "costa rican",
+    "cape verdean", "saint lucian", "central african", "papua new",
+    "american new",
 })
 
 # News orgs, publications — not people
@@ -82,12 +86,13 @@ _GENERIC_BLOCKLIST = frozenset({
     "continue reading", "related articles",
     "start your", "make money", "join our", "get email",
     "learn how", "how to", "find local", "about starting",
+    "start free", "plan now", "get your", "double your",
     # Generic job titles / roles
     "personal trainer", "fitness model", "fitness influencer",
     "fitness coach", "yoga teacher", "yoga instructor",
     "brand ambassador", "beauty guru",
     "managing director", "marketing agency", "award winning",
-    "world champion",
+    "world champion", "powerlifting coach",
     # Section heading phrases (listicle headings now pass through clean_name)
     "food influencers", "beauty influencers", "travel influencers",
     "fitness influencers", "fashion influencers", "lifestyle influencers",
@@ -106,19 +111,30 @@ _GENERIC_BLOCKLIST = frozenset({
     "highly rated", "pro tip", "case studies", "final thoughts",
     "have questions", "frequently asked", "use ai-powered",
     "real estate", "black friday",
+    "maximum storage", "check audience", "primary platform",
+    "ai-powered profile", "domain authority", "overall quality",
+    "digital marketing", "gym marketing", "marketing agencies",
     # Site chrome / aggregator brands
     "favikon democratizing", "favikon built",
     "social snowball", "social shepherd", "sprout social",
     "imagen insights", "zen planner", "feedspot reader",
+    "la redoute", "virgin voyages",
     # Cookie consent / privacy banners
     "necessaryalways active", "analytics analytical",
     "performance performance", "strictly necessary",
     "refund policy", "influence operations", "supporting information",
-    # Scraper artifacts
+    # Scraper artifacts / partial phrases
     "description the", "yoga with",
     "posts coachniche", "posts athleteniche", "posts personal",
     "functional functional", "south african",
     "second test", "second bio", "male request",
+    "agencies top", "agencies in", "video how", "why it",
+    "business ideas", "weight loss", "bikini body",
+    "insurance catch", "two months", "places ashes",
+    "have been", "photos will", "have astonishing",
+    "demo and", "questions thread", "study the",
+    # Single-word handles that pass as names
+    "favikon_",
 })
 
 # Non-content-creator celebrities — NOT Arnold, The Rock, Gordon Ramsay
