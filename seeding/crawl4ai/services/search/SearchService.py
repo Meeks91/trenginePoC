@@ -179,13 +179,14 @@ class SearchService:
 
     @staticmethod
     def _is_relevant(title: str, url: str, job: SeedJob) -> bool:
-        """URL is relevant if ANY of these hold (OR logic):
+        """URL is relevant if it passes two gates (AND logic):
 
-        1. Domain is reddit.com → always relevant
-        2. Title contains a mandatory word (influencer, top, best, ...)
-        3. URL path contains a configured slug (fitness, workout, ...)
-        4. Title contains the sub_name (e.g. "Fitness", "AI")
-        5. Title contains the category_key (e.g. "FITNESS", "TECH")
+        1. Domain is reddit.com → always relevant (bypass both gates)
+        2. URL must contain a category signal (slug, sub_name, or category_key)
+        3. Title must contain a mandatory word (influencer, top, best, ...)
+
+        This prevents off-category listicles (e.g. beauty pages on
+        fitness-listed domains) from leaking through.
         """
         try:
             domain = urlparse(url).netloc.lower().removeprefix("www.")
@@ -194,22 +195,20 @@ class SearchService:
             if any(rd in domain for rd in _REDDIT_DOMAINS):
                 return True
 
+            url_lower = url.lower()
+            if not _has_category_signal_in_url(url_lower, job):
+                return False
+
             title_lower = title.lower()
-
-            if any(w in title_lower for w in _MANDATORY_WORDS):
-                return True
-
-            if job.sub.strict_slugs:
-                path = urlparse(url).path.lower()
-                if any(slug in path for slug in job.sub.strict_slugs):
-                    return True
-
-            if job.sub.sub_name.lower() in title_lower:
-                return True
-
-            if job.category_key.lower() in title_lower:
-                return True
-
-            return False
+            return any(w in title_lower for w in _MANDATORY_WORDS)
         except Exception:
             return False
+
+
+def _has_category_signal_in_url(url_lower: str, job: SeedJob) -> bool:
+    """Check if the URL contains any category signal: slug, sub_name, or category_key."""
+    if job.sub.sub_name.lower() in url_lower:
+        return True
+    if job.category_key.lower() in url_lower:
+        return True
+    return any(slug in url_lower for slug in job.sub.strict_slugs)

@@ -11,7 +11,7 @@
       "regex"
     ],
     "source_urls": [
-      "http://127.0.0.1:54598/gymfluencers_uk_fitness.html"
+      "http://127.0.0.1:59364/gymfluencers_uk_fitness.html"
     ],
     "was_searched": false,
     "resolved_handle": "",
@@ -29,7 +29,7 @@
       "regex"
     ],
     "source_urls": [
-      "http://127.0.0.1:54598/gymfluencers_uk_fitness.html"
+      "http://127.0.0.1:59364/gymfluencers_uk_fitness.html"
     ],
     "was_searched": false,
     "resolved_handle": "",
@@ -47,7 +47,7 @@
       "regex"
     ],
     "source_urls": [
-      "http://127.0.0.1:54598/gymfluencers_uk_fitness.html"
+      "http://127.0.0.1:59364/gymfluencers_uk_fitness.html"
     ],
     "was_searched": false,
     "resolved_handle": "",
@@ -65,7 +65,7 @@
       "regex"
     ],
     "source_urls": [
-      "http://127.0.0.1:54598/gymfluencers_uk_fitness.html"
+      "http://127.0.0.1:59364/gymfluencers_uk_fitness.html"
     ],
     "was_searched": false,
     "resolved_handle": "",
@@ -83,7 +83,7 @@
       "regex"
     ],
     "source_urls": [
-      "http://127.0.0.1:54598/gymfluencers_uk_fitness.html"
+      "http://127.0.0.1:59364/gymfluencers_uk_fitness.html"
     ],
     "was_searched": false,
     "resolved_handle": "",
@@ -101,7 +101,7 @@
       "regex"
     ],
     "source_urls": [
-      "http://127.0.0.1:54598/gymfluencers_uk_fitness.html"
+      "http://127.0.0.1:59364/gymfluencers_uk_fitness.html"
     ],
     "was_searched": false,
     "resolved_handle": "",
@@ -117,7 +117,7 @@
       "non-reddit"
     ],
     "source_urls": [
-      "http://127.0.0.1:54598/gymfluencers_uk_fitness.html"
+      "http://127.0.0.1:59364/gymfluencers_uk_fitness.html"
     ],
     "was_searched": false,
     "resolved_handle": "",
@@ -135,7 +135,7 @@
       "regex"
     ],
     "source_urls": [
-      "http://127.0.0.1:54598/gymfluencers_uk_fitness.html"
+      "http://127.0.0.1:59364/gymfluencers_uk_fitness.html"
     ],
     "was_searched": false,
     "resolved_handle": "",
@@ -153,7 +153,7 @@
       "regex"
     ],
     "source_urls": [
-      "http://127.0.0.1:54598/gymfluencers_uk_fitness.html"
+      "http://127.0.0.1:59364/gymfluencers_uk_fitness.html"
     ],
     "was_searched": false,
     "resolved_handle": "",
@@ -171,7 +171,7 @@
       "regex"
     ],
     "source_urls": [
-      "http://127.0.0.1:54598/gymfluencers_uk_fitness.html"
+      "http://127.0.0.1:59364/gymfluencers_uk_fitness.html"
     ],
     "was_searched": false,
     "resolved_handle": "",
@@ -189,7 +189,7 @@
       "regex"
     ],
     "source_urls": [
-      "http://127.0.0.1:54598/gymfluencers_uk_fitness.html"
+      "http://127.0.0.1:59364/gymfluencers_uk_fitness.html"
     ],
     "was_searched": false,
     "resolved_handle": "",
@@ -205,7 +205,23 @@
       "non-reddit"
     ],
     "source_urls": [
-      "http://127.0.0.1:54598/gymfluencers_uk_fitness.html"
+      "http://127.0.0.1:59364/gymfluencers_uk_fitness.html"
+    ],
+    "was_searched": false,
+    "resolved_handle": "",
+    "resolved_platform": ""
+  },
+  {
+    "canonical": "Save My",
+    "variants": [
+      "Save My"
+    ],
+    "mention_count": 1,
+    "source_types": [
+      "non-reddit"
+    ],
+    "source_urls": [
+      "http://127.0.0.1:59364/gymfluencers_uk_fitness.html"
     ],
     "was_searched": false,
     "resolved_handle": "",
@@ -221,7 +237,7 @@
       "non-reddit"
     ],
     "source_urls": [
-      "http://127.0.0.1:54598/gymfluencers_uk_fitness.html"
+      "http://127.0.0.1:59364/gymfluencers_uk_fitness.html"
     ],
     "was_searched": false,
     "resolved_handle": "",
@@ -237,7 +253,7 @@
       "non-reddit"
     ],
     "source_urls": [
-      "http://127.0.0.1:54598/gymfluencers_uk_fitness.html"
+      "http://127.0.0.1:59364/gymfluencers_uk_fitness.html"
     ],
     "was_searched": false,
     "resolved_handle": "",
@@ -253,7 +269,55 @@
       "non-reddit"
     ],
     "source_urls": [
-      "http://127.0.0.1:54598/gymfluencers_uk_fitness.html"
+      "http://127.0.0.1:59364/gymfluencers_uk_fitness.html"
+    ],
+    "was_searched": false,
+    "resolved_handle": "",
+    "resolved_platform": ""
+  },
+  {
+    "canonical": "Study Your",
+    "variants": [
+      "Study Your"
+    ],
+    "mention_count": 1,
+    "source_types": [
+      "non-reddit"
+    ],
+    "source_urls": [
+      "http://127.0.0.1:59364/gymfluencers_uk_fitness.html"
+    ],
+    "was_searched": false,
+    "resolved_handle": "",
+    "resolved_platform": ""
+  },
+  {
+    "canonical": "Target Audience",
+    "variants": [
+      "Target Audience"
+    ],
+    "mention_count": 1,
+    "source_types": [
+      "non-reddit"
+    ],
+    "source_urls": [
+      "http://127.0.0.1:59364/gymfluencers_uk_fitness.html"
+    ],
+    "was_searched": false,
+    "resolved_handle": "",
+    "resolved_platform": ""
+  },
+  {
+    "canonical": "Determine Your",
+    "variants": [
+      "Determine Your"
+    ],
+    "mention_count": 1,
+    "source_types": [
+      "non-reddit"
+    ],
+    "source_urls": [
+      "http://127.0.0.1:59364/gymfluencers_uk_fitness.html"
     ],
     "was_searched": false,
     "resolved_handle": "",
@@ -269,7 +333,7 @@
       "non-reddit"
     ],
     "source_urls": [
-      "http://127.0.0.1:54598/gymfluencers_uk_fitness.html"
+      "http://127.0.0.1:59364/gymfluencers_uk_fitness.html"
     ],
     "was_searched": false,
     "resolved_handle": "",

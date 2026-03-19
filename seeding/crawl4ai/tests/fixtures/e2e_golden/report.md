@@ -39,7 +39,7 @@
 | **Overall** | **1/3** | **33%** |
 
 ## Name Mentions
-**16 names** tracked across all pages
+**20 names** tracked across all pages
 
 | # | Name | Mentions | Source | URLs | Resolved? | Handle |
 |---|------|----------|--------|------|-----------|--------|
@@ -55,10 +55,14 @@
 | 10 | Alex Beattie | 3 | llm, non-reddit, regex | 1 | ❌ |
 | 11 | Emma Storey-Gordon | 3 | llm, non-reddit, regex | 1 | ❌ |
 | 12 | The Body | 2 | non-reddit | 1 | ❌ |
-| 13 | Day Plan | 1 | non-reddit | 1 | ❌ |
-| 14 | The Marine | 1 | non-reddit | 1 | ❌ |
-| 15 | The Glow | 1 | non-reddit | 1 | ❌ |
-| 16 | To Wrap | 1 | non-reddit | 1 | ❌ |
+| 13 | Save My | 1 | non-reddit | 1 | ❌ |
+| 14 | Day Plan | 1 | non-reddit | 1 | ❌ |
+| 15 | The Marine | 1 | non-reddit | 1 | ❌ |
+| 16 | The Glow | 1 | non-reddit | 1 | ❌ |
+| 17 | Study Your | 1 | non-reddit | 1 | ❌ |
+| 18 | Target Audience | 1 | non-reddit | 1 | ❌ |
+| 19 | Determine Your | 1 | non-reddit | 1 | ❌ |
+| 20 | To Wrap | 1 | non-reddit | 1 | ❌ |
 
 ## Token Usage
 | Metric | Value |

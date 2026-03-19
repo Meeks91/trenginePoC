@@ -1,7 +1,9 @@
 """
 Unit Tests: SearchService
 ===========================
-Verifies ad domain filtering, URL relevance filtering, dedup, and MAX_URLS_PER_JOB cap.
+Verifies ad domain filtering, URL relevance filtering (AND-gated: URL must
+contain category signal + title must have mandatory word), dedup, and
+MAX_URLS_PER_JOB cap.
 discover_urls() tested with mocked SearchClient to avoid real network calls.
 """
 
@@ -125,9 +127,9 @@ def test_handles_malformed_urls():
 def test_discover_urls_dedup(tmp_path):
     """Duplicate URLs across queries should be deduplicated."""
     raw = _make_raw_results([
-        "https://favikon.com/ai-influencers",
-        "https://modash.io/ai-creators",
-        "https://favikon.com/ai-influencers",
+        "https://favikon.com/fitness-influencers",
+        "https://modash.io/fitness-creators",
+        "https://favikon.com/fitness-influencers",
     ])
     svc = _make_svc(tmp_path, raw)
     job = _make_job()
@@ -142,10 +144,10 @@ def test_discover_urls_dedup(tmp_path):
 def test_discover_urls_ad_filter(tmp_path):
     """Ad domain URLs should be filtered out."""
     raw = _make_raw_results([
-        "https://favikon.com/ai-influencers",
+        "https://favikon.com/fitness-influencers",
         "https://bing.com/aclick/redirect",
         "https://googleadservices.com/pagead",
-        "https://modash.io/ai-creators",
+        "https://modash.io/fitness-creators",
     ])
     svc = _make_svc(tmp_path, raw)
     job = _make_job()
@@ -155,8 +157,8 @@ def test_discover_urls_ad_filter(tmp_path):
     urls = [u for u, _ in results.url_query_pairs]
     assert "https://bing.com/aclick/redirect" not in urls
     assert "https://googleadservices.com/pagead" not in urls
-    assert "https://favikon.com/ai-influencers" in urls
-    assert "https://modash.io/ai-creators" in urls
+    assert "https://favikon.com/fitness-influencers" in urls
+    assert "https://modash.io/fitness-creators" in urls
 
 
 def test_discover_urls_max_cap(tmp_path):
@@ -198,7 +200,7 @@ def test_discover_urls_audit_logging(tmp_path):
 def test_discover_urls_platform_url_extraction(tmp_path):
     """Platform URLs (instagram.com, tiktok.com) should extract handles directly."""
     raw = _make_raw_results([
-        "https://favikon.com/list",
+        "https://favikon.com/fitness-list",
         "https://instagram.com/kayla_itsines",
         "https://tiktok.com/@charlidamelio",
     ])
@@ -210,7 +212,7 @@ def test_discover_urls_platform_url_extraction(tmp_path):
     urls = [u for u, _ in results.url_query_pairs]
     assert "https://instagram.com/kayla_itsines" not in urls, "Platform URL should not be in url_query_pairs"
     assert "https://tiktok.com/@charlidamelio" not in urls, "Platform URL should not be in url_query_pairs"
-    assert "https://favikon.com/list" in urls
+    assert "https://favikon.com/fitness-list" in urls
     assert len(results.direct_handles) == 2, f"Expected 2 direct handles, got {len(results.direct_handles)}"
 
 
@@ -239,18 +241,18 @@ def test_client_receives_seed_job(tmp_path):
     client.search.assert_called_once_with(job)
 
 
-# ── _is_relevant() OR logic ──
+# ── _is_relevant() AND-gated logic ──
 
-def test_relevant_passes_mandatory_word_in_title():
-    """Title with mandatory word (influencer) → relevant."""
+def test_relevant_passes_mandatory_word_and_category_in_url():
+    """Title with mandatory word + URL with category signal → relevant."""
     job = _make_job()
-    assert SearchService._is_relevant("Top Fitness Influencers 2026", "https://favikon.com/page", job) is True
+    assert SearchService._is_relevant("Top Fitness Influencers 2026", "https://favikon.com/fitness-page", job) is True
 
 
-def test_relevant_passes_favourite_in_title():
-    """Title with 'favourite' → relevant (expanded mandatory word)."""
-    job = _make_job()
-    assert SearchService._is_relevant("Our Favourite Gym Channels", "https://example.com/page", job) is True
+def test_relevant_passes_favourite_in_title_with_slug_in_url():
+    """Title with 'favourite' + slug in URL → relevant."""
+    job = _make_job(strict_slugs=["gym"])
+    assert SearchService._is_relevant("Our Favourite Gym Channels", "https://example.com/gym-page", job) is True
 
 
 def test_relevant_rejects_generic_title_no_signals():
@@ -265,10 +267,10 @@ def test_relevant_passes_reddit_always():
     assert SearchService._is_relevant("Random thread about nothing", "https://www.reddit.com/r/random", job) is True
 
 
-def test_relevant_passes_slug_in_url_path():
-    """URL path containing a configured slug → relevant (even without mandatory title word)."""
+def test_relevant_rejects_slug_in_url_but_no_mandatory_word():
+    """URL with slug but title without mandatory word → rejected (AND logic)."""
     job = _make_job(strict_slugs=["fitness", "workout"])
-    assert SearchService._is_relevant("Some Page About Gyms", "https://example.com/blog/fitness-tips", job) is True
+    assert SearchService._is_relevant("Some Page About Gyms", "https://example.com/blog/fitness-tips", job) is False
 
 
 def test_relevant_rejects_slug_not_in_path():
@@ -277,23 +279,27 @@ def test_relevant_rejects_slug_not_in_path():
     assert SearchService._is_relevant("Some Random Page", "https://example.com/blog/cooking", job) is False
 
 
-def test_relevant_passes_sub_name_in_title():
-    """Title containing sub_name → relevant (even without mandatory word or slug)."""
+def test_relevant_passes_sub_name_in_url_with_accidental_mandatory_match():
+    """'calisthenics' contains 'list' (mandatory word) as substring → passes both gates.
+
+    This is intentional: the URL has a category signal (calisthenics slug)
+    and the title substring-matches a mandatory word.
+    """
     job = _make_job(sub_name="Calisthenics", strict_slugs=["calisthenics"])
-    assert SearchService._is_relevant("Calisthenics YouTubers You Need to Follow", "https://example.com/page", job) is True
+    assert SearchService._is_relevant("Calisthenics YouTubers You Need to Follow", "https://example.com/calisthenics-page", job) is True
 
 
-def test_relevant_passes_category_key_in_title():
-    """Title containing category_key → relevant."""
+def test_relevant_passes_category_key_in_url_and_mandatory_in_title():
+    """URL with category signal + title with mandatory word → relevant."""
     job = _make_job(category_key="FITNESS")
-    assert SearchService._is_relevant("Getting Into Fitness This Year", "https://example.com/blog/random", job) is True
+    assert SearchService._is_relevant("Top Fitness Accounts This Year", "https://example.com/blog/fitness", job) is True
 
 
-def test_relevant_passes_empty_slugs():
-    """When no slugs configured, slug check is skipped — still needs other signal."""
+def test_relevant_empty_slugs_still_matches_sub_name_in_url():
+    """No strict_slugs but sub_name in URL + mandatory word in title → relevant."""
     job = _make_job(strict_slugs=[], sub_name="Yoga", category_key="WELLNESS")
     assert SearchService._is_relevant("Random Page Title", "https://example.com/page", job) is False
-    assert SearchService._is_relevant("Best Yoga Channels", "https://example.com/page", job) is True
+    assert SearchService._is_relevant("Best Yoga Channels", "https://example.com/yoga-page", job) is True
 
 
 def test_relevant_rejects_irrelevant_domain_support_google():
@@ -327,13 +333,61 @@ def test_relevant_rejects_irrelevant_domain_tophat():
 
 
 def test_relevant_still_accepts_legit_domain_with_mandatory_word():
-    """Legit domains with mandatory words should still pass."""
+    """Legit domains with mandatory words and category in URL should pass."""
     job = _make_job()
     assert SearchService._is_relevant(
         "Top Fitness Influencers 2026",
         "https://favikon.com/blog/fitness-influencers",
         job,
     ) is True
+
+
+def test_relevant_rejects_mandatory_word_only_no_category_in_url():
+    """Title with mandatory word but no category signal in URL → rejected."""
+    job = _make_job(strict_slugs=["fitness", "workout", "gym"])
+    assert SearchService._is_relevant(
+        "Top Influencers to Follow",
+        "https://example.com/blog/best-creators/",
+        job,
+    ) is False
+
+
+def test_relevant_rejects_off_category_listicle():
+    """Beauty listicle on a known FITNESS source — no fitness slug in URL.
+
+    This is the monetmcmichael scenario: adparlor.com and socialbook.io
+    are FITNESS known sources but these specific pages are about beauty/general.
+    """
+    job = _make_job(strict_slugs=["fitness", "workout", "gym"])
+    assert SearchService._is_relevant(
+        "Top Beauty Influencers to Follow in 2025",
+        "https://adparlor.com/blog/top-beauty-influencers-to-follow-in-2025/",
+        job,
+    ) is False
+    assert SearchService._is_relevant(
+        "Top 20 African American TikTok Influencers to Follow in 2025",
+        "https://socialbook.io/blog/top-20-african-american-tiktok-influencers-to-follow-in-2025/",
+        job,
+    ) is False
+
+
+def test_relevant_rejects_generic_influencer_pages():
+    """Generic influencer listicles with no category in URL → rejected.
+
+    theinfluenceroom.com/best-influencers-london-2025/ has 'influencer'
+    in title but no fitness signal in URL.
+    """
+    job = _make_job(strict_slugs=["fitness", "workout", "gym"])
+    assert SearchService._is_relevant(
+        "Best Influencers London 2025",
+        "https://www.theinfluenceroom.com/best-influencers-london-2025/",
+        job,
+    ) is False
+    assert SearchService._is_relevant(
+        "Best Influencers",
+        "https://www.theinfluenceroom.com/tag/best-influencers/",
+        job,
+    ) is False
 
 
 def test_discover_urls_blocks_irrelevant_domains(tmp_path):
@@ -359,12 +413,13 @@ def test_discover_urls_blocks_irrelevant_domains(tmp_path):
 
 
 def test_discover_urls_relevance_filter_integration(tmp_path):
-    """End-to-end: relevance filter rejects pages with no signals, accepts relevant ones."""
+    """End-to-end: AND-gated relevance filter in discover_urls."""
     raw = [
         _make_raw("https://favikon.com/top-fitness-influencers", "Top Fitness Influencers"),
         _make_raw("https://example.com/cooking-tips", "Healthy Cooking Tips 2026"),
         _make_raw("https://reddit.com/r/fitness/top", "Random fitness thread"),
         _make_raw("https://example.com/blog/fitness-guide", "Complete Guide to Getting Started"),
+        _make_raw("https://adparlor.com/blog/top-beauty-influencers/", "Top Beauty Influencers"),
     ]
     audit = AuditLog(tmp_path, "test")
     client = _make_mock_client(raw)
@@ -374,10 +429,11 @@ def test_discover_urls_relevance_filter_integration(tmp_path):
     results = svc.discover_urls(job)
 
     urls = [u for u, _ in results.url_query_pairs]
-    assert "https://favikon.com/top-fitness-influencers" in urls, "Mandatory word match should pass"
-    assert "https://example.com/cooking-tips" not in urls, "No relevance signals should be rejected"
+    assert "https://favikon.com/top-fitness-influencers" in urls, "Category in URL + mandatory word → pass"
+    assert "https://example.com/cooking-tips" not in urls, "No category signal → rejected"
     assert "https://reddit.com/r/fitness/top" in urls, "Reddit always passes"
-    assert "https://example.com/blog/fitness-guide" in urls, "Slug match in URL should pass"
+    assert "https://example.com/blog/fitness-guide" not in urls, "Slug in URL but no mandatory word → rejected"
+    assert "https://adparlor.com/blog/top-beauty-influencers/" not in urls, "Off-category listicle → rejected"
 
 
 # ── Pipeline Cache DI Guard ──
