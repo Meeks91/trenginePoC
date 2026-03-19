@@ -20,6 +20,7 @@ if TYPE_CHECKING:
 
 from config.schema import Influencer, PageResult, Platform
 from services.audit.AuditService import AuditLog
+from services.extraction.NameCleaner import NameCleaner
 from services.extraction.RegexHandleExtractor import (
     extract_handles_from_html,
     extract_youtube_channel_ids,
@@ -304,8 +305,9 @@ class HandleExtractionService:
             url_handle_count = 0
             naked_count = 0
             for h in handles:
+                cleaned_name = NameCleaner.clean_name(h.name) if h.name else None
                 regex_handles.append(Influencer(
-                    name=h.name or h.handle,
+                    name=cleaned_name or h.handle,
                     handles=_to_handles(h.handle, h.platform),
                     source_urls={page.url},
                     extraction_methods={"regex"},

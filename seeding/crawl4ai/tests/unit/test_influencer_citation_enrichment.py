@@ -17,6 +17,41 @@ from config.schema import Influencer, Platform, SubResult, SourceResult, RegionR
 
 
 # ══════════════════════════════════════════════════════════════════════
+# __post_init__ Name Cleaning
+# ══════════════════════════════════════════════════════════════════════
+
+class TestInfluencerPostInitCleaning:
+    """Influencer.__post_init__ must call NameCleaner.clean_name() on construction."""
+
+    def test_markdown_bold_stripped(self):
+        inf = Influencer(name="**Massy Arias**", handles={Platform.Instagram: "massy.arias"})
+        assert inf.name == "Massy Arias"
+
+    def test_markdown_link_stripped(self):
+        inf = Influencer(name="[ Massy Arias ](https://example.com)", handles={Platform.Instagram: "massy.arias"})
+        assert "[" not in inf.name
+        assert "(" not in inf.name
+
+    def test_numbered_prefix_stripped(self):
+        inf = Influencer(name="6. Massy Arias", handles={Platform.Instagram: "massy.arias"})
+        assert inf.name == "Massy Arias"
+
+    def test_clean_name_passes_through(self):
+        inf = Influencer(name="Jeff Nippard", handles={Platform.YouTube: "jeffnippard"})
+        assert inf.name == "Jeff Nippard"
+
+    def test_blocklist_name_not_overwritten(self):
+        """Blocklist names still construct (clean_name returns None → keeps original)."""
+        inf = Influencer(name="Weight Loss", handles={Platform.Instagram: "test"})
+        assert inf.name == "Weight Loss"
+
+    def test_bare_handle_name_kept(self):
+        """Handle-as-name survives __post_init__ (clean_name returns None → keeps original)."""
+        inf = Influencer(name="kayla_itsines", handles={Platform.Instagram: "kayla_itsines"})
+        assert inf.name == "kayla_itsines"
+
+
+# ══════════════════════════════════════════════════════════════════════
 # Model Tests
 # ══════════════════════════════════════════════════════════════════════
 

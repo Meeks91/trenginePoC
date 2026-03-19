@@ -234,14 +234,16 @@ class TestInstagramEmbedVariations:
         assert "fitnesshero99" in handles
 
     def test_embed_with_pipe_in_name(self):
-        """Name with pipe separator: 'Name | Brand (@handle)' → name cleaned."""
+        """Name with pipe separator: 'Sarah | FitLife (@handle)' → pipe-stripped
+        to 'Sarah' which is a single word — NameCleaner rejects (not a person name)."""
         html = """
         <p>A post shared by Sarah | FitLife (@sarahfitlife)</p>
         """
         results = extract_handles_from_html(html)
         by_handle = {r.handle.lower(): r for r in results}
         assert "sarahfitlife" in by_handle
-        assert by_handle["sarahfitlife"].name == "Sarah"
+        # "Sarah" alone is a single word → NameCleaner.clean_name returns None → ""
+        assert by_handle["sarahfitlife"].name == ""
 
     def test_embed_deduped_with_url(self):
         """Embed + URL for same handle → only 1 result (deduped)."""

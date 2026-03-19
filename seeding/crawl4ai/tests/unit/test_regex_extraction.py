@@ -315,13 +315,21 @@ def test_izea_food_ig_embed_handles():
 
 
 def test_izea_food_ig_embed_extracts_name():
-    """IZEA Food: Embedded IG posts should extract the name too."""
+    """IZEA Food: Embedded IG posts should extract valid person names only.
+
+    After NameCleaner integration:
+      - 'Linda Lomelino' → valid two-word person name → kept
+      - 'Blair | Food Recipes + Mom Tips' → pipe-stripped to 'Blair' (single word) → rejected
+      - 'Our Food Stories' → not a person name → rejected
+    """
     results = extract_handles_from_html(IZEA_FOOD_HTML)
     by_handle = {r.handle.lower(): r for r in results}
-    # "A post shared by Linda Lomelino (@linda_lomelino)"
+    # "A post shared by Linda Lomelino (@linda_lomelino)" → valid
     assert by_handle["linda_lomelino"].name == "Linda Lomelino"
-    # Name with pipe separator should be cleaned
-    assert by_handle["thelifeofmamablair"].name == "Blair"
+    # "Blair | Food Recipes ..." → pipe-stripped to "Blair" → single word → rejected
+    assert by_handle["thelifeofmamablair"].name == ""
+    # "Our Food Stories" → not a person name per NameCleaner → rejected
+    assert by_handle["_foodstories_"].name == ""
 
 
 def test_izea_food_tiktok_embed():

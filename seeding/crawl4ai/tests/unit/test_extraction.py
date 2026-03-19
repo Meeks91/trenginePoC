@@ -104,7 +104,7 @@ def test_extract_fallback_token_estimate():
         page = _make_page()
         response_json = json.dumps({
             "influencers": [
-                {"name": "Test Person", "handle": "@test"},
+                {"name": "Jane Smith", "handle": "@test"},
             ]
         })
         # Create response WITHOUT usage stats

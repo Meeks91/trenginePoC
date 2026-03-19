@@ -21,10 +21,10 @@ class TestExtractCandidateNames:
 
     def test_three_word_names_rejected(self):
         """Three-word sequences should NOT be matched — regex requires exactly 2."""
-        text = "Check out Bald Omni Man for bodybuilding content."
+        text = "Check out John Andrew Williams for bodybuilding content."
         names = extract_candidate_names(text)
-        assert "Bald Omni Man" not in names
-        assert "Bald Omni" in names
+        assert "John Andrew Williams" not in names
+        assert "John Andrew" in names
 
     def test_single_words_skipped(self):
         """Single capitalized words should NOT be extracted as names."""
@@ -59,9 +59,9 @@ class TestExtractCandidateNames:
 
     def test_hyphenated_names(self):
         """Names with hyphens should be captured."""
-        text = "Bald Omni-Man is one of the best creators."
+        text = "Emma Storey-Gordon is one of the best creators."
         names = extract_candidate_names(text)
-        matching = [n for n in names if "Omni" in n and "Man" in n]
+        matching = [n for n in names if "Emma" in n and "Gordon" in n]
         assert len(matching) >= 1, f"Expected hyphenated name, got {names}"
 
     def test_apostrophe_names(self):

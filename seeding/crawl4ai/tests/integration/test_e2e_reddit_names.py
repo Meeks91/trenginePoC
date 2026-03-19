@@ -38,12 +38,14 @@ TARGET_NAMES = {
     "Jeff Nippard",
     "Dr Mike",
     "Alex Leonidas",
-    "Bald Omni-man",
-    "Basement Bodybuilding",
     "Sean Nalewanyj",
-    "Natural Hypertrophy",
     "Eric Bugenhagen",
 }
+
+# Names correctly filtered by name-validation (not person names):
+# "Bald Omni-man" — YouTube channel brand
+# "Basement Bodybuilding" — YouTube channel brand
+# "Natural Hypertrophy" — YouTube channel brand
 
 # These are noise and must NOT appear in the output
 NOISE_NAMES = {
@@ -173,7 +175,7 @@ class TestRedditNameResolutionMocked:
         mock_ddgs_cls.return_value = mock_ddgs
 
         names = extract_candidate_names(fixture_text)
-        assert len(names) >= 10
+        assert len(names) >= 8
 
         audit = MagicMock()
         audit.log = MagicMock()

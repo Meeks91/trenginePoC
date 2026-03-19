@@ -155,3 +155,71 @@ class TestBlocklistAdditions:
     def test_accepts_four_char_name(self):
         assert NameCleaner.clean_name("Emi Wong") == "Emi Wong"
 
+
+class TestNerValidation:
+    """NER validation gate — rejects non-PERSON entities that bypass blocklists."""
+
+    # ── Noise that previously slipped through ──
+
+    def test_rejects_non_person_media_post(self):
+        assert NameCleaner.clean_name("Media Post") is None
+
+    def test_rejects_non_person_world_record(self):
+        assert NameCleaner.clean_name("World Record") is None
+
+    def test_rejects_non_person_fat_loss(self):
+        assert NameCleaner.clean_name("Fat Loss") is None
+
+    def test_rejects_non_person_state_university(self):
+        assert NameCleaner.clean_name("State University") is None
+
+    def test_rejects_non_person_questions_thread(self):
+        assert NameCleaner.clean_name("Questions Thread") is None
+
+    # ── Real person names still pass ──
+
+    def test_accepts_real_person_jeff_nippard(self):
+        assert NameCleaner.clean_name("Jeff Nippard") == "Jeff Nippard"
+
+    def test_accepts_real_person_stefi_cohen(self):
+        assert NameCleaner.clean_name("Stefi Cohen") == "Stefi Cohen"
+
+    def test_accepts_real_person_kayla_itsines(self):
+        assert NameCleaner.clean_name("Kayla Itsines") == "Kayla Itsines"
+
+    # ── Title prefix stripping ──
+
+    def test_accepts_title_prefix_dr_mike(self):
+        assert NameCleaner.clean_name("Dr Mike") == "Dr Mike"
+
+    def test_accepts_title_prefix_coach_greg(self):
+        assert NameCleaner.clean_name("Coach Greg") == "Coach Greg"
+
+    def test_accepts_title_prefix_prof_andrews(self):
+        assert NameCleaner.clean_name("Prof Andrews") == "Prof Andrews"
+
+    def test_accepts_title_prefix_sir_chris(self):
+        assert NameCleaner.clean_name("Sir Chris") == "Sir Chris"
+
+    def test_accepts_title_prefix_dame_jessica(self):
+        assert NameCleaner.clean_name("Dame Jessica") == "Dame Jessica"
+
+    def test_accepts_title_prefix_rev_samuel(self):
+        assert NameCleaner.clean_name("Rev Samuel") == "Rev Samuel"
+
+    # ── Possessive suffix stripping ──
+
+    def test_accepts_possessive_curly_apostrophe(self):
+        assert NameCleaner.clean_name("Sophie\u2019s Kitchen") == "Sophie\u2019s Kitchen"
+
+    def test_accepts_possessive_straight_apostrophe(self):
+        assert NameCleaner.clean_name("Sophie's Kitchen") == "Sophie's Kitchen"
+
+    # ── Non-person first words rejected ──
+
+    def test_rejects_non_person_first_word_dirty(self):
+        assert NameCleaner.clean_name("Dirty Harry") is None
+
+    def test_rejects_non_person_first_word_niche(self):
+        assert NameCleaner.clean_name("Niche The") is None
+

@@ -60,6 +60,12 @@ class Influencer:
     source_urls: set[str] = field(default_factory=set)
     extraction_methods: set[str] = field(default_factory=set)
 
+    def __post_init__(self) -> None:
+        from services.extraction.NameCleaner import NameCleaner
+        cleaned = NameCleaner.clean_name(self.name)
+        if cleaned:
+            self.name = cleaned
+
     @property
     def ig_handle(self) -> str:
         """Instagram handle (empty string if not present)."""

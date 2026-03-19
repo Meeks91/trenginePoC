@@ -34,7 +34,7 @@ def test_parse_chunked_response():
 
 def test_parse_direct_list():
     """Direct list: [{"name": "...", "handle": "..."}, ...]."""
-    json_str = '[{"name": "Xander Yale", "handle": "@x_user"}, {"name": "Yuri Marks", "handle": "@y_user"}]'
+    json_str = '[{"name": "Alex Yale", "handle": "@x_user"}, {"name": "Mark Jensen", "handle": "@y_user"}]'
     result = LLMResponseParser.parse(json_str)
     assert len(result) == 2
 
@@ -47,25 +47,25 @@ def test_parse_invalid_json():
 
 def test_parse_empty_names_skipped():
     """Influencers with empty names should be skipped."""
-    json_str = '{"influencers": [{"name": "", "handle": "@ghost"}, {"name": "Real Person", "handle": "@real"}]}'
+    json_str = '{"influencers": [{"name": "", "handle": "@ghost"}, {"name": "Anna Thompson", "handle": "@real"}]}'
     result = LLMResponseParser.parse(json_str)
     assert len(result) == 1
-    assert result[0].name == "Real Person"
+    assert result[0].name == "Anna Thompson"
 
 
 def test_parse_error_responses_ignored():
     """Error responses in chunked list should be ignored."""
-    json_str = '[{"error": true, "content": "rate limit"}, {"influencers": [{"name": "Oliver Knox", "handle": "@ok_handle"}]}]'
+    json_str = '[{"error": true, "content": "rate limit"}, {"influencers": [{"name": "James Knox", "handle": "@ok_handle"}]}]'
     result = LLMResponseParser.parse(json_str)
     assert len(result) == 1
-    assert result[0].name == "Oliver Knox"
+    assert result[0].name == "James Knox"
 
 
 def test_parse_strips_whitespace():
     """Names and handles should be stripped of whitespace."""
-    json_str = '{"influencers": [{"name": "  Padded Name  ", "handle": "  @padded  "}]}'
+    json_str = '{"influencers": [{"name": "  Sarah Green  ", "handle": "  @padded  "}]}'
     result = LLMResponseParser.parse(json_str)
-    assert result[0].name == "Padded Name"
+    assert result[0].name == "Sarah Green"
     assert result[0].handles.get(Platform.Instagram) == "padded"  # @ stripped + whitespace stripped
 
 
@@ -94,16 +94,16 @@ def test_parse_handle_platform_defaults_empty():
 
 def test_parse_invalid_handle_cleared():
     """LLM returns a blocklisted handle → handle cleared, influencer kept."""
-    json_str = '{"influencers": [{"name": "Some Person", "handle": "explore"}]}'
+    json_str = '{"influencers": [{"name": "Emma Clark", "handle": "explore"}]}'
     result = LLMResponseParser.parse(json_str)
     assert len(result) == 1
-    assert result[0].name == "Some Person"
+    assert result[0].name == "Emma Clark"
     assert not result[0].handles  # Invalid handle cleared → empty dict
 
 
 def test_parse_css_atrule_handle_cleared():
     """LLM returns CSS at-rule as handle → cleared."""
-    json_str = '{"influencers": [{"name": "CSS Garbage", "handle": "@context"}]}'
+    json_str = '{"influencers": [{"name": "Tom Bradley", "handle": "@context"}]}'
     result = LLMResponseParser.parse(json_str)
     assert len(result) == 1
     assert not result[0].handles
@@ -111,7 +111,7 @@ def test_parse_css_atrule_handle_cleared():
 
 def test_parse_numeric_handle_cleared():
     """LLM returns pure numeric handle (post ID) → cleared."""
-    json_str = '{"influencers": [{"name": "Post ID", "handle": "1234567890"}]}'
+    json_str = '{"influencers": [{"name": "Jack Porter", "handle": "1234567890"}]}'
     result = LLMResponseParser.parse(json_str)
     assert len(result) == 1
     assert not result[0].handles
@@ -119,7 +119,7 @@ def test_parse_numeric_handle_cleared():
 
 def test_parse_short_handle_cleared():
     """LLM returns single character handle → cleared."""
-    json_str = '{"influencers": [{"name": "Too Short", "handle": "x"}]}'
+    json_str = '{"influencers": [{"name": "Lisa Short", "handle": "x"}]}'
     result = LLMResponseParser.parse(json_str)
     assert len(result) == 1
     assert not result[0].handles
@@ -134,7 +134,7 @@ def test_parse_valid_handle_kept():
 
 def test_parse_consecutive_dots_cleared():
     """Handle with consecutive dots → cleared (lorey rule)."""
-    json_str = '{"influencers": [{"name": "Dorothy Mills", "handle": "bad..handle"}]}'
+    json_str = '{"influencers": [{"name": "Dorothy Mills", "handle": "bad..handle"}]}' 
     result = LLMResponseParser.parse(json_str)
     assert len(result) == 1
     assert not result[0].handles
@@ -142,7 +142,7 @@ def test_parse_consecutive_dots_cleared():
 
 def test_parse_at_prefix_stripped():
     """@ prefix in LLM-returned handle should be stripped."""
-    json_str = '{"influencers": [{"name": "Real Person", "handle": "@real_handle"}]}'
+    json_str = '{"influencers": [{"name": "Anna Thompson", "handle": "@real_handle"}]}'
     result = LLMResponseParser.parse(json_str)
     assert result[0].handles.get(Platform.Instagram) == "real_handle"
 
@@ -156,11 +156,11 @@ def test_parse_blocks_ai_company_names():
     json_str = '{"influencers": [' \
         '{"name": "ChatGPT", "handle": "chatopenai", "handle_platform": "YouTube"},' \
         '{"name": "Midjourney", "handle": "midjourneyartwork", "handle_platform": "Instagram"},' \
-        '{"name": "Real Influencer", "handle": "real_person"}' \
+        '{"name": "Sam Wilson", "handle": "real_person"}' \
     ']}'
     result = LLMResponseParser.parse(json_str)
     assert len(result) == 1
-    assert result[0].name == "Real Influencer"
+    assert result[0].name == "Sam Wilson"
 
 
 def test_parse_blocks_spaced_company_names():

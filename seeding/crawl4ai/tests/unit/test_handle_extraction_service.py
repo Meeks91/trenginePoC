@@ -672,3 +672,80 @@ class TestAssignNamesFromHeadings:
         )
         assign_names_from_headings(handles, text)
         assert handles[0].name == ""  # Too far → unchanged
+
+    def test_markdown_bold_heading_cleaned(self):
+        """Heading with markdown bold '**6. Massy Arias**' → cleaned to 'Massy Arias'."""
+        handles = [
+            ExtractedHandle(handle="massy.arias", platform="Instagram"),
+        ]
+        text = (
+            "### **6. Massy Arias**\n"
+            "Dominican fitness trainer @massy.arias\n"
+        )
+        assign_names_from_headings(handles, text)
+        assert handles[0].name == "Massy Arias"
+
+    def test_numbered_heading_cleaned(self):
+        """Heading with '3. Jeff Nippard' → cleaned to 'Jeff Nippard'."""
+        handles = [
+            ExtractedHandle(handle="jeffnippard", platform="Instagram"),
+        ]
+        text = (
+            "### 3. Jeff Nippard\n"
+            "Canadian bodybuilder @jeffnippard\n"
+        )
+        assign_names_from_headings(handles, text)
+        assert handles[0].name == "Jeff Nippard"
+
+
+# ══════════════════════════════════════════════════════════════════════
+# IG Embed Name Cleaning — regression tests for MankoFit bug
+# ══════════════════════════════════════════════════════════════════════
+
+class TestIgEmbedNameCleaning:
+    """IG embed names must be cleaned via NameCleaner — no markdown garbage."""
+
+    def test_ig_embed_valid_person_name_preserved(self):
+        """Valid person name from IG embed kept after cleaning."""
+        from services.extraction.RegexHandleExtractor import extract_handles_from_html
+        html = '<p>A post shared by Massy Arias (@massy.arias)</p>'
+        handles = extract_handles_from_html(html)
+        massy = [h for h in handles if h.handle == "massy.arias"]
+        assert len(massy) == 1
+        assert massy[0].name == "Massy Arias"
+
+    def test_ig_embed_markdown_link_fragment_rejected(self):
+        """IG embed with markdown garbage name → name cleaned to empty."""
+        from services.extraction.RegexHandleExtractor import extract_handles_from_html
+        html = '<p>A post shared by [ MankoFit ?? ](https://x.com) (@mankofit)</p>'
+        handles = extract_handles_from_html(html)
+        manko = [h for h in handles if h.handle == "mankofit"]
+        assert len(manko) == 1
+        assert manko[0].name == ""
+
+
+# ══════════════════════════════════════════════════════════════════════
+# _regex_extract Name Cleaning — regression for MankoFit source fix
+# ══════════════════════════════════════════════════════════════════════
+
+class TestRegexExtractNameCleaning:
+    """Raw h.name must be cleaned before Influencer construction."""
+
+    def test_valid_embed_name_reaches_influencer(self):
+        """IG embed with valid person name → Influencer.name set correctly."""
+        raw = '<p>A post shared by Massy Arias (@massy.arias)</p>'
+        page = _page("https://example.com", raw_md=raw)
+        handles, _, _, _, _ = HandleExtractionService._regex_extract([page])
+        massy = [h for h in handles if "massy" in h.ig_handle]
+        assert len(massy) == 1
+        assert massy[0].name == "Massy Arias"
+
+    def test_garbage_embed_name_falls_back_to_handle(self):
+        """IG embed with markdown garbage → Influencer.name falls back to handle."""
+        raw = '<p>A post shared by [ MankoFit ?? ](https://x.com) (@mankofit)</p>'
+        page = _page("https://example.com", raw_md=raw)
+        handles, _, _, _, _ = HandleExtractionService._regex_extract([page])
+        manko = [h for h in handles if "mankofit" in (h.ig_handle or h.name.lower())]
+        assert len(manko) == 1
+        assert manko[0].name == "mankofit"  # Falls back to handle, not garbage
+

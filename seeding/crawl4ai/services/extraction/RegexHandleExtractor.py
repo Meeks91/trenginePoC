@@ -479,7 +479,7 @@ def extract_handles_from_html(html: str) -> list[ExtractedHandle]:
         handle = match.group(2)
         # Clean name: remove trailing " |" and similar
         name = re.sub(r'\s*[|/\\].*$', '', name_raw).strip()
-        _add(handle, "Instagram", name)
+        _add(handle, "Instagram", NameCleaner.clean_name(name) or "")
 
     # 2. URL-based extraction (high confidence, platform identified)
     for pattern, platform in _URL_PATTERNS:
@@ -583,9 +583,9 @@ def assign_names_from_headings(
         handle_pattern = (
             f"@{re.escape(handle.handle)}"
             if f"@{handle.handle}" in page_text
-            else handle.handle
+            else re.escape(handle.handle)
         )
-        h_match = re.search(re.escape(handle_pattern), page_text, re.IGNORECASE)
+        h_match = re.search(handle_pattern, page_text, re.IGNORECASE)
         if not h_match:
             continue
 
@@ -601,6 +601,5 @@ def assign_names_from_headings(
                     best_dist = dist
                     best_heading = heading_text
 
-        # Assign if heading is reasonably close (within 500 chars)
         if best_heading and best_dist <= 500:
             handle.name = best_heading

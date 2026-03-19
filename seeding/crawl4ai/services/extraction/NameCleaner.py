@@ -7,8 +7,19 @@ consistent cleanup rules at the extraction source.
 
 from __future__ import annotations
 
+import logging
 import re
 from urllib.parse import unquote
+
+logger = logging.getLogger(__name__)
+
+# ── Name validation thresholds ──
+# First word must rank ≤ this as a given name in any country.
+FIRST_NAME_MAX_RANK = 5000
+# Must rank in this many countries to count (filters ultra-rare names).
+FIRST_NAME_MIN_COUNTRIES = 1
+# Title prefixes that precede a given name — strip before lookup.
+_TITLE_PREFIXES = frozenset({"dr", "prof", "coach", "sir", "dame", "rev"})
 
 
 
@@ -78,6 +89,10 @@ _GENERIC_BLOCKLIST = frozenset({
     "trust and transparency", "company", "videos",
     "strength training:", "pilates:", "free webinar",
     "people brands and", "gaming and esport",
+    # Fitness niche terms ("Fat Loss" etc.)
+    "fat loss", "fat burn",
+    # Common-noun false positives that have rare first-name ranks
+    "media post",
     # CTA phrases that match _NAME_RE (two CamelCase words)
     "free trial", "free webinar", "sign up", "read more", "see more",
     "load more", "show more", "view profile", "watch now",
@@ -163,6 +178,61 @@ _ALL_NON_PERSON = (
 _LINKEDIN_SLUG_RE = re.compile(r'^[a-z]+-[a-z]+(?:-[a-z0-9]+)*-\d{4,}$')
 
 
+# ══════════════════════════════════════════════════════════════════════
+# Name Validation (lazy-loaded names-dataset)
+# ══════════════════════════════════════════════════════════════════════
+
+_name_dataset: "NameDataset | None" = None
+
+
+def _load_name_dataset() -> "NameDataset":
+    """Lazy-load the NameDataset on first use."""
+    global _name_dataset
+    if _name_dataset is None:
+        from names_dataset import NameDataset as _ND
+        _name_dataset = _ND()
+        logger.info("Loaded names-dataset for name validation")
+    return _name_dataset
+
+
+def _is_plausible_person_name(name: str) -> bool:
+    """Check if the first word is a commonly-ranked given name.
+
+    Uses the names-dataset first_name rank data. The first word
+    must rank ≤ FIRST_NAME_MAX_RANK in ≥ FIRST_NAME_MIN_COUNTRIES
+    countries. This filters noise phrases ("Media Post", "World Record")
+    while passing real person names ("Jeff Nippard", "Stefi Cohen").
+
+    Supports multiple languages out of the box — the dataset covers
+    names across 100+ countries.
+    """
+    parts = name.split()
+    if len(parts) < 2:
+        return False
+    nd = _load_name_dataset()
+    first_word = parts[0]
+    # Strip title prefix: "Dr Mike" → look up "Mike"
+    if first_word.lower().rstrip(".") in _TITLE_PREFIXES and len(parts) >= 2:
+        first_word = parts[1]
+    # Strip possessive suffix: "Sophie's" → "Sophie"
+    for suffix in ("\u2019s", "'s"):
+        if first_word.endswith(suffix):
+            first_word = first_word[: -len(suffix)]
+            break
+    first_word = first_word.rstrip("'\u2019")
+    result = nd.search(first_word)
+    fn_data = result.get("first_name")
+    if not fn_data:
+        return False
+    ranks = fn_data.get("rank") or {}
+    ranked_countries = [
+        r for r in ranks.values()
+        if r is not None and r <= FIRST_NAME_MAX_RANK
+    ]
+    return len(ranked_countries) >= FIRST_NAME_MIN_COUNTRIES
+
+
+
 class NameCleaner:
     """Shared name cleanup — injected into LLMResponseParser + NameExtractor."""
 
@@ -175,6 +245,7 @@ class NameCleaner:
           2. Extract name via _NAME_RE.search() — two CamelCase words
              (cuts through bold, numbering, emoji, markdown garbage)
           3. Reject non-person entities (countries, brands, news orgs)
+          4. Reject via names-dataset — if first word is not a known given name
         """
         if not name or not name.strip():
             return None
@@ -196,6 +267,9 @@ class NameCleaner:
             return None
 
         if _is_non_person(extracted):
+            return None
+
+        if not _is_plausible_person_name(extracted):
             return None
 
         return extracted

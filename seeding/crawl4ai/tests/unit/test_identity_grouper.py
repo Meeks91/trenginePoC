@@ -247,10 +247,10 @@ class TestBestName:
     def test_longest_real_name_wins(self):
         influencers = [
             Influencer(name="foodgod", handles={Platform.Instagram: "@foodgod"}),
-            Influencer(name="Jonathan Cheban (Foodgod)", handles={Platform.TikTok: "@foodgod"}),
+            Influencer(name="Jonathan Cheban", handles={Platform.TikTok: "@foodgod"}),
         ]
         result = InfluencerMerger.merge(influencers)
-        assert result[0].name == "Jonathan Cheban (Foodgod)"
+        assert result[0].name == "Jonathan Cheban"
 
     def test_handle_as_name_not_preferred(self):
         influencers = [
