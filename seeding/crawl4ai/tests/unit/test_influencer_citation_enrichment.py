@@ -40,15 +40,15 @@ class TestInfluencerPostInitCleaning:
         inf = Influencer(name="Jeff Nippard", handles={Platform.YouTube: "jeffnippard"})
         assert inf.name == "Jeff Nippard"
 
-    def test_blocklist_name_not_overwritten(self):
-        """Blocklist names still construct (clean_name returns None → keeps original)."""
+    def test_blocklist_name_blanked(self):
+        """Blocklist names are blanked by clean_name → empty string."""
         inf = Influencer(name="Weight Loss", handles={Platform.Instagram: "test"})
-        assert inf.name == "Weight Loss"
+        assert inf.name == ""
 
-    def test_bare_handle_name_kept(self):
-        """Handle-as-name survives __post_init__ (clean_name returns None → keeps original)."""
+    def test_bare_handle_name_blanked(self):
+        """Handle-as-name is blanked by clean_name → empty string."""
         inf = Influencer(name="kayla_itsines", handles={Platform.Instagram: "kayla_itsines"})
-        assert inf.name == "kayla_itsines"
+        assert inf.name == ""
 
 
 # ══════════════════════════════════════════════════════════════════════
@@ -67,12 +67,12 @@ class TestInfluencerCitationCount:
         assert inf.citation_count == 3
 
     def test_citation_count_zero_when_no_sources(self):
-        inf = Influencer(name="Nobody", handles={})
+        inf = Influencer(name="", handles={})
         assert inf.citation_count == 0
 
     def test_citation_count_one_source(self):
         inf = Influencer(
-            name="Solo",
+            name="",
             source_urls={"https://only.com"},
         )
         assert inf.citation_count == 1
@@ -206,10 +206,10 @@ class TestExtractionMethodTagging:
             fit_token_estimate=50,
             success=True,
         )
-        handles, _, _, _, _ = HandleExtractionService._regex_extract([page])
+        rx = HandleExtractionService._regex_extract([page])
         # At least one influencer should be found
-        assert len(handles) > 0
-        for inf in handles:
+        assert len(rx.regex_handles) > 0
+        for inf in rx.regex_handles:
             assert "regex" in inf.extraction_methods, (
                 f"Influencer '{inf.name}' from regex extraction "
                 f"missing 'regex' in extraction_methods: {inf.extraction_methods}"
@@ -221,14 +221,14 @@ class TestExtractionMethodTagging:
         from services.extraction.RegexHandleExtractor import ExtractedHandle
 
         ddg_handles = [
-            ExtractedHandle(handle="kayla_itsines", platform="Instagram", name="Kayla"),
+            ExtractedHandle(handle="kayla_itsines", platform="Instagram", name="Kayla Itsines"),
         ]
         merged = HandleExtractionService._merge_handles(
             direct_handles=ddg_handles,
             regex_handles=[],
             llm_handles={},
         )
-        kayla = next(i for i in merged if "kayla" in i.name.lower())
+        kayla = next(i for i in merged if "kayla" in (i.name.lower() or "") or "kayla_itsines" in i.handles.get(Platform.Instagram, ""))
         assert "ddg_direct" in kayla.extraction_methods
 
     def test_merge_handles_unions_extraction_methods_on_dedup(self):
@@ -238,7 +238,7 @@ class TestExtractionMethodTagging:
 
         # Same handle from DDG and regex
         ddg_handles = [
-            ExtractedHandle(handle="kayla_itsines", platform="Instagram", name="Kayla"),
+            ExtractedHandle(handle="kayla_itsines", platform="Instagram", name="Kayla Itsines"),
         ]
         regex_handles = [
             Influencer(
@@ -254,7 +254,7 @@ class TestExtractionMethodTagging:
             llm_handles={},
         )
         # Should be deduped to one entry with both methods
-        kayla = next(i for i in merged if "kayla" in i.name.lower())
+        kayla = next(i for i in merged if "kayla" in i.name.lower() or "kayla_itsines" in i.handles.get(Platform.Instagram, ""))
         assert "ddg_direct" in kayla.extraction_methods
         assert "regex" in kayla.extraction_methods
 
@@ -294,7 +294,7 @@ class TestInfluencerMergerExtractionMethods:
 
         entries = [
             Influencer(
-                name="Solo Creator",
+                name="Sarah Collins",
                 handles={Platform.Instagram: "solocreator"},
                 extraction_methods={"ddg_direct"},
             ),

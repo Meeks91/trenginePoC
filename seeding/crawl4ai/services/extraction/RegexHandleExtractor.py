@@ -161,14 +161,15 @@ _IGNORE_PLATFORM_NAMES = frozenset({
 _IGNORE_AGGREGATORS = frozenset({
     "gymfluencers", "gymfluencers.agency",
     "feedspot", "feedspotdotcom", "modash", "modash.io",
-    "seekahost", "trainerize", "favikon",
+    "seekahost", "trainerize", "favikon", "favikon_",
     "popularpays", "collabstr", "heepsy",
-    "lefty", "socialtradia", "ugcfactory",
+    "lefty", "socialtradia", "socialtradia_", "ugcfactory",
     "insense", "clickanalytic", "theinfluenceroom",
     "izea", "disrupt", "disruptmkting",
     "popular-pays", "popularpays9201",
     "feedspotofficial", "_feedspot",
     "influencer-hero", "influencerhero",
+    "hypeauditor", "influencity", "socialbook", "thesocialcat",
 })
 
 # ── Brands: Media & news ──

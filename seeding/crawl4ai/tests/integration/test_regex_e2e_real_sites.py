@@ -391,10 +391,10 @@ class TestFavikonFitness:
         self.groups = _by_platform(self.results)
 
     def test_handles_extracted(self):
-        """Favikon pages should have some extractable handles."""
+        """Favikon pages have only site-chrome handles (all blocked)."""
         all_handles = {r.handle.lower() for r in self.results}
-        assert len(all_handles) == 1, (
-            f"Expected 1 unique handle from Favikon markdown, got {len(all_handles)}"
+        assert len(all_handles) == 0, (
+            f"Expected 0 handles from Favikon markdown (site handles blocked), got {len(all_handles)}: {all_handles}"
         )
 
 

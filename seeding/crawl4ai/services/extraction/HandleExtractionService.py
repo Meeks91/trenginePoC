@@ -67,6 +67,17 @@ class HandleExtractionResult:
     name_tracker: NameMentionTracker | None = None
 
 
+@dataclass
+class RegexExtractResult:
+    """Output from _regex_extract — replaces unwieldy 6-element tuple."""
+    regex_handles: list[Influencer] = field(default_factory=list)
+    naked_handles: list[ExtractedHandle] = field(default_factory=list)
+    yt_channel_ids: list[str] = field(default_factory=list)
+    page_url_handle_counts: dict[str, int] = field(default_factory=dict)
+    page_naked_handle_counts: dict[str, int] = field(default_factory=dict)
+    naked_handle_to_influencer: dict[str, Influencer] = field(default_factory=dict)
+
+
 # ══════════════════════════════════════════════════════════════════════
 # LLM gating logic
 # ══════════════════════════════════════════════════════════════════════
@@ -153,26 +164,27 @@ class HandleExtractionService:
         result = HandleExtractionResult()
 
         # ── Regex Handle Extraction ──
-        regex_handles, naked_handles, yt_channel_ids, \
-            page_url_handle_counts, page_naked_handle_counts = \
-            self._regex_extract(pages)
-        result.regex_handles = regex_handles
+        rx = self._regex_extract(pages)
+        result.regex_handles = rx.regex_handles
 
         logger.info("  Regex found %d handles (%d naked @mentions)",
-                    len(regex_handles), len(naked_handles))
-        if yt_channel_ids:
-            logger.info("  Found %d YouTube channel IDs to resolve", len(yt_channel_ids))
+                    len(rx.regex_handles), len(rx.naked_handles))
+        if rx.yt_channel_ids:
+            logger.info("  Found %d YouTube channel IDs to resolve", len(rx.yt_channel_ids))
 
         # ── Classify naked @handles (mechanical → LLM fallback) ──
-        if naked_handles:
-            self._classify_naked_handles(naked_handles, regex_handles, pages)
+        if rx.naked_handles:
+            self._classify_naked_handles(
+                rx.naked_handles, rx.regex_handles, pages,
+                rx.naked_handle_to_influencer,
+            )
 
         # ── YouTube Channel ID Resolution ──
-        if yt_channel_ids:
-            yt_resolved = await self._resolve_youtube_channels(yt_channel_ids)
+        if rx.yt_channel_ids:
+            yt_resolved = await self._resolve_youtube_channels(rx.yt_channel_ids)
             for _cid, handle in yt_resolved.items():
-                regex_handles.append(Influencer(
-                    name=handle,
+                rx.regex_handles.append(Influencer(
+                    name="",
                     handles={Platform.YouTube: handle},
                 ))
 
@@ -198,7 +210,7 @@ class HandleExtractionService:
             )
 
         # Feed regex-extracted names into the tracker
-        for inf in regex_handles:
+        for inf in rx.regex_handles:
             if inf.name:
                 page_url = next(iter(inf.source_urls)) if inf.source_urls else ""
                 if page_url:
@@ -216,7 +228,7 @@ class HandleExtractionService:
 
         # ── LLM Extraction (conditional) ──
         llm_pages = [p for p in pages if needs_llm(
-            p, page_url_handle_counts, page_naked_handle_counts,
+            p, rx.page_url_handle_counts, rx.page_naked_handle_counts,
         )]
         skipped = sum(1 for p in pages if p.success) - len(llm_pages)
         result.llm_pages_used = len(llm_pages)
@@ -264,7 +276,7 @@ class HandleExtractionService:
         # ── Merge: DDG direct handles + regex handles + LLM handles ──
         all_raw = self._merge_handles(
             direct_handles=direct_handles,
-            regex_handles=regex_handles,
+            regex_handles=rx.regex_handles,
             llm_handles=url_to_influencers,
         )
         result.all_merged = all_raw
@@ -276,22 +288,12 @@ class HandleExtractionService:
     @staticmethod
     def _regex_extract(
         pages: list[PageResult],
-    ) -> tuple[
-        list[Influencer],
-        list[ExtractedHandle],
-        list[str],
-        dict[str, int],
-        dict[str, int],
-    ]:
-        """Regex handle extraction from crawled pages.
-
-        Returns:
-            (regex_handles, naked_handles, yt_channel_ids,
-             page_url_handle_counts, page_naked_handle_counts)
-        """
+    ) -> RegexExtractResult:
+        """Regex handle extraction from crawled pages."""
         logger.info("  --- Regex Handle Extraction ---")
         regex_handles: list[Influencer] = []
         naked_handles: list[ExtractedHandle] = []
+        naked_handle_to_influencer: dict[str, Influencer] = {}
         yt_channel_ids: list[str] = []
         page_url_handle_counts: dict[str, int] = {}
         page_naked_handle_counts: dict[str, int] = {}
@@ -307,7 +309,7 @@ class HandleExtractionService:
             for h in handles:
                 cleaned_name = NameCleaner.clean_name(h.name) if h.name else None
                 regex_handles.append(Influencer(
-                    name=cleaned_name or h.handle,
+                    name=cleaned_name or "",
                     handles=_to_handles(h.handle, h.platform),
                     source_urls={page.url},
                     extraction_methods={"regex"},
@@ -316,14 +318,19 @@ class HandleExtractionService:
                     url_handle_count += 1
                 else:
                     naked_handles.append(h)
+                    naked_handle_to_influencer[h.handle.lower()] = regex_handles[-1]
                     naked_count += 1
             page_url_handle_counts[page.url] = url_handle_count
             page_naked_handle_counts[page.url] = naked_count
             yt_channel_ids.extend(extract_youtube_channel_ids(page.raw_markdown))
 
-        return (
-            regex_handles, naked_handles, yt_channel_ids,
-            page_url_handle_counts, page_naked_handle_counts,
+        return RegexExtractResult(
+            regex_handles=regex_handles,
+            naked_handles=naked_handles,
+            yt_channel_ids=yt_channel_ids,
+            page_url_handle_counts=page_url_handle_counts,
+            page_naked_handle_counts=page_naked_handle_counts,
+            naked_handle_to_influencer=naked_handle_to_influencer,
         )
 
     @staticmethod
@@ -331,6 +338,7 @@ class HandleExtractionService:
         naked_handles: list[ExtractedHandle],
         regex_handles: list[Influencer],
         pages: list[PageResult],
+        naked_handle_to_influencer: dict[str, Influencer],
     ) -> None:
         """Classify naked @handles — mechanical first, LLM only as last resort.
 
@@ -381,13 +389,9 @@ class HandleExtractionService:
                 # Update the corresponding Influencer’s handles dict
                 plat_enum = _PLATFORM_MAP.get(platform)
                 if plat_enum:
-                    for inf in regex_handles:
-                        if (
-                            not inf.handles
-                            and inf.name.lower().lstrip("@") == handle.handle.lower()
-                        ):
-                            inf.handles[plat_enum] = handle.handle
-                            break
+                    inf = naked_handle_to_influencer.get(handle.handle.lower())
+                    if inf is not None:
+                        inf.handles[plat_enum] = handle.handle
 
         logger.info("  Mechanical: classified %d/%d handles", mechanical_count, len(naked_handles))
 
@@ -414,13 +418,9 @@ class HandleExtractionService:
                 if ch.platform:
                     plat_enum = _PLATFORM_MAP.get(ch.platform)
                     if plat_enum:
-                        for inf in regex_handles:
-                            if (
-                                not inf.handles
-                                and inf.name.lower().lstrip("@") == ch.handle.lower()
-                            ):
-                                inf.handles[plat_enum] = ch.handle
-                                break
+                        inf = naked_handle_to_influencer.get(ch.handle.lower())
+                        if inf is not None:
+                            inf.handles[plat_enum] = ch.handle
         elif still_ambiguous:
             logger.info("  Discarding %d ambiguous handles (page already has URL-tagged handles)",
                         len(still_ambiguous))
@@ -490,7 +490,7 @@ class HandleExtractionService:
         # DDG direct handles
         for dh in direct_handles:
             _add(Influencer(
-                name=dh.name or dh.handle,
+                name=NameCleaner.clean_name(dh.name) or "",
                 handles=_to_handles(dh.handle, dh.platform),
                 extraction_methods={"ddg_direct"},
             ))

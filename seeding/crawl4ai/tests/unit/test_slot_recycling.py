@@ -49,13 +49,13 @@ class TestResolveWithRecycling:
 
     @patch("services.extraction.NameResolver.resolve_names_via_ddg")
     def test_new_handle_creates_influencer(self, mock_ddg: MagicMock) -> None:
-        mock_ddg.return_value = [_make_extracted("Sean N", "seannal")]
+        mock_ddg.return_value = [_make_extracted("Sean Nalewanyj", "seannal")]
         audit = MagicMock()
         svc = NameToHandleService(audit)
 
         queues: dict[GroupKey, deque[NameMention]] = {
             ("Instagram", "FITNESS", "Gym", "US"): deque([
-                _make_mention("Sean N", 4),
+                _make_mention("Sean Nalewanyj", 4),
             ]),
         }
         known: set[str] = set()
@@ -69,7 +69,10 @@ class TestResolveWithRecycling:
         )
 
         assert len(resolved) == 1
-        assert resolved[0].name == "Sean N"
+        assert resolved[0].name == "Sean Nalewanyj"
+        assert resolved[0].source_urls == {"https://reddit.com/sean_nalewanyj"}
+        assert resolved[0].extraction_methods == {"name_resolution"}
+        assert resolved[0].citation_count == 1
         assert "seannal" in known
         assert len(records) == 1
         assert records[0].resolved_handle == "seannal"
@@ -78,16 +81,16 @@ class TestResolveWithRecycling:
     def test_collision_recycles_slot(self, mock_ddg: MagicMock) -> None:
         """Known handle → skip, next candidate gets the slot."""
         mock_ddg.side_effect = [
-            [_make_extracted("Jeff N", "jeffnippard")],  # collision
-            [_make_extracted("Sean N", "seannal")],       # new
+            [_make_extracted("Jeff Nippard", "jeffnippard")],  # collision
+            [_make_extracted("Sean Nalewanyj", "seannal")],       # new
         ]
         audit = MagicMock()
         svc = NameToHandleService(audit)
 
         queues: dict[GroupKey, deque[NameMention]] = {
             ("Instagram", "FITNESS", "Gym", "US"): deque([
-                _make_mention("Jeff N", 10),
-                _make_mention("Sean N", 4),
+                _make_mention("Jeff Nippard", 10),
+                _make_mention("Sean Nalewanyj", 4),
             ]),
         }
         known: set[str] = {"jeffnippard"}
@@ -101,7 +104,7 @@ class TestResolveWithRecycling:
         )
 
         assert len(resolved) == 1
-        assert resolved[0].name == "Sean N"
+        assert resolved[0].name == "Sean Nalewanyj"
         assert len(records) == 2
         assert records[0].resolved_handle == "jeffnippard"
         assert records[1].resolved_handle == "seannal"

@@ -31,6 +31,7 @@ from typing import Callable
 
 from config.schema import Influencer, Platform
 from services.extraction.RegexHandleExtractor import is_blocked_handle
+from services.extraction.NameCleaner import NameCleaner
 
 
 # ══════════════════════════════════════════════════════════════════════
@@ -104,12 +105,28 @@ class InfluencerMerger:
                 categories_found_in=list(inf.categories_found_in),
             )
 
+            is_llm_only = inf.extraction_methods == {"llm"}
+
             if key in buckets:
+                # Guard: LLM-only entries with a name that doesn't match
+                # any existing entry in this bucket → refuse the merge.
+                # LLM adjacent-row mix-ups produce wrong name-handle pairings
+                # (e.g. "Angelica Teixeira" + TK:"jenselter") that would
+                # contaminate the real person's bucket.
+                if is_llm_only and name_lower:
+                    existing_names = {
+                        e.name_lower for e in buckets[key] if e.name_lower
+                    }
+                    if existing_names and name_lower not in existing_names:
+                        continue  # LLM row mix-up — drop entirely
                 buckets[key].append(entry)
             else:
                 buckets[key] = [entry]
-                # Also register by name if it's a real name (not just handle)
-                if name_lower and name_lower != first_handle:
+                # Also register by name if it's a real name (not just handle).
+                # Skip for LLM-only entries — LLM name-handle pairings are
+                # too unreliable for identity grouping (adjacent-row mix-ups
+                # cause cross-handle contamination, e.g. Angelica/Jen Selter).
+                if name_lower and name_lower != first_handle and not is_llm_only:
                     name_key = f"name:{name_lower}"
                     if name_key != key:
                         if name_key not in buckets:
@@ -288,9 +305,9 @@ def _build_grouped_influencer(
             best_name = entry.name
 
     if not best_name:
-        best_name = entries[0].name or next(
-            (h for e in entries for h in e.handles.values()), ""
-        )
+        # Defensive: __post_init__ already cleans, but re-clean in case
+        # entries were built without going through Influencer constructor.
+        best_name = NameCleaner.clean_name(entries[0].name) or ""
 
     # Merge all handles from supported entries
     merged_handles: dict[Platform, str] = {}

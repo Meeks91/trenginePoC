@@ -184,8 +184,8 @@ def test_single_url_mode_report():
     reporter = PipelineReporter()
 
     influencers = [
-        Influencer(name="Creator A", handles={Platform.Instagram: "@creator_a"}),
-        Influencer(name="Creator B", handles={Platform.TikTok: "@creator_b"}),
+        Influencer(name="Maria Garcia", handles={Platform.Instagram: "@creator_a"}),
+        Influencer(name="John Rivera", handles={Platform.TikTok: "@creator_b"}),
     ]
 
     stats = PipelineStats(
@@ -213,9 +213,9 @@ def test_single_url_mode_report():
         assert "unique people" in content
         assert "IG Handle" in content
         assert "TK Handle" in content
-        assert "Creator A" in content
+        assert "Maria Garcia" in content
         assert "creator_a" in content
-        assert "Creator B" in content
+        assert "John Rivera" in content
         assert "creator_b" in content
         assert "Breakdown by Job" not in content
 

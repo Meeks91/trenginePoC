@@ -76,7 +76,7 @@ def test_handle_from_text():
 def test_dedup_by_handle():
     influencers = [
         Influencer(name="Kayla Itsines", handles={Platform.Instagram: "@kayla_itsines"}),
-        Influencer(name="Kayla", handles={Platform.Instagram: "@kayla_itsines"}),  # Duplicate
+        Influencer(name="Kayla Itsines", handles={Platform.Instagram: "@kayla_itsines"}),  # Duplicate
         Influencer(name="Joe Wicks", handles={Platform.Instagram: "@joewicks"}),
         Influencer(name="Joe Wicks", handles={Platform.Instagram: "@joewicks"}),  # Duplicate
     ]
@@ -211,8 +211,8 @@ def test_resolve_handles_full():
             Influencer(name="Kayla Itsines", handles={Platform.Instagram: "@kayla_itsines"}),
             Influencer(name="Joe Wicks", handles={Platform.TikTok: "thebodycoach"},
                        source_urls={"a.com", "b.com"}),  # Cross-platform: needs IG
-            Influencer(name="Kayla", handles={Platform.Instagram: "@kayla_itsines"}),  # Already has target
-            Influencer(name="Unknown Person", handles={}),  # Name-only — deferred to tracker
+            Influencer(name="Kayla Itsines", handles={Platform.Instagram: "@kayla_itsines"}),  # Already has target
+            Influencer(name="Sarah Thompson", handles={}),  # Name-only — deferred to tracker
         ]
 
         def mock_text(query, **kwargs):
@@ -233,8 +233,8 @@ def test_resolve_handles_full():
         assert ig_joe.handles[Platform.Instagram] == "thebodycoach"
 
         # Name-only entries are NOT touched by resolve_cross_account_handles
-        unknown = next(r for r in result if r.name == "Unknown Person")
-        assert not unknown.handles, "Name-only should NOT be resolved by resolve_cross_account_handles"
+        name_only = next(r for r in result if not r.handles)
+        assert name_only.name == "Sarah Thompson", "Name-only should keep its name"
 
 
 def test_enrich_cross_platform_handle():
@@ -284,9 +284,9 @@ def test_enrich_cross_platform_handle():
 def test_dedup_same_handle_different_platforms():
     """Same handle on different platforms must all survive merge."""
     influencers = [
-        Influencer(name="Creator A", handles={Platform.Instagram: "@creator_a"}),
-        Influencer(name="Creator A", handles={Platform.TikTok: "@creator_a"}),
-        Influencer(name="Creator A", handles={Platform.YouTube: "@creator_a"}),
+        Influencer(name="Maria Garcia", handles={Platform.Instagram: "@creator_a"}),
+        Influencer(name="Maria Garcia", handles={Platform.TikTok: "@creator_a"}),
+        Influencer(name="Maria Garcia", handles={Platform.YouTube: "@creator_a"}),
     ]
 
     result = InfluencerMerger.merge(influencers)
@@ -303,8 +303,8 @@ def test_dedup_same_handle_different_platforms():
 def test_dedup_same_handle_same_platform_collapses():
     """Same handle on same platform must collapse to 1."""
     influencers = [
-        Influencer(name="Creator A", handles={Platform.Instagram: "@creator_a"}),
-        Influencer(name="Creator A copy", handles={Platform.Instagram: "@creator_a"}),
+        Influencer(name="Maria Garcia", handles={Platform.Instagram: "@creator_a"}),
+        Influencer(name="Maria Garcia", handles={Platform.Instagram: "@creator_a"}),
     ]
 
     result = InfluencerMerger.merge(influencers)
@@ -320,11 +320,11 @@ def test_enrich_keeps_cross_platform_adds_target():
         svc = NameToHandleService(audit, delay_seconds=0)
 
         influencers = [
-            Influencer(name="Test Person", handles={Platform.TikTok: "@testperson"}),
+            Influencer(name="Tom Hardy", handles={Platform.TikTok: "@testperson"}),
         ]
 
         def mock_text(query, **kwargs):
-            if "Test Person" in query:
+            if "Tom Hardy" in query:
                 return [{"href": "https://www.instagram.com/testperson_ig/",
                          "title": "Test Person IG", "body": ""}]
             return []
@@ -353,14 +353,14 @@ def test_skip_cross_platform_lookup():
         svc = NameToHandleService(audit, delay_seconds=0)
 
         influencers = [
-            Influencer(name="Has TikTok", handles={Platform.TikTok: "@tiktoker"}),
-            Influencer(name="Name Only", handles={}),
+            Influencer(name="Mike Chen", handles={Platform.TikTok: "@tiktoker"}),
+            Influencer(name="Laura Smith", handles={}),
         ]
 
         def mock_text(query, **kwargs):
-            if "Name Only" in query:
+            if "Laura Smith" in query:
                 return [{"href": "https://www.instagram.com/nameonly/", "title": "", "body": ""}]
-            if "Has TikTok" in query:
+            if "Mike Chen" in query:
                 return [{"href": "https://www.instagram.com/tiktoker_ig/", "title": "", "body": ""}]
             return []
 
@@ -368,14 +368,14 @@ def test_skip_cross_platform_lookup():
             result = svc.resolve_cross_account_handles(influencers, platform=Platform.Instagram, skip_cross_platform=True)
 
         # "Has TikTok" should NOT have been looked up — kept as-is
-        tt = next(r for r in result if r.name == "Has TikTok")
+        tt = next(r for r in result if r.name == "Mike Chen")
         assert Platform.TikTok in tt.handles
         assert tt.handles[Platform.TikTok] == "@tiktoker"
         # No new IG entry added for them
-        assert sum(1 for r in result if r.name == "Has TikTok") == 1
+        assert sum(1 for r in result if r.name == "Mike Chen") == 1
 
         # Name-only entries are NOT resolved via resolve_cross_account_handles (deferred to tracker)
-        name_only = next(r for r in result if r.name == "Name Only")
+        name_only = next(r for r in result if r.name == "Laura Smith")
         assert not name_only.handles, "Name-only entries should NOT be enriched by resolve_cross_account_handles"
 
         # DDG should NOT have been called (skip_cross_platform=True)
@@ -390,13 +390,13 @@ def test_resolve_handles_frequency_cap():
 
         # Create 4 cross-platform entries with varying source_urls counts
         influencers = [
-            Influencer(name="Low Freq", handles={Platform.TikTok: "low"},
+            Influencer(name="Anna Brown", handles={Platform.TikTok: "low"},
                        source_urls={"a.com"}),  # 1 source — below threshold
-            Influencer(name="Medium", handles={Platform.TikTok: "medium"},
+            Influencer(name="David Clark", handles={Platform.TikTok: "medium"},
                        source_urls={"a.com", "b.com"}),  # 2 sources
-            Influencer(name="High Freq", handles={Platform.TikTok: "highfreq"},
+            Influencer(name="Emily Wright", handles={Platform.TikTok: "highfreq"},
                        source_urls={"a.com", "b.com", "c.com", "d.com"}),  # 4 sources
-            Influencer(name="Also High", handles={Platform.TikTok: "alsohigh"},
+            Influencer(name="James Parker", handles={Platform.TikTok: "alsohigh"},
                        source_urls={"a.com", "b.com", "c.com"}),  # 3 sources
         ]
 
@@ -414,18 +414,18 @@ def test_resolve_handles_frequency_cap():
 
         # Should have queried only top 2 by frequency: "High Freq" (4) and "Also High" (3)
         assert len(ddg_calls) == 2, f"Expected 2 DDG calls, got {len(ddg_calls)}: {ddg_calls}"
-        assert any("High Freq" in q for q in ddg_calls), "High Freq should have been DDG'd"
-        assert any("Also High" in q for q in ddg_calls), "Also High should have been DDG'd"
-        # "Low Freq" (1 source) should NOT have been DDG'd
-        assert not any("Low Freq" in q for q in ddg_calls), "Low Freq should NOT be DDG'd"
-        # "Medium" (2 sources) qualifies but was capped out
-        assert not any("Medium" in q for q in ddg_calls), "Medium was capped (only top 2 by frequency)"
+        assert any("Emily Wright" in q for q in ddg_calls), "Emily Wright should have been DDG'd"
+        assert any("James Parker" in q for q in ddg_calls), "James Parker should have been DDG'd"
+        # "Anna Brown" (1 source) should NOT have been DDG'd
+        assert not any("Anna Brown" in q for q in ddg_calls), "Anna Brown should NOT be DDG'd"
+        # "David Clark" (2 sources) qualifies but was capped out
+        assert not any("David Clark" in q for q in ddg_calls), "David Clark was capped (only top 2 by frequency)"
 
 # ── _needs_resolution() — per-platform logic ──
 
 def test_needs_resolution_no_handle():
     """Influencer with no handle always needs enrichment."""
-    inf = Influencer(name="Test", handles={})
+    inf = Influencer(name="Lisa Turner", handles={})
     assert NameToHandleService._needs_resolution(inf, Platform.Instagram) is True
     assert NameToHandleService._needs_resolution(inf, Platform.TikTok) is True
     assert NameToHandleService._needs_resolution(inf, Platform.YouTube) is True
@@ -433,25 +433,25 @@ def test_needs_resolution_no_handle():
 
 def test_needs_resolution_correct_platform():
     """Influencer with handle matching target platform does NOT need enrichment."""
-    inf = Influencer(name="Test", handles={Platform.Instagram: "@test"})
+    inf = Influencer(name="Lisa Turner", handles={Platform.Instagram: "@test"})
     assert NameToHandleService._needs_resolution(inf, Platform.Instagram) is False
 
 
 def test_needs_resolution_youtube_targeting_instagram():
     """YouTube handle when targeting Instagram → needs enrichment."""
-    inf = Influencer(name="Test", handles={Platform.YouTube: "adammaxted2262"})
+    inf = Influencer(name="Lisa Turner", handles={Platform.YouTube: "adammaxted2262"})
     assert NameToHandleService._needs_resolution(inf, Platform.Instagram) is True
 
 
 def test_needs_resolution_tiktok_targeting_instagram():
     """TikTok handle when targeting Instagram → needs enrichment."""
-    inf = Influencer(name="Test", handles={Platform.TikTok: "@victorianiamh"})
+    inf = Influencer(name="Lisa Turner", handles={Platform.TikTok: "@victorianiamh"})
     assert NameToHandleService._needs_resolution(inf, Platform.Instagram) is True
 
 
 def test_needs_resolution_instagram_targeting_tiktok():
     """Instagram handle when targeting TikTok → needs enrichment."""
-    inf = Influencer(name="Test", handles={Platform.Instagram: "@kayla_itsines"})
+    inf = Influencer(name="Lisa Turner", handles={Platform.Instagram: "@kayla_itsines"})
     assert NameToHandleService._needs_resolution(inf, Platform.TikTok) is True
 
 

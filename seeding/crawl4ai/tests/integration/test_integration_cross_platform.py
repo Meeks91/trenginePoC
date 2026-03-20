@@ -231,16 +231,16 @@ class TestCrossPlatformE2E:
 
             # Build a list with ONLY TikTok entries (simulate cross-platform)
             tt_only = [
-                Influencer(name="Test Creator", handles={Platform.TikTok: "testcreator"}),
+                Influencer(name="Tom Miller", handles={Platform.TikTok: "testcreator"}),
             ]
 
             enrich_svc = NameToHandleService(audit, delay_seconds=0)
 
             # Mock DDG to find an Instagram handle
             def mock_text(query, max_results=2, **kwargs):
-                if "Test Creator" in query:
+                if "Tom Miller" in query:
                     return [{"href": "https://www.instagram.com/testcreator_ig/",
-                             "title": "Test Creator", "body": ""}]
+                             "title": "Tom Miller", "body": ""}]
                 return []
 
             with patch.object(enrich_svc._ddgs, "text", side_effect=mock_text):

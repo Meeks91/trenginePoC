@@ -30,6 +30,7 @@ from services.audit.AuditService import AuditLog
 
 logger = logging.getLogger(__name__)
 from config.schema import Influencer, Platform, NameMentionRecord
+from services.extraction.NameCleaner import NameCleaner
 from config import (
     ENRICH_DELAY_SECONDS,
     SEARCH_BACKEND, SEARCH_REGION,
@@ -244,17 +245,22 @@ class NameToHandleService:
                 platform=platform,
             )
             tracker.mark_searched(set(names_to_resolve))
+            mention_by_name = {m.canonical: m for m in top_mentions}
 
             for h in name_handles:
-                resolved_map[h.name or h.handle] = (h.handle, h.platform)
+                resolve_key = h.name or h.handle
+                resolved_map[resolve_key] = (h.handle, h.platform)
                 try:
                     plat = Platform(h.platform)
                     handles: dict[Platform, str] = {plat: h.handle}
                 except ValueError:
                     handles = {}
+                mention = mention_by_name.get(resolve_key)
                 resolved_influencers.append(Influencer(
-                    name=h.name or h.handle,
+                    name=NameCleaner.clean_name(h.name) or "",
                     handles=handles,
+                    source_urls=set(mention.source_urls) if mention else set(),
+                    extraction_methods={"name_resolution"},
                 ))
 
         # Build NameMentionRecord list for output
@@ -363,8 +369,10 @@ class NameToHandleService:
                     handles = {}
 
                 inf = Influencer(
-                    name=handle_obj.name or name,
+                    name=NameCleaner.clean_name(handle_obj.name or name) or "",
                     handles=handles,
+                    source_urls=set(candidate.source_urls),
+                    extraction_methods={"name_resolution"},
                 )
                 all_resolved.append(inf)
                 known_handles.add(handle_lower)

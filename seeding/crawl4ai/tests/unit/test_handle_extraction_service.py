@@ -94,40 +94,36 @@ class TestRegexExtract:
     def test_extracts_ig_handle_from_url(self):
         raw = '<a href="https://instagram.com/kayla_itsines">profile</a>'
         page = _page("https://listicle.com/page", raw_md=raw)
-        handles, naked, yt_ids, url_counts, naked_counts = \
-            HandleExtractionService._regex_extract([page])
+        rx = HandleExtractionService._regex_extract([page])
         assert any(
             "kayla_itsines" in inf.handles.values()
-            for inf in handles
+            for inf in rx.regex_handles
         )
-        assert url_counts[page.url] >= 1
-        assert naked_counts[page.url] == 0
+        assert rx.page_url_handle_counts[page.url] >= 1
+        assert rx.page_naked_handle_counts[page.url] == 0
 
     def test_extracts_naked_handles(self):
         raw = "Follow @fit_guru_2025 and @yoga_daily for tips"
         page = _page("https://blog.com/article", raw_md=raw)
-        handles, naked, yt_ids, url_counts, naked_counts = \
-            HandleExtractionService._regex_extract([page])
-        assert naked_counts[page.url] >= 2
-        assert len(naked) >= 2
+        rx = HandleExtractionService._regex_extract([page])
+        assert rx.page_naked_handle_counts[page.url] >= 2
+        assert len(rx.naked_handles) >= 2
 
     def test_extracts_youtube_channel_ids(self):
         raw = '<a href="https://youtube.com/channel/UC4qk9TtGhBKCkoWz5qGJcGg">channel</a>'
         page = _page("https://listicle.com/page", raw_md=raw)
-        _, _, yt_ids, _, _ = HandleExtractionService._regex_extract([page])
-        assert "UC4qk9TtGhBKCkoWz5qGJcGg" in yt_ids
+        rx = HandleExtractionService._regex_extract([page])
+        assert "UC4qk9TtGhBKCkoWz5qGJcGg" in rx.yt_channel_ids
 
     def test_skips_failed_pages(self):
         page = _page("https://failed.com", success=False, raw_md="@handle")
-        handles, naked, yt_ids, url_counts, naked_counts = \
-            HandleExtractionService._regex_extract([page])
-        assert len(handles) == 0
+        rx = HandleExtractionService._regex_extract([page])
+        assert len(rx.regex_handles) == 0
 
     def test_skips_empty_pages(self):
         page = _page("https://empty.com", raw_md="")
-        handles, naked, yt_ids, url_counts, naked_counts = \
-            HandleExtractionService._regex_extract([page])
-        assert len(handles) == 0
+        rx = HandleExtractionService._regex_extract([page])
+        assert len(rx.regex_handles) == 0
 
 
 # ══════════════════════════════════════════════════════════════════════
@@ -175,14 +171,14 @@ class TestMergeHandles:
         assert Platform.TikTok in merged[0].handles
         assert merged[0].handles[Platform.TikTok] == "my_handle"
 
-    def test_direct_handle_without_name_uses_handle(self):
+    def test_direct_handle_without_name_gets_empty_name(self):
         direct = [
             ExtractedHandle(handle="handleonly", platform="Instagram", name=""),
         ]
         merged = HandleExtractionService._merge_handles(
             direct_handles=direct, regex_handles=[], llm_handles={},
         )
-        assert merged[0].name == "handleonly"
+        assert merged[0].name == ""
 
 
 # ══════════════════════════════════════════════════════════════════════
@@ -735,17 +731,17 @@ class TestRegexExtractNameCleaning:
         """IG embed with valid person name → Influencer.name set correctly."""
         raw = '<p>A post shared by Massy Arias (@massy.arias)</p>'
         page = _page("https://example.com", raw_md=raw)
-        handles, _, _, _, _ = HandleExtractionService._regex_extract([page])
-        massy = [h for h in handles if "massy" in h.ig_handle]
+        rx = HandleExtractionService._regex_extract([page])
+        massy = [h for h in rx.regex_handles if "massy" in h.ig_handle]
         assert len(massy) == 1
         assert massy[0].name == "Massy Arias"
 
-    def test_garbage_embed_name_falls_back_to_handle(self):
-        """IG embed with markdown garbage → Influencer.name falls back to handle."""
+    def test_garbage_embed_name_gets_empty_name(self):
+        """IG embed with markdown garbage → Influencer.name is empty (no handle fallback)."""
         raw = '<p>A post shared by [ MankoFit ?? ](https://x.com) (@mankofit)</p>'
         page = _page("https://example.com", raw_md=raw)
-        handles, _, _, _, _ = HandleExtractionService._regex_extract([page])
-        manko = [h for h in handles if "mankofit" in (h.ig_handle or h.name.lower())]
+        rx = HandleExtractionService._regex_extract([page])
+        manko = [h for h in rx.regex_handles if "mankofit" in (h.ig_handle or "")]
         assert len(manko) == 1
-        assert manko[0].name == "mankofit"  # Falls back to handle, not garbage
+        assert manko[0].name == ""  # No handle fallback — empty when no real name
 

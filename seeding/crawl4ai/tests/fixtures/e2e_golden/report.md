@@ -6,29 +6,32 @@
 | URLs discovered | 0 |
 | Pages crawled | 1 (0 failed, 0 dropped) |
 | Pages extracted (LLM) | 1 |
-| Influencers found (raw) | 20 |
-| Unique (after dedup) | 20 |
-| Handle fill rate | 14/20 |
+| Influencers found (raw) | 22 |
+| Unique (after dedup) | 22 |
+| Handle fill rate | 20/22 |
 | **Handle retrieval** | **0/0** |
 | Estimated LLM cost | $0.0006 |
 | Regex yield | 16.0 handles/page |
 | **Configs** | **1 succeeded, 0 failed (1 total)** |
 
 ## Global Seed DB (Deduped)
-**10 unique seeds** across all configs
+**13 unique seeds** across all configs
 
 | # | IG Handle | TK Handle | YT Handle | Categories |
 |---|-----------|-----------|-----------|------------|
-| 1 | — | — | adammaxted2262 | FITNESS |
-| 2 | alex.beattie | alex.beattie | — | FITNESS |
-| 3 | courtneyblackfitness | courtneyblackfitness | — | FITNESS |
-| 4 | esgfitness | — | esgfitness | FITNESS |
-| 5 | thebodycoach | — | TheBodyCoachTV | FITNESS |
-| 6 | — | bblisacross | — | FITNESS |
-| 7 | — | — | LucyDavisFit | FITNESS |
-| 8 | — | — | mac_griffiths | FITNESS |
-| 9 | — | — | seancaseyfitness111 | FITNESS |
-| 10 | — | victorianiamh | — | FITNESS |
+| 1 | — | — | seancaseyfitness111 | FITNESS |
+| 2 | — | — | LucyDavisFit | FITNESS |
+| 3 | — | — | adammaxted | FITNESS |
+| 4 | alex.beattie | alex.beattie | — | FITNESS |
+| 5 | courtneyblackfitness | Courtney | — | FITNESS |
+| 6 | esgfitness | — | esgfitness | FITNESS |
+| 7 | thebodycoach | — | TheBodyCoachTV | FITNESS |
+| 8 | — | — | The | FITNESS |
+| 9 | — | bblisacross | — | FITNESS |
+| 10 | — | — | Lucy | FITNESS |
+| 11 | — | — | Michael | FITNESS |
+| 12 | — | — | Sean | FITNESS |
+| 13 | — | victorianiamh | — | FITNESS |
 
 ## Canary Validation
 | Sub | Canary | Found? |

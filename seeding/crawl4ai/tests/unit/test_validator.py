@@ -50,7 +50,7 @@ def test_canary_by_handle():
     """Should match canary by handle in lookup set."""
     validator = _make_validator()
     influencers = [
-        Influencer(name="Some Other Name", handles={Platform.Instagram: "@kayla_itsines"}),
+        Influencer(name="", handles={Platform.Instagram: "@kayla_itsines"}),
         Influencer(name="Michelle Lewin", handles={Platform.Instagram: ""}),
         Influencer(name="Whitney Simmons", handles={Platform.Instagram: ""}),
     ]
@@ -72,9 +72,9 @@ def test_case_insensitive_match():
     """Canary matching should be case-insensitive."""
     validator = _make_validator()
     influencers = [
-        Influencer(name="kayla itsines", handles={Platform.Instagram: ""}),
-        Influencer(name="MICHELLE LEWIN", handles={Platform.Instagram: ""}),
-        Influencer(name="whitney simmons", handles={Platform.Instagram: ""}),
+        Influencer(name="Kayla Itsines", handles={Platform.Instagram: "kayla_itsines"}),
+        Influencer(name="Michelle Lewin", handles={Platform.Instagram: "michelle_lewin"}),
+        Influencer(name="Whitney Simmons", handles={Platform.Instagram: "whitneyysimmons"}),
     ]
     result = validator.validate(influencers, "FITNESS", "Fitness", "US")
     assert result is not None
@@ -113,7 +113,7 @@ def test_cross_platform_canary_found_globally():
     # Simulated cross-platform results (IG + YT combined)
     all_influencers = [
         # IG-only creators
-        Influencer(name="Some IG Creator", handles={Platform.Instagram: "ig_creator"}),
+        Influencer(name="", handles={Platform.Instagram: "ig_creator"}),
         # YT-only creators — Matt Wolfe found here
         Influencer(name="Matt Wolfe", handles={Platform.YouTube: "mreflow"}),
         Influencer(name="Matthew Berman", handles={Platform.YouTube: "matthew_berman"}),
@@ -139,8 +139,8 @@ def test_cross_platform_canary_missed_per_job():
 
     # IG job results ONLY — no Matt Wolfe (he's YT-only)
     ig_only_influencers = [
-        Influencer(name="Some IG Creator", handles={Platform.Instagram: "ig_creator"}),
-        Influencer(name="Another IG Creator", handles={Platform.Instagram: "another_ig"}),
+        Influencer(name="", handles={Platform.Instagram: "ig_creator"}),
+        Influencer(name="", handles={Platform.Instagram: "another_ig"}),
     ]
 
     result = validator.validate(ig_only_influencers, "AI", "AI", "US")

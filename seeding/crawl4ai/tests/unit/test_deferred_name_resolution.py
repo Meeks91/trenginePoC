@@ -232,6 +232,9 @@ class TestResolutionEnabled:
         inf = entries[0]
         assert "alexleonidas" in inf.handles.values()
         assert inf.categories_found_in == ["NAME_RESOLUTION"]
+        assert inf.source_urls == {"https://example.com/alex-leonidas"}
+        assert inf.extraction_methods == {"name_resolution"}
+        assert inf.citation_count == 1
 
 
 # ══════════════════════════════════════════════════════════════════════

@@ -46,7 +46,7 @@ class Influencer:
     """A single extracted influencer.
 
     Attributes:
-        name: Display name (real name or handle if no name known).
+        name: Display name (real name only, empty string if unknown).
         handles: Platform-to-handle mapping, e.g. {Platform.Instagram: "foodgod"}.
         categories_found_in: Categories this influencer was discovered in
             (populated during batch pipeline processing).
@@ -63,8 +63,7 @@ class Influencer:
     def __post_init__(self) -> None:
         from services.extraction.NameCleaner import NameCleaner
         cleaned = NameCleaner.clean_name(self.name)
-        if cleaned:
-            self.name = cleaned
+        self.name = cleaned or ""
 
     @property
     def ig_handle(self) -> str:

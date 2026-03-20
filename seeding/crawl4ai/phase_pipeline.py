@@ -33,6 +33,7 @@ from services.extraction.RegexHandleExtractor import ExtractedHandle
 from services.enrichment.NameToHandleService import NameToHandleService
 from services.enrichment.InfluencerMerger import InfluencerMerger
 from services.extraction.HandleExtractionService import HandleExtractionService, _to_handles
+from services.extraction.NameCleaner import NameCleaner
 
 from base_pipeline import BasePipelineRunner, GatherResult
 
@@ -269,7 +270,7 @@ class PhasePipelineRunner(BasePipelineRunner):
         # Add direct handles with their categories
         for handle, category in direct_handles:
             inf = Influencer(
-                name=handle.handle,
+                name=NameCleaner.clean_name(handle.name) or "",
                 handles=_to_handles(handle.handle, handle.platform),
                 categories_found_in=[category],
             )
