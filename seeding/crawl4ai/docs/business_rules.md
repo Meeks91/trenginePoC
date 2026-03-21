@@ -2,7 +2,7 @@
 
 > **Audience**: Developers, code reviewers, and future maintainers.
 > **Scope**: Every decision rule the crawler applies from DDG search → final JSON output.
-> **Last updated**: 2026-03-17
+> **Last updated**: 2026-03-21
 
 ---
 
@@ -18,12 +18,13 @@
    - [3d. Name Mention Tracking](#3d-name-mention-tracking)
    - [3e. LLM Extraction (Conditional)](#3e-llm-extraction-conditional)
 5. [Phase 4 — Enrichment](#phase-4--enrichment)
-6. [Phase 4½ — Identity Merge & Dedup](#phase-4½--identity-merge--dedup)
-7. [Phase 5 — Deferred Name Resolution](#phase-5--deferred-name-resolution)
-8. [Phase 6 — Output, Validation, Reporting](#phase-6--output-validation-reporting)
-9. [Configuration Reference](#configuration-reference)
-10. [Cost Model](#cost-model)
-11. [DDG Query Budget](#ddg-query-budget)
+6. [Phase 4¼ — Category Provenance Tagging](#phase-4¼--category-provenance-tagging)
+7. [Phase 4½ — Identity Merge & Dedup](#phase-4½--identity-merge--dedup)
+8. [Phase 5 — Deferred Name Resolution (Slot Recycling)](#phase-5--deferred-name-resolution-slot-recycling)
+9. [Phase 6 — Output, Validation, Reporting](#phase-6--output-validation-reporting)
+10. [Configuration Reference](#configuration-reference)
+11. [Cost Model](#cost-model)
+12. [DDG Query Budget](#ddg-query-budget)
 
 ---
 
@@ -486,6 +487,68 @@ Duplicates: source_urls unioned, handles merged into surviving entry.
 
 ---
 
+## Phase 4¼ — Category Provenance Tagging
+
+**Service**: `CategoryProvenanceTagger.py`
+**When**: After handles are extracted and enriched, before merge
+**Cost**: FREE (pure computation)
+
+Every `Influencer` gets stamped with the search config(s) that discovered it — providing
+config-based provenance for downstream analytics ("which sub-category searches surfaced
+this creator?").
+
+### Three Entry Points
+
+```mermaid
+graph TD
+    A["Per-Job Pipeline"] -->|"tag_from_job()"| D["apply_provenance()"]
+    B["Phase Pipeline"] -->|"tag_from_page_map()"| D
+    C["Name Resolution"] -->|"tag_from_name_mention()"| D
+    D --> E["Influencer.seen_in_categories<br/>Influencer.most_seen_category"]
+
+    style A fill:#1a3a5c,color:#fff
+    style B fill:#1a3a5c,color:#fff
+    style C fill:#1a3a5c,color:#fff
+    style D fill:#4a1942,color:#fff
+    style E fill:#1a4d2e,color:#fff
+```
+
+| Entry Point | Pipeline | Context Source |
+|---|---|---|
+| `tag_from_job(influencers, category_key, sub_name)` | Per-Job | Single `(category, sub)` from job config |
+| `tag_from_page_map(influencers, page_map, sub_to_category, ...)` | Phase | Traces `source_urls → page_map → TaggedURL → sub_keys` |
+| `tag_from_name_mention(inf, mention, sub_to_category)` | Name Resolution | Inherits `sub_names` from `NameMention` tracker |
+
+### `sub_to_category` Mapping
+
+Both `tag_from_page_map` and `tag_from_name_mention` require a `sub_to_category` dict to
+derive the parent category from each sub-name. This is built once per run:
+
+```python
+sub_to_category = SeedJob.build_sub_to_category(jobs=jobs)
+# → {"Yoga": "FITNESS", "Science-Based Training": "FITNESS", "Calisthenics": "FITNESS", ...}
+```
+
+### Output Fields
+
+`apply_provenance()` sets two fields on each `Influencer`:
+
+| Field | Type | Example |
+|---|---|---|
+| `seen_in_categories` | `list[CategoryCitation]` | `[{category: "FITNESS", sub: "Yoga", citations: 3}, {category: "FITNESS", sub: "Calisthenics", citations: 1}]` |
+| `most_seen_category` | `str` | `"FITNESS"` |
+
+`CategoryCitation` is a dataclass:
+```python
+@dataclass
+class CategoryCitation:
+    category: str   # Top-level category key, e.g. "FITNESS"
+    sub: str        # Subcategory name, e.g. "Yoga"
+    citations: int  # Pages from this sub's search that cited this influencer
+```
+
+---
+
 ## Phase 4½ — Identity Merge & Dedup
 
 **Service**: `InfluencerMerger.py`
@@ -538,15 +601,19 @@ inf.to_dict()
 #     "ig_handle": "kayla_itsines",
 #     "tk_handle": "kayla_itsines",
 #     "yt_handle": "",
-#     "categories": ["FITNESS"],
+#     "most_seen_category": "FITNESS",
+#     "seen_in_categories": [
+#         {"category": "FITNESS", "sub": "Yoga", "citations": 3},
+#         {"category": "FITNESS", "sub": "HIIT", "citations": 1},
+#     ],
 #     "source_urls": [...],
 #     "extraction_methods": [...],
-#     "citation_count": 2,
+#     "citation_count": 4,
 # }
 
 ---
 
-## Phase 5 — Deferred Name Resolution
+## Phase 5 — Deferred Name Resolution (Slot Recycling)
 
 **Service**: `NameResolver.py` + `NameMentionTracker.py` + `KnownNameIndex.py`
 **When**: After pre-NR merge, before post-NR merge
@@ -562,19 +629,46 @@ Before NR DDG lookups, `KnownNameIndex` checks if each candidate name already ha
 ```mermaid
 graph LR
     A["All jobs complete"] --> B["Merge all per-job<br/>NameMentionTrackers"]
-    B --> C["Group names by<br/>sub-category"]
+    B --> C["Group names by<br/>(platform, cat, sub, region)"]
     C --> D{"Name count ≥ 2<br/>AND source = reddit?"}
-    D -->|yes| E["Take top 5 per sub"]
+    D -->|yes| E["Build per-group queues<br/>(max 40 candidates each)"]
     D -->|no| F["Skip DDG"]
-    E --> G["DDG: '{name} {category}<br/>Instagram TikTok YouTube'"]
-    G --> H["Parse result URLs<br/>for platform handles"]
-    H --> I["Confidence check:<br/>name word in title?"]
-    I -->|yes| J["✅ Resolved"]
-    I -->|no| K["❌ Skip (false positive)"]
+    E --> G["For each group:<br/>pop candidate → DDG resolve"]
+    G --> H{"Handle already<br/>in known_handles?"}
+    H -->|yes| I["Slot RECYCLED<br/>→ try next candidate"]
+    H -->|no| J["✅ New handle<br/>→ consume slot"]
+    I --> G
+    J --> K["Tag provenance via<br/>tag_from_name_mention()"]
+    K --> L["Append to global pool"]
 
     style A fill:#2d1b69,color:#fff
     style J fill:#1a4d2e,color:#fff
-    style K fill:#555,color:#fff
+    style I fill:#555,color:#fff
+    style K fill:#4a1942,color:#fff
+    style F fill:#555,color:#fff
+```
+
+### Slot Recycling
+
+The key improvement over the old batch-resolve approach: when `resolve_with_recycling()` finds
+a name that DDG-resolves to an already-known handle (collision), the slot is **not consumed**.
+Instead, the next candidate from the same group queue is tried. This ensures the NR budget is
+spent only on genuinely new influencers.
+
+```
+For each group (platform, category, sub, region):
+  slots_filled = 0
+  While slots_filled < max_slots_per_group AND queue not empty:
+    candidate = queue.popleft()
+    resolved = DDG(candidate.canonical)
+    
+    if not resolved:
+      → Miss (slot consumed, no handle found)
+    elif resolved.handle in known_handles:
+      → COLLISION → slot RECYCLED (try next)
+    else:
+      → NEW handle → consume slot, update known_handles
+      → Tag provenance via tag_from_name_mention()
 ```
 
 ### Decision Rules
@@ -584,8 +678,11 @@ graph LR
 | **Feature flag** | `--name-resolution` (off by default) |
 | **Min mentions** | `--name-min-mentions` (default: 2) — name must appear ≥N times across all pages |
 | **Reddit-only** | Only names from Reddit-sourced pages qualify for resolution |
-| **Top 5 per sub** | Within each sub-category, only top 5 names by count are resolved |
-| **Max DDG calls** | `numSubs × 5` = 72 × 5 = **360** (worst case full batch) |
+| **Per-group slots** | Max 5 new handles per group (default `NAME_RESOLUTION_MAX_PER_SUB`) |
+| **Per-group queue depth** | Up to 40 candidates per group (to allow for collisions) |
+| **Collision recycling** | If resolved handle already in `known_handles`, slot is recycled (next candidate tried) |
+| **Provenance tagging** | Resolved influencers tagged via `CategoryProvenanceTagger.tag_from_name_mention()` |
+| **Max DDG calls** | Bounded by `numGroups × queue_depth` but practically `numGroups × max_slots` |
 | **Confidence check** | At least one word from the candidate name must appear in DDG result title |
 | **Zero-result retry** | Up to 4 retries with fresh DDG instance when zero platform URLs found |
 | **Name grouping** | Fuzzy-matched names (≥90% similarity) merge: "Jeff Nippard" + "Jeff Nipard" = 1 bucket |
@@ -622,7 +719,14 @@ DDG for "Jeff Nippard":
           "Yoga": {
             "is_top_level": false,
             "sources": [{"url": "...", "query": "...", "influencers": [...]}],
-            "all_influencers": [{"name": "...", "handles": {"Instagram": "..."}}]
+            "all_influencers": [{
+              "name": "...",
+              "handles": {"Instagram": "..."},
+              "most_seen_category": "FITNESS",
+              "seen_in_categories": [
+                {"category": "FITNESS", "sub": "Yoga", "citations": 3}
+              ]
+            }]
           }
         }
       }

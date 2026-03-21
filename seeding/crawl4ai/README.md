@@ -89,7 +89,8 @@ seeding/crawl4ai/
 │   │   └── prompts.py ················ LLM prompt template
 │   ├── enrichment/
 │   │   ├── InfluencerMerger.py ······ Identity merge + blocked-handle filtering
-│   │   ├── NameToHandleService.py ··· DDG gate: cross-platform + deferred name resolution
+│   │   ├── NameToHandleService.py ··· DDG gate: cross-platform + slot-recycling NR
+│   │   ├── CategoryProvenanceTagger.py  Config → (category, sub) provenance stamping
 │   │   └── patterns.py ·············· Platform URL + @handle text regexes
 │   ├── audit/
 │   │   └── AuditService.py ·········· JSONL append-only audit log per job
