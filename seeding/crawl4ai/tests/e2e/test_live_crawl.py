@@ -5,6 +5,7 @@ These tests are marked 'slow' and 'network' so they don't run in the normal suit
 """
 
 import pytest
+from unittest.mock import MagicMock
 
 from services.audit.AuditService import AuditLog
 from services.crawling.CrawlService import CrawlService
@@ -114,7 +115,7 @@ class TestLiveCrawl:
         audit = AuditLog(AUDIT_DIR, "test_live_full")
         crawl_svc = CrawlService(audit)
         handle_svc = HandleExtractionService(audit)
-        name_to_handle_svc = NameToHandleService(audit)
+        name_to_handle_svc = NameToHandleService(audit, search_client=MagicMock())
 
         pages = await crawl_svc.crawl_urls([
             (CLOUDKITCHENS_URL, "test_query"),
