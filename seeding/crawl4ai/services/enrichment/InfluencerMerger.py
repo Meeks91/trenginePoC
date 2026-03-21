@@ -29,7 +29,8 @@ import re
 from dataclasses import dataclass, field
 from typing import Callable
 
-from config.schema import Influencer, Platform
+from config.schema import Influencer, Platform, CategoryCitation
+from services.enrichment.CategoryProvenanceTagger import CategoryProvenanceTagger
 from services.extraction.RegexHandleExtractor import is_blocked_handle
 from services.extraction.NameCleaner import NameCleaner
 
@@ -102,7 +103,8 @@ class InfluencerMerger:
                 original_index=idx,
                 source_urls=set(inf.source_urls),
                 extraction_methods=set(inf.extraction_methods),
-                categories_found_in=list(inf.categories_found_in),
+                most_seen_category=inf.most_seen_category,
+                seen_in_categories=list(inf.seen_in_categories),
             )
 
             is_llm_only = inf.extraction_methods == {"llm"}
@@ -234,7 +236,7 @@ class _Entry:
     __slots__ = (
         "handles", "name", "name_lower",
         "original_index", "source_urls", "extraction_methods",
-        "categories_found_in",
+        "most_seen_category", "seen_in_categories",
     )
 
     def __init__(
@@ -245,7 +247,8 @@ class _Entry:
         original_index: int,
         source_urls: set[str] | None = None,
         extraction_methods: set[str] | None = None,
-        categories_found_in: list[str] | None = None,
+        most_seen_category: str = "",
+        seen_in_categories: list[CategoryCitation] | None = None,
     ) -> None:
         self.handles = handles
         self.name = name
@@ -253,7 +256,8 @@ class _Entry:
         self.original_index = original_index
         self.source_urls = source_urls or set()
         self.extraction_methods = extraction_methods or set()
-        self.categories_found_in = categories_found_in or []
+        self.most_seen_category = most_seen_category
+        self.seen_in_categories = seen_in_categories or []
 
     @property
     def has_supported_platform(self) -> bool:
@@ -330,18 +334,25 @@ def _build_grouped_influencer(
         all_sources |= entry.source_urls
         all_methods |= entry.extraction_methods
 
-    # Union categories_found_in from ALL entries
-    all_categories: set[str] = set()
+    # Union seen_in_categories from ALL entries — sum citations per (cat, sub)
+    cat_sub_counts: dict[tuple[str, str], int] = {}
     for entry in entries:
-        all_categories.update(entry.categories_found_in)
+        for cc in entry.seen_in_categories:
+            key = (cc.category, cc.sub)
+            cat_sub_counts[key] = cat_sub_counts.get(key, 0) + cc.citations
 
-    return Influencer(
+    merged = Influencer(
         name=best_name,
         handles=merged_handles,
         source_urls=all_sources,
         extraction_methods=all_methods,
-        categories_found_in=sorted(all_categories),
     )
 
+    if cat_sub_counts:
+        CategoryProvenanceTagger.apply_provenance(
+            inf=merged,
+            cat_sub_counts=cat_sub_counts,
+        )
 
+    return merged
 

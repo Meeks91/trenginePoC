@@ -80,6 +80,7 @@ class TestResolutionDisabled:
             sub_name="Fitness",
             platform=Platform.Instagram,
             influencers=[],
+            sub_to_category={"Fitness": "FITNESS"},
         )
         assert len(records) == 1
         assert records[0].canonical == "Jeff Nippard"
@@ -97,6 +98,7 @@ class TestResolutionDisabled:
             sub_name="Fitness",
             platform=Platform.Instagram,
             influencers=[],
+            sub_to_category={"Fitness": "FITNESS"},
         )
         assert len(records[0].source_urls) > 0
 
@@ -114,6 +116,7 @@ class TestResolutionDisabled:
             sub_name="Fitness",
             platform=Platform.Instagram,
             influencers=[],
+            sub_to_category={"Fitness": "FITNESS"},
         )
         mock_resolve.assert_not_called()
 
@@ -125,6 +128,7 @@ class TestResolutionDisabled:
             sub_name="Fitness",
             platform=Platform.Instagram,
             influencers=[],
+            sub_to_category={"Fitness": "FITNESS"},
         )
         assert records == []
 
@@ -161,6 +165,7 @@ class TestResolutionEnabled:
             sub_name="Fitness",
             platform=Platform.Instagram,
             influencers=[],
+            sub_to_category={"Fitness": "FITNESS"},
         )
 
         assert len(records) == 1
@@ -193,6 +198,7 @@ class TestResolutionEnabled:
             sub_name="Fitness",
             platform=Platform.Instagram,
             influencers=[],
+            sub_to_category={"Fitness": "FITNESS"},
         )
 
         assert len(records) == 1
@@ -226,12 +232,13 @@ class TestResolutionEnabled:
             sub_name="Fitness",
             platform=Platform.Instagram,
             influencers=entries,
+            sub_to_category={"Fitness": "FITNESS"},
         )
 
         assert len(entries) == 1
         inf = entries[0]
         assert "alexleonidas" in inf.handles.values()
-        assert inf.categories_found_in == ["NAME_RESOLUTION"]
+        assert inf.most_seen_category == "FITNESS"
         assert inf.source_urls == {"https://example.com/alex-leonidas"}
         assert inf.extraction_methods == {"name_resolution"}
         assert inf.citation_count == 1
@@ -256,6 +263,7 @@ class TestNameMentionRecordOutput:
             sub_name="Fitness",
             platform=Platform.Instagram,
             influencers=[],
+            sub_to_category={"Fitness": "FITNESS"},
         )
 
         assert len(records) == 2

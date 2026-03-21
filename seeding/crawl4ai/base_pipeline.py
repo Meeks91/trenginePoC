@@ -153,12 +153,14 @@ class BasePipelineRunner(abc.ABC):
 
         # Step 4: Deferred name resolution
         audit = AuditLog(AUDIT_DIR, "name_resolution")
+        sub_to_category = SeedJob.build_sub_to_category(jobs=jobs)
         name_records = self._run_deferred_name_resolution(
             tracker=gather.name_tracker,
             audit=audit,
             sub_name="Influencer",
             platform=jobs[0].platform if jobs else Platform.Instagram,
             influencers=merged,
+            sub_to_category=sub_to_category,
         )
 
         # Step 5: Post-NR merge (fold resolved names into identities)
@@ -426,6 +428,7 @@ class BasePipelineRunner(abc.ABC):
         sub_name: str,
         platform: Platform,
         influencers: list[Influencer],
+        sub_to_category: dict[str, str],
     ) -> list[NameMentionRecord]:
         """Run deferred name → handle resolution with slot recycling.
 
@@ -469,11 +472,10 @@ class BasePipelineRunner(abc.ABC):
             platform=platform,
             sub_name=sub_name,
             max_slots_per_group=self.name_resolution_max_per_sub,
+            sub_to_category=sub_to_category,
         )
 
-        for inf in resolved_influencers:
-            inf.categories_found_in = ["NAME_RESOLUTION"]
-            influencers.append(inf)
+        influencers.extend(resolved_influencers)
 
         # Append records for names that were not queued (audit completeness)
         queued_canonicals = {r.canonical for r in records}

@@ -17,21 +17,21 @@
 ## Global Seed DB (Deduped)
 **13 unique seeds** across all configs
 
-| # | IG Handle | TK Handle | YT Handle | Categories |
-|---|-----------|-----------|-----------|------------|
-| 1 | — | — | seancaseyfitness111 | FITNESS |
-| 2 | — | — | LucyDavisFit | FITNESS |
-| 3 | — | — | adammaxted | FITNESS |
-| 4 | alex.beattie | alex.beattie | — | FITNESS |
-| 5 | courtneyblackfitness | Courtney | — | FITNESS |
-| 6 | esgfitness | — | esgfitness | FITNESS |
-| 7 | thebodycoach | — | TheBodyCoachTV | FITNESS |
-| 8 | — | — | The | FITNESS |
-| 9 | — | bblisacross | — | FITNESS |
-| 10 | — | — | Lucy | FITNESS |
-| 11 | — | — | Michael | FITNESS |
-| 12 | — | — | Sean | FITNESS |
-| 13 | — | victorianiamh | — | FITNESS |
+| # | IG Handle | TK Handle | YT Handle | Category |
+|---|-----------|-----------|-----------|----------|
+| 1 | — | — | seancaseyfitness111 | FITNESS / Fitness |
+| 2 | — | — | LucyDavisFit | FITNESS / Fitness |
+| 3 | — | — | adammaxted | FITNESS / Fitness |
+| 4 | alex.beattie | alex.beattie | — | FITNESS / Fitness |
+| 5 | courtneyblackfitness | Courtney | — | FITNESS / Fitness |
+| 6 | esgfitness | — | esgfitness | FITNESS / Fitness |
+| 7 | thebodycoach | — | TheBodyCoachTV | FITNESS / Fitness |
+| 8 | — | — | The | FITNESS / Fitness |
+| 9 | — | bblisacross | — | FITNESS / Fitness |
+| 10 | — | — | Lucy | FITNESS / Fitness |
+| 11 | — | — | Michael | FITNESS / Fitness |
+| 12 | — | — | Sean | FITNESS / Fitness |
+| 13 | — | victorianiamh | — | FITNESS / Fitness |
 
 ## Canary Validation
 | Sub | Canary | Found? |

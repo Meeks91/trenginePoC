@@ -66,6 +66,7 @@ class TestResolveWithRecycling:
             platform=Platform.Instagram,
             sub_name="Gym",
             max_slots_per_group=5,
+            sub_to_category={"Gym": "FITNESS", "Yoga": "FITNESS", "Science-Based Training": "FITNESS"},
         )
 
         assert len(resolved) == 1
@@ -73,9 +74,51 @@ class TestResolveWithRecycling:
         assert resolved[0].source_urls == {"https://reddit.com/sean_nalewanyj"}
         assert resolved[0].extraction_methods == {"name_resolution"}
         assert resolved[0].citation_count == 1
+        assert resolved[0].most_seen_category == "FITNESS"
+        assert resolved[0].seen_in_categories[0].category == "FITNESS"
+        assert resolved[0].seen_in_categories[0].sub == "Gym"
         assert "seannal" in known
         assert len(records) == 1
         assert records[0].resolved_handle == "seannal"
+
+    @patch("services.extraction.NameResolver.resolve_names_via_ddg")
+    def test_resolved_influencer_inherits_mention_categories(self, mock_ddg: MagicMock) -> None:
+        """Resolved influencer carries category from NameMention, not NAME_RESOLUTION."""
+        mock_ddg.return_value = [_make_extracted("Multi Cat Person", "multicatperson")]
+        audit = MagicMock()
+        svc = NameToHandleService(audit)
+
+        mention = NameMention(
+            canonical="Multi Cat Person",
+            variants=["Multi Cat Person"],
+            mention_count=6,
+            was_searched=False,
+            source_types=["reddit"],
+            source_urls={"https://reddit.com/multi_cat"},
+            sub_names=["Gym", "Science-Based Training"],
+            platforms=["Instagram"],
+            categories=["FITNESS"],
+            regions=["US"],
+        )
+        queues: dict[GroupKey, deque[NameMention]] = {
+            ("Instagram", "FITNESS", "Gym", "US"): deque([mention]),
+        }
+
+        resolved, _ = svc.resolve_with_recycling(
+            group_queues=queues,
+            known_handles=set(),
+            platform=Platform.Instagram,
+            sub_name="Gym",
+            max_slots_per_group=5,
+            sub_to_category={"Gym": "FITNESS", "Yoga": "FITNESS", "Science-Based Training": "FITNESS"},
+        )
+
+        assert len(resolved) == 1
+        inf = resolved[0]
+        assert inf.most_seen_category == "FITNESS"
+        subs = {cc.sub for cc in inf.seen_in_categories}
+        assert "Gym" in subs
+        assert "Science-Based Training" in subs
 
     @patch("services.extraction.NameResolver.resolve_names_via_ddg")
     def test_collision_recycles_slot(self, mock_ddg: MagicMock) -> None:
@@ -101,6 +144,7 @@ class TestResolveWithRecycling:
             platform=Platform.Instagram,
             sub_name="Gym",
             max_slots_per_group=5,
+            sub_to_category={"Gym": "FITNESS", "Yoga": "FITNESS", "Science-Based Training": "FITNESS"},
         )
 
         assert len(resolved) == 1
@@ -128,6 +172,7 @@ class TestResolveWithRecycling:
             platform=Platform.Instagram,
             sub_name="Gym",
             max_slots_per_group=5,
+            sub_to_category={"Gym": "FITNESS", "Yoga": "FITNESS", "Science-Based Training": "FITNESS"},
         )
 
         assert len(resolved) == 0
@@ -159,6 +204,7 @@ class TestResolveWithRecycling:
             platform=Platform.Instagram,
             sub_name="Gym",
             max_slots_per_group=2,
+            sub_to_category={"Gym": "FITNESS"},
         )
 
         assert len(resolved) == 2
@@ -189,6 +235,7 @@ class TestResolveWithRecycling:
             platform=Platform.Instagram,
             sub_name="Gym",
             max_slots_per_group=5,
+            sub_to_category={"Gym": "FITNESS", "Yoga": "FITNESS", "Science-Based Training": "FITNESS"},
         )
 
         assert len(resolved) == 1
@@ -214,6 +261,7 @@ class TestResolveWithRecycling:
                 platform=Platform.Instagram,
                 sub_name="Gym",
                 max_slots_per_group=5,
+                sub_to_category={"Gym": "FITNESS"},
             )
             mock_logger.error.assert_called_once()
 

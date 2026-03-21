@@ -12,7 +12,7 @@ Tests cover:
 """
 
 import pytest
-from config.schema import Influencer, Platform
+from config.schema import Influencer, Platform, CategoryCitation
 from services.enrichment.InfluencerMerger import InfluencerMerger, _normalize_handle
 
 
@@ -158,40 +158,55 @@ class TestNameGrouping:
 class TestCategoriesUnion:
 
     def test_categories_merged_across_platforms(self):
-        """categories_found_in unioned when entries merge."""
+        """seen_in_categories unioned when entries merge."""
         influencers = [
             Influencer(
                 name="Jeff Nippard",
                 handles={Platform.Instagram: "jeffnippard"},
-                categories_found_in=["Fitness"],
+                most_seen_category="FITNESS",
+                seen_in_categories=[
+                    CategoryCitation(category="FITNESS", sub="Fitness", citations=1),
+                ],
             ),
             Influencer(
                 name="Jeff Nippard",
                 handles={Platform.YouTube: "jeffnippard"},
-                categories_found_in=["Bodybuilding"],
+                most_seen_category="FITNESS",
+                seen_in_categories=[
+                    CategoryCitation(category="FITNESS", sub="Bodybuilding", citations=1),
+                ],
             ),
         ]
         result = InfluencerMerger.merge(influencers)
         assert len(result) == 1
-        assert sorted(result[0].categories_found_in) == ["Bodybuilding", "Fitness"]
+        subs = {cc.sub for cc in result[0].seen_in_categories}
+        assert "Fitness" in subs
+        assert "Bodybuilding" in subs
 
     def test_categories_deduplicated(self):
-        """Duplicate category strings are deduplicated."""
+        """Same (category, sub) from different entries has citations summed."""
         influencers = [
             Influencer(
                 name="Jeff Nippard",
                 handles={Platform.Instagram: "jeffnippard"},
-                categories_found_in=["Fitness"],
+                most_seen_category="FITNESS",
+                seen_in_categories=[
+                    CategoryCitation(category="FITNESS", sub="Fitness", citations=1),
+                ],
             ),
             Influencer(
                 name="Jeff Nippard",
                 handles={Platform.TikTok: "jeffnippard"},
-                categories_found_in=["Fitness"],
+                most_seen_category="FITNESS",
+                seen_in_categories=[
+                    CategoryCitation(category="FITNESS", sub="Fitness", citations=1),
+                ],
             ),
         ]
         result = InfluencerMerger.merge(influencers)
         assert len(result) == 1
-        assert result[0].categories_found_in == ["Fitness"]
+        assert len(result[0].seen_in_categories) == 1
+        assert result[0].seen_in_categories[0].citations == 2
 
 
 # ══════════════════════════════════════════════════════════════════════

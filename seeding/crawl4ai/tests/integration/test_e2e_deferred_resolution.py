@@ -139,6 +139,7 @@ class TestTopRedditNamesGating:
             sub_name="Fitness",
             platform="Instagram",
             influencers=[],
+            sub_to_category={"Fitness": "FITNESS"},
         )
 
         by_name = {r.canonical: r for r in records}
@@ -189,6 +190,7 @@ class TestTopRedditNamesGating:
             sub_name="Fitness",
             platform="Instagram",
             influencers=[],
+            sub_to_category={"Fitness": "FITNESS"},
         )
 
         assert len(call_tracker["queries"]) == 0
@@ -209,6 +211,7 @@ class TestFeatureFlagOff:
             sub_name="Fitness",
             platform="Instagram",
             influencers=[],
+            sub_to_category={"Fitness": "FITNESS"},
         )
 
         mock_resolve.assert_not_called()
@@ -313,6 +316,7 @@ class TestCrossJobMerge:
             sub_name="Fitness",
             platform="Instagram",
             influencers=[],
+            sub_to_category={"Fitness": "FITNESS"},
         )
 
         assert len(records) == 1
@@ -331,6 +335,7 @@ class TestNameRecordsInOutput:
             sub_name="Fitness",
             platform="Instagram",
             influencers=[],
+            sub_to_category={"Fitness": "FITNESS"},
         )
 
         dicts = [r.to_dict() for r in records]

@@ -37,14 +37,14 @@ def _generate_report(**kwargs) -> str:
 
 def test_report_seed_table_excludes_name():
     """Seed table header should NOT contain Name column."""
-    seeds = [Influencer(name="Andrew Ng", handles={Platform.Instagram: "andrewyng"}, categories_found_in=["AI"])]
+    seeds = [Influencer(name="Andrew Ng", handles={Platform.Instagram: "andrewyng"}, most_seen_category="AI")]
     report = _generate_report(seeds=seeds)
     assert "| Name |" not in report
 
 
 def test_report_seed_table_has_handle_columns():
     """Seed table must have IG/TK/YT handle columns."""
-    seeds = [Influencer(name="Test", handles={Platform.Instagram: "test_ig"}, categories_found_in=["AI"])]
+    seeds = [Influencer(name="Test", handles={Platform.Instagram: "test_ig"}, most_seen_category="AI")]
     report = _generate_report(seeds=seeds)
     assert "| IG Handle |" in report
     assert "| TK Handle |" in report
@@ -53,7 +53,7 @@ def test_report_seed_table_has_handle_columns():
 
 def test_report_seed_table_shows_handle_values():
     """Handle values appear in the seed table rows."""
-    seeds = [Influencer(name="X", handles={Platform.Instagram: "creator1", Platform.YouTube: "creator1yt"}, categories_found_in=["AI"])]
+    seeds = [Influencer(name="X", handles={Platform.Instagram: "creator1", Platform.YouTube: "creator1yt"}, most_seen_category="AI")]
     report = _generate_report(seeds=seeds)
     assert "creator1" in report
     assert "creator1yt" in report

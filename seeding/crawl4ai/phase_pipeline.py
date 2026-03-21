@@ -22,17 +22,17 @@ from dataclasses import dataclass, field
 
 from config.seed_schema import SeedJob
 from config import AUDIT_DIR, CURRENT_YEAR
-from config.schema import Influencer, PageResult, Platform
+from config.schema import CategoryCitation, Influencer, PageResult, Platform
 
 from services.audit.AuditService import AuditLog
 from services.search.SearchService import SearchResults
 from services.search.SearchCache import SearchCache
 from services.crawling.CrawlService import CrawlService
-from services.extraction.HandleExtractionService import HandleExtractionService
+from services.extraction.HandleExtractionService import HandleExtractionService, _to_handles
 from services.extraction.RegexHandleExtractor import ExtractedHandle
 from services.enrichment.NameToHandleService import NameToHandleService
 from services.enrichment.InfluencerMerger import InfluencerMerger
-from services.extraction.HandleExtractionService import HandleExtractionService, _to_handles
+from services.enrichment.CategoryProvenanceTagger import CategoryProvenanceTagger
 from services.extraction.NameCleaner import NameCleaner
 
 from base_pipeline import BasePipelineRunner, GatherResult
@@ -48,6 +48,7 @@ class TaggedURL:
     source_query: str             # First query that found it
     config_keys: set[str] = field(default_factory=set)  # e.g. {"FITNESS/Yoga", "FOOD/Healthy"}
     category_keys: set[str] = field(default_factory=set)  # e.g. {"FITNESS", "FOOD"}
+    sub_keys: set[str] = field(default_factory=set)       # e.g. {"Yoga", "Science-Based Training"}
 
 
 class PhasePipelineRunner(BasePipelineRunner):
@@ -66,11 +67,9 @@ class PhasePipelineRunner(BasePipelineRunner):
 
     def __init__(self, **kwargs) -> None:
         super().__init__(**kwargs)
-        self._name_records: list = []
-        self._direct_handles: list[tuple] = []
         # Accumulators populated by _on_config_search_finished
         self._url_bag: dict[str, TaggedURL] = {}
-        self._all_direct_handles: list[tuple[ExtractedHandle, str]] = []
+        self._all_direct_handles: list[tuple[ExtractedHandle, str, str]] = []
 
     # ── Template Method overrides ─────────────────────────────────────────
 
@@ -129,14 +128,16 @@ class PhasePipelineRunner(BasePipelineRunner):
                     source_query=query,
                     config_keys={config_key},
                     category_keys={job.category_key},
+                    sub_keys={job.sub.sub_name},
                 )
             else:
                 self._url_bag[url].config_keys.add(config_key)
                 self._url_bag[url].category_keys.add(job.category_key)
+                self._url_bag[url].sub_keys.add(job.sub.sub_name)
 
         # Tag direct handles
         for handle in search_results.direct_handles:
-            self._all_direct_handles.append((handle, job.category_key))
+            self._all_direct_handles.append((handle, job.category_key, job.sub.sub_name))
 
     # ── Phase 2: Dedupe URLs (already deduped by dict key) ─────────────
 
@@ -198,7 +199,7 @@ class PhasePipelineRunner(BasePipelineRunner):
         pages: list[PageResult],
         page_map: dict[str, tuple[PageResult, TaggedURL]],
         jobs: list[SeedJob],
-        direct_handles: list[tuple[ExtractedHandle, str]],
+        direct_handles: list[tuple[ExtractedHandle, str, str]],
     ) -> tuple[list[Influencer], NameMentionTracker | None]:
         """Extract handles from all pages, tag with categories.
 
@@ -220,7 +221,7 @@ class PhasePipelineRunner(BasePipelineRunner):
         primary_region = jobs[0].region.label if jobs else "US"
 
         # Convert direct handles from phase 1
-        direct_handle_objects = [h for h, _cat in direct_handles]
+        direct_handle_objects = [h for h, _cat, _sub in direct_handles]
 
         extract_result = await handle_svc.extract_all_handles(
             pages,
@@ -248,31 +249,26 @@ class PhasePipelineRunner(BasePipelineRunner):
             failures=enrich_svc.failures,
         )
 
-        # Tag each influencer with categories from ALL pages that found it
-        all_influencers: list[Influencer] = []
-        for inf in unique:
-            # Try to find which categories this handle came from via page_map
-            handle_strs = {h.lower().lstrip("@") for h in inf.handles.values()}
-            found_categories: set[str] = set()
-
-            for _url, (page, tagged_url) in page_map.items():
-                page_lower = page.fit_markdown.lower()
-                if any(hs in page_lower for hs in handle_strs):
-                    found_categories.update(tagged_url.category_keys)
-
-            # Fallback: if we can't trace back to pages, use all categories
-            if not found_categories:
-                found_categories = {primary_category}
-
-            inf.categories_found_in = sorted(found_categories)
-            all_influencers.append(inf)
+        # Tag each influencer with categories from the configs that discovered its pages
+        sub_to_category = SeedJob.build_sub_to_category(jobs=jobs)
+        CategoryProvenanceTagger.tag_from_page_map(
+            influencers=unique,
+            page_map=page_map,
+            sub_to_category=sub_to_category,
+            fallback_category=primary_category,
+            fallback_sub=primary_sub,
+        )
+        all_influencers: list[Influencer] = list(unique)
 
         # Add direct handles with their categories
-        for handle, category in direct_handles:
+        for handle, category, sub_name in direct_handles:
             inf = Influencer(
                 name=NameCleaner.clean_name(handle.name) or "",
                 handles=_to_handles(handle.handle, handle.platform),
-                categories_found_in=[category],
+                most_seen_category=category,
+                seen_in_categories=[
+                    CategoryCitation(category=category, sub=sub_name, citations=1),
+                ],
             )
             all_influencers.append(inf)
 

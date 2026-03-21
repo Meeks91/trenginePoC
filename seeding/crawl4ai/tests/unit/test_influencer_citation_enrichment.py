@@ -13,7 +13,7 @@ TDD tests for:
 
 import pytest
 
-from config.schema import Influencer, Platform, SubResult, SourceResult, RegionResult
+from config.schema import Influencer, Platform, SubResult, SourceResult, RegionResult, CategoryCitation
 
 
 # ══════════════════════════════════════════════════════════════════════
@@ -111,7 +111,10 @@ class TestSubResultEnrichedSerialization:
         inf = Influencer(
             name="Jeff Nippard",
             handles={Platform.YouTube: "jeffnippard"},
-            categories_found_in=["FITNESS/Bodybuilding"],
+            most_seen_category="FITNESS",
+            seen_in_categories=[
+                CategoryCitation(category="FITNESS", sub="Bodybuilding", citations=1),
+            ],
             source_urls={"https://a.com", "https://b.com"},
             extraction_methods={"regex", "llm"},
         )
@@ -146,11 +149,13 @@ class TestSubResultEnrichedSerialization:
         # Must be sorted for deterministic JSON
         assert inf_dict["extraction_methods"] == ["llm", "regex"]
 
-    def test_all_influencers_includes_categories_found_in(self, enriched_sub_result):
+    def test_all_influencers_includes_category_provenance(self, enriched_sub_result):
         data = enriched_sub_result.to_dict()
         inf_dict = data["all_influencers"][0]
-        assert "categories_found_in" in inf_dict
-        assert inf_dict["categories_found_in"] == ["FITNESS/Bodybuilding"]
+        assert "most_seen_category" in inf_dict
+        assert inf_dict["most_seen_category"] == "FITNESS"
+        assert "seen_in_categories" in inf_dict
+        assert len(inf_dict["seen_in_categories"]) == 1
 
     def test_source_influencers_also_enriched(self, enriched_sub_result):
         """Influencers under sources[] must also carry enriched fields."""

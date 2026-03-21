@@ -4,11 +4,16 @@
     "ig_handle": "thebodycoach",
     "tk_handle": "",
     "yt_handle": "TheBodyCoachTV",
-    "categories": [
-      "FITNESS"
+    "most_seen_category": "FITNESS",
+    "seen_in_categories": [
+      {
+        "category": "FITNESS",
+        "sub": "Fitness",
+        "citations": 2
+      }
     ],
     "source_urls": [
-      "http://127.0.0.1:61257/gymfluencers_uk_fitness.html"
+      "http://127.0.0.1:0/gymfluencers_uk_fitness.html"
     ],
     "extraction_methods": [
       "llm"
@@ -20,11 +25,16 @@
     "ig_handle": "alex.beattie",
     "tk_handle": "alex.beattie",
     "yt_handle": "",
-    "categories": [
-      "FITNESS"
+    "most_seen_category": "FITNESS",
+    "seen_in_categories": [
+      {
+        "category": "FITNESS",
+        "sub": "Fitness",
+        "citations": 2
+      }
     ],
     "source_urls": [
-      "http://127.0.0.1:61257/gymfluencers_uk_fitness.html"
+      "http://127.0.0.1:0/gymfluencers_uk_fitness.html"
     ],
     "extraction_methods": [
       "llm",
@@ -37,11 +47,16 @@
     "ig_handle": "",
     "tk_handle": "",
     "yt_handle": "Lucy",
-    "categories": [
-      "FITNESS"
+    "most_seen_category": "FITNESS",
+    "seen_in_categories": [
+      {
+        "category": "FITNESS",
+        "sub": "Fitness",
+        "citations": 2
+      }
     ],
     "source_urls": [
-      "http://127.0.0.1:61257/gymfluencers_uk_fitness.html"
+      "http://127.0.0.1:0/gymfluencers_uk_fitness.html"
     ],
     "extraction_methods": [
       "llm",
@@ -54,11 +69,16 @@
     "ig_handle": "courtneyblackfitness",
     "tk_handle": "Courtney",
     "yt_handle": "",
-    "categories": [
-      "FITNESS"
+    "most_seen_category": "FITNESS",
+    "seen_in_categories": [
+      {
+        "category": "FITNESS",
+        "sub": "Fitness",
+        "citations": 3
+      }
     ],
     "source_urls": [
-      "http://127.0.0.1:61257/gymfluencers_uk_fitness.html"
+      "http://127.0.0.1:0/gymfluencers_uk_fitness.html"
     ],
     "extraction_methods": [
       "llm",
@@ -71,11 +91,16 @@
     "ig_handle": "",
     "tk_handle": "",
     "yt_handle": "Michael",
-    "categories": [
-      "FITNESS"
+    "most_seen_category": "FITNESS",
+    "seen_in_categories": [
+      {
+        "category": "FITNESS",
+        "sub": "Fitness",
+        "citations": 2
+      }
     ],
     "source_urls": [
-      "http://127.0.0.1:61257/gymfluencers_uk_fitness.html"
+      "http://127.0.0.1:0/gymfluencers_uk_fitness.html"
     ],
     "extraction_methods": [
       "llm",
@@ -88,11 +113,16 @@
     "ig_handle": "esgfitness",
     "tk_handle": "",
     "yt_handle": "esgfitness",
-    "categories": [
-      "FITNESS"
+    "most_seen_category": "FITNESS",
+    "seen_in_categories": [
+      {
+        "category": "FITNESS",
+        "sub": "Fitness",
+        "citations": 2
+      }
     ],
     "source_urls": [
-      "http://127.0.0.1:61257/gymfluencers_uk_fitness.html"
+      "http://127.0.0.1:0/gymfluencers_uk_fitness.html"
     ],
     "extraction_methods": [
       "llm",
@@ -105,11 +135,16 @@
     "ig_handle": "",
     "tk_handle": "bblisacross",
     "yt_handle": "",
-    "categories": [
-      "FITNESS"
+    "most_seen_category": "FITNESS",
+    "seen_in_categories": [
+      {
+        "category": "FITNESS",
+        "sub": "Fitness",
+        "citations": 1
+      }
     ],
     "source_urls": [
-      "http://127.0.0.1:61257/gymfluencers_uk_fitness.html"
+      "http://127.0.0.1:0/gymfluencers_uk_fitness.html"
     ],
     "extraction_methods": [
       "llm",
@@ -122,11 +157,16 @@
     "ig_handle": "",
     "tk_handle": "",
     "yt_handle": "adammaxted",
-    "categories": [
-      "FITNESS"
+    "most_seen_category": "FITNESS",
+    "seen_in_categories": [
+      {
+        "category": "FITNESS",
+        "sub": "Fitness",
+        "citations": 2
+      }
     ],
     "source_urls": [
-      "http://127.0.0.1:61257/gymfluencers_uk_fitness.html"
+      "http://127.0.0.1:0/gymfluencers_uk_fitness.html"
     ],
     "extraction_methods": [
       "llm",
@@ -139,11 +179,16 @@
     "ig_handle": "",
     "tk_handle": "victorianiamh",
     "yt_handle": "",
-    "categories": [
-      "FITNESS"
+    "most_seen_category": "FITNESS",
+    "seen_in_categories": [
+      {
+        "category": "FITNESS",
+        "sub": "Fitness",
+        "citations": 1
+      }
     ],
     "source_urls": [
-      "http://127.0.0.1:61257/gymfluencers_uk_fitness.html"
+      "http://127.0.0.1:0/gymfluencers_uk_fitness.html"
     ],
     "extraction_methods": [
       "llm",
@@ -156,11 +201,16 @@
     "ig_handle": "",
     "tk_handle": "",
     "yt_handle": "Sean",
-    "categories": [
-      "FITNESS"
+    "most_seen_category": "FITNESS",
+    "seen_in_categories": [
+      {
+        "category": "FITNESS",
+        "sub": "Fitness",
+        "citations": 2
+      }
     ],
     "source_urls": [
-      "http://127.0.0.1:61257/gymfluencers_uk_fitness.html"
+      "http://127.0.0.1:0/gymfluencers_uk_fitness.html"
     ],
     "extraction_methods": [
       "llm",
@@ -173,11 +223,16 @@
     "ig_handle": "",
     "tk_handle": "",
     "yt_handle": "The",
-    "categories": [
-      "FITNESS"
+    "most_seen_category": "FITNESS",
+    "seen_in_categories": [
+      {
+        "category": "FITNESS",
+        "sub": "Fitness",
+        "citations": 1
+      }
     ],
     "source_urls": [
-      "http://127.0.0.1:61257/gymfluencers_uk_fitness.html"
+      "http://127.0.0.1:0/gymfluencers_uk_fitness.html"
     ],
     "extraction_methods": [
       "regex"
@@ -189,8 +244,13 @@
     "ig_handle": "",
     "tk_handle": "",
     "yt_handle": "seancaseyfitness111",
-    "categories": [
-      "FITNESS"
+    "most_seen_category": "FITNESS",
+    "seen_in_categories": [
+      {
+        "category": "FITNESS",
+        "sub": "Fitness",
+        "citations": 1
+      }
     ],
     "source_urls": [],
     "extraction_methods": [],
@@ -201,8 +261,13 @@
     "ig_handle": "",
     "tk_handle": "",
     "yt_handle": "LucyDavisFit",
-    "categories": [
-      "FITNESS"
+    "most_seen_category": "FITNESS",
+    "seen_in_categories": [
+      {
+        "category": "FITNESS",
+        "sub": "Fitness",
+        "citations": 1
+      }
     ],
     "source_urls": [],
     "extraction_methods": [],

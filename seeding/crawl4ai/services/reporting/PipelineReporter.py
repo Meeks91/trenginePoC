@@ -170,15 +170,18 @@ class PipelineReporter:
             "## Global Seed DB (Deduped)",
             f"**{len(seeds)} unique seeds** across all configs",
             "",
-            "| # | IG Handle | TK Handle | YT Handle | Categories |",
-            "|---|-----------|-----------|-----------|------------|",
+            "| # | IG Handle | TK Handle | YT Handle | Category |",
+            "|---|-----------|-----------|-----------|----------|",
         ]
         for i, seed in enumerate(sorted(seeds, key=lambda s: s.name.lower()), 1):
             ig = seed.ig_handle or "—"
             tk = seed.tk_handle or "—"
             yt = seed.yt_handle or "—"
-            cats = ", ".join(sorted(seed.categories_found_in)) if seed.categories_found_in else "—"
-            lines.append(f"| {i} | {ig} | {tk} | {yt} | {cats} |")
+            cat = seed.most_seen_category or "—"
+            if seed.seen_in_categories:
+                top_sub = seed.seen_in_categories[0].sub
+                cat += f" / {top_sub}"
+            lines.append(f"| {i} | {ig} | {tk} | {yt} | {cat} |")
         lines.append("")
         return lines
 

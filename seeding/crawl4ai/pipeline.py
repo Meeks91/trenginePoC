@@ -18,6 +18,7 @@ from config import (
 )
 from config.schema import SubResult, RegionResult, Influencer, Platform
 
+from services.enrichment.CategoryProvenanceTagger import CategoryProvenanceTagger
 from services.search.SearchService import SearchResults
 from services.crawling.CrawlService import CrawlService
 from services.extraction.HandleExtractionService import HandleExtractionService
@@ -137,8 +138,12 @@ class PerJobPipelineRunner(BasePipelineRunner):
         logger.info("  Audit log: %s", audit.path)
 
         # Accumulate for global dedup
+        CategoryProvenanceTagger.tag_from_job(
+            influencers=unique,
+            category_key=job.category_key,
+            sub_name=job.sub.sub_name,
+        )
         for inf in unique:
-            inf.categories_found_in = [job.category_key]
             self._all_influencers.append(inf)
 
     # ── run_jobs (legacy wrapper) ────────────────────────────────────────
@@ -233,6 +238,7 @@ class PerJobPipelineRunner(BasePipelineRunner):
             sub_name=sub_name,
             platform=Platform(platform),
             influencers=[],
+            sub_to_category={sub_name: category_key},
         )
 
         # Enrich

@@ -13,7 +13,7 @@ from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 
-from config.schema import Influencer, Platform
+from config.schema import Influencer, Platform, CategoryCitation
 from config.seed_schema import (
     SeedJob, SubCategory, Difficulty, Region, RegionCode,
 )
@@ -66,7 +66,10 @@ def _jeff_nippard(handle: str = "jeffnippard") -> Influencer:
     return Influencer(
         name="Jeff Nippard",
         handles={Platform.Instagram: handle},
-        categories_found_in=["FITNESS"],
+        most_seen_category="FITNESS",
+        seen_in_categories=[
+            CategoryCitation(category="FITNESS", sub="Gym", citations=1),
+        ],
     )
 
 
@@ -134,4 +137,4 @@ class TestMergeCalledInRun:
         assert len(merged) == 1
         assert merged[0].name == "Jeff Nippard"
         assert merged[0].handles[Platform.Instagram] == "jeffnippard"
-        assert "FITNESS" in merged[0].categories_found_in
+        assert merged[0].most_seen_category == "FITNESS"

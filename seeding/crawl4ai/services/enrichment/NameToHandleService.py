@@ -30,6 +30,7 @@ from services.audit.AuditService import AuditLog
 
 logger = logging.getLogger(__name__)
 from config.schema import Influencer, Platform, NameMentionRecord
+from services.enrichment.CategoryProvenanceTagger import CategoryProvenanceTagger
 from services.extraction.NameCleaner import NameCleaner
 from config import (
     ENRICH_DELAY_SECONDS,
@@ -290,6 +291,7 @@ class NameToHandleService:
         platform: Platform,
         sub_name: str,
         max_slots_per_group: int,
+        sub_to_category: dict[str, str],
     ) -> tuple[list[Influencer], list[NameMentionRecord]]:
         """Per-group DDG resolution with known-handle collision recycling.
 
@@ -373,6 +375,11 @@ class NameToHandleService:
                     handles=handles,
                     source_urls=set(candidate.source_urls),
                     extraction_methods={"name_resolution"},
+                )
+                CategoryProvenanceTagger.tag_from_name_mention(
+                    inf=inf,
+                    mention=candidate,
+                    sub_to_category=sub_to_category,
                 )
                 all_resolved.append(inf)
                 known_handles.add(handle_lower)

@@ -39,6 +39,27 @@ class PageResult:
     handles_in_source: int = 0     # Unique handles found in raw HTML via regex
 
 
+# ── Category Provenance ──
+
+@dataclass
+class CategoryCitation:
+    """One subcategory search that surfaced an influencer.
+
+    Provenance is config-based: the influencer inherits the category/sub
+    of the config (SeedJob) that discovered the URL it was extracted from.
+    """
+    category: str   # Top-level category key, e.g. "FITNESS"
+    sub: str        # Subcategory name, e.g. "Science-Based Training"
+    citations: int  # Pages from this sub's search that cited this influencer
+
+    def to_dict(self) -> dict:
+        return {
+            "category": self.category,
+            "sub": self.sub,
+            "citations": self.citations,
+        }
+
+
 # ── Extraction Output ──
 
 @dataclass
@@ -48,15 +69,18 @@ class Influencer:
     Attributes:
         name: Display name (real name only, empty string if unknown).
         handles: Platform-to-handle mapping, e.g. {Platform.Instagram: "foodgod"}.
-        categories_found_in: Categories this influencer was discovered in
-            (populated during batch pipeline processing).
+        most_seen_category: Top-level category with the most page hits.
+        seen_in_categories: All subcategory searches that surfaced this
+            influencer, with per-sub citation counts. Populated by config
+            provenance tracing during pipeline processing.
         source_urls: Distinct page URLs where this influencer was found.
         extraction_methods: How this influencer was discovered
             (e.g. {"regex", "llm", "ddg_direct"}).
     """
     name: str
     handles: dict[Platform, str] = field(default_factory=dict)
-    categories_found_in: list[str] = field(default_factory=list)
+    most_seen_category: str = ""
+    seen_in_categories: list[CategoryCitation] = field(default_factory=list)
     source_urls: set[str] = field(default_factory=set)
     extraction_methods: set[str] = field(default_factory=set)
 
@@ -92,7 +116,10 @@ class Influencer:
             "ig_handle": self.ig_handle,
             "tk_handle": self.tk_handle,
             "yt_handle": self.yt_handle,
-            "categories": sorted(self.categories_found_in),
+            "most_seen_category": self.most_seen_category,
+            "seen_in_categories": [
+                cc.to_dict() for cc in self.seen_in_categories
+            ],
             "source_urls": sorted(self.source_urls),
             "extraction_methods": sorted(self.extraction_methods),
             "citation_count": self.citation_count,
@@ -200,7 +227,8 @@ class SubResult:
         return {
             "name": i.name,
             "handles": {p.value: h for p, h in i.handles.items()},
-            "categories_found_in": i.categories_found_in,
+            "most_seen_category": i.most_seen_category,
+            "seen_in_categories": [cc.to_dict() for cc in i.seen_in_categories],
             "source_urls": sorted(i.source_urls),
             "citation_count": i.citation_count,
             "extraction_methods": sorted(i.extraction_methods),

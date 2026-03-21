@@ -34,6 +34,7 @@ from unittest.mock import patch, MagicMock
 import pytest
 
 from config.schema import Influencer, Platform
+from services.enrichment.CategoryProvenanceTagger import CategoryProvenanceTagger
 from config.seed_schema import (
     SeedJob, SubCategory, Region, RegionCode, Difficulty,
 )
@@ -170,8 +171,11 @@ class _E2EPipelineRunner(BasePipelineRunner):
             retries=enrich_svc.retries, failures=enrich_svc.failures,
         )
 
-        for inf in unique:
-            inf.categories_found_in = [job.category_key]
+        CategoryProvenanceTagger.tag_from_job(
+            influencers=unique,
+            category_key=job.category_key,
+            sub_name=job.sub.sub_name,
+        )
         return GatherResult(
             influencers=unique,
             name_tracker=extract_result.name_tracker,

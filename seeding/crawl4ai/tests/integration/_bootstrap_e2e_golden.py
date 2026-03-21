@@ -16,6 +16,7 @@ from pathlib import Path
 from unittest.mock import patch, MagicMock
 
 from config.schema import Influencer, Platform
+from services.enrichment.CategoryProvenanceTagger import CategoryProvenanceTagger
 from config.seed_schema import (
     SeedJob, SubCategory, Region, RegionCode, Difficulty,
 )
@@ -27,6 +28,20 @@ from services.extraction.HandleExtractionService import HandleExtractionService
 
 FIXTURE_HTML = Path(__file__).resolve().parent.parent / "fixtures" / "gymfluencers_uk_fitness.html"
 GOLDEN_DIR = Path(__file__).resolve().parent.parent / "fixtures" / "e2e_golden"
+
+
+def _normalize_ports(records: list[dict]) -> list[dict]:
+    """Replace localhost:PORT with localhost:0 so random ports don't break diffs."""
+    out = []
+    for r in records:
+        r2 = dict(r)
+        if "source_urls" in r2:
+            r2["source_urls"] = [
+                re.sub(r"127\.0\.0\.1:\d+", "127.0.0.1:0", u)
+                for u in r2["source_urls"]
+            ]
+        out.append(r2)
+    return out
 
 
 def _build_mock_influencers() -> list[Influencer]:
@@ -122,8 +137,11 @@ class _E2EPipelineRunner(BasePipelineRunner):
             retries=enrich_svc.retries, failures=enrich_svc.failures,
         )
 
-        for inf in unique:
-            inf.categories_found_in = [job.category_key]
+        CategoryProvenanceTagger.tag_from_job(
+            influencers=unique,
+            category_key=job.category_key,
+            sub_name=job.sub.sub_name,
+        )
         return GatherResult(
             influencers=unique,
             name_tracker=extract_result.name_tracker,
@@ -182,8 +200,9 @@ async def main():
                 assert len(run_dirs) == 1, f"Expected 1 run dir, got {len(run_dirs)}"
                 run_dir = run_dirs[0]
 
-                # seeds.json
+                # seeds.json — normalize random ports for stable diffs
                 seeds_data = json.loads((run_dir / "seeds.json").read_text())
+                seeds_data = _normalize_ports(seeds_data)
                 (GOLDEN_DIR / "seeds.json").write_text(
                     json.dumps(seeds_data, indent=2, ensure_ascii=False)
                 )
@@ -191,6 +210,7 @@ async def main():
 
                 # unresolved_names.json
                 unresolved_data = json.loads((run_dir / "unresolved_names.json").read_text())
+                unresolved_data = _normalize_ports(unresolved_data)
                 (GOLDEN_DIR / "unresolved_names.json").write_text(
                     json.dumps(unresolved_data, indent=2, ensure_ascii=False)
                 )
@@ -198,6 +218,7 @@ async def main():
 
                 # output.json — build from seeds (the pipeline_output equivalent)
                 output_data = [s.to_dict() if hasattr(s, 'to_dict') else {"name": s.name} for s in seeds]
+                output_data = _normalize_ports(output_data)
                 (GOLDEN_DIR / "output.json").write_text(
                     json.dumps(output_data, indent=2, ensure_ascii=False)
                 )

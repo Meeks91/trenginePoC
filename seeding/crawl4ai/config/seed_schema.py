@@ -197,6 +197,14 @@ class SeedJob:
             f"handle from the sources you find. Return as many as possible."
         )
 
+    @staticmethod
+    def build_sub_to_category(
+        jobs: list[SeedJob],
+    ) -> dict[str, str]:
+        """Build sub_name → category_key mapping from a list of jobs."""
+        return {job.sub.sub_name: job.category_key for job in jobs}
+
+
 
 
 

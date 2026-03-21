@@ -143,21 +143,21 @@ def test_regex_blocks_uncensored_substring():
 
 def test_merger_blocks_news_handle():
     """foxnews handle → filtered out by filter_blocked."""
-    entries = [Influencer(name="Fox", handles={Platform.YouTube: "foxnews"}, categories_found_in=["AI"])]
+    entries = [Influencer(name="Fox", handles={Platform.YouTube: "foxnews"}, most_seen_category="AI")]
     result = InfluencerMerger.filter_blocked(entries)
     assert len(result) == 0, "foxnews should be blocked by merger"
 
 
 def test_merger_blocks_uncensored_substring():
     """Substring filter also works at merger level."""
-    entries = [Influencer(name="Pod", handles={Platform.YouTube: "uncensoredpod"}, categories_found_in=["AI"])]
+    entries = [Influencer(name="Pod", handles={Platform.YouTube: "uncensoredpod"}, most_seen_category="AI")]
     result = InfluencerMerger.filter_blocked(entries)
     assert len(result) == 0
 
 
 def test_merger_allows_non_blocked():
     """Non-blocked handle passes through."""
-    entries = [Influencer(name="Matt Wolfe", handles={Platform.YouTube: "mattwolfe"}, categories_found_in=["AI"])]
+    entries = [Influencer(name="Matt Wolfe", handles={Platform.YouTube: "mattwolfe"}, most_seen_category="AI")]
     result = InfluencerMerger.filter_blocked(entries)
     assert len(result) == 1, "mattwolfe should NOT be blocked"
 
@@ -168,7 +168,7 @@ def test_merger_blocks_on_any_platform():
         Influencer(name="X", handles={
             Platform.Instagram: "foxnews",
             Platform.YouTube: "legit_handle",
-        }, categories_found_in=["AI"]),
+        }, most_seen_category="AI"),
     ]
     result = InfluencerMerger.filter_blocked(entries)
     assert len(result) == 0, "Entry with any blocked handle should be removed"
@@ -180,14 +180,14 @@ def test_merger_blocks_on_any_platform():
 
 def test_handleless_influencer_filtered():
     """Name-only influencer (no handles) → excluded by filter_blocked."""
-    entries = [Influencer(name="Evelina Khanoyan", handles={}, categories_found_in=["AI"])]
+    entries = [Influencer(name="Evelina Khanoyan", handles={}, most_seen_category="AI")]
     result = InfluencerMerger.filter_blocked(entries)
     assert len(result) == 0, f"Expected 0 results for handleless entry, got {len(result)}"
 
 
 def test_influencer_with_handle_kept():
     """Influencer with at least one handle → kept."""
-    entries = [Influencer(name="Andrew Ng", handles={Platform.Instagram: "andrewyng"}, categories_found_in=["AI"])]
+    entries = [Influencer(name="Andrew Ng", handles={Platform.Instagram: "andrewyng"}, most_seen_category="AI")]
     result = InfluencerMerger.filter_blocked(entries)
     assert len(result) == 1
     assert result[0].ig_handle == "andrewyng"
@@ -196,7 +196,7 @@ def test_influencer_with_handle_kept():
 def test_filter_blocked_calls_injected_handle_filter():
     """Verify filter_blocked() calls the injected handle_filter (DI wiring test)."""
     mock_filter = MagicMock(return_value=False)
-    entries = [Influencer(name="X", handles={Platform.Instagram: "test_handle"}, categories_found_in=["AI"])]
+    entries = [Influencer(name="X", handles={Platform.Instagram: "test_handle"}, most_seen_category="AI")]
     result = InfluencerMerger.filter_blocked(entries, handle_filter=mock_filter)
     assert mock_filter.called, "handle_filter should have been called"
     assert len(result) == 1
@@ -205,6 +205,6 @@ def test_filter_blocked_calls_injected_handle_filter():
 def test_filter_blocked_injected_filter_can_block():
     """Injected filter returning True → entry is blocked."""
     always_block = lambda h: True
-    entries = [Influencer(name="X", handles={Platform.Instagram: "anything"}, categories_found_in=["AI"])]
+    entries = [Influencer(name="X", handles={Platform.Instagram: "anything"}, most_seen_category="AI")]
     result = InfluencerMerger.filter_blocked(entries, handle_filter=always_block)
     assert len(result) == 0

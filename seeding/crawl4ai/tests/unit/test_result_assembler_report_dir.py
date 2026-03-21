@@ -24,7 +24,7 @@ def _make_seed(name: str, ig: str = "") -> Influencer:
     handles = {Platform.Instagram: ig} if ig else {}
     return Influencer(
         name=name, handles=handles,
-        categories_found_in=["TEST"],
+        most_seen_category="TEST",
     )
 
 
@@ -150,7 +150,7 @@ class TestSaveRunReport:
             seed = Influencer(
                 name="Kayla Itsines",
                 handles={Platform.Instagram: "kayla_itsines"},
-                categories_found_in=["FITNESS"],
+                most_seen_category="FITNESS",
                 source_urls={"https://a.com", "https://b.com"},
                 extraction_methods={"regex", "llm"},
             )

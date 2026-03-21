@@ -4,7 +4,7 @@ Influencer carries computed properties (ig_handle, tk_handle, yt_handle)
 and to_dict() for DB serialization.
 """
 
-from config.schema import Influencer, Platform
+from config.schema import Influencer, Platform, CategoryCitation
 from services.enrichment.InfluencerMerger import InfluencerMerger
 from services.extraction.RegexHandleExtractor import is_blocked_handle
 
@@ -18,13 +18,16 @@ class TestInfluencerMergeAndSerialize:
             Influencer(
                 name="Kayla Itsines",
                 handles={Platform.Instagram: "kayla_itsines"},
-                categories_found_in=["FITNESS"],
+                most_seen_category="FITNESS",
+                seen_in_categories=[
+                    CategoryCitation(category="FITNESS", sub="Gym", citations=1),
+                ],
             ),
         ]
         result = InfluencerMerger.filter_blocked(influencers)
         assert len(result) == 1
         assert result[0].ig_handle == "kayla_itsines"
-        assert sorted(result[0].categories_found_in) == ["FITNESS"]
+        assert result[0].most_seen_category == "FITNESS"
 
     def test_multi_platform_single_result(self):
         """One person with handles on 3 platforms → 1 result with all handles."""
@@ -36,7 +39,11 @@ class TestInfluencerMergeAndSerialize:
                     Platform.YouTube: "yogawithadriene",
                     Platform.TikTok: "adrienelouise",
                 },
-                categories_found_in=["FITNESS", "YOGA"],
+                most_seen_category="FITNESS",
+                seen_in_categories=[
+                    CategoryCitation(category="FITNESS", sub="Gym", citations=1),
+                    CategoryCitation(category="YOGA", sub="Yoga", citations=1),
+                ],
             ),
         ]
         result = InfluencerMerger.filter_blocked(influencers)
@@ -44,7 +51,7 @@ class TestInfluencerMergeAndSerialize:
         assert result[0].ig_handle == "adrienelouise"
         assert result[0].yt_handle == "yogawithadriene"
         assert result[0].tk_handle == "adrienelouise"
-        assert sorted(result[0].categories_found_in) == ["FITNESS", "YOGA"]
+        assert result[0].most_seen_category == "FITNESS"
 
     def test_merge_then_filter_deduplicates(self):
         """merge() + filter_blocked() pipeline: same person on 3 platforms → 1 result."""
@@ -52,17 +59,26 @@ class TestInfluencerMergeAndSerialize:
             Influencer(
                 name="Adriene Mishler",
                 handles={Platform.Instagram: "adrienelouise"},
-                categories_found_in=["FITNESS"],
+                most_seen_category="FITNESS",
+                seen_in_categories=[
+                    CategoryCitation(category="FITNESS", sub="Gym", citations=1),
+                ],
             ),
             Influencer(
                 name="Adriene Mishler",
                 handles={Platform.YouTube: "yogawithadriene"},
-                categories_found_in=["FITNESS"],
+                most_seen_category="FITNESS",
+                seen_in_categories=[
+                    CategoryCitation(category="FITNESS", sub="Gym", citations=1),
+                ],
             ),
             Influencer(
                 name="Adriene Mishler",
                 handles={Platform.TikTok: "adrienelouise"},
-                categories_found_in=["YOGA"],
+                most_seen_category="YOGA",
+                seen_in_categories=[
+                    CategoryCitation(category="YOGA", sub="Yoga", citations=1),
+                ],
             ),
         ]
         merged = InfluencerMerger.merge(raw)
@@ -71,20 +87,29 @@ class TestInfluencerMergeAndSerialize:
         assert result[0].ig_handle == "adrienelouise"
         assert result[0].yt_handle == "yogawithadriene"
         assert result[0].tk_handle == "adrienelouise"
-        assert sorted(result[0].categories_found_in) == ["FITNESS", "YOGA"]
+        subs = {cc.sub for cc in result[0].seen_in_categories}
+        assert "Gym" in subs
+        assert "Yoga" in subs
 
     def test_categories_from_influencer(self):
-        """Categories read from categories_found_in."""
+        """Categories read from seen_in_categories."""
         influencers = [
             Influencer(
                 name="X",
                 handles={Platform.Instagram: "chef_x"},
-                categories_found_in=["FOOD", "FITNESS", "HEALTH"],
+                most_seen_category="FOOD",
+                seen_in_categories=[
+                    CategoryCitation(category="FOOD", sub="Cooking", citations=3),
+                    CategoryCitation(category="FITNESS", sub="Gym", citations=2),
+                    CategoryCitation(category="HEALTH", sub="Wellness", citations=1),
+                ],
             ),
         ]
         result = InfluencerMerger.filter_blocked(influencers)
         assert len(result) == 1
-        assert sorted(result[0].categories_found_in) == ["FITNESS", "FOOD", "HEALTH"]
+        assert result[0].most_seen_category == "FOOD"
+        cats = {cc.category for cc in result[0].seen_in_categories}
+        assert cats == {"FOOD", "FITNESS", "HEALTH"}
 
     def test_at_sign_stripped_in_to_dict(self):
         """Leading @ does not affect computed properties (handles stored raw)."""
@@ -92,7 +117,10 @@ class TestInfluencerMergeAndSerialize:
             Influencer(
                 name="X",
                 handles={Platform.Instagram: "@chefanna"},
-                categories_found_in=["FOOD"],
+                most_seen_category="FOOD",
+                seen_in_categories=[
+                    CategoryCitation(category="FOOD", sub="Cooking", citations=1),
+                ],
             ),
         ]
         result = InfluencerMerger.filter_blocked(influencers)
@@ -106,7 +134,7 @@ class TestInfluencerMergeAndSerialize:
     def test_handleless_influencer_skipped(self):
         """Influencer with no handles → skipped."""
         influencers = [
-            Influencer(name="X", handles={}, categories_found_in=["FOOD"]),
+            Influencer(name="X", handles={}, most_seen_category="FOOD"),
         ]
         result = InfluencerMerger.filter_blocked(influencers)
         assert len(result) == 0
@@ -119,7 +147,10 @@ class TestInfluencerMergeAndSerialize:
                 handles={Platform.Instagram: "kayla_itsines"},
                 source_urls={"https://modash.io/yoga", "https://favikon.com/fitness"},
                 extraction_methods={"regex", "llm"},
-                categories_found_in=["FITNESS"],
+                most_seen_category="FITNESS",
+                seen_in_categories=[
+                    CategoryCitation(category="FITNESS", sub="Gym", citations=1),
+                ],
             ),
         ]
         result = InfluencerMerger.filter_blocked(influencers)
@@ -137,14 +168,20 @@ class TestInfluencerMergeAndSerialize:
                 handles={Platform.Instagram: "kayla_itsines"},
                 source_urls={"https://a.com"},
                 extraction_methods={"regex"},
-                categories_found_in=["FITNESS"],
+                most_seen_category="FITNESS",
+                seen_in_categories=[
+                    CategoryCitation(category="FITNESS", sub="Gym", citations=1),
+                ],
             ),
             Influencer(
                 name="Kayla Itsines",
                 handles={Platform.Instagram: "kayla_itsines"},
                 source_urls={"https://b.com"},
                 extraction_methods={"llm"},
-                categories_found_in=["FOOD"],
+                most_seen_category="FOOD",
+                seen_in_categories=[
+                    CategoryCitation(category="FOOD", sub="Cooking", citations=1),
+                ],
             ),
         ]
         merged = InfluencerMerger.merge(raw)
@@ -165,7 +202,11 @@ class TestInfluencerMergeAndSerialize:
                 Platform.TikTok: "kayla_tt",
                 Platform.YouTube: "kaylayt",
             },
-            categories_found_in=["FITNESS", "FOOD"],
+            most_seen_category="FITNESS",
+            seen_in_categories=[
+                CategoryCitation(category="FITNESS", sub="Gym", citations=1),
+                CategoryCitation(category="FOOD", sub="Cooking", citations=1),
+            ],
             source_urls={"https://a.com"},
             extraction_methods={"regex"},
         )
@@ -173,7 +214,8 @@ class TestInfluencerMergeAndSerialize:
         assert d["ig_handle"] == "kayla_itsines"
         assert d["tk_handle"] == "kayla_tt"
         assert d["yt_handle"] == "kaylayt"
-        assert d["categories"] == ["FITNESS", "FOOD"]
+        assert d["most_seen_category"] == "FITNESS"
+        assert len(d["seen_in_categories"]) == 2
         assert d["source_urls"] == ["https://a.com"]
         assert d["extraction_methods"] == ["regex"]
         assert d["citation_count"] == 1

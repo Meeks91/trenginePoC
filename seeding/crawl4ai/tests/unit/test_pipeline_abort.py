@@ -129,7 +129,7 @@ class TestPipelineAbort:
     def test_mixed_success_and_failure(self):
         success_inf = Influencer(
             name="Good Creator", handles={Platform.Instagram: "goodcreator"},
-            categories_found_in=["TEST"],
+            most_seen_category="TEST",
         )
         errored = _make_errored_config("FailedSub")
         gather = GatherResult(
