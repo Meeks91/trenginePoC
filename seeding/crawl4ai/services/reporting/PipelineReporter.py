@@ -145,7 +145,7 @@ class PipelineReporter:
         if not influencers:
             return []
         grouped = InfluencerMergerService.merge(influencers)
-        grouped.sort(key=lambda inf: len(inf.source_urls), reverse=True)
+        grouped.sort(key=lambda inf: (-len(inf.source_urls), inf.name.lower()))
         lines = [
             "## Influencers Found",
             f"**{len(grouped)} unique people** (grouped from {len(influencers)} raw entries)",
