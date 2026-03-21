@@ -27,7 +27,7 @@ from config.seed_schema import SeedJob
 from services.audit.AuditService import AuditLog
 from services.search.SearchClient import SearchClient
 from services.extraction.RegexHandleExtractorService import (
-    extract_handles_from_url,
+    RegexHandleExtractorService,
     ExtractedHandle,
 )
 
@@ -125,7 +125,7 @@ class SearchService:
             seen_urls.add(r.url)
 
             if self._is_platform_url(r.url):
-                handle = extract_handles_from_url(r.url)
+                handle = RegexHandleExtractorService.extract_handles_from_url(r.url)
                 if handle and handle.handle.lower() not in seen_handles:
                     seen_handles.add(handle.handle.lower())
                     direct_handles.append(handle)

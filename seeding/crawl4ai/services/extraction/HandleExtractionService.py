@@ -20,11 +20,9 @@ if TYPE_CHECKING:
 
 from config.schema import Influencer, PageResult, Platform
 from services.audit.AuditService import AuditLog
-from services.extraction.NameCleanerService import NameCleaner
+from services.extraction.NameCleanerService import NameCleanerService
 from services.extraction.RegexHandleExtractorService import (
-    extract_handles_from_html,
-    extract_youtube_channel_ids,
-    assign_names_from_headings,
+    RegexHandleExtractorService,
     ExtractedHandle,
 )
 
@@ -301,13 +299,13 @@ class HandleExtractionService:
         for page in pages:
             if not page.success or not page.raw_markdown:
                 continue
-            handles = extract_handles_from_html(page.raw_markdown)
+            handles = RegexHandleExtractorService.extract_handles_from_html(page.raw_markdown)
             # Backfill names from nearby headings before creating Influencers
-            assign_names_from_headings(handles, page.raw_markdown)
+            RegexHandleExtractorService.assign_names_from_headings(handles, page.raw_markdown)
             url_handle_count = 0
             naked_count = 0
             for h in handles:
-                cleaned_name = NameCleaner.clean_name(h.name) if h.name else None
+                cleaned_name = NameCleanerService.clean_name(h.name) if h.name else None
                 regex_handles.append(Influencer(
                     name=cleaned_name or "",
                     handles=_to_handles(h.handle, h.platform),
@@ -322,7 +320,7 @@ class HandleExtractionService:
                     naked_count += 1
             page_url_handle_counts[page.url] = url_handle_count
             page_naked_handle_counts[page.url] = naked_count
-            yt_channel_ids.extend(extract_youtube_channel_ids(page.raw_markdown))
+            yt_channel_ids.extend(RegexHandleExtractorService.extract_youtube_channel_ids(page.raw_markdown))
 
         return RegexExtractResult(
             regex_handles=regex_handles,
@@ -490,7 +488,7 @@ class HandleExtractionService:
         # DDG direct handles
         for dh in direct_handles:
             _add(Influencer(
-                name=NameCleaner.clean_name(dh.name) or "",
+                name=NameCleanerService.clean_name(dh.name) or "",
                 handles=_to_handles(dh.handle, dh.platform),
                 extraction_methods={"ddg_direct"},
             ))

@@ -20,12 +20,12 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-from services.extraction.RegexHandleExtractorService import (
-    extract_handles_from_html,
-    extract_youtube_channel_ids,
-    extract_handles_from_url,
-    count_handles,
-)
+from services.extraction.RegexHandleExtractorService import RegexHandleExtractorService
+
+extract_handles_from_html = RegexHandleExtractorService.extract_handles_from_html
+extract_youtube_channel_ids = RegexHandleExtractorService.extract_youtube_channel_ids
+extract_handles_from_url = RegexHandleExtractorService.extract_handles_from_url
+count_handles = RegexHandleExtractorService.count_handles
 
 
 # ══════════════════════════════════════════════════════════════════════

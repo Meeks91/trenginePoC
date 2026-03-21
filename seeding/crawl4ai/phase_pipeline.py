@@ -32,7 +32,7 @@ from services.extraction.HandleExtractionService import HandleExtractionService,
 from services.extraction.RegexHandleExtractorService import ExtractedHandle
 from services.handleResolution.CrossPlatformHandleResolverService import CrossPlatformHandleResolverService
 from services.influencerProvenance.CategoryProvenanceTaggerService import CategoryProvenanceTagger
-from services.extraction.NameCleanerService import NameCleaner
+from services.extraction.NameCleanerService import NameCleanerService
 
 if TYPE_CHECKING:
     from services.extraction.NameMentionTracker import NameMentionTracker
@@ -265,7 +265,7 @@ class PhasePipelineRunner(BasePipelineRunner):
         # Add direct handles with their categories
         for handle, category, sub_name in direct_handles:
             inf = Influencer(
-                name=NameCleaner.clean_name(handle.name) or "",
+                name=NameCleanerService.clean_name(handle.name) or "",
                 handles=_to_handles(handle.handle, handle.platform),
                 most_seen_category=sub_name,
                 seen_in_categories=[

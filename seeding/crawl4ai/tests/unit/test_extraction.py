@@ -273,17 +273,17 @@ def test_extract_no_eligible_pages_returns_tuple():
 # ── Regression: Shared NameCleaner ──
 
 def test_name_cleaner_shared_by_both_parsers():
-    """LLMResponseParser and NameExtractor must both use NameCleaner.
+    """LLMResponseParser and NameExtractor must both use NameCleanerService.
 
     Old code defined cleanup logic independently. Now both import
-    NameCleaner for consistent name cleaning.
+    NameCleanerService for consistent name cleaning.
     """
     import services.extraction.LLMResponseParser as parser_mod
     import services.extraction.NameExtractor as extractor_mod
 
-    assert hasattr(parser_mod, 'NameCleaner'), (
-        "LLMResponseParser must import NameCleaner"
+    assert hasattr(parser_mod, 'NameCleanerService'), (
+        "LLMResponseParser must import NameCleanerService"
     )
-    assert hasattr(extractor_mod, 'NameCleaner'), (
-        "NameExtractor must import NameCleaner"
+    assert hasattr(extractor_mod, 'NameCleanerService'), (
+        "NameExtractor must import NameCleanerService"
     )

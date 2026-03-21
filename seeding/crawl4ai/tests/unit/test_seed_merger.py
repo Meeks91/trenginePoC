@@ -6,7 +6,10 @@ and to_dict() for DB serialization.
 
 from config.schema import Influencer, Platform, CategoryCitation
 from services.influencerMerging.InfluencerMergerService import InfluencerMergerService as InfluencerMerger
-from services.extraction.RegexHandleExtractorService import is_blocked_handle
+from services.extraction.RegexHandleExtractorService import RegexHandleExtractorService
+
+is_blocked_handle = RegexHandleExtractorService.is_blocked_handle
+
 
 
 class TestInfluencerMergeAndSerialize:

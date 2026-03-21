@@ -12,7 +12,7 @@ from __future__ import annotations
 import re
 from urllib.parse import urlparse
 
-from services.extraction.NameCleanerService import NameCleaner
+from services.extraction.NameCleanerService import NameCleanerService
 
 # Strip leading numbering: "1. ", "23) ", "100. "
 _NUMBER_PREFIX_RE = re.compile(r'^\d+[.)\-]\s*')
@@ -147,7 +147,7 @@ def _clean_and_filter(name: str) -> str | None:
     name = name.strip()
     if name.endswith("\u2019s") or name.endswith("'s"):
         name = name[:-2].rstrip()
-    cleaned = NameCleaner.clean_name(name)
+    cleaned = NameCleanerService.clean_name(name)
     if not cleaned or len(cleaned) < 4:
         return None
     key = cleaned.lower()

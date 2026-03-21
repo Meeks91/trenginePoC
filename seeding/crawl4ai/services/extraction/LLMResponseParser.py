@@ -12,8 +12,10 @@ import re
 from typing import Any
 
 from config.schema import Influencer, Platform
-from services.extraction.RegexHandleExtractorService import _is_valid_handle
-from services.extraction.NameCleanerService import NameCleaner
+from services.extraction.RegexHandleExtractorService import RegexHandleExtractorService
+from services.extraction.NameCleanerService import NameCleanerService
+
+is_valid_handle = RegexHandleExtractorService.is_valid_handle
 
 
 class LLMResponseParser:
@@ -36,7 +38,7 @@ class LLMResponseParser:
           - [{"influencers": [...]}, ...]
           - [{"name": "...", "handle": "..."}, ...]
 
-        Validates handles using _is_valid_handle() to filter out
+        Validates handles using is_valid_handle() to filter out
         path segments, CSS at-rules, and other garbage from LLM output.
 
         Returns:
@@ -62,12 +64,12 @@ class LLMResponseParser:
             if not isinstance(item, dict):
                 continue
             raw_name = str(item.get("name", "")).strip()
-            name = NameCleaner.clean_name(raw_name)
+            name = NameCleanerService.clean_name(raw_name)
             if not name:
                 continue
             handle = str(item.get("handle", "")).strip().lstrip("@")
             handle_platform = str(item.get("handle_platform", "")).strip().lower()
-            if handle and not (_is_valid_handle(handle) and NameCleaner.is_valid_handle(handle)):
+            if handle and not (is_valid_handle(handle) and NameCleanerService.is_valid_handle(handle)):
                 handle = ""
 
             # Build handles dict from LLM output

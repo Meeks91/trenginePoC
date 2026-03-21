@@ -6,7 +6,7 @@ country/brand/news rejection, LinkedIn slug rejection, valid names pass.
 """
 
 
-from services.extraction.NameCleanerService import NameCleaner
+from services.extraction.NameCleanerService import NameCleanerService
 
 
 class TestCleanName:
@@ -15,118 +15,118 @@ class TestCleanName:
     # ── Markdown stripping ──
 
     def test_strips_bold_markdown(self):
-        assert NameCleaner.clean_name("**Amanda Cerny**") == "Amanda Cerny"
+        assert NameCleanerService.clean_name("**Amanda Cerny**") == "Amanda Cerny"
 
     def test_strips_markdown_link(self):
-        assert NameCleaner.clean_name("[Andrej Karpathy](https://example.com)") == "Andrej Karpathy"
+        assert NameCleanerService.clean_name("[Andrej Karpathy](https://example.com)") == "Andrej Karpathy"
 
     def test_strips_bold_inside_link(self):
-        assert NameCleaner.clean_name("[**Joe Wicks**](https://youtube.com/@joewicks)") == "Joe Wicks"
+        assert NameCleanerService.clean_name("[**Joe Wicks**](https://youtube.com/@joewicks)") == "Joe Wicks"
 
     # ── Number prefix stripping ──
 
     def test_strips_dot_prefix(self):
-        assert NameCleaner.clean_name("1. Martha Stewart") == "Martha Stewart"
+        assert NameCleanerService.clean_name("1. Martha Stewart") == "Martha Stewart"
 
     def test_strips_paren_prefix(self):
-        assert NameCleaner.clean_name("23) Jane Fonda") == "Jane Fonda"
+        assert NameCleanerService.clean_name("23) Jane Fonda") == "Jane Fonda"
 
     def test_strips_dash_prefix(self):
-        assert NameCleaner.clean_name("5- Gordon Ramsay") == "Gordon Ramsay"
+        assert NameCleanerService.clean_name("5- Gordon Ramsay") == "Gordon Ramsay"
 
     # ── URL-encoded strings ──
 
     def test_rejects_url_encoded_garbled(self):
-        assert NameCleaner.clean_name("%D7%A6%D7%99%D7%A4") is None
+        assert NameCleanerService.clean_name("%D7%A6%D7%99%D7%A4") is None
 
     def test_decodes_url_encoded_valid(self):
-        result = NameCleaner.clean_name("Ren%C3%A9e Zellweger")
+        result = NameCleanerService.clean_name("Ren%C3%A9e Zellweger")
         assert result == "Renée Zellweger"
 
     # ── Non-person rejection: brands ──
 
     def test_rejects_brand_canva(self):
-        assert NameCleaner.clean_name("Canva") is None
+        assert NameCleanerService.clean_name("Canva") is None
 
     def test_rejects_brand_capcut(self):
-        assert NameCleaner.clean_name("CapCut") is None
+        assert NameCleanerService.clean_name("CapCut") is None
 
     def test_rejects_brand_peloton(self):
-        assert NameCleaner.clean_name("Peloton") is None
+        assert NameCleanerService.clean_name("Peloton") is None
 
     def test_rejects_brand_nike_training_club(self):
-        assert NameCleaner.clean_name("Nike Training Club") is None
+        assert NameCleanerService.clean_name("Nike Training Club") is None
 
     def test_rejects_brand_myfitnesspal(self):
-        assert NameCleaner.clean_name("MyFitnessPal") is None
+        assert NameCleanerService.clean_name("MyFitnessPal") is None
 
     # ── Non-person rejection: countries ──
 
     def test_rejects_country_bangladesh(self):
-        assert NameCleaner.clean_name("Bangladesh") is None
+        assert NameCleanerService.clean_name("Bangladesh") is None
 
     def test_rejects_country_united_states(self):
-        assert NameCleaner.clean_name("United States") is None
+        assert NameCleanerService.clean_name("United States") is None
 
     def test_rejects_country_south_korea(self):
-        assert NameCleaner.clean_name("South Korea") is None
+        assert NameCleanerService.clean_name("South Korea") is None
 
     # ── Non-person rejection: news orgs ──
 
     def test_rejects_news_org_forbes(self):
-        assert NameCleaner.clean_name("Forbes") is None
+        assert NameCleanerService.clean_name("Forbes") is None
 
     def test_rejects_news_org_techcrunch(self):
-        assert NameCleaner.clean_name("TechCrunch") is None
+        assert NameCleanerService.clean_name("TechCrunch") is None
 
     def test_rejects_news_org_bbc(self):
-        assert NameCleaner.clean_name("BBC") is None
+        assert NameCleanerService.clean_name("BBC") is None
 
     # ── Non-person rejection: generic phrases ──
 
     def test_rejects_generic_content_creator(self):
-        assert NameCleaner.clean_name("Content Creator") is None
+        assert NameCleanerService.clean_name("Content Creator") is None
 
     # ── Valid names pass through ──
 
     def test_valid_name_passes(self):
-        assert NameCleaner.clean_name("Joe Wicks") == "Joe Wicks"
+        assert NameCleanerService.clean_name("Joe Wicks") == "Joe Wicks"
 
     def test_valid_name_with_hyphen(self):
-        assert NameCleaner.clean_name("Emma Storey-Gordon") == "Emma Storey-Gordon"
+        assert NameCleanerService.clean_name("Emma Storey-Gordon") == "Emma Storey-Gordon"
 
     def test_valid_name_with_spaces(self):
-        assert NameCleaner.clean_name("  Kayla Itsines  ") == "Kayla Itsines"
+        assert NameCleanerService.clean_name("  Kayla Itsines  ") == "Kayla Itsines"
 
     # ── Edge cases ──
 
     def test_empty_string_returns_none(self):
-        assert NameCleaner.clean_name("") is None
+        assert NameCleanerService.clean_name("") is None
 
     def test_whitespace_only_returns_none(self):
-        assert NameCleaner.clean_name("   ") is None
+        assert NameCleanerService.clean_name("   ") is None
 
     def test_none_input_raises_or_returns_none(self):
-        assert NameCleaner.clean_name(None) is None
+        assert NameCleanerService.clean_name(None) is None
 
 
 class TestIsValidHandle:
     """NameCleaner.is_valid_handle() tests."""
 
     def test_valid_handle(self):
-        assert NameCleaner.is_valid_handle("courtneyblack") is True
+        assert NameCleanerService.is_valid_handle("courtneyblack") is True
 
     def test_valid_handle_with_underscore(self):
-        assert NameCleaner.is_valid_handle("kayla_itsines") is True
+        assert NameCleanerService.is_valid_handle("kayla_itsines") is True
 
     def test_rejects_linkedin_slug(self):
-        assert NameCleaner.is_valid_handle("fei-fei-li-4541247") is False
+        assert NameCleanerService.is_valid_handle("fei-fei-li-4541247") is False
 
     def test_rejects_path_with_slash(self):
-        assert NameCleaner.is_valid_handle("user/profile") is False
+        assert NameCleanerService.is_valid_handle("user/profile") is False
 
     def test_rejects_empty(self):
-        assert NameCleaner.is_valid_handle("") is False
+        assert NameCleanerService.is_valid_handle("") is False
 
 
 class TestBlocklistAdditions:
@@ -135,24 +135,24 @@ class TestBlocklistAdditions:
     # ── Generic job titles ──
 
     def test_rejects_personal_trainer(self):
-        assert NameCleaner.clean_name("Personal Trainer") is None
+        assert NameCleanerService.clean_name("Personal Trainer") is None
 
     def test_rejects_fitness_model(self):
-        assert NameCleaner.clean_name("Fitness Model") is None
+        assert NameCleanerService.clean_name("Fitness Model") is None
 
     def test_rejects_yoga_teacher(self):
-        assert NameCleaner.clean_name("Yoga Teacher") is None
+        assert NameCleanerService.clean_name("Yoga Teacher") is None
 
     def test_rejects_brand_ambassador(self):
-        assert NameCleaner.clean_name("Brand Ambassador") is None
+        assert NameCleanerService.clean_name("Brand Ambassador") is None
 
     # ── Min-length check (≤3 chars rejected) ──
 
     def test_rejects_short_name_the(self):
-        assert NameCleaner.clean_name("The") is None
+        assert NameCleanerService.clean_name("The") is None
 
     def test_accepts_four_char_name(self):
-        assert NameCleaner.clean_name("Emi Wong") == "Emi Wong"
+        assert NameCleanerService.clean_name("Emi Wong") == "Emi Wong"
 
 
 class TestNerValidation:
@@ -161,64 +161,64 @@ class TestNerValidation:
     # ── Noise that previously slipped through ──
 
     def test_rejects_non_person_media_post(self):
-        assert NameCleaner.clean_name("Media Post") is None
+        assert NameCleanerService.clean_name("Media Post") is None
 
     def test_rejects_non_person_world_record(self):
-        assert NameCleaner.clean_name("World Record") is None
+        assert NameCleanerService.clean_name("World Record") is None
 
     def test_rejects_non_person_fat_loss(self):
-        assert NameCleaner.clean_name("Fat Loss") is None
+        assert NameCleanerService.clean_name("Fat Loss") is None
 
     def test_rejects_non_person_state_university(self):
-        assert NameCleaner.clean_name("State University") is None
+        assert NameCleanerService.clean_name("State University") is None
 
     def test_rejects_non_person_questions_thread(self):
-        assert NameCleaner.clean_name("Questions Thread") is None
+        assert NameCleanerService.clean_name("Questions Thread") is None
 
     # ── Real person names still pass ──
 
     def test_accepts_real_person_jeff_nippard(self):
-        assert NameCleaner.clean_name("Jeff Nippard") == "Jeff Nippard"
+        assert NameCleanerService.clean_name("Jeff Nippard") == "Jeff Nippard"
 
     def test_accepts_real_person_stefi_cohen(self):
-        assert NameCleaner.clean_name("Stefi Cohen") == "Stefi Cohen"
+        assert NameCleanerService.clean_name("Stefi Cohen") == "Stefi Cohen"
 
     def test_accepts_real_person_kayla_itsines(self):
-        assert NameCleaner.clean_name("Kayla Itsines") == "Kayla Itsines"
+        assert NameCleanerService.clean_name("Kayla Itsines") == "Kayla Itsines"
 
     # ── Title prefix stripping ──
 
     def test_accepts_title_prefix_dr_mike(self):
-        assert NameCleaner.clean_name("Dr Mike") == "Dr Mike"
+        assert NameCleanerService.clean_name("Dr Mike") == "Dr Mike"
 
     def test_accepts_title_prefix_coach_greg(self):
-        assert NameCleaner.clean_name("Coach Greg") == "Coach Greg"
+        assert NameCleanerService.clean_name("Coach Greg") == "Coach Greg"
 
     def test_accepts_title_prefix_prof_andrews(self):
-        assert NameCleaner.clean_name("Prof Andrews") == "Prof Andrews"
+        assert NameCleanerService.clean_name("Prof Andrews") == "Prof Andrews"
 
     def test_accepts_title_prefix_sir_chris(self):
-        assert NameCleaner.clean_name("Sir Chris") == "Sir Chris"
+        assert NameCleanerService.clean_name("Sir Chris") == "Sir Chris"
 
     def test_accepts_title_prefix_dame_jessica(self):
-        assert NameCleaner.clean_name("Dame Jessica") == "Dame Jessica"
+        assert NameCleanerService.clean_name("Dame Jessica") == "Dame Jessica"
 
     def test_accepts_title_prefix_rev_samuel(self):
-        assert NameCleaner.clean_name("Rev Samuel") == "Rev Samuel"
+        assert NameCleanerService.clean_name("Rev Samuel") == "Rev Samuel"
 
     # ── Possessive suffix stripping ──
 
     def test_accepts_possessive_curly_apostrophe(self):
-        assert NameCleaner.clean_name("Sophie\u2019s Kitchen") == "Sophie\u2019s Kitchen"
+        assert NameCleanerService.clean_name("Sophie\u2019s Kitchen") == "Sophie\u2019s Kitchen"
 
     def test_accepts_possessive_straight_apostrophe(self):
-        assert NameCleaner.clean_name("Sophie's Kitchen") == "Sophie's Kitchen"
+        assert NameCleanerService.clean_name("Sophie's Kitchen") == "Sophie's Kitchen"
 
     # ── Non-person first words rejected ──
 
     def test_rejects_non_person_first_word_dirty(self):
-        assert NameCleaner.clean_name("Dirty Harry") is None
+        assert NameCleanerService.clean_name("Dirty Harry") is None
 
     def test_rejects_non_person_first_word_niche(self):
-        assert NameCleaner.clean_name("Niche The") is None
+        assert NameCleanerService.clean_name("Niche The") is None
 

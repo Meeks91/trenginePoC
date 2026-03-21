@@ -237,7 +237,7 @@ def _is_plausible_person_name(name: str) -> bool:
 
 
 
-class NameCleaner:
+class NameCleanerService:
     """Shared name cleanup — injected into LLMResponseParser + NameExtractor."""
 
     @staticmethod

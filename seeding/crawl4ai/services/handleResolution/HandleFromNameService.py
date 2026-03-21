@@ -29,7 +29,7 @@ from services.audit.AuditService import AuditLog
 from services.search.SearchClient import SearchClient
 from config.schema import Influencer, Platform, NameMentionRecord
 from services.influencerProvenance.CategoryProvenanceTaggerService import CategoryProvenanceTagger
-from services.extraction.NameCleanerService import NameCleaner
+from services.extraction.NameCleanerService import NameCleanerService
 from config import (
     ENRICH_DELAY_SECONDS,
     NAME_RESOLUTION_MIN_MENTIONS, NAME_RESOLUTION_MAX_PER_SUB,
@@ -133,7 +133,7 @@ class HandleFromNameService:
                     handles = {}
                 mention = mention_by_name.get(resolve_key)
                 resolved_influencers.append(Influencer(
-                    name=NameCleaner.clean_name(h.name) or "",
+                    name=NameCleanerService.clean_name(h.name) or "",
                     handles=handles,
                     source_urls=set(mention.source_urls) if mention else set(),
                     extraction_methods={"name_resolution"},
@@ -245,7 +245,7 @@ class HandleFromNameService:
                     handles = {}
 
                 inf = Influencer(
-                    name=NameCleaner.clean_name(handle_obj.name or name) or "",
+                    name=NameCleanerService.clean_name(handle_obj.name or name) or "",
                     handles=handles,
                     source_urls=set(candidate.source_urls),
                     extraction_methods={"name_resolution"},

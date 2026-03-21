@@ -429,217 +429,231 @@ class ExtractedHandle:
 
 
 # ══════════════════════════════════════════════════════════════════════
-# Validation
+# Heading-Based Name Extraction (imported here, used inside class)
 # ══════════════════════════════════════════════════════════════════════
 
-def is_blocked_handle(handle: str) -> bool:
-    """Check if a handle string is in the blocklist.
-
-    Single source of truth for handle-level blocking.
-    Used by both RegexHandleExtractor (during extraction) and
-    InfluencerMerger (during seed filtering, via DI).
-    """
-    h = handle.lower().rstrip(".")
-    if h in _IGNORE_HANDLES:
-        return True
-    if any(h.startswith(prefix) for prefix in _IGNORE_PREFIXES):
-        return True
-    if any(sub in h for sub in _IGNORE_SUBSTRINGS):
-        return True
-    return False
-
-
-def _is_valid_handle(handle: str) -> bool:
-    """Filter out non-handle matches (URL path segments, tracking params)."""
-    h_lower = handle.lower().rstrip(".")
-    if is_blocked_handle(handle):
-        return False
-    if len(h_lower) < 2:
-        return False
-    # Pure numeric = post IDs, not handles
-    if h_lower.isdigit():
-        return False
-    # Consecutive dots = invalid on most platforms (lorey rule)
-    if ".." in h_lower:
-        return False
-    # Domain-suffix filter: handles ending in .com, .co.uk etc. are email/domain leaks
-    if any(h_lower.endswith(suffix) for suffix in _DOMAIN_SUFFIXES):
-        return False
-    # Handles containing .com anywhere (e.g. "brookeence.comUse") are email fragments
-    if ".com" in h_lower and not h_lower.endswith(".com"):
-        return False
-    return True
-
-
-# ══════════════════════════════════════════════════════════════════════
-# Main Extraction Functions
-# ══════════════════════════════════════════════════════════════════════
-
-def extract_handles_from_html(html: str) -> list[ExtractedHandle]:
-    """Extract all social media handles from raw HTML or markdown.
-
-    Returns a deduplicated list of ExtractedHandle objects.
-    Extraction priority: IG embeds (have names) → URLs → @mentions.
-    """
-    seen: set[tuple[str, str]] = set()  # (lowercase handle, platform) → dedup key
-    seen_handles: set[str] = set()      # all seen handles (for @mention dedup)
-    results: list[ExtractedHandle] = []
-
-    def _add(handle: str, platform: str, name: str = "") -> None:
-        handle_clean = handle.lower().rstrip(".")
-        key = (handle_clean, platform)
-        if key not in seen and _is_valid_handle(handle_clean):
-            seen.add(key)
-            seen_handles.add(handle_clean)
-            results.append(ExtractedHandle(
-                handle=handle.rstrip("."),
-                platform=platform,
-                name=name.strip() if name else "",
-            ))
-
-    # 1. Instagram embed pattern FIRST (highest value — carries name)
-    #    "A post shared by Name (@handle)"
-    for match in _IG_EMBED.finditer(html):
-        name_raw = match.group(1)
-        handle = match.group(2)
-        # Clean name: remove trailing " |" and similar
-        name = re.sub(r'\s*[|/\\].*$', '', name_raw).strip()
-        _add(handle, "Instagram", NameCleaner.clean_name(name) or "")
-
-    # 2. URL-based extraction (high confidence, platform identified)
-    for pattern, platform in _URL_PATTERNS:
-        for match in pattern.finditer(html):
-            handle = match.group(1).lstrip("@")  # Twitter handles may have @
-            _add(handle, platform)
-
-    # 3. @mention extraction (lower confidence — no platform info)
-    #    Skip handles already seen from URL-based extraction (any platform)
-    for match in _AT_MENTION.finditer(html):
-        handle = match.group(1)
-        if handle.lower().rstrip(".") not in seen_handles:
-            _add(handle, "", "")  # Empty platform = unknown
-
-    return results
-
-
-def extract_youtube_channel_ids(html: str) -> list[str]:
-    """Extract YouTube channel IDs (UC...) from HTML for later resolution.
-
-    These need an HTTP request to youtube.com/channel/UC... to resolve
-    the channel's @handle. Returns a list of unique channel IDs.
-    """
-    seen: set[str] = set()
-    ids: list[str] = []
-    for match in _YT_CHANNEL_ID.finditer(html):
-        cid = match.group(1)
-        if cid not in seen:
-            seen.add(cid)
-            ids.append(cid)
-    return ids
-
-
-def extract_handles_from_url(url: str) -> ExtractedHandle | None:
-    """Extract a handle from a single URL (for DDG search result processing).
-
-    Used by SearchService to extract handles directly from DDG result URLs
-    before crawling — e.g. if DDG returns instagram.com/kayla_itsines,
-    extract the handle immediately.
-    """
-    for pattern, platform in _URL_PATTERNS:
-        match = pattern.search(url)
-        if match:
-            handle = match.group(1).lstrip("@")
-            if _is_valid_handle(handle.lower().rstrip(".")):
-                return ExtractedHandle(handle=handle, platform=platform)
-    return None
-
-
-def count_handles(html: str) -> int:
-    """Count unique social media handles in HTML."""
-    return len(extract_handles_from_html(html))
-
-
-# ══════════════════════════════════════════════════════════════════════
-# Heading-Based Name Extraction
-# ══════════════════════════════════════════════════════════════════════
-
-from services.extraction.NameCleanerService import NameCleaner
+from services.extraction.NameCleanerService import NameCleanerService  # noqa: E402
 
 # Markdown headings: ## or ### (skip # — usually page titles)
 _HEADING_RE = re.compile(r'^#{2,4}\s+(.+?)$', re.MULTILINE)
 
 
-def _heading_name_matches_handle(name: str, handle: str) -> bool:
-    """True if any word from the heading name appears in the handle.
+# ══════════════════════════════════════════════════════════════════════
+# Service
+# ══════════════════════════════════════════════════════════════════════
 
-    Prevents brand handles (e.g. @dfyne.official) from being assigned
-    a nearby person's heading name (e.g. "JOSE ROMERO").
-    Only considers words with 4+ characters to avoid false matches.
+class RegexHandleExtractorService:
+    """Fast, deterministic handle extraction from HTML/markdown via regex.
+
+    All methods are stateless and exposed as static methods.
+    Regex patterns are compiled once at module load time.
     """
-    if not name or not handle:
+
+    # API:
+
+    @staticmethod
+    def extract_handles_from_html(html: str) -> list[ExtractedHandle]:
+        """Extract all social media handles from raw HTML or markdown.
+
+        Returns a deduplicated list of ExtractedHandle objects.
+        Extraction priority: IG embeds (have names) → URLs → @mentions.
+        """
+        seen: set[tuple[str, str]] = set()   # (lowercase handle, platform) → dedup key
+        seen_handles: set[str] = set()        # all seen handles (for @mention dedup)
+        results: list[ExtractedHandle] = []
+
+        def _add(handle: str, platform: str, name: str = "") -> None:
+            handle_clean = handle.lower().rstrip(".")
+            key = (handle_clean, platform)
+            if key not in seen and RegexHandleExtractorService.is_valid_handle(handle_clean):
+                seen.add(key)
+                seen_handles.add(handle_clean)
+                results.append(ExtractedHandle(
+                    handle=handle.rstrip("."),
+                    platform=platform,
+                    name=name.strip() if name else "",
+                ))
+
+        # 1. Instagram embed pattern FIRST (highest value — carries name)
+        #    "A post shared by Name (@handle)"
+        for match in _IG_EMBED.finditer(html):
+            name_raw = match.group(1)
+            handle = match.group(2)
+            # Clean name: remove trailing " |" and similar
+            name = re.sub(r'\s*[|/\\].*$', '', name_raw).strip()
+            _add(handle, "Instagram", NameCleanerService.clean_name(name) or "")
+
+        # 2. URL-based extraction (high confidence, platform identified)
+        for pattern, platform in _URL_PATTERNS:
+            for match in pattern.finditer(html):
+                handle = match.group(1).lstrip("@")  # Twitter handles may have @
+                _add(handle, platform)
+
+        # 3. @mention extraction (lower confidence — no platform info)
+        #    Skip handles already seen from URL-based extraction (any platform)
+        for match in _AT_MENTION.finditer(html):
+            handle = match.group(1)
+            if handle.lower().rstrip(".") not in seen_handles:
+                _add(handle, "", "")  # Empty platform = unknown
+
+        return results
+
+    @staticmethod
+    def extract_youtube_channel_ids(html: str) -> list[str]:
+        """Extract YouTube channel IDs (UC...) from HTML for later resolution.
+
+        These need an HTTP request to youtube.com/channel/UC... to resolve
+        the channel's @handle. Returns a list of unique channel IDs.
+        """
+        seen: set[str] = set()
+        ids: list[str] = []
+        for match in _YT_CHANNEL_ID.finditer(html):
+            cid = match.group(1)
+            if cid not in seen:
+                seen.add(cid)
+                ids.append(cid)
+        return ids
+
+    @staticmethod
+    def extract_handles_from_url(url: str) -> ExtractedHandle | None:
+        """Extract a handle from a single URL (for DDG search result processing).
+
+        Used by SearchService to extract handles directly from DDG result URLs
+        before crawling — e.g. if DDG returns instagram.com/kayla_itsines,
+        extract the handle immediately.
+        """
+        for pattern, platform in _URL_PATTERNS:
+            match = pattern.search(url)
+            if match:
+                handle = match.group(1).lstrip("@")
+                if RegexHandleExtractorService.is_valid_handle(handle.lower().rstrip(".")):
+                    return ExtractedHandle(handle=handle, platform=platform)
+        return None
+
+    @staticmethod
+    def assign_names_from_headings(
+        handles: list[ExtractedHandle],
+        page_text: str,
+    ) -> None:
+        """Assign names to handles from nearest preceding markdown heading.
+
+        For structured listicle pages (joliapp, modash, feedspot) where each
+        influencer has a heading like '### Sabiha Divan' above their handle.
+
+        Only assigns if:
+          - Handle doesn't already have a name (or name == handle)
+          - Heading looks like a person name (2-4 words, capitalized)
+          - Heading is not a section title (blocked keywords)
+
+        Modifies handles in-place.
+        """
+        if not page_text or not handles:
+            return
+
+        # Build list of (position, cleaned_name) tuples via NameCleaner
+        headings: list[tuple[int, str]] = []
+        for match in _HEADING_RE.finditer(page_text):
+            raw = match.group(1).strip()
+            cleaned = NameCleanerService.clean_name(raw)
+            if cleaned:
+                headings.append((match.start(), cleaned))
+
+        if not headings:
+            return
+
+        # For each handle, find nearest preceding heading
+        for handle in handles:
+            if handle.name and handle.name != handle.handle:
+                continue  # Already has a real name
+
+            # Find handle position in page text
+            handle_pattern = (
+                f"@{re.escape(handle.handle)}"
+                if f"@{handle.handle}" in page_text
+                else re.escape(handle.handle)
+            )
+            h_match = re.search(handle_pattern, page_text, re.IGNORECASE)
+            if not h_match:
+                continue
+
+            handle_pos = h_match.start()
+
+            # Find nearest preceding heading
+            best_heading = None
+            best_dist = float("inf")
+            for heading_pos, heading_text in headings:
+                if heading_pos < handle_pos:
+                    dist = handle_pos - heading_pos
+                    if dist < best_dist:
+                        best_dist = dist
+                        best_heading = heading_text
+
+            if best_heading and best_dist <= 500:
+                if RegexHandleExtractorService._heading_name_matches_handle(best_heading, handle.handle):
+                    handle.name = best_heading
+
+    @staticmethod
+    def is_blocked_handle(handle: str) -> bool:
+        """Check if a handle string is in the blocklist.
+
+        Single source of truth for handle-level blocking.
+        Used by both RegexHandleExtractorService (during extraction) and
+        InfluencerMerger (during seed filtering, via DI).
+        """
+        h = handle.lower().rstrip(".")
+        if h in _IGNORE_HANDLES:
+            return True
+        if any(h.startswith(prefix) for prefix in _IGNORE_PREFIXES):
+            return True
+        if any(sub in h for sub in _IGNORE_SUBSTRINGS):
+            return True
         return False
-    h_clean = handle.lower().replace("_", "").replace(".", "")
-    words = [w.lower() for w in name.split() if len(w) >= 4]
-    return any(word in h_clean for word in words)
+
+    @staticmethod
+    def is_valid_handle(handle: str) -> bool:
+        """Return True if the handle passes all validity checks.
+
+        Filters out URL path segments, tracking params, pure numerics,
+        domain leaks, and anything in the blocklist.
+        """
+        h_lower = handle.lower().rstrip(".")
+        if RegexHandleExtractorService.is_blocked_handle(handle):
+            return False
+        if len(h_lower) < 2:
+            return False
+        # Pure numeric = post IDs, not handles
+        if h_lower.isdigit():
+            return False
+        # Consecutive dots = invalid on most platforms (lorey rule)
+        if ".." in h_lower:
+            return False
+        # Domain-suffix filter: handles ending in .com, .co.uk etc. are email/domain leaks
+        if any(h_lower.endswith(suffix) for suffix in _DOMAIN_SUFFIXES):
+            return False
+        # Handles containing .com anywhere (e.g. "brookeence.comUse") are email fragments
+        if ".com" in h_lower and not h_lower.endswith(".com"):
+            return False
+        return True
+
+    @staticmethod
+    def count_handles(html: str) -> int:
+        """Count unique social media handles in HTML."""
+        return len(RegexHandleExtractorService.extract_handles_from_html(html))
+
+    # Internal:
+
+    @staticmethod
+    def _heading_name_matches_handle(name: str, handle: str) -> bool:
+        """True if any word from the heading name appears in the handle.
+
+        Prevents brand handles (e.g. @dfyne.official) from being assigned
+        a nearby person's heading name (e.g. "JOSE ROMERO").
+        Only considers words with 4+ characters to avoid false matches.
+        """
+        if not name or not handle:
+            return False
+        h_clean = handle.lower().replace("_", "").replace(".", "")
+        words = [w.lower() for w in name.split() if len(w) >= 4]
+        return any(word in h_clean for word in words)
 
 
-def assign_names_from_headings(
-    handles: list[ExtractedHandle],
-    page_text: str,
-) -> None:
-    """Assign names to handles from nearest preceding markdown heading.
-
-    For structured listicle pages (joliapp, modash, feedspot) where each
-    influencer has a heading like '### Sabiha Divan' above their handle.
-
-    Only assigns if:
-      - Handle doesn't already have a name (or name == handle)
-      - Heading looks like a person name (2-4 words, capitalized)
-      - Heading is not a section title (blocked keywords)
-
-    Modifies handles in-place.
-    """
-    if not page_text or not handles:
-        return
-
-    # Build list of (position, cleaned_name) tuples via NameCleaner
-    headings: list[tuple[int, str]] = []
-    for match in _HEADING_RE.finditer(page_text):
-        raw = match.group(1).strip()
-        cleaned = NameCleaner.clean_name(raw)
-        if cleaned:
-            headings.append((match.start(), cleaned))
-
-    if not headings:
-        return
-
-    # For each handle, find nearest preceding heading
-    for handle in handles:
-        if handle.name and handle.name != handle.handle:
-            continue  # Already has a real name
-
-        # Find handle position in page text
-        handle_pattern = (
-            f"@{re.escape(handle.handle)}"
-            if f"@{handle.handle}" in page_text
-            else re.escape(handle.handle)
-        )
-        h_match = re.search(handle_pattern, page_text, re.IGNORECASE)
-        if not h_match:
-            continue
-
-        handle_pos = h_match.start()
-
-        # Find nearest preceding heading
-        best_heading = None
-        best_dist = float("inf")
-        for heading_pos, heading_text in headings:
-            if heading_pos < handle_pos:
-                dist = handle_pos - heading_pos
-                if dist < best_dist:
-                    best_dist = dist
-                    best_heading = heading_text
-
-        if best_heading and best_dist <= 500:
-            if _heading_name_matches_handle(best_heading, handle.handle):
-                handle.name = best_heading

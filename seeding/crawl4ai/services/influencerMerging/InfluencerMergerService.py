@@ -30,8 +30,8 @@ from typing import Callable
 
 from config.schema import Influencer, Platform, CategoryCitation
 from services.influencerProvenance.CategoryProvenanceTaggerService import CategoryProvenanceTagger
-from services.extraction.RegexHandleExtractorService import is_blocked_handle
-from services.extraction.NameCleanerService import NameCleaner
+from services.extraction.RegexHandleExtractorService import RegexHandleExtractorService
+from services.extraction.NameCleanerService import NameCleanerService as NameCleaner
 
 
 # ══════════════════════════════════════════════════════════════════════
@@ -170,7 +170,7 @@ class InfluencerMergerService:
     @staticmethod
     def filter_blocked(
         influencers: list[Influencer],
-        handle_filter: Callable[[str], bool] = is_blocked_handle,
+        handle_filter: Callable[[str], bool] = RegexHandleExtractorService.is_blocked_handle,
     ) -> list[Influencer]:
         """Remove handleless entries and entries with any blocked handle.
 

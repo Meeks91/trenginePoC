@@ -13,9 +13,9 @@ Synthetic HTML inputs testing:
   - Site-account blocklist verification
 """
 
-from services.extraction.RegexHandleExtractorService import (
-    extract_handles_from_html,
-)
+from services.extraction.RegexHandleExtractorService import RegexHandleExtractorService
+
+extract_handles_from_html = RegexHandleExtractorService.extract_handles_from_html
 
 
 # ══════════════════════════════════════════════════════════════════════

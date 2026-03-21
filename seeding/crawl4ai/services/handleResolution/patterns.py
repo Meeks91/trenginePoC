@@ -13,9 +13,9 @@ import re
 from typing import Optional
 
 from config.schema import Platform
-from services.extraction.RegexHandleExtractorService import (
-    extract_handles_from_url as _regex_extract,
-)
+from services.extraction.RegexHandleExtractorService import RegexHandleExtractorService
+
+_regex_extract = RegexHandleExtractorService.extract_handles_from_url
 
 
 # ── Platform domains for DDG search ──

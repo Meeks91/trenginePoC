@@ -19,7 +19,7 @@ from services.search.SearchClient import SearchClient
 logger = logging.getLogger(__name__)
 
 from services.extraction.RegexHandleExtractorService import (
-    extract_handles_from_url,
+    RegexHandleExtractorService,
     ExtractedHandle,
 )
 from config import SEARCH_DELAY_SECONDS
@@ -153,7 +153,7 @@ def _extract_handles_from_results(
             if text and not any(w in text for w in name_words):
                 continue
 
-        handle = extract_handles_from_url(url)
+        handle = RegexHandleExtractorService.extract_handles_from_url(url)
         if handle and handle.handle.lower() not in seen:
             seen.add(handle.handle.lower())
             score = _score_result(url, handle, candidate_name)

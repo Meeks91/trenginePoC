@@ -7,6 +7,7 @@ Verifies all ignore list categories block their entries from extraction.
 import pytest
 
 from services.extraction.RegexHandleExtractorService import (
+    RegexHandleExtractorService,
     _IGNORE_PATH_SEGMENTS,
     _IGNORE_CSS_ATRULES,
     _IGNORE_JS_FRAMEWORKS,
@@ -25,8 +26,8 @@ from services.extraction.RegexHandleExtractorService import (
     _IGNORE_BRANDS_RETAIL,
     _IGNORE_GENERIC,
     _IGNORE_HANDLES,
-    _is_valid_handle,
 )
+is_valid_handle = RegexHandleExtractorService.is_valid_handle
 
 
 # ══════════════════════════════════════════════════════════════════════
@@ -67,15 +68,15 @@ class TestIgnoreCategoryCompleteness:
 
 
 class TestIgnoreCategoriesBlockHandles:
-    """Every entry in every category should fail _is_valid_handle."""
+    """Every entry in every category should fail is_valid_handle."""
 
     @pytest.mark.parametrize("category_name", sorted(ALL_CATEGORIES.keys()))
     def test_all_entries_blocked(self, category_name):
         category = ALL_CATEGORIES[category_name]
         for entry in sorted(category):
-            assert not _is_valid_handle(entry), (
+            assert not is_valid_handle(entry), (
                 f"'{entry}' in category '{category_name}' should be blocked "
-                f"by _is_valid_handle but it passed"
+                f"by is_valid_handle but it passed"
             )
 
 
@@ -105,8 +106,8 @@ class TestAIBrandsSpecific:
             f"AI brand '{brand}' not in _IGNORE_BRANDS_AI or _IGNORE_BRANDS_TECH"
         )
         # Check it fails validation
-        assert not _is_valid_handle(brand), (
-            f"AI brand '{brand}' should be blocked by _is_valid_handle"
+        assert not is_valid_handle(brand), (
+            f"AI brand '{brand}' should be blocked by is_valid_handle"
         )
 
 
@@ -120,6 +121,6 @@ class TestValidHandlesStillPass:
 
     @pytest.mark.parametrize("handle", VALID_HANDLES)
     def test_valid_handle_passes(self, handle):
-        assert _is_valid_handle(handle), (
+        assert is_valid_handle(handle), (
             f"Valid handle '{handle}' was incorrectly blocked"
         )

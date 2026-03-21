@@ -10,14 +10,16 @@ consistently at both sites.
 
 from config.schema import Influencer, Platform
 from services.extraction.RegexHandleExtractorService import (
+    RegexHandleExtractorService,
     _IGNORE_HANDLES,
     _IGNORE_SUBSTRINGS,
     _IGNORE_PREFIXES,
-    _is_valid_handle,
-    extract_handles_from_html,
 )
 from services.influencerMerging.InfluencerMergerService import InfluencerMergerService as InfluencerMerger
 from unittest.mock import MagicMock
+
+is_valid_handle = RegexHandleExtractorService.is_valid_handle
+extract_handles_from_html = RegexHandleExtractorService.extract_handles_from_html
 
 
 # ══════════════════════════════════════════════════════════════════════
@@ -25,9 +27,9 @@ from unittest.mock import MagicMock
 # ══════════════════════════════════════════════════════════════════════
 
 def test_regex_extractor_uses_shared_blocklist():
-    """Every handle in _IGNORE_HANDLES must be rejected by _is_valid_handle."""
+    """Every handle in _IGNORE_HANDLES must be rejected by is_valid_handle."""
     for handle in list(_IGNORE_HANDLES)[:20]:
-        assert not _is_valid_handle(handle), f"{handle} should be blocked by regex extractor"
+        assert not is_valid_handle(handle), f"{handle} should be blocked by regex extractor"
 
 
 def test_merger_uses_shared_blocklist():
@@ -39,10 +41,15 @@ def test_merger_uses_shared_blocklist():
 
 
 def test_both_sites_use_same_is_blocked_handle():
-    """InfluencerMerger imports is_blocked_handle from RegexHandleExtractor."""
+    """InfluencerMerger uses RegexHandleExtractorService.is_blocked_handle — no duplicated logic."""
     from services.influencerMerging import InfluencerMergerService as merger_mod
-    from services.extraction import RegexHandleExtractorService as regex_mod
-    assert merger_mod.is_blocked_handle is regex_mod.is_blocked_handle
+    from services.extraction.RegexHandleExtractorService import RegexHandleExtractorService
+    # The merger must import from RegexHandleExtractorService (class), not define its own
+    assert hasattr(merger_mod, 'RegexHandleExtractorService'), (
+        "InfluencerMergerService must import RegexHandleExtractorService"
+    )
+    # Both should use the same underlying static method
+    assert merger_mod.RegexHandleExtractorService.is_blocked_handle is RegexHandleExtractorService.is_blocked_handle
 
 
 # ══════════════════════════════════════════════════════════════════════
@@ -208,3 +215,42 @@ def test_filter_blocked_injected_filter_can_block():
     entries = [Influencer(name="X", handles={Platform.Instagram: "anything"}, most_seen_category="AI")]
     result = InfluencerMerger.filter_blocked(entries, handle_filter=always_block)
     assert len(result) == 0
+
+
+# ══════════════════════════════════════════════════════════════════════
+# is_valid_handle — public API
+# ══════════════════════════════════════════════════════════════════════
+
+class TestIsValidHandle:
+    """Tests for the newly-public RegexHandleExtractorService.is_valid_handle."""
+
+    def test_valid_real_handle_passes(self):
+        assert is_valid_handle("kayla_itsines") is True
+
+    def test_too_short_rejected(self):
+        assert is_valid_handle("x") is False
+
+    def test_pure_numeric_rejected(self):
+        assert is_valid_handle("12345") is False
+
+    def test_consecutive_dots_rejected(self):
+        assert is_valid_handle("foo..bar") is False
+
+    def test_domain_suffix_rejected(self):
+        assert is_valid_handle("mysite.com") is False
+
+    def test_dotcom_in_middle_rejected(self):
+        """e.g. brookeence.comUse — email fragment leaked into handle."""
+        assert is_valid_handle("brookeence.comuse") is False
+
+    def test_blocklisted_handle_rejected(self):
+        assert is_valid_handle("foxnews") is False
+
+    def test_profanity_substring_rejected(self):
+        assert is_valid_handle("fartking99") is False
+
+    def test_prefix_filtered(self):
+        assert is_valid_handle("utm_source") is False
+
+    def test_handle_with_underscores_and_dots_passes(self):
+        assert is_valid_handle("run.with.tom") is True

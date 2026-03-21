@@ -11,7 +11,8 @@ Tests:
 """
 
 from config.schema import PageResult, Influencer, Platform
-from services.extraction.RegexHandleExtractorService import ExtractedHandle, assign_names_from_headings
+from services.extraction.RegexHandleExtractorService import RegexHandleExtractorService, ExtractedHandle
+assign_names_from_headings = RegexHandleExtractorService.assign_names_from_headings
 from services.extraction.HandleExtractionService import (
     HandleExtractionService,
     needs_llm,
@@ -752,19 +753,16 @@ class TestBlocklistCelebritiesAndBrands:
     """Verify new _IGNORE_CELEBRITIES and _IGNORE_BRANDS_FITNESS entries are blocked."""
 
     def test_celebrity_handles_blocked(self):
-        from services.extraction.RegexHandleExtractorService import is_blocked_handle
         for h in ("kamalaharris", "halleberry", "barbie", "officialbenshapiro", "therock"):
-            assert is_blocked_handle(h), f"{h} should be blocked"
+            assert RegexHandleExtractorService.is_blocked_handle(h), f"{h} should be blocked"
 
     def test_fitness_brand_handles_blocked(self):
-        from services.extraction.RegexHandleExtractorService import is_blocked_handle
         for h in ("buffbunny", "hydrojug", "monsterenergy", "popsugar", "thealiveapp"):
-            assert is_blocked_handle(h), f"{h} should be blocked"
+            assert RegexHandleExtractorService.is_blocked_handle(h), f"{h} should be blocked"
 
     def test_real_fitness_handles_not_blocked(self):
-        from services.extraction.RegexHandleExtractorService import is_blocked_handle
         for h in ("kayla_itsines", "jeffnippard", "whitneyysimmons", "heidisomers"):
-            assert not is_blocked_handle(h), f"{h} should NOT be blocked"
+            assert not RegexHandleExtractorService.is_blocked_handle(h), f"{h} should NOT be blocked"
 
 
 # ══════════════════════════════════════════════════════════════════════
@@ -776,18 +774,16 @@ class TestIgEmbedNameCleaning:
 
     def test_ig_embed_valid_person_name_preserved(self):
         """Valid person name from IG embed kept after cleaning."""
-        from services.extraction.RegexHandleExtractorService import extract_handles_from_html
         html = '<p>A post shared by Massy Arias (@massy.arias)</p>'
-        handles = extract_handles_from_html(html)
+        handles = RegexHandleExtractorService.extract_handles_from_html(html)
         massy = [h for h in handles if h.handle == "massy.arias"]
         assert len(massy) == 1
         assert massy[0].name == "Massy Arias"
 
     def test_ig_embed_markdown_link_fragment_rejected(self):
         """IG embed with markdown garbage name → name cleaned to empty."""
-        from services.extraction.RegexHandleExtractorService import extract_handles_from_html
         html = '<p>A post shared by [ MankoFit ?? ](https://x.com) (@mankofit)</p>'
-        handles = extract_handles_from_html(html)
+        handles = RegexHandleExtractorService.extract_handles_from_html(html)
         manko = [h for h in handles if h.handle == "mankofit"]
         assert len(manko) == 1
         assert manko[0].name == ""
