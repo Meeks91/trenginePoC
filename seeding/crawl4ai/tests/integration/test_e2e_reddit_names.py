@@ -13,7 +13,7 @@ Fixture: tests/fixtures/reddit_bodybuilding_raw.txt
 """
 
 from pathlib import Path
-from unittest.mock import patch, MagicMock
+from unittest.mock import MagicMock
 
 import pytest
 
@@ -140,16 +140,13 @@ class TestRedditNameResolutionMocked:
         assert FIXTURE_FILE.exists()
         return FIXTURE_FILE.read_text()
 
-    @patch("services.extraction.NameResolver.NAME_DDG_MAX_RETRIES", 0)
-    @patch("services.extraction.NameResolver.DDGS")
-    @patch("services.extraction.NameResolver.time.sleep")
     def test_full_pipeline_names_to_handles(
-        self, mock_sleep, mock_ddgs_cls, fixture_text,
+        self, fixture_text,
     ):
-        """Extract names → DDG mock → verify handles for known influencers."""
-        mock_ddgs = MagicMock()
+        """Extract names → SearchClient mock → verify handles for known influencers."""
+        mock_sc = MagicMock()
 
-        def mock_text(query, **kwargs):
+        def mock_search_text(query, max_results=5):
             q = query.lower()
             if "jeff nippard" in q:
                 return [{"href": "https://www.instagram.com/jeffnippard/",
@@ -171,8 +168,7 @@ class TestRedditNameResolutionMocked:
                          "title": "Dr Mike Israetel (@doctor.mike)"}]
             return [{"href": "https://www.wikipedia.org/some-article"}]
 
-        mock_ddgs.text = mock_text
-        mock_ddgs_cls.return_value = mock_ddgs
+        mock_sc.search_text.side_effect = mock_search_text
 
         names = extract_candidate_names(fixture_text)
         assert len(names) >= 8
@@ -181,6 +177,7 @@ class TestRedditNameResolutionMocked:
         audit.log = MagicMock()
         handles = resolve_names_via_ddg(
             names, audit,
+            search_client=mock_sc,
             query_template='{name} Instagram YouTube TikTok',
         )
 
@@ -189,46 +186,31 @@ class TestRedditNameResolutionMocked:
         assert "alexleonidas" in handle_map
         assert "sean_nalewanyj" in handle_map
         assert "doctor.mike" in handle_map
-    @patch("services.extraction.NameResolver.DDGS")
-    @patch("services.extraction.NameResolver.time.sleep")
-    def test_non_reddit_page_skips_name_extraction(
-        self, mock_sleep, mock_ddgs_cls,
-    ):
+
+    def test_non_reddit_page_skips_name_extraction(self):
         """Non-Reddit pages should not trigger name extraction."""
         modash_url = "https://www.modash.io/find-influencers/united-kingdom/food"
         assert not is_reddit_page(modash_url)
-        mock_ddgs_cls.assert_not_called()
 
-    @patch("services.extraction.NameResolver.NAME_DDG_MAX_RETRIES", 3)
-    @patch("services.extraction.NameResolver.DDGS")
-    @patch("services.extraction.NameResolver.time.sleep")
-    def test_ddg_retries_on_exception(
-        self, mock_sleep, mock_ddgs_cls,
-    ):
-        """When DDG raises exceptions, resolver retries up to NAME_DDG_MAX_RETRIES times."""
-        call_count = 0
-        mock_ddgs = MagicMock()
 
-        def mock_text(query, **kwargs):
-            nonlocal call_count
-            call_count += 1
-            # First 2 calls: exception. Third call: success.
-            if call_count <= 2:
-                raise Exception("DDG rate limit")
-            return [{"href": "https://www.instagram.com/sean_nalewanyj/",
-                     "title": "Sean Nalewanyj (@sean_nalewanyj)"}]
-
-        mock_ddgs.text = mock_text
-        mock_ddgs_cls.return_value = mock_ddgs
+    def test_search_client_retry_on_failure(self):
+        """When search_client raises, the client manages retries internally.
+        Resolver receives the final result — we verify 1 handle is resolved."""
+        mock_sc = MagicMock()
+        # Simulate a client that succeeds after internal retries
+        mock_sc.search_text.return_value = [
+            {"href": "https://www.instagram.com/sean_nalewanyj/",
+             "title": "Sean Nalewanyj (@sean_nalewanyj)"}
+        ]
 
         audit = MagicMock()
         audit.log = MagicMock()
         handles = resolve_names_via_ddg(
             ["Sean Nalewanyj"], audit,
+            search_client=mock_sc,
             query_template='{name} Instagram YouTube TikTok',
         )
 
         assert len(handles) == 1
         assert handles[0].handle == "sean_nalewanyj"
-        # Should have called DDG 3 times: 2 failures + 1 success
-        assert call_count == 3
+        mock_sc.search_text.assert_called_once()

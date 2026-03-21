@@ -137,13 +137,8 @@ class TestCrossPlatformE2E:
                 )
 
             # ── Layer 2: Enrich + Dedup ──
-            name_to_handle_svc = NameToHandleService(audit, delay_seconds=0)
+            name_to_handle_svc = NameToHandleService(audit, search_client=MagicMock(), delay_seconds=0)
 
-            # Mock DDG to return nothing — we're testing that cross-platform
-            # handles survive, not that DDG backfill works
-            mock_ddgs = MagicMock()
-            mock_ddgs.text.return_value = []
-            name_to_handle_svc._ddgs = mock_ddgs
 
             final = name_to_handle_svc.resolve_cross_account_handles(merged, platform=Platform.Instagram, min_sources=0)
 
@@ -190,10 +185,7 @@ class TestCrossPlatformE2E:
                     sample_n=0,
                 ))
 
-            name_to_handle_svc = NameToHandleService(audit, delay_seconds=0)
-            mock_ddgs = MagicMock()
-            mock_ddgs.text.return_value = []
-            name_to_handle_svc._ddgs = mock_ddgs
+            name_to_handle_svc = NameToHandleService(audit, search_client=MagicMock(), delay_seconds=0)
 
             final = name_to_handle_svc.resolve_cross_account_handles(
                 extract_result.all_merged, platform=Platform.Instagram,
@@ -233,17 +225,16 @@ class TestCrossPlatformE2E:
                 Influencer(name="Tom Miller", handles={Platform.TikTok: "testcreator"}),
             ]
 
-            name_to_handle_svc = NameToHandleService(audit, delay_seconds=0)
-
-            # Mock DDG to find an Instagram handle
-            def mock_text(query, max_results=2, **kwargs):
+            mock_sc = MagicMock()
+            def mock_search_text(query, max_results=5):
                 if "Tom Miller" in query:
                     return [{"href": "https://www.instagram.com/testcreator_ig/",
                              "title": "Tom Miller", "body": ""}]
                 return []
+            mock_sc.search_text.side_effect = mock_search_text
+            name_to_handle_svc = NameToHandleService(audit, search_client=mock_sc, delay_seconds=0)
 
-            with patch.object(name_to_handle_svc._ddgs, "text", side_effect=mock_text):
-                final = name_to_handle_svc.resolve_cross_account_handles(tt_only, platform=Platform.Instagram, min_sources=0)
+            final = name_to_handle_svc.resolve_cross_account_handles(tt_only, platform=Platform.Instagram, min_sources=0)
 
             # Should have 2 entries: original TikTok + new Instagram
             assert len(final) == 2, (

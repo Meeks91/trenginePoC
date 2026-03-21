@@ -19,6 +19,8 @@ NOTE: We mock crawl4ai at module level to avoid ImportError in test envs
 import sys
 from unittest.mock import patch, MagicMock
 
+_SC_PATCH = "base_pipeline.BasePipelineRunner._build_search_client"
+
 
 # Mock crawl4ai before any pipeline imports (it's a C-extension dep)
 _mock_crawl4ai = MagicMock()
@@ -114,17 +116,16 @@ class TestMultiPageAggregation:
 class TestTopRedditNamesGating:
     """Only reddit names are selected via top_reddit_names()."""
 
-    @patch("services.extraction.NameResolver.DDGS")
-    @patch("services.extraction.NameResolver.time.sleep")
-    @patch("services.extraction.NameResolver.NAME_DDG_MAX_RETRIES", 0)
-    def test_reddit_names_resolved_non_reddit_excluded(self, mock_sleep, mock_ddgs_cls):
+    @patch(_SC_PATCH)
+    def test_reddit_names_resolved_non_reddit_excluded(self, mock_build_sc):
         """Reddit names should be resolved; non-reddit excluded."""
-        mock_ddgs = MagicMock()
-        mock_ddgs.text.return_value = [
+        mock_sc = MagicMock()
+        mock_sc.search_text.return_value = [
             {"href": "https://www.instagram.com/jeffnippard/",
              "title": "Jeff Nippard (@jeffnippard)"},
         ]
-        mock_ddgs_cls.return_value = mock_ddgs
+        mock_sc.nr_query_template.return_value = "{name} Instagram YouTube TikTok"
+        mock_build_sc.return_value = mock_sc
 
         runner = PipelineRunner(name_resolution=True)
         tracker = _build_multi_page_tracker()
@@ -151,21 +152,20 @@ class TestTopRedditNamesGating:
         random = by_name["Random Blogger"]
         assert random.was_searched is False
 
-    @patch("services.extraction.NameResolver.DDGS")
-    @patch("services.extraction.NameResolver.time.sleep")
-    @patch("services.extraction.NameResolver.NAME_DDG_MAX_RETRIES", 0)
-    def test_non_reddit_only_names_not_ddged(self, mock_sleep, mock_ddgs_cls):
+    @patch(_SC_PATCH)
+    def test_non_reddit_only_names_not_ddged(self, mock_build_sc):
         """Non-reddit-only names should not trigger DDG calls."""
-        mock_ddgs = MagicMock()
+        mock_sc = MagicMock()
         call_tracker = {"queries": []}
 
-        def track_text(query, **kwargs):
+        def track_search_text(query, max_results=5):
             call_tracker["queries"].append(query)
             return [{"href": "https://www.instagram.com/someone/",
                       "title": "Someone"}]
 
-        mock_ddgs.text = track_text
-        mock_ddgs_cls.return_value = mock_ddgs
+        mock_sc.search_text.side_effect = track_search_text
+        mock_sc.nr_query_template.return_value = "{name} Instagram YouTube TikTok"
+        mock_build_sc.return_value = mock_sc
 
         tracker = NameMentionTracker()
         tracker.record_names_in_url(
@@ -267,16 +267,15 @@ class TestCrossJobMerge:
         jeff_urls = by_name["Jeff Nippard"].source_urls
         assert len(jeff_urls) == 2
 
-    @patch("services.extraction.NameResolver.DDGS")
-    @patch("services.extraction.NameResolver.time.sleep")
-    @patch("services.extraction.NameResolver.NAME_DDG_MAX_RETRIES", 0)
-    def test_merged_tracker_resolves_correctly(self, mock_sleep, mock_ddgs_cls):
-        mock_ddgs = MagicMock()
-        mock_ddgs.text.return_value = [
+    @patch(_SC_PATCH)
+    def test_merged_tracker_resolves_correctly(self, mock_build_sc):
+        mock_sc = MagicMock()
+        mock_sc.search_text.return_value = [
             {"href": "https://www.instagram.com/jeffnippard/",
              "title": "Jeff Nippard (@jeffnippard)"},
         ]
-        mock_ddgs_cls.return_value = mock_ddgs
+        mock_sc.nr_query_template.return_value = "{name} Instagram YouTube TikTok"
+        mock_build_sc.return_value = mock_sc
 
         t1 = NameMentionTracker()
         t1.record_names_in_url(
