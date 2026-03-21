@@ -11,7 +11,7 @@ from unittest.mock import patch, MagicMock
 from config.schema import Influencer, Platform
 from services.extraction.NameMentionTracker import NameMention, GroupKey
 from services.handleResolution.HandleFromNameService import HandleFromNameService
-from services.extraction.RegexHandleExtractor import ExtractedHandle
+from services.extraction.RegexHandleExtractorService import ExtractedHandle
 
 
 def _make_mention(

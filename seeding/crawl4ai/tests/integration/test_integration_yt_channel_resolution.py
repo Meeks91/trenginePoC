@@ -13,7 +13,7 @@ import asyncio
 import pytest
 from pathlib import Path
 
-from services.extraction.RegexHandleExtractor import extract_youtube_channel_ids
+from services.extraction.RegexHandleExtractorService import extract_youtube_channel_ids
 from services.extraction.YouTubeChannelResolver import resolve_youtube_channels
 
 

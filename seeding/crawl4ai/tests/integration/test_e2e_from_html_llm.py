@@ -30,7 +30,6 @@ from config.schema import PipelineStats, JobBreakdown, Platform
 from services.audit.AuditService import AuditLog
 from services.crawling.CrawlService import CrawlService
 from services.extraction.LLMExtractionService import LLMExtractionService
-from services.handleResolution.HandleFromNameService import HandleFromNameService
 from services.handleResolution.CrossPlatformHandleResolverService import CrossPlatformHandleResolverService
 from services.validation.IngestionValidator import IngestionValidator
 from services.reporting.PipelineReporter import PipelineReporter

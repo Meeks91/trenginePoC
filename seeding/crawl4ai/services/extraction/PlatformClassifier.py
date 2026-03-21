@@ -13,7 +13,7 @@ from __future__ import annotations
 
 import re
 
-from services.extraction.RegexHandleExtractor import ExtractedHandle
+from services.extraction.RegexHandleExtractorService import ExtractedHandle
 
 
 # ══════════════════════════════════════════════════════════════════════

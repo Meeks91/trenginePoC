@@ -158,15 +158,9 @@ class _E2EPipelineRunner(BasePipelineRunner):
             )
         self._stats.record_extraction(extract_result)
 
-        from services.handleResolution.HandleFromNameService import HandleFromNameService
         mock_search_client = MagicMock()
         mock_search_client.search_text.return_value = []
         mock_search_client.nr_query_template.return_value = '{name} Instagram YouTube TikTok'
-        name_to_handle_svc = HandleFromNameService(
-            self._audit,
-            search_client=mock_search_client,
-            delay_seconds=0,
-        )
         resolver = CrossPlatformHandleResolverService(
             self._audit,
             search_client=mock_search_client,

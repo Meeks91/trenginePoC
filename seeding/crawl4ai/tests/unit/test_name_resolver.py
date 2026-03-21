@@ -11,7 +11,7 @@ from services.extraction.NameResolver import (
     _extract_handles_from_results,
     _score_result,
 )
-from services.extraction.RegexHandleExtractor import ExtractedHandle
+from services.extraction.RegexHandleExtractorService import ExtractedHandle
 
 
 # Fixtures:

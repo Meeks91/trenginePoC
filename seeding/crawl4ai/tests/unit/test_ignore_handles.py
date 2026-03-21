@@ -6,7 +6,7 @@ Verifies all ignore list categories block their entries from extraction.
 
 import pytest
 
-from services.extraction.RegexHandleExtractor import (
+from services.extraction.RegexHandleExtractorService import (
     _IGNORE_PATH_SEGMENTS,
     _IGNORE_CSS_ATRULES,
     _IGNORE_JS_FRAMEWORKS,

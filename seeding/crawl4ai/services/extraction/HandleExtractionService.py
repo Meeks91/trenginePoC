@@ -20,8 +20,8 @@ if TYPE_CHECKING:
 
 from config.schema import Influencer, PageResult, Platform
 from services.audit.AuditService import AuditLog
-from services.extraction.NameCleaner import NameCleaner
-from services.extraction.RegexHandleExtractor import (
+from services.extraction.NameCleanerService import NameCleaner
+from services.extraction.RegexHandleExtractorService import (
     extract_handles_from_html,
     extract_youtube_channel_ids,
     assign_names_from_headings,

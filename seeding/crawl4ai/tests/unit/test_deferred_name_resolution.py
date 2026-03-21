@@ -142,7 +142,7 @@ class TestResolutionEnabled:
     @patch("services.extraction.NameResolver.resolve_names_via_ddg")
     def test_reddit_names_resolved(self, mock_resolve: MagicMock):
         """Reddit names should be searched via the injected client."""
-        from services.extraction.RegexHandleExtractor import ExtractedHandle
+        from services.extraction.RegexHandleExtractorService import ExtractedHandle
         mock_resolve.return_value = [
             ExtractedHandle(handle="jeffnippard", platform="Instagram", name="Jeff Nippard"),
         ]
@@ -195,7 +195,7 @@ class TestResolutionEnabled:
     @patch("services.extraction.NameResolver.resolve_names_via_ddg")
     def test_resolved_handles_merged_into_entries(self, mock_resolve: MagicMock):
         """Resolved handles should be appended to _all_influencer_entries."""
-        from services.extraction.RegexHandleExtractor import ExtractedHandle
+        from services.extraction.RegexHandleExtractorService import ExtractedHandle
         mock_resolve.return_value = [
             ExtractedHandle(handle="alexleonidas", platform="Instagram", name="Alex Leonidas"),
         ]

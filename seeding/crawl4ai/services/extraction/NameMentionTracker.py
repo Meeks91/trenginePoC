@@ -43,7 +43,7 @@ type BucketRow = tuple[
 ]
 type GroupKey = tuple[str, str, str, str]
 
-from services.extraction.NameCleaner import _ALL_NON_PERSON as _CLEANER_BLOCKLIST
+from services.extraction.NameCleanerService import _ALL_NON_PERSON as _CLEANER_BLOCKLIST
 
 # Belt-and-suspenders: names in _CLEANER_BLOCKLIST are already filtered
 # upstream by NameCleaner.clean_name(), but we re-check here to guard

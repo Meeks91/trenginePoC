@@ -6,7 +6,7 @@ country/brand/news rejection, LinkedIn slug rejection, valid names pass.
 """
 
 
-from services.extraction.NameCleaner import NameCleaner
+from services.extraction.NameCleanerService import NameCleaner
 
 
 class TestCleanName:

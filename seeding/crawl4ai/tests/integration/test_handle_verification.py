@@ -18,7 +18,7 @@ import pytest
 # Try to import httpx — skip all tests if not available
 httpx = pytest.importorskip("httpx")
 
-from services.extraction.RegexHandleExtractor import (
+from services.extraction.RegexHandleExtractorService import (
     extract_handles_from_html,
 )
 

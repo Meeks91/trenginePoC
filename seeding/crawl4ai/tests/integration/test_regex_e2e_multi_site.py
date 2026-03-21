@@ -16,7 +16,7 @@ Run with:
     PYTHONPATH="." python3 -m pytest tests/integration/test_regex_e2e_multi_site.py -v
 """
 
-from services.extraction.RegexHandleExtractor import (
+from services.extraction.RegexHandleExtractorService import (
     extract_handles_from_html,
     extract_youtube_channel_ids,
     extract_handles_from_url,

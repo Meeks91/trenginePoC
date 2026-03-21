@@ -29,10 +29,10 @@ from services.audit.AuditService import AuditLog
 from services.search.SearchService import SearchResults
 from services.crawling.CrawlService import CrawlService
 from services.extraction.HandleExtractionService import HandleExtractionService, _to_handles
-from services.extraction.RegexHandleExtractor import ExtractedHandle
+from services.extraction.RegexHandleExtractorService import ExtractedHandle
 from services.handleResolution.CrossPlatformHandleResolverService import CrossPlatformHandleResolverService
 from services.influencerProvenance.CategoryProvenanceTaggerService import CategoryProvenanceTagger
-from services.extraction.NameCleaner import NameCleaner
+from services.extraction.NameCleanerService import NameCleaner
 
 if TYPE_CHECKING:
     from services.extraction.NameMentionTracker import NameMentionTracker

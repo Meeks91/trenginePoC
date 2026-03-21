@@ -29,7 +29,7 @@ from services.audit.AuditService import AuditLog
 from services.search.SearchClient import SearchClient
 from config.schema import Influencer, Platform, NameMentionRecord
 from services.influencerProvenance.CategoryProvenanceTaggerService import CategoryProvenanceTagger
-from services.extraction.NameCleaner import NameCleaner
+from services.extraction.NameCleanerService import NameCleaner
 from config import (
     ENRICH_DELAY_SECONDS,
     NAME_RESOLUTION_MIN_MENTIONS, NAME_RESOLUTION_MAX_PER_SUB,
@@ -37,7 +37,6 @@ from config import (
 from services.handleResolution.patterns import (
     extract_handle_from_url,
     extract_handle_from_text,
-    PLATFORM_DOMAINS,
 )
 
 logger = logging.getLogger(__name__)

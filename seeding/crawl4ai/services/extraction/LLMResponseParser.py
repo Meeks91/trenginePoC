@@ -12,8 +12,8 @@ import re
 from typing import Any
 
 from config.schema import Influencer, Platform
-from services.extraction.RegexHandleExtractor import _is_valid_handle
-from services.extraction.NameCleaner import NameCleaner
+from services.extraction.RegexHandleExtractorService import _is_valid_handle
+from services.extraction.NameCleanerService import NameCleaner
 
 
 class LLMResponseParser:

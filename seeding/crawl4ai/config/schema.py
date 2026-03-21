@@ -85,7 +85,7 @@ class Influencer:
     extraction_methods: set[str] = field(default_factory=set)
 
     def __post_init__(self) -> None:
-        from services.extraction.NameCleaner import NameCleaner
+        from services.extraction.NameCleanerService import NameCleaner
         cleaned = NameCleaner.clean_name(self.name)
         self.name = cleaned or ""
 

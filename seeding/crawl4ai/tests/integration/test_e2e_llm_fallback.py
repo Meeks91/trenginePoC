@@ -29,7 +29,7 @@ from config import GEMINI_API_KEY
 from services.audit.AuditService import AuditLog
 from services.crawling.CrawlService import CrawlService
 from services.extraction.LLMExtractionService import LLMExtractionService
-from services.extraction.RegexHandleExtractor import extract_handles_from_html
+from services.extraction.RegexHandleExtractorService import extract_handles_from_html
 
 FIXTURE_HTML = Path(__file__).resolve().parent.parent / "fixtures" / "gymfluencers_uk_fitness.html"
 

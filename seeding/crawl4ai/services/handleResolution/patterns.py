@@ -13,7 +13,7 @@ import re
 from typing import Optional
 
 from config.schema import Platform
-from services.extraction.RegexHandleExtractor import (
+from services.extraction.RegexHandleExtractorService import (
     extract_handles_from_url as _regex_extract,
 )
 

@@ -9,7 +9,7 @@ consistently at both sites.
 """
 
 from config.schema import Influencer, Platform
-from services.extraction.RegexHandleExtractor import (
+from services.extraction.RegexHandleExtractorService import (
     _IGNORE_HANDLES,
     _IGNORE_SUBSTRINGS,
     _IGNORE_PREFIXES,
@@ -41,7 +41,7 @@ def test_merger_uses_shared_blocklist():
 def test_both_sites_use_same_is_blocked_handle():
     """InfluencerMerger imports is_blocked_handle from RegexHandleExtractor."""
     from services.influencerMerging import InfluencerMergerService as merger_mod
-    from services.extraction import RegexHandleExtractor as regex_mod
+    from services.extraction import RegexHandleExtractorService as regex_mod
     assert merger_mod.is_blocked_handle is regex_mod.is_blocked_handle
 
 

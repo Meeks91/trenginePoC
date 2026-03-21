@@ -12,7 +12,7 @@ import pytest
 from unittest.mock import AsyncMock, MagicMock, patch
 
 from services.extraction.HandleClassifier import classify_handles
-from services.extraction.RegexHandleExtractor import ExtractedHandle
+from services.extraction.RegexHandleExtractorService import ExtractedHandle
 
 
 # Fixtures:

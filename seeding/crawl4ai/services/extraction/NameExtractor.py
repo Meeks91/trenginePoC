@@ -12,7 +12,7 @@ from __future__ import annotations
 import re
 from urllib.parse import urlparse
 
-from services.extraction.NameCleaner import NameCleaner
+from services.extraction.NameCleanerService import NameCleaner
 
 # Strip leading numbering: "1. ", "23) ", "100. "
 _NUMBER_PREFIX_RE = re.compile(r'^\d+[.)\-]\s*')

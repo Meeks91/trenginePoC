@@ -18,7 +18,7 @@ from services.search.SearchClient import SearchClient
 
 logger = logging.getLogger(__name__)
 
-from services.extraction.RegexHandleExtractor import (
+from services.extraction.RegexHandleExtractorService import (
     extract_handles_from_url,
     ExtractedHandle,
 )

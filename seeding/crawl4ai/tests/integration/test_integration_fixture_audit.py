@@ -18,7 +18,7 @@ from pathlib import Path
 
 import pytest
 
-from services.extraction.RegexHandleExtractor import (
+from services.extraction.RegexHandleExtractorService import (
     extract_handles_from_html,
     extract_youtube_channel_ids,
 )
@@ -26,7 +26,7 @@ from services.extraction.HandleExtractionService import (
     HandleExtractionService,
     needs_llm,
 )
-from services.extraction.RegexHandleExtractor import ExtractedHandle
+from services.extraction.RegexHandleExtractorService import ExtractedHandle
 from config.schema import PageResult, Platform
 from services.handleResolution.CrossPlatformHandleResolverService import CrossPlatformHandleResolverService
 
@@ -919,7 +919,6 @@ import tempfile
 from unittest.mock import MagicMock
 
 from services.audit.AuditService import AuditLog
-from services.handleResolution.HandleFromNameService import HandleFromNameService
 
 
 # Fixture metadata: (filename, url, platform, expected_ig, expected_tt)

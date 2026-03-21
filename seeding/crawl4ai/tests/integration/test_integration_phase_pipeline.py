@@ -154,14 +154,12 @@ class TestPhasePipelineFullFlow:
             with (
                 patch("phase_pipeline.AUDIT_DIR", Path(tmp)),
                 patch("services.extraction.LLMExtractionService.litellm"),
-                patch("phase_pipeline.HandleFromNameService") as MockEnrichSvc,
+                patch("phase_pipeline.CrossPlatformHandleResolverService") as MockResolverSvc,
             ):
-                mock_enrich = MagicMock()
+                mock_resolver = MagicMock()
                 # Pass through: return the same influencers (no DDG enrichment)
-                mock_enrich.resolve_cross_account_handles.side_effect = lambda merged, **kw: merged
-                mock_enrich.retries = 0
-                mock_enrich.failures = 0
-                MockEnrichSvc.return_value = mock_enrich
+                mock_resolver.resolve.side_effect = lambda influencers: influencers
+                MockResolverSvc.return_value = mock_resolver
 
                 inf_to_cat, name_tracker = asyncio.run(runner._extract_and_build_entries(pages, page_map, [job_fitness, job_food], []))
                 seeds = InfluencerMerger.filter_blocked(inf_to_cat)

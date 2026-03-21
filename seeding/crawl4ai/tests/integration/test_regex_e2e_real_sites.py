@@ -14,7 +14,7 @@ Fixtures are real HTML files in tests/fixtures/ (curled from live sites).
 
 from pathlib import Path
 import pytest
-from services.extraction.RegexHandleExtractor import (
+from services.extraction.RegexHandleExtractorService import (
     extract_handles_from_html,
     extract_youtube_channel_ids,
     ExtractedHandle,

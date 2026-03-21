@@ -15,7 +15,7 @@ import logging
 import litellm
 
 from config import GEMINI_API_KEY, LLM_PROVIDER
-from services.extraction.RegexHandleExtractor import ExtractedHandle
+from services.extraction.RegexHandleExtractorService import ExtractedHandle
 
 logger = logging.getLogger(__name__)
 

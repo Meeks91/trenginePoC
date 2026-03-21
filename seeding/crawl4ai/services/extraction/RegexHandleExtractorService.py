@@ -563,7 +563,7 @@ def count_handles(html: str) -> int:
 # Heading-Based Name Extraction
 # ══════════════════════════════════════════════════════════════════════
 
-from services.extraction.NameCleaner import NameCleaner
+from services.extraction.NameCleanerService import NameCleaner
 
 # Markdown headings: ## or ### (skip # — usually page titles)
 _HEADING_RE = re.compile(r'^#{2,4}\s+(.+?)$', re.MULTILINE)

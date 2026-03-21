@@ -223,7 +223,7 @@ class TestExtractionMethodTagging:
     def test_ddg_direct_tags_with_ddg_direct(self):
         """DDG direct handles in _merge_handles() must carry 'ddg_direct'."""
         from services.extraction.HandleExtractionService import HandleExtractionService
-        from services.extraction.RegexHandleExtractor import ExtractedHandle
+        from services.extraction.RegexHandleExtractorService import ExtractedHandle
 
         ddg_handles = [
             ExtractedHandle(handle="kayla_itsines", platform="Instagram", name="Kayla Itsines"),
@@ -239,7 +239,7 @@ class TestExtractionMethodTagging:
     def test_merge_handles_unions_extraction_methods_on_dedup(self):
         """When two entries dedup, their extraction_methods must union."""
         from services.extraction.HandleExtractionService import HandleExtractionService
-        from services.extraction.RegexHandleExtractor import ExtractedHandle
+        from services.extraction.RegexHandleExtractorService import ExtractedHandle
 
         # Same handle from DDG and regex
         ddg_handles = [

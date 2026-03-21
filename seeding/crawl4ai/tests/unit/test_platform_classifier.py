@@ -6,7 +6,7 @@ Covers all branches of the 5-step classification cascade.
 """
 
 from services.extraction.PlatformClassifier import classify_by_context
-from services.extraction.RegexHandleExtractor import ExtractedHandle
+from services.extraction.RegexHandleExtractorService import ExtractedHandle
 
 
 def _handle(name: str = "fitguru") -> ExtractedHandle:

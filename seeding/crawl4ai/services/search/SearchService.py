@@ -26,7 +26,7 @@ from config import MAX_URLS_PER_JOB
 from config.seed_schema import SeedJob
 from services.audit.AuditService import AuditLog
 from services.search.SearchClient import SearchClient
-from services.extraction.RegexHandleExtractor import (
+from services.extraction.RegexHandleExtractorService import (
     extract_handles_from_url,
     ExtractedHandle,
 )

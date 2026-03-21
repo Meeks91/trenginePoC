@@ -30,8 +30,8 @@ from typing import Callable
 
 from config.schema import Influencer, Platform, CategoryCitation
 from services.influencerProvenance.CategoryProvenanceTaggerService import CategoryProvenanceTagger
-from services.extraction.RegexHandleExtractor import is_blocked_handle
-from services.extraction.NameCleaner import NameCleaner
+from services.extraction.RegexHandleExtractorService import is_blocked_handle
+from services.extraction.NameCleanerService import NameCleaner
 
 
 # ══════════════════════════════════════════════════════════════════════

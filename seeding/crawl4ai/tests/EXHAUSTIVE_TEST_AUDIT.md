@@ -47,8 +47,10 @@ For EVERY fixture file in `tests/fixtures/`:
 ### 2a. Run extraction on every fixture and capture ALL output handles
 
 For each fixture, run:
+
 ```python
-from services.extraction.RegexHandleExtractor import extract_handles_from_html
+from services.extraction.RegexHandleExtractorService import extract_handles_from_html
+
 results = extract_handles_from_html(html)
 ```
 
