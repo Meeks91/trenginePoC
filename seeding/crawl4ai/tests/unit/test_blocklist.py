@@ -50,9 +50,9 @@ def test_both_sites_use_same_is_blocked_handle():
 # ══════════════════════════════════════════════════════════════════════
 
 def test_ignore_handles_total_count():
-    """Combined blocklist has exactly 533 entries."""
-    assert len(_IGNORE_HANDLES) == 533, \
-        f"Expected 533 entries in _IGNORE_HANDLES, got {len(_IGNORE_HANDLES)}"
+    """Combined blocklist has exactly 587 entries."""
+    assert len(_IGNORE_HANDLES) == 587, \
+        f"Expected 587 entries in _IGNORE_HANDLES, got {len(_IGNORE_HANDLES)}"
 
 
 def test_ignore_substrings_contains_profanity():

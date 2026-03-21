@@ -124,9 +124,9 @@
     "resolved_platform": ""
   },
   {
-    "canonical": "Joe Wicks",
+    "canonical": "Lisa Cross",
     "variants": [
-      "Joe Wicks"
+      "Lisa Cross"
     ],
     "mention_count": 4,
     "source_types": [
@@ -142,15 +142,14 @@
     "resolved_platform": ""
   },
   {
-    "canonical": "Lisa Cross",
+    "canonical": "Joe Wicks",
     "variants": [
-      "Lisa Cross"
+      "Joe Wicks"
     ],
-    "mention_count": 4,
+    "mention_count": 3,
     "source_types": [
       "llm",
-      "non-reddit",
-      "regex"
+      "non-reddit"
     ],
     "source_urls": [
       "http://127.0.0.1:0/gymfluencers_uk_fitness.html"
@@ -178,15 +177,13 @@
     "resolved_platform": ""
   },
   {
-    "canonical": "Emma Storey-Gordon",
+    "canonical": "The Body",
     "variants": [
-      "Emma Storey-Gordon"
+      "The Body"
     ],
-    "mention_count": 3,
+    "mention_count": 2,
     "source_types": [
-      "llm",
-      "non-reddit",
-      "regex"
+      "non-reddit"
     ],
     "source_urls": [
       "http://127.0.0.1:0/gymfluencers_uk_fitness.html"
@@ -196,12 +193,13 @@
     "resolved_platform": ""
   },
   {
-    "canonical": "The Body",
+    "canonical": "Emma Storey-Gordon",
     "variants": [
-      "The Body"
+      "Emma Storey-Gordon"
     ],
     "mention_count": 2,
     "source_types": [
+      "llm",
       "non-reddit"
     ],
     "source_urls": [

@@ -691,6 +691,81 @@ class TestAssignNamesFromHeadings:
         assign_names_from_headings(handles, text)
         assert handles[0].name == "Jeff Nippard"
 
+    def test_brand_handle_not_assigned_heading_name(self):
+        """Brand handle near a person heading → name NOT assigned.
+
+        Reproduces the modash bug: '## JOSE ROMERO' heading followed
+        by @dfyne.official (a brand) gets the person's name incorrectly.
+        """
+        handles = [
+            ExtractedHandle(handle="dfyne.official", platform="Instagram"),
+        ]
+        text = (
+            "## 2. JOSE ROMERO | FITNESS - LIFESTYLE\n"
+            "Spain\n"
+            "📍🇪🇸👨🏻 @dfyne.official | cod: JOSE\n"
+        )
+        assign_names_from_headings(handles, text)
+        assert handles[0].name == ""
+
+    def test_matching_handle_assigned_heading_name(self):
+        """Personal handle near a person heading → name assigned.
+
+        Same modash section but the real handle @jose_physique contains
+        a word from the heading → assignment succeeds.
+        """
+        handles = [
+            ExtractedHandle(handle="jose_physique", platform="Instagram"),
+        ]
+        text = (
+            "## 2. JOSE ROMERO | FITNESS - LIFESTYLE\n"
+            "Spain\n"
+            "📍🇪🇸👨🏻 @dfyne.official | cod: JOSE\n"
+            "[@jose_physique](https://www.instagram.com/jose_physique)\n"
+        )
+        assign_names_from_headings(handles, text)
+        assert handles[0].name == "JOSE ROMERO"
+
+    def test_multiple_brand_handles_all_blocked(self):
+        """Multiple brand handles in one section → none get the person name."""
+        handles = [
+            ExtractedHandle(handle="matildaelmusicaloficial", platform="Instagram"),
+            ExtractedHandle(handle="dirtydancingspain", platform="Instagram"),
+            ExtractedHandle(handle="sergipedros", platform="Instagram"),
+        ]
+        text = (
+            "### 10. Sergi Pedrós\n"
+            "@matildaelmusicaloficial @dirtydancingspain\n"
+            "[@sergipedros](https://www.instagram.com/sergipedros)\n"
+        )
+        assign_names_from_headings(handles, text)
+        assert handles[0].name == ""  # Brand — blocked
+        assert handles[1].name == ""  # Brand — blocked
+        assert handles[2].name == "Sergi Pedrós"  # Real — assigned
+
+
+# ══════════════════════════════════════════════════════════════════════
+# Blocklist — celebrity and fitness-brand coverage
+# ══════════════════════════════════════════════════════════════════════
+
+class TestBlocklistCelebritiesAndBrands:
+    """Verify new _IGNORE_CELEBRITIES and _IGNORE_BRANDS_FITNESS entries are blocked."""
+
+    def test_celebrity_handles_blocked(self):
+        from services.extraction.RegexHandleExtractor import is_blocked_handle
+        for h in ("kamalaharris", "halleberry", "barbie", "officialbenshapiro", "therock"):
+            assert is_blocked_handle(h), f"{h} should be blocked"
+
+    def test_fitness_brand_handles_blocked(self):
+        from services.extraction.RegexHandleExtractor import is_blocked_handle
+        for h in ("buffbunny", "hydrojug", "monsterenergy", "popsugar", "thealiveapp"):
+            assert is_blocked_handle(h), f"{h} should be blocked"
+
+    def test_real_fitness_handles_not_blocked(self):
+        from services.extraction.RegexHandleExtractor import is_blocked_handle
+        for h in ("kayla_itsines", "jeffnippard", "whitneyysimmons", "heidisomers"):
+            assert not is_blocked_handle(h), f"{h} should NOT be blocked"
+
 
 # ══════════════════════════════════════════════════════════════════════
 # IG Embed Name Cleaning — regression tests for MankoFit bug

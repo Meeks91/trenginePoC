@@ -19,19 +19,19 @@
 
 | # | IG Handle | TK Handle | YT Handle | Category |
 |---|-----------|-----------|-----------|----------|
-| 1 | — | — | seancaseyfitness111 | FITNESS / Fitness |
-| 2 | — | — | LucyDavisFit | FITNESS / Fitness |
-| 3 | — | — | adammaxted | FITNESS / Fitness |
-| 4 | alex.beattie | alex.beattie | — | FITNESS / Fitness |
-| 5 | courtneyblackfitness | Courtney | — | FITNESS / Fitness |
-| 6 | esgfitness | — | esgfitness | FITNESS / Fitness |
-| 7 | thebodycoach | — | TheBodyCoachTV | FITNESS / Fitness |
-| 8 | — | — | The | FITNESS / Fitness |
-| 9 | — | bblisacross | — | FITNESS / Fitness |
-| 10 | — | — | Lucy | FITNESS / Fitness |
-| 11 | — | — | Michael | FITNESS / Fitness |
-| 12 | — | — | Sean | FITNESS / Fitness |
-| 13 | — | victorianiamh | — | FITNESS / Fitness |
+| 1 | — | — | The | Fitness / Fitness |
+| 2 | — | — | seancaseyfitness111 | Fitness / Fitness |
+| 3 | — | — | LucyDavisFit | Fitness / Fitness |
+| 4 | — | — | adammaxted | Fitness / Fitness |
+| 5 | alex.beattie | alex.beattie | — | Fitness / Fitness |
+| 6 | courtneyblackfitness | Courtney | — | Fitness / Fitness |
+| 7 | esgfitness | — | esgfitness | Fitness / Fitness |
+| 8 | thebodycoach | — | TheBodyCoachTV | Fitness / Fitness |
+| 9 | — | bblisacross | — | Fitness / Fitness |
+| 10 | — | — | Lucy | Fitness / Fitness |
+| 11 | — | — | Michael | Fitness / Fitness |
+| 12 | — | — | Sean | Fitness / Fitness |
+| 13 | — | victorianiamh | — | Fitness / Fitness |
 
 ## Canary Validation
 | Sub | Canary | Found? |
@@ -53,11 +53,11 @@
 | 5 | Sean Casey | 6 | llm, non-reddit, regex | 1 | ❌ |
 | 6 | Lucy Davis | 5 | llm, non-reddit, regex | 1 | ❌ |
 | 7 | Love Island | 4 | non-reddit | 1 | ❌ |
-| 8 | Joe Wicks | 4 | llm, non-reddit, regex | 1 | ❌ |
-| 9 | Lisa Cross | 4 | llm, non-reddit, regex | 1 | ❌ |
+| 8 | Lisa Cross | 4 | llm, non-reddit, regex | 1 | ❌ |
+| 9 | Joe Wicks | 3 | llm, non-reddit | 1 | ❌ |
 | 10 | Alex Beattie | 3 | llm, non-reddit, regex | 1 | ❌ |
-| 11 | Emma Storey-Gordon | 3 | llm, non-reddit, regex | 1 | ❌ |
-| 12 | The Body | 2 | non-reddit | 1 | ❌ |
+| 11 | The Body | 2 | non-reddit | 1 | ❌ |
+| 12 | Emma Storey-Gordon | 2 | llm, non-reddit | 1 | ❌ |
 | 13 | Save My | 1 | non-reddit | 1 | ❌ |
 | 14 | Day Plan | 1 | non-reddit | 1 | ❌ |
 | 15 | The Marine | 1 | non-reddit | 1 | ❌ |

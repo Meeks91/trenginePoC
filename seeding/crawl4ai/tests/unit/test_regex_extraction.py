@@ -144,11 +144,11 @@ def test_feedspot_fitness_all_instagram():
 
 
 def test_feedspot_fitness_secondary_handles():
-    """Feedspot Fitness: Secondary handles mentioned in bios should also be found."""
+    """Feedspot Fitness: @thealiveapp is a fitness brand → blocked by _IGNORE_BRANDS_FITNESS."""
     results = extract_handles_from_html(FEEDSPOT_FITNESS_HTML)
     handles = {r.handle.lower() for r in results}
-    # @thealiveapp is mentioned as a link in Whitney's bio
-    assert "thealiveapp" in handles
+    # @thealiveapp was Whitney's fitness app brand — now correctly blocked
+    assert "thealiveapp" not in handles
 
 
 # ══════════════════════════════════════════════════════════════════════
@@ -692,13 +692,12 @@ def test_multisite_all_handles_extracted():
     assert "adammaxted2262" in handles
     assert "esgfitness" in handles
     assert "mac_griffiths" in handles
-    # Feedspot Fitness (6 handles)
+    # Feedspot Fitness (5 handles — thealiveapp now blocked)
     assert "kerlyruiz85" in handles
     assert "jeff_seid" in handles
     assert "whitneyysimmons" in handles
     assert "lisafiitt" in handles
     assert "sadikhadzovic" in handles
-    assert "thealiveapp" in handles
     # Feedspot Food (6 handles)
     assert "healthygirlkitchen" in handles
     assert "feelgoodfoodie" in handles
@@ -711,5 +710,5 @@ def test_multisite_all_handles_extracted():
     assert "linda_lomelino" in handles
     assert "thelifeofmamablair" in handles
     assert "ladyofashion" in handles
-    # Total: at least 21 unique handles
-    assert len(handles) >= 21
+    # Total: at least 20 unique handles (thealiveapp now blocked)
+    assert len(handles) >= 20

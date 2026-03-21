@@ -339,6 +339,29 @@ _IGNORE_GENERIC = frozenset({
     "en",
 })
 
+# ── Non-fitness celebrities, politicians, comedians ──
+_IGNORE_CELEBRITIES: frozenset[str] = frozenset({
+    "kamalaharris", "barbie", "charliekirk1776", "officialbenshapiro",
+    "miakhalifa", "halleberry", "djpaulyd", "fluffyguy", "canelo",
+    "wwerollins", "deepakchopra", "medicalmedium", "khloekardashian",
+    "kimkardashian", "kyliejenner", "taylorswift", "therock",
+    "selenagomez", "arianagrande", "beyonce", "justinbieber",
+    "cristiano", "leomessi", "neymarjr", "viaborges",
+    "jenniferaniston", "dualipa", "badgalriri", "zendaya",
+    "vindiesel", "priyankachopra", "tomholland2013",
+})
+
+# ── Fitness-adjacent brands / product lines ──
+_IGNORE_BRANDS_FITNESS: frozenset[str] = frozenset({
+    "fashionnova", "balenciaga", "pockyusa", "tastemade",
+    "kerastase_official", "amazonfashioneu", "monsterenergy",
+    "jbwwatches", "buffbunny", "hydrojug", "popsugar",
+    "thealiveapp", "fitnessculturegym", "younglaforher",
+    "tier1supplements", "plantfitapp", "gymgirlslockerroom",
+    "enroutejewelry_", "roamlosangeles", "avancusofficial",
+    "james_cosmetics", "shopform",
+})
+
 # ── Combined ignore set ──
 _IGNORE_HANDLES = frozenset(
     _IGNORE_PATH_SEGMENTS
@@ -358,6 +381,8 @@ _IGNORE_HANDLES = frozenset(
     | _IGNORE_BRANDS_AUTO
     | _IGNORE_BRANDS_RETAIL
     | _IGNORE_GENERIC
+    | _IGNORE_CELEBRITIES
+    | _IGNORE_BRANDS_FITNESS
 )
 
 _IGNORE_PREFIXES = ("utm_", "ig_", "ref=", "img_", "case-study-")
@@ -544,6 +569,20 @@ from services.extraction.NameCleaner import NameCleaner
 _HEADING_RE = re.compile(r'^#{2,4}\s+(.+?)$', re.MULTILINE)
 
 
+def _heading_name_matches_handle(name: str, handle: str) -> bool:
+    """True if any word from the heading name appears in the handle.
+
+    Prevents brand handles (e.g. @dfyne.official) from being assigned
+    a nearby person's heading name (e.g. "JOSE ROMERO").
+    Only considers words with 4+ characters to avoid false matches.
+    """
+    if not name or not handle:
+        return False
+    h_clean = handle.lower().replace("_", "").replace(".", "")
+    words = [w.lower() for w in name.split() if len(w) >= 4]
+    return any(word in h_clean for word in words)
+
+
 def assign_names_from_headings(
     handles: list[ExtractedHandle],
     page_text: str,
@@ -602,4 +641,5 @@ def assign_names_from_headings(
                     best_heading = heading_text
 
         if best_heading and best_dist <= 500:
-            handle.name = best_heading
+            if _heading_name_matches_handle(best_heading, handle.handle):
+                handle.name = best_heading
