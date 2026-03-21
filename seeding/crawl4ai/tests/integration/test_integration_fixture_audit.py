@@ -712,11 +712,12 @@ FEEDSPOT_BLOCKED = {"feedspotdotcom", "feedspotofficial", "_feedspot", "feedspot
 
 
 class TestFeedspotFitnessIG:
-    """feedspot_fitness_ig.html: 100 IG, 1 YT, 128 naked = 229 total.
+    """feedspot_fitness_ig.html: 100 IG, 1 YT, 124 naked = 225 total.
 
     Massive fixture (759 KB). After blocklist: feedspotdotcom (IG),
     FeedSpotOfficial (YT), _feedspot (X) all removed.
-    128 naked handles are mostly brand/sponsor accounts — not influencers.
+    124 naked handles are mostly brand/sponsor accounts — not influencers.
+    (Previously 129; 5 handles now blocked by _IGNORE_BRANDS_FITNESS.)
     """
 
     @pytest.fixture(scope="class")
@@ -746,8 +747,8 @@ class TestFeedspotFitnessIG:
         """_feedspot is blocklisted → 0 Twitter."""
         assert len(groups["Twitter"]) == 0
 
-    def test_naked_count_is_129(self, groups):
-        assert len(groups["naked"]) == 129
+    def test_naked_count_is_124(self, groups):
+        assert len(groups["naked"]) == 124
 
     def test_yt_channel_ids_count(self, text):
         assert len(extract_youtube_channel_ids(text)) == 2
@@ -890,11 +891,11 @@ class TestAggregateFixtureQuality:
         """Total across 9 fixtures after blocklist.
 
         clickanalytic=15, tinfroom=39, gym=13, seekahost_uk=25,
-        seekahost_male=22, popularpays=25, modash=84, feedspot=230,
-        disrupt=15 → 468 total.
+        seekahost_male=22, popularpays=25, modash=84, feedspot=225,
+        disrupt=15 → 463 total.
         """
-        assert len(all_results) == 468, (
-            f"Expected 468 total handles, got {len(all_results)}"
+        assert len(all_results) == 463, (
+            f"Expected 463 total handles, got {len(all_results)}"
         )
 
     def test_no_empty_handles(self, all_results):

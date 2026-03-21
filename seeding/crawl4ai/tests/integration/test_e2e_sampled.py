@@ -63,12 +63,11 @@ async def _test_e2e_sampled_async():
         # `from config import X` binds X at import time; patching config.X
         # doesn't affect services that already imported it.
         with (
-            patch("services.reporting.ResultAssembler.RESULTS_DIR", tmp_path),
             patch("base_pipeline.AUDIT_DIR", tmp_path / "audit"),
             patch("pipeline.AUDIT_DIR", tmp_path / "audit"),
             patch("services.crawling.CrawlService.PAGES_DIR", tmp_path / "pages"),
             patch("services.extraction.LLMExtractionService.RAW_DIR", tmp_path / "raw"),
-            patch("base_pipeline.REPORTS_DIR", tmp_path / "reports"),
+            patch("base_pipeline.RESULTS_DIR", tmp_path / "reports"),
             patch("pipeline.REPORTS_DIR", tmp_path / "reports"),
         ):
             runner = PipelineRunner(sample_n=3)
