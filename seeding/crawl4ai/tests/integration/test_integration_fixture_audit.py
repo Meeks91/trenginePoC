@@ -981,12 +981,12 @@ class TestFullPipelineAllFixtures:
             ))
 
             # Enrich + Dedup (mock DDG only)
-            enrich_svc = NameToHandleService(audit, delay_seconds=0)
+            name_to_handle_svc = NameToHandleService(audit, delay_seconds=0)
             mock_ddgs = MagicMock()
             mock_ddgs.text.return_value = []
-            enrich_svc._ddgs = mock_ddgs
+            name_to_handle_svc._ddgs = mock_ddgs
 
-            final = enrich_svc.resolve_cross_account_handles(
+            final = name_to_handle_svc.resolve_cross_account_handles(
                 extract_result.all_merged, platform=Platform(platform),
             )
 

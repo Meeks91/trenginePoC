@@ -184,12 +184,12 @@ class TestExtractAllHandlesE2E:
             assert len(result.regex_handles) >= 3
 
             # Enrich + Dedup
-            enrich_svc = NameToHandleService(audit, delay_seconds=0)
+            name_to_handle_svc = NameToHandleService(audit, delay_seconds=0)
             mock_ddgs = MagicMock()
             mock_ddgs.text.return_value = []
-            enrich_svc._ddgs = mock_ddgs
+            name_to_handle_svc._ddgs = mock_ddgs
 
-            final = enrich_svc.resolve_cross_account_handles(
+            final = name_to_handle_svc.resolve_cross_account_handles(
                 result.all_merged, platform=Platform.Instagram,
             )
 
@@ -247,12 +247,12 @@ class TestExtractAllHandlesE2E:
             assert result.llm_pages_skipped >= 1
 
             # Enrich + Dedup
-            enrich_svc = NameToHandleService(audit, delay_seconds=0)
+            name_to_handle_svc = NameToHandleService(audit, delay_seconds=0)
             mock_ddgs = MagicMock()
             mock_ddgs.text.return_value = []
-            enrich_svc._ddgs = mock_ddgs
+            name_to_handle_svc._ddgs = mock_ddgs
 
-            final = enrich_svc.resolve_cross_account_handles(
+            final = name_to_handle_svc.resolve_cross_account_handles(
                 result.all_merged, platform=Platform.Instagram,
             )
 
@@ -291,12 +291,12 @@ class TestExtractAllHandlesE2E:
             assert result.llm_pages_used == 0
 
             # Enrich + Dedup
-            enrich_svc = NameToHandleService(audit, delay_seconds=0)
+            name_to_handle_svc = NameToHandleService(audit, delay_seconds=0)
             mock_ddgs = MagicMock()
             mock_ddgs.text.return_value = []
-            enrich_svc._ddgs = mock_ddgs
+            name_to_handle_svc._ddgs = mock_ddgs
 
-            final = enrich_svc.resolve_cross_account_handles(
+            final = name_to_handle_svc.resolve_cross_account_handles(
                 result.all_merged, platform=Platform.Instagram,
             )
 

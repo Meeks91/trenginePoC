@@ -1,8 +1,8 @@
 """
-NameResolver — Resolve candidate influencer names to social media handles via DDG.
+NameResolver — Resolve candidate influencer names to social media handles.
 
-For each candidate name, queries DDG with:
-    "{name} Instagram TikTok YouTube Influencer"
+For each candidate name, builds a query using the injected SearchClient's
+nr_query_template, then delegates execution to search_client.search_text().
 
 Parses result URLs for known platform domains (instagram.com, tiktok.com, youtube.com)
 and extracts handles using the existing RegexHandleExtractor.
@@ -11,12 +11,10 @@ and extracts handles using the existing RegexHandleExtractor.
 from __future__ import annotations
 
 import logging
-import random
 import time
 
-from ddgs import DDGS
-
 from services.audit.AuditService import AuditLog
+from services.search.SearchClient import SearchClient
 
 logger = logging.getLogger(__name__)
 
@@ -24,25 +22,21 @@ from services.extraction.RegexHandleExtractor import (
     extract_handles_from_url,
     ExtractedHandle,
 )
-from config import (
-    SEARCH_DELAY_SECONDS, SEARCH_BACKEND, SEARCH_REGION,
-    BACKOFF_BASE_SECONDS, BACKOFF_MAX_SECONDS,
-)
+from config import SEARCH_DELAY_SECONDS
 
 
 # Platform domains that indicate a social media profile
 _PLATFORM_DOMAINS = {"instagram.com", "tiktok.com", "youtube.com"}
 
 
-
-# Internal retry count for DDG queries (all retries handled here, callers don't retry)
-# 5 total attempts with fresh DDGS instances = robust against DDG non-determinism
-NAME_DDG_MAX_RETRIES = 4  # 5 total tries (initial + 4 retries)
+# Kept for test compatibility (tests may import this constant)
+NAME_DDG_MAX_RETRIES = 4  # 5 total tries — now owned by the client
 
 
 def resolve_names_via_ddg(
     names: list[str],
     audit: AuditLog,
+    search_client: SearchClient,
     *,
     query_template: str,
     category: str = "Influencer",
@@ -50,17 +44,18 @@ def resolve_names_via_ddg(
     max_results_per_query: int = 5,
     delay_seconds: float = SEARCH_DELAY_SECONDS,
 ) -> list[ExtractedHandle]:
-    """Resolve candidate names to social media handles via DDG search.
+    """Resolve candidate names to social media handles via the search client.
 
-    For each name, queries DDG and parses result URLs for platform handles.
-    Includes rate limiting and retry logic.
+    For each name, builds a query from query_template, delegates execution
+    to search_client.search_text(), and parses result URLs for platform handles.
 
     Args:
         names: Deduplicated candidate names to search.
         audit: Audit log for tracking queries.
-        category: Category/niche context (e.g. "Fitness", "Beauty") for better DDG relevance.
-        platform: Target platform (e.g. "Instagram", "TikTok") for fallback queries.
-        max_results_per_query: Max DDG results to inspect per name.
+        search_client: Client to execute searches (Open=DDG, Strict=Serper).
+        category: Category/niche context (e.g. "Fitness") for query relevance.
+        platform: Target platform (e.g. "Instagram") for fallback queries.
+        max_results_per_query: Max results to inspect per name.
 
     Returns:
         List of confirmed ExtractedHandle objects with platform set.
@@ -69,14 +64,14 @@ def resolve_names_via_ddg(
         return []
 
     logger.info("  --- Reddit Name Resolution ---")
-    logger.info("  Resolving %d candidate names via DDG", len(names))
+    logger.info("  Resolving %d candidate names via search client", len(names))
 
     resolved: list[ExtractedHandle] = []
     seen_handles: set[tuple[str, str]] = set()  # Avoid duplicates across names
 
     for i, name in enumerate(names, 1):
         query = query_template.format(name=name, category=category)
-        results = _query_with_retry(query, max_results_per_query)
+        results = search_client.search_text(query, max_results_per_query)
         handles_for_name = _extract_handles_from_results(results, candidate_name=name)
 
         if handles_for_name:
@@ -103,7 +98,7 @@ def resolve_names_via_ddg(
 
 
 def _score_result(url: str, handle: ExtractedHandle, candidate_name: str) -> int:
-    """Score a DDG result for name resolution priority.
+    """Score a search result for name resolution priority.
 
     Higher score = more likely to be the correct profile page.
     Profile pages rank above posts/reels/shorts.
@@ -125,11 +120,11 @@ def _extract_handles_from_results(
     results: list[dict],
     candidate_name: str = "",
 ) -> list[ExtractedHandle]:
-    """Parse DDG result URLs for platform handles.
+    """Parse search result URLs for platform handles.
 
     When candidate_name is provided, applies a confidence check:
     at least one word from the candidate name must appear in the
-    DDG result title. This kills false positives like
+    result title. This kills false positives like
     "Jerf Nipples" → @matildadjerf (title: "Matilda Djerf").
 
     Results are scored and returned in priority order (profile pages
@@ -150,13 +145,11 @@ def _extract_handles_from_results(
         if not any(domain in url.lower() for domain in _PLATFORM_DOMAINS):
             continue
 
-        # DDG confidence check: does the candidate name appear in the result?
-        # Only applies when DDG provides title/body metadata.
+        # Confidence check: does the candidate name appear in the result?
         if name_words:
             title = result.get("title", "").lower()
             body = result.get("body", "").lower()
             text = f"{title} {body}".strip()
-            # If DDG provided metadata, at least one name-word must appear
             if text and not any(w in text for w in name_words):
                 continue
 
@@ -169,36 +162,3 @@ def _extract_handles_from_results(
     # Sort by score descending — best matches first
     scored.sort(key=lambda x: x[0], reverse=True)
     return [handle for _, handle in scored]
-
-
-def _query_with_retry(
-    query: str,
-    max_results: int,
-    max_retries: int = NAME_DDG_MAX_RETRIES,
-) -> list[dict]:
-    """Execute a DDG query with exponential backoff on failure.
-
-    All retry logic is internal — callers should NOT wrap this in
-    their own retry loops. Uses fresh DDGS instances on each attempt
-    to avoid stale sessions (DDG is non-deterministic).
-    """
-    for attempt in range(max_retries + 1):
-        ddgs = DDGS()  # fresh instance each attempt
-        try:
-            return list(ddgs.text(
-                query, max_results=max_results,
-                backend=SEARCH_BACKEND, region=SEARCH_REGION,
-            ))
-        except Exception:
-            if attempt < max_retries:
-                delay = min(
-                    BACKOFF_BASE_SECONDS * (2 ** attempt) + random.uniform(0, 1),
-                    BACKOFF_MAX_SECONDS,
-                )
-                logger.warning("DDG error (attempt %d/%d), backing off %.1fs",
-                               attempt + 1, max_retries + 1, delay)
-                time.sleep(delay)
-            else:
-                logger.exception("DDG failed after %d attempts", max_retries + 1)
-                return []
-    return []  # unreachable, satisfies mypy

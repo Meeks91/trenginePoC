@@ -224,3 +224,91 @@ def test_execute_handles_api_error_gracefully(mock_post, tmp_path):
     results = client._execute(sq)
 
     assert results == []
+
+
+# ── search_text ──
+
+class TestSearchText:
+    """Verify search_text calls Serper and retries on transient HTTP errors."""
+
+    @patch("services.search.StrictSearchClient.requests.post")
+    def test_search_text_returns_mapped_results(self, mock_post, tmp_path):
+        """search_text maps Serper organic results to href/title/body dicts."""
+        mock_resp = MagicMock()
+        mock_resp.json.return_value = {
+            "organic": [
+                {"link": "https://www.instagram.com/kayla/", "title": "Kayla Itsines", "snippet": "Fitness"},
+            ]
+        }
+        mock_resp.raise_for_status = MagicMock()
+        mock_post.return_value = mock_resp
+        client = _make_client(tmp_path)
+
+        results = client.search_text("Kayla Itsines instagram.com", max_results=3)
+
+        assert len(results) == 1
+        assert results[0]["href"] == "https://www.instagram.com/kayla/"
+        assert results[0]["title"] == "Kayla Itsines"
+        payload = mock_post.call_args.kwargs.get("json") or mock_post.call_args[1].get("json")
+        assert payload["q"] == "Kayla Itsines instagram.com"
+        assert payload["num"] == 3
+
+    @patch("services.search.StrictSearchClient.requests.post")
+    def test_search_text_retries_on_http_error(self, mock_post, tmp_path):
+        """search_text re-attempts on RequestException."""
+        mock_post.side_effect = requests.ConnectionError("Serper down")
+        client = _make_client(tmp_path)
+
+        with (
+            patch("services.search.StrictSearchClient.MAX_RETRIES", 2),
+            patch("services.search.StrictSearchClient.BACKOFF_BASE_SECONDS", 0.01),
+            patch("services.search.StrictSearchClient.BACKOFF_MAX_SECONDS", 0.05),
+        ):
+            results = client.search_text("some query")
+
+        assert results == []
+        assert mock_post.call_count == 3  # 1 initial + 2 retries
+
+    @patch("services.search.StrictSearchClient.requests.post")
+    def test_search_text_returns_empty_on_permanent_failure(self, mock_post, tmp_path):
+        """search_text returns [] after all retries exhausted."""
+        mock_post.side_effect = requests.HTTPError("500")
+        client = _make_client(tmp_path)
+
+        with (
+            patch("services.search.StrictSearchClient.MAX_RETRIES", 0),
+            patch("services.search.StrictSearchClient.BACKOFF_BASE_SECONDS", 0.01),
+        ):
+            results = client.search_text("some query")
+
+        assert results == []
+
+    @patch("services.search.StrictSearchClient.requests.post")
+    def test_search_text_succeeds_after_one_retry(self, mock_post, tmp_path):
+        """search_text returns results if second attempt succeeds."""
+        call_count = 0
+
+        def side_effect(*args, **kwargs):
+            nonlocal call_count
+            call_count += 1
+            if call_count < 2:
+                raise requests.ConnectionError("transient")
+            mock_resp = MagicMock()
+            mock_resp.json.return_value = {
+                "organic": [{"link": "https://www.instagram.com/user/", "title": "U", "snippet": ""}]
+            }
+            mock_resp.raise_for_status = MagicMock()
+            return mock_resp
+
+        mock_post.side_effect = side_effect
+        client = _make_client(tmp_path)
+
+        with (
+            patch("services.search.StrictSearchClient.MAX_RETRIES", 2),
+            patch("services.search.StrictSearchClient.BACKOFF_BASE_SECONDS", 0.01),
+            patch("services.search.StrictSearchClient.BACKOFF_MAX_SECONDS", 0.05),
+        ):
+            results = client.search_text("some query")
+
+        assert len(results) == 1
+        assert call_count == 2

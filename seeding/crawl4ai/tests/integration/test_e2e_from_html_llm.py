@@ -184,12 +184,12 @@ async def test_e2e_from_html_real_llm():
 
                 # ── Enrich + Dedup (DDG MOCKED) ──
                 print("\n--- Enrich + Dedup (DDG mocked) ---")
-                enrich_svc = NameToHandleService(audit, delay_seconds=0)
+                name_to_handle_svc = NameToHandleService(audit, delay_seconds=0)
                 mock_ddgs = MagicMock()
                 mock_ddgs.text.return_value = []
-                enrich_svc._ddgs = mock_ddgs
+                name_to_handle_svc._ddgs = mock_ddgs
 
-                unique = enrich_svc.resolve_cross_account_handles(
+                unique = name_to_handle_svc.resolve_cross_account_handles(
                     influencers, platform=Platform.Instagram,
                 )
 

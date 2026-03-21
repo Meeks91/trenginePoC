@@ -464,9 +464,9 @@ class BasePipelineRunner(abc.ABC):
             known_influencers=influencers,
         )
 
-        nr_template = self._build_search_client(audit).nr_query_template()
-        svc = NameToHandleService(audit, nr_query_template=nr_template)
-        resolved_influencers, records = svc.resolve_with_recycling(
+        search_client = self._build_search_client(audit)
+        name_to_handle_svc = NameToHandleService(audit, search_client=search_client)
+        resolved_influencers, records = name_to_handle_svc.resolve_with_recycling(
             group_queues=group_queues,
             known_handles=known_handles,
             platform=platform,

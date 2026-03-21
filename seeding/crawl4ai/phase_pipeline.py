@@ -237,8 +237,8 @@ class PhasePipelineRunner(BasePipelineRunner):
         self._stats.record_extraction(extract_result)
 
         # Enrich
-        enrich_svc = NameToHandleService(audit)
-        unique = enrich_svc.resolve_cross_account_handles(
+        name_to_handle_svc = NameToHandleService(audit, search_client=self._build_search_client(audit))
+        unique = name_to_handle_svc.resolve_cross_account_handles(
             extract_result.all_merged,
             platform=primary_platform,
             skip_cross_platform=self.no_cross_platform_lookup,
@@ -246,8 +246,8 @@ class PhasePipelineRunner(BasePipelineRunner):
         self._stats.record_enrichment(
             unique_count=len(unique),
             handles_filled=sum(1 for inf in unique if inf.handles),
-            retries=enrich_svc.retries,
-            failures=enrich_svc.failures,
+            retries=name_to_handle_svc.retries,
+            failures=name_to_handle_svc.failures,
         )
 
         # Tag each influencer with categories from the configs that discovered its pages

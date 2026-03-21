@@ -47,7 +47,7 @@ class TestResolveWithRecycling:
     def test_new_handle_creates_influencer(self, mock_ddg: MagicMock) -> None:
         mock_ddg.return_value = [_make_extracted("Sean Nalewanyj", "seannal")]
         audit = MagicMock()
-        svc = NameToHandleService(audit)
+        svc = NameToHandleService(audit, search_client=MagicMock())
 
         queues: dict[GroupKey, deque[NameMention]] = {
             ("Instagram", "FITNESS", "Gym", "US"): deque([
@@ -82,7 +82,7 @@ class TestResolveWithRecycling:
         """Resolved influencer carries category from NameMention, not NAME_RESOLUTION."""
         mock_ddg.return_value = [_make_extracted("Multi Cat Person", "multicatperson")]
         audit = MagicMock()
-        svc = NameToHandleService(audit)
+        svc = NameToHandleService(audit, search_client=MagicMock())
 
         mention = NameMention(
             canonical="Multi Cat Person",
@@ -124,7 +124,7 @@ class TestResolveWithRecycling:
             [_make_extracted("Sean Nalewanyj", "seannal")],       # new
         ]
         audit = MagicMock()
-        svc = NameToHandleService(audit)
+        svc = NameToHandleService(audit, search_client=MagicMock())
 
         queues: dict[GroupKey, deque[NameMention]] = {
             ("Instagram", "FITNESS", "Gym", "US"): deque([
@@ -153,7 +153,7 @@ class TestResolveWithRecycling:
     def test_no_handle_found_consumes_slot(self, mock_ddg: MagicMock) -> None:
         mock_ddg.return_value = []
         audit = MagicMock()
-        svc = NameToHandleService(audit)
+        svc = NameToHandleService(audit, search_client=MagicMock())
 
         queues: dict[GroupKey, deque[NameMention]] = {
             ("Instagram", "FITNESS", "Gym", "US"): deque([
@@ -184,7 +184,7 @@ class TestResolveWithRecycling:
             for i in range(5)
         ]
         audit = MagicMock()
-        svc = NameToHandleService(audit)
+        svc = NameToHandleService(audit, search_client=MagicMock())
 
         queues: dict[GroupKey, deque[NameMention]] = {
             ("Instagram", "FITNESS", "Gym", "US"): deque([
@@ -213,7 +213,7 @@ class TestResolveWithRecycling:
             [_make_extracted("Shared Person", "shared_handle")],  # collision in group 2
         ]
         audit = MagicMock()
-        svc = NameToHandleService(audit)
+        svc = NameToHandleService(audit, search_client=MagicMock())
 
         queues: dict[GroupKey, deque[NameMention]] = {
             ("Instagram", "FITNESS", "Gym", "US"): deque([
@@ -241,7 +241,7 @@ class TestResolveWithRecycling:
         """When all candidates in a group are collisions, error is logged."""
         mock_ddg.return_value = [_make_extracted("Known", "known_handle")]
         audit = MagicMock()
-        svc = NameToHandleService(audit)
+        svc = NameToHandleService(audit, search_client=MagicMock())
 
         queues: dict[GroupKey, deque[NameMention]] = {
             ("Instagram", "FITNESS", "Gym", "US"): deque([

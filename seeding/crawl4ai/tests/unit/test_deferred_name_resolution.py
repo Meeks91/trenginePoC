@@ -139,17 +139,13 @@ class TestResolutionDisabled:
 class TestResolutionEnabled:
     """When name_resolution=True, DDG fires only for top reddit names."""
 
-    @patch("services.extraction.NameResolver.DDGS")
-    @patch("services.extraction.NameResolver.time.sleep")
-    @patch("services.extraction.NameResolver.NAME_DDG_MAX_RETRIES", 0)
-    def test_reddit_names_resolved(self, mock_sleep, mock_ddgs_cls):
-        """Reddit names should be DDG-searched."""
-        mock_ddgs = MagicMock()
-        mock_ddgs.text.return_value = [
-            {"href": "https://www.instagram.com/jeffnippard/",
-             "title": "Jeff Nippard (@jeffnippard)"},
+    @patch("services.extraction.NameResolver.resolve_names_via_ddg")
+    def test_reddit_names_resolved(self, mock_resolve: MagicMock):
+        """Reddit names should be searched via the injected client."""
+        from services.extraction.RegexHandleExtractor import ExtractedHandle
+        mock_resolve.return_value = [
+            ExtractedHandle(handle="jeffnippard", platform="Instagram", name="Jeff Nippard"),
         ]
-        mock_ddgs_cls.return_value = mock_ddgs
 
         runner = PipelineRunner(name_resolution=True)
         tracker = _build_tracker({
@@ -172,17 +168,10 @@ class TestResolutionEnabled:
         assert records[0].resolved_handle == "jeffnippard"
         assert records[0].resolved_platform == "Instagram"
 
-    @patch("services.extraction.NameResolver.DDGS")
-    @patch("services.extraction.NameResolver.time.sleep")
-    @patch("services.extraction.NameResolver.NAME_DDG_MAX_RETRIES", 0)
-    def test_non_reddit_excluded_from_resolution(self, mock_sleep, mock_ddgs_cls):
+    @patch("services.extraction.NameResolver.resolve_names_via_ddg")
+    def test_non_reddit_excluded_from_resolution(self, mock_resolve: MagicMock):
         """Non-reddit names should never be resolved."""
-        mock_ddgs = MagicMock()
-        mock_ddgs.text.return_value = [
-            {"href": "https://www.instagram.com/jeffnippard/",
-             "title": "Jeff Nippard"}
-        ]
-        mock_ddgs_cls.return_value = mock_ddgs
+        mock_resolve.return_value = []
 
         runner = PipelineRunner(name_resolution=True)
         tracker = _build_tracker({
@@ -203,17 +192,13 @@ class TestResolutionEnabled:
         assert len(records) == 1
         assert records[0].was_searched is False
 
-    @patch("services.extraction.NameResolver.DDGS")
-    @patch("services.extraction.NameResolver.time.sleep")
-    @patch("services.extraction.NameResolver.NAME_DDG_MAX_RETRIES", 0)
-    def test_resolved_handles_merged_into_entries(self, mock_sleep, mock_ddgs_cls):
+    @patch("services.extraction.NameResolver.resolve_names_via_ddg")
+    def test_resolved_handles_merged_into_entries(self, mock_resolve: MagicMock):
         """Resolved handles should be appended to _all_influencer_entries."""
-        mock_ddgs = MagicMock()
-        mock_ddgs.text.return_value = [
-            {"href": "https://www.instagram.com/alexleonidas/",
-             "title": "Alex Leonidas (@alexleonidas)"},
+        from services.extraction.RegexHandleExtractor import ExtractedHandle
+        mock_resolve.return_value = [
+            ExtractedHandle(handle="alexleonidas", platform="Instagram", name="Alex Leonidas"),
         ]
-        mock_ddgs_cls.return_value = mock_ddgs
 
         runner = PipelineRunner(name_resolution=True)
         tracker = _build_tracker({
@@ -221,8 +206,6 @@ class TestResolutionEnabled:
         })
         audit = MagicMock()
         audit.log = MagicMock()
-
-
 
         entries: list = []
         runner._run_deferred_name_resolution(

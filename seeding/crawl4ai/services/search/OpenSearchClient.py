@@ -81,6 +81,31 @@ class OpenSearchClient:
         """DDG-optimized NR template — no site: scoping (DDG hates it)."""
         return '{name} Instagram YouTube TikTok'
 
+    def search_text(self, query: str, max_results: int = 5) -> list[dict[str, str]]:
+        """Execute a free-text DDG query with retry. Returns raw dicts."""
+        for attempt in range(MAX_RETRIES + 1):
+            try:
+                return list(self._ddgs.text(
+                    query,
+                    max_results=max_results,
+                    backend=SEARCH_BACKEND,
+                    region=SEARCH_REGION,
+                ))
+            except Exception as e:
+                if attempt < MAX_RETRIES:
+                    delay = min(
+                        BACKOFF_BASE_SECONDS * (2 ** attempt) + random.uniform(0, 1),
+                        BACKOFF_MAX_SECONDS,
+                    )
+                    logger.warning(
+                        "search_text retry %d for query %r: %s — backing off %.1fs",
+                        attempt + 1, query, e, delay,
+                    )
+                    time.sleep(delay)
+                else:
+                    logger.exception("search_text permanently failed for query: %r", query)
+        return []
+
     # ── Internal ──
 
     def _build_queries(self, job: SeedJob) -> list[SearchQuery]:

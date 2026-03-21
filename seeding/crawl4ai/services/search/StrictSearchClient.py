@@ -20,10 +20,12 @@ NOTE: English-only language support.
 from __future__ import annotations
 
 import logging
+import random
 import time
 
 import requests
 
+from config import MAX_RETRIES, BACKOFF_BASE_SECONDS, BACKOFF_MAX_SECONDS
 from config.seed_schema import SeedJob
 from services.audit.AuditService import AuditLog
 from services.search.SearchClient import (
@@ -88,6 +90,41 @@ class StrictSearchClient:
     def nr_query_template(self) -> str:
         """Google-optimized NR template — site: scoping works on Serper."""
         return '{name} {category} site:instagram.com OR site:tiktok.com OR site:youtube.com'
+
+    def search_text(self, query: str, max_results: int = 5) -> list[dict[str, str]]:
+        """Execute a free-text Serper query with retry. Returns raw dicts with href/title/body."""
+        for attempt in range(MAX_RETRIES + 1):
+            try:
+                resp = requests.post(
+                    SERPER_URL,
+                    json={"q": query, "num": max_results},
+                    headers=self._headers,
+                    timeout=15,
+                )
+                resp.raise_for_status()
+                organic = resp.json().get("organic", [])
+                return [
+                    {
+                        "href": r.get("link", ""),
+                        "title": r.get("title", ""),
+                        "body": r.get("snippet", ""),
+                    }
+                    for r in organic
+                ]
+            except requests.RequestException as e:
+                if attempt < MAX_RETRIES:
+                    delay = min(
+                        BACKOFF_BASE_SECONDS * (2 ** attempt) + random.uniform(0, 1),
+                        BACKOFF_MAX_SECONDS,
+                    )
+                    logger.warning(
+                        "search_text Serper retry %d for query %r: %s — backing off %.1fs",
+                        attempt + 1, query, e, delay,
+                    )
+                    time.sleep(delay)
+                else:
+                    logger.error("search_text Serper permanently failed for query %r: %s", query, e)
+        return []
 
     # ── Internal ──
 

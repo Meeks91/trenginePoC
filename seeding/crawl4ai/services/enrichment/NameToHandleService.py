@@ -17,7 +17,6 @@ Includes exponential backoff for rate limiting.
 from __future__ import annotations
 
 import logging
-import random
 import time
 from typing import TYPE_CHECKING
 
@@ -25,9 +24,8 @@ if TYPE_CHECKING:
     from collections import deque
     from services.extraction.NameMentionTracker import NameMention, NameMentionTracker
 
-from ddgs import DDGS
-
 from services.audit.AuditService import AuditLog
+from services.search.SearchClient import SearchClient
 
 logger = logging.getLogger(__name__)
 from config.schema import Influencer, Platform, NameMentionRecord
@@ -35,8 +33,6 @@ from services.enrichment.CategoryProvenanceTagger import CategoryProvenanceTagge
 from services.extraction.NameCleaner import NameCleaner
 from config import (
     ENRICH_DELAY_SECONDS,
-    SEARCH_BACKEND, SEARCH_REGION,
-    MAX_RETRIES, BACKOFF_BASE_SECONDS, BACKOFF_MAX_SECONDS,
     NAME_RESOLUTION_MIN_MENTIONS, NAME_RESOLUTION_MAX_PER_SUB,
     CROSS_PLATFORM_MAX_LOOKUPS,
 )
@@ -60,16 +56,15 @@ class NameToHandleService:
         self,
         audit: AuditLog,
         *,
-        nr_query_template: str = '{name} Instagram YouTube TikTok',
-        ddgs: DDGS | None = None,
+        search_client: SearchClient,
         delay_seconds: float = ENRICH_DELAY_SECONDS,
     ):
         self._audit = audit
-        self._nr_query_template = nr_query_template
-        self._ddgs = ddgs or DDGS()
+        self._search_client = search_client
+        self._nr_query_template = search_client.nr_query_template()
         self._delay = delay_seconds
-        self.retries = 0    # Total retry attempts this run
-        self.failures = 0   # Handle lookups that failed after all retries
+        self.retries = 0    # Owned by client; kept for interface compatibility
+        self.failures = 0   # Owned by client; kept for interface compatibility
 
     # ── Internal helpers (static, pure — independently testable) ──
 
@@ -242,6 +237,7 @@ class NameToHandleService:
             from services.extraction.NameResolver import resolve_names_via_ddg
             name_handles = resolve_names_via_ddg(
                 sorted(names_to_resolve), self._audit,
+                search_client=self._search_client,
                 query_template=self._nr_query_template,
                 category=sub_name or "Influencer",
                 platform=platform,
@@ -330,9 +326,10 @@ class NameToHandleService:
                 candidate = queue.popleft()
                 name = candidate.canonical
 
-                # Resolve single name via DDG
+                # Resolve single name via search client
                 name_handles = resolve_names_via_ddg(
                     [name], self._audit,
+                    search_client=self._search_client,
                     query_template=self._nr_query_template,
                     category=sub_name or "Influencer",
                     platform=platform,
@@ -423,41 +420,18 @@ class NameToHandleService:
             resolved_platform=platform_str,
         )
 
-    # ── Internal DDG Search ──
+    # ── Internal Search ──
 
     def _search_handle(self, name: str, platform: Platform, domain: str) -> str | None:
-        """Search DuckDuckGo for an influencer's handle with exponential backoff."""
+        """Search for an influencer's handle via the injected search client."""
         query = f'"{name}" {domain}'
-
-        for attempt in range(MAX_RETRIES + 1):
-            try:
-                results = self._ddgs.text(
-                    query, max_results=2,
-                    backend=SEARCH_BACKEND, region=SEARCH_REGION,
-                )
-                for r in results:
-                    handle = extract_handle_from_url(r.get("href", ""), platform.value)
-                    if handle:
-                        return handle
-
-                    text = r.get("title", "") + " " + r.get("body", "")
-                    handle = extract_handle_from_text(text)
-                    if handle:
-                        return handle
-                return None  # DDG responded but no handle found — not a failure
-            except Exception as e:
-                if attempt < MAX_RETRIES:
-                    delay = min(
-                        BACKOFF_BASE_SECONDS * (2 ** attempt) + random.uniform(0, 1),
-                        BACKOFF_MAX_SECONDS,
-                    )
-                    self.retries += 1
-                    logger.warning("DDG resolve retry %d for '%s': %s", attempt + 1, name, e)
-                    self._audit.log("enrich", "retry", name=name, attempt=attempt + 1, error=str(e))
-                    time.sleep(delay)
-                else:
-                    self.failures += 1
-                    logger.exception("DDG resolve permanently failed for '%s'", name)
-                    self._audit.log("enrich", "permanent_failure", name=name, error=str(e))
-                    return None
-        return None  # unreachable, satisfies mypy
+        results = self._search_client.search_text(query, max_results=2)
+        for r in results:
+            handle = extract_handle_from_url(r.get("href", ""), platform.value)
+            if handle:
+                return handle
+            text = r.get("title", "") + " " + r.get("body", "")
+            handle = extract_handle_from_text(text)
+            if handle:
+                return handle
+        return None

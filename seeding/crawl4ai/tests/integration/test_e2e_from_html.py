@@ -158,17 +158,17 @@ class _E2EPipelineRunner(BasePipelineRunner):
         self._stats.record_extraction(extract_result)
 
         from services.enrichment.NameToHandleService import NameToHandleService
-        enrich_svc = NameToHandleService(self._audit, delay_seconds=0)
+        name_to_handle_svc = NameToHandleService(self._audit, delay_seconds=0)
         mock_ddgs = MagicMock()
         mock_ddgs.text.return_value = []
-        enrich_svc._ddgs = mock_ddgs
-        unique = enrich_svc.resolve_cross_account_handles(
+        name_to_handle_svc._ddgs = mock_ddgs
+        unique = name_to_handle_svc.resolve_cross_account_handles(
             extract_result.all_merged, platform=job.platform,
         )
         self._stats.record_enrichment(
             unique_count=len(unique),
             handles_filled=sum(1 for inf in unique if inf.handles),
-            retries=enrich_svc.retries, failures=enrich_svc.failures,
+            retries=name_to_handle_svc.retries, failures=name_to_handle_svc.failures,
         )
 
         CategoryProvenanceTagger.tag_from_job(

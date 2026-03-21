@@ -114,7 +114,7 @@ class TestLiveCrawl:
         audit = AuditLog(AUDIT_DIR, "test_live_full")
         crawl_svc = CrawlService(audit)
         handle_svc = HandleExtractionService(audit)
-        enrich_svc = NameToHandleService(audit)
+        name_to_handle_svc = NameToHandleService(audit)
 
         pages = await crawl_svc.crawl_urls([
             (CLOUDKITCHENS_URL, "test_query"),
@@ -131,7 +131,7 @@ class TestLiveCrawl:
             direct_handles=[],
         )
 
-        unique = enrich_svc.resolve_cross_account_handles(
+        unique = name_to_handle_svc.resolve_cross_account_handles(
             result.all_merged,
             platform=Platform.Instagram,
             skip_cross_platform=True,

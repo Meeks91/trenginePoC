@@ -52,3 +52,12 @@ class SearchClient(Protocol):
         Strict (Google) uses site: scoping; Open (DDG) uses platform keywords.
         """
         ...
+
+    def search_text(self, query: str, max_results: int = 5) -> list[dict[str, str]]:
+        """Execute a free-text query and return raw result dicts.
+
+        Each dict contains at least 'href', 'title', and optionally 'body'.
+        Handles retries internally. Returns [] on permanent failure.
+        Used by NameToHandleService and NameResolver for handle lookups.
+        """
+        ...

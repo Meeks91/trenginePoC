@@ -215,3 +215,79 @@ class TestRetryAndCache:
             client.search(job)
 
         assert list((tmp_path / "cache").glob("*.json")) == []
+
+
+# ── search_text ──
+
+class TestSearchText:
+    """Verify search_text delegates to DDGS.text and retries on failure."""
+
+    def test_search_text_returns_results_on_success(self, tmp_path):
+        """search_text returns raw dicts from DDGS.text."""
+        ddgs = MagicMock()
+        ddgs.text.return_value = [
+            {"href": "https://www.instagram.com/jeffnippard/", "title": "Jeff Nippard", "body": "Fitness"},
+        ]
+        client = _make_client(tmp_path, ddgs)
+
+        results = client.search_text("Jeff Nippard instagram.com", max_results=2)
+
+        assert len(results) == 1
+        assert results[0]["href"] == "https://www.instagram.com/jeffnippard/"
+        _, kwargs = ddgs.text.call_args
+        assert kwargs["max_results"] == 2
+
+    def test_search_text_retries_on_exception(self, tmp_path):
+        """search_text re-attempts DDGS.text on transient errors."""
+        ddgs = MagicMock()
+        ddgs.text.side_effect = ConnectionError("DDG down")
+        client = _make_client(tmp_path, ddgs)
+
+        with (
+            patch("services.search.OpenSearchClient.MAX_RETRIES", 2),
+            patch("services.search.OpenSearchClient.BACKOFF_BASE_SECONDS", 0.01),
+            patch("services.search.OpenSearchClient.BACKOFF_MAX_SECONDS", 0.05),
+        ):
+            results = client.search_text("Jeff Nippard instagram.com")
+
+        assert results == []
+        assert ddgs.text.call_count == 3  # 1 initial + 2 retries
+
+    def test_search_text_returns_empty_on_permanent_failure(self, tmp_path):
+        """search_text returns [] after all retries exhausted."""
+        ddgs = MagicMock()
+        ddgs.text.side_effect = Exception("Permanent error")
+        client = _make_client(tmp_path, ddgs)
+
+        with (
+            patch("services.search.OpenSearchClient.MAX_RETRIES", 0),
+            patch("services.search.OpenSearchClient.BACKOFF_BASE_SECONDS", 0.01),
+        ):
+            results = client.search_text("some query")
+
+        assert results == []
+
+    def test_search_text_succeeds_after_one_retry(self, tmp_path):
+        """search_text returns results if second attempt succeeds."""
+        ddgs = MagicMock()
+        call_count = 0
+
+        def side_effect(*args, **kwargs):
+            nonlocal call_count
+            call_count += 1
+            if call_count < 2:
+                raise ConnectionError("transient")
+            return [{"href": "https://www.instagram.com/user/", "title": "User", "body": ""}]
+
+        ddgs.text.side_effect = side_effect
+        client = _make_client(tmp_path, ddgs)
+
+        with (
+            patch("services.search.OpenSearchClient.MAX_RETRIES", 2),
+            patch("services.search.OpenSearchClient.BACKOFF_BASE_SECONDS", 0.01),
+            patch("services.search.OpenSearchClient.BACKOFF_MAX_SECONDS", 0.05),
+        ):
+            results = client.search_text("some query")
+
+        assert len(results) == 1
+        assert call_count == 2
