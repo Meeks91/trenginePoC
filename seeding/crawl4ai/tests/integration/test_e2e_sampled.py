@@ -19,7 +19,7 @@ import tempfile
 from pathlib import Path
 from unittest.mock import patch
 
-import config
+
 from config.seed_schema import (
     SeedJob, Platform, RegionCode, REGIONS, load_categories,
 )
@@ -73,7 +73,7 @@ async def _test_e2e_sampled_async():
         ):
             runner = PipelineRunner(sample_n=3)
             result = await runner.run_single_url(
-                url="https://www.google.com/search?q=fitness+influencers+Instagram",
+                url="https://www.reddit.com/r/naturalbodybuilding/comments/1ja6y54/",
                 platform=job.platform.value,
                 category_key=job.category_key,
                 sub_name=job.sub.sub_name,

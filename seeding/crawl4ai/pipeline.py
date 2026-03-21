@@ -233,14 +233,16 @@ class PerJobPipelineRunner(BasePipelineRunner):
         self._stats.record_extraction(extract_result)
 
         # Deferred Name Resolution (single-URL mode)
+        resolved_influencers: list[Influencer] = []
         name_records = self._run_deferred_name_resolution(
             tracker=extract_result.name_tracker,
             audit=audit,
             sub_name=sub_name,
             platform=Platform(platform),
-            influencers=[],
+            influencers=resolved_influencers,
             sub_to_category={sub_name: category_key},
         )
+        extract_result.all_merged.extend(resolved_influencers)
 
         # Enrich
         enrich_svc = NameToHandleService(audit)
