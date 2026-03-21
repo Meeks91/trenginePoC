@@ -16,7 +16,7 @@ from services.extraction.RegexHandleExtractor import (
     _is_valid_handle,
     extract_handles_from_html,
 )
-from services.enrichment.InfluencerMerger import InfluencerMerger
+from services.influencerMerging.InfluencerMergerService import InfluencerMergerService as InfluencerMerger
 from unittest.mock import MagicMock
 
 
@@ -40,7 +40,7 @@ def test_merger_uses_shared_blocklist():
 
 def test_both_sites_use_same_is_blocked_handle():
     """InfluencerMerger imports is_blocked_handle from RegexHandleExtractor."""
-    from services.enrichment import InfluencerMerger as merger_mod
+    from services.influencerMerging import InfluencerMergerService as merger_mod
     from services.extraction import RegexHandleExtractor as regex_mod
     assert merger_mod.is_blocked_handle is regex_mod.is_blocked_handle
 

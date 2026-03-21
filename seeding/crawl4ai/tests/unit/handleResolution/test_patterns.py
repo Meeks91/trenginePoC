@@ -7,7 +7,7 @@ from __future__ import annotations
 
 import pytest
 
-from services.enrichment.patterns import (
+from services.handleResolution.patterns import (
     extract_handle_from_url,
     extract_handle_from_text,
     PLATFORM_DOMAINS,

@@ -128,8 +128,8 @@ async def main() -> None:
         )
 
         # Group by identity for clean CLI output
-        from services.enrichment.InfluencerMerger import InfluencerMerger
-        grouped = InfluencerMerger.merge(result.all_influencers)
+        from services.influencerMerging.InfluencerMergerService import InfluencerMergerService
+        grouped = InfluencerMergerService.merge(result.all_influencers)
         grouped.sort(key=lambda inf: len(inf.source_urls), reverse=True)
 
         print(f"\nDone — {len(grouped)} influencers found (grouped from {len(result.all_influencers)} raw)")

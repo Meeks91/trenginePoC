@@ -22,7 +22,7 @@ import pytest
 from config.schema import Influencer, PageResult, Platform
 from services.audit.AuditService import AuditLog
 from services.extraction.HandleExtractionService import HandleExtractionService
-from services.enrichment.NameToHandleService import NameToHandleService
+from services.handleResolution.CrossPlatformHandleResolverService import CrossPlatformHandleResolverService
 
 
 FIXTURE = Path(__file__).resolve().parent.parent / "fixtures" / "modash_uk_food.html"
@@ -137,10 +137,11 @@ class TestCrossPlatformE2E:
                 )
 
             # ── Layer 2: Enrich + Dedup ──
-            name_to_handle_svc = NameToHandleService(audit, search_client=MagicMock(), delay_seconds=0)
+            resolver = CrossPlatformHandleResolverService(
+                audit, search_client=MagicMock(), min_sources=0, delay_seconds=0,
+            )
 
-
-            final = name_to_handle_svc.resolve_cross_account_handles(merged, platform=Platform.Instagram, min_sources=0)
+            final = resolver.resolve(merged)
 
             # ── Assertions on final output ──
             final_pairs = _all_handles_lower(final)
@@ -185,11 +186,12 @@ class TestCrossPlatformE2E:
                     sample_n=0,
                 ))
 
-            name_to_handle_svc = NameToHandleService(audit, search_client=MagicMock(), delay_seconds=0)
+            resolver = CrossPlatformHandleResolverService(
+                audit, search_client=MagicMock(), min_sources=0, delay_seconds=0,
+            )
 
-            final = name_to_handle_svc.resolve_cross_account_handles(
-                extract_result.all_merged, platform=Platform.Instagram,
-                min_sources=0,
+            final = resolver.resolve(
+                extract_result.all_merged,
             )
 
             seen = set()
@@ -232,9 +234,11 @@ class TestCrossPlatformE2E:
                              "title": "Tom Miller", "body": ""}]
                 return []
             mock_sc.search_text.side_effect = mock_search_text
-            name_to_handle_svc = NameToHandleService(audit, search_client=mock_sc, delay_seconds=0)
+            resolver = CrossPlatformHandleResolverService(
+                audit, search_client=mock_sc, min_sources=0, delay_seconds=0,
+            )
 
-            final = name_to_handle_svc.resolve_cross_account_handles(tt_only, platform=Platform.Instagram, min_sources=0)
+            final = resolver.resolve(tt_only)
 
             # Should have 2 entries: original TikTok + new Instagram
             assert len(final) == 2, (

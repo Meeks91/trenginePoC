@@ -20,7 +20,7 @@ import pytest
 from config.schema import Platform, PageResult
 from config.seed_schema import SeedJob, SubCategory, Region, RegionCode, Difficulty
 from phase_pipeline import PhasePipelineRunner, TaggedURL
-from services.enrichment.InfluencerMerger import InfluencerMerger
+from services.influencerMerging.InfluencerMergerService import InfluencerMergerService as InfluencerMerger
 from services.search.SearchService import SearchResults
 
 
@@ -154,7 +154,7 @@ class TestPhasePipelineFullFlow:
             with (
                 patch("phase_pipeline.AUDIT_DIR", Path(tmp)),
                 patch("services.extraction.LLMExtractionService.litellm"),
-                patch("phase_pipeline.NameToHandleService") as MockEnrichSvc,
+                patch("phase_pipeline.HandleFromNameService") as MockEnrichSvc,
             ):
                 mock_enrich = MagicMock()
                 # Pass through: return the same influencers (no DDG enrichment)

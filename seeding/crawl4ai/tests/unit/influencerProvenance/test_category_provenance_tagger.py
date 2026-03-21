@@ -16,7 +16,7 @@ from typing import Any
 
 
 from config.schema import CategoryCitation, Influencer, PageResult, Platform
-from services.enrichment.CategoryProvenanceTagger import CategoryProvenanceTagger
+from services.influencerProvenance.CategoryProvenanceTaggerService import CategoryProvenanceTagger
 
 
 # Fixtures:

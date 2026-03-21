@@ -28,6 +28,7 @@ from services.extraction.HandleExtractionService import (
 )
 from services.extraction.RegexHandleExtractor import ExtractedHandle
 from config.schema import PageResult, Platform
+from services.handleResolution.CrossPlatformHandleResolverService import CrossPlatformHandleResolverService
 
 FIXTURES = Path(__file__).resolve().parent.parent / "fixtures"
 
@@ -918,7 +919,7 @@ import tempfile
 from unittest.mock import MagicMock
 
 from services.audit.AuditService import AuditLog
-from services.enrichment.NameToHandleService import NameToHandleService
+from services.handleResolution.HandleFromNameService import HandleFromNameService
 
 
 # Fixture metadata: (filename, url, platform, expected_ig, expected_tt)
@@ -945,7 +946,7 @@ _FIXTURE_CONFIGS = [
 
 
 class TestFullPipelineAllFixtures:
-    """TRUE E2E: Every fixture through HandleExtractionService → NameToHandleService.
+    """TRUE E2E: Every fixture through HandleExtractionService → HandleFromNameService.
 
     No Gemini mock. DDG mocked to avoid rate limiting.
     ZERO skips — every test asserts something real for every fixture.
@@ -981,11 +982,11 @@ class TestFullPipelineAllFixtures:
             ))
 
             # Enrich + Dedup (mock DDG only)
-            name_to_handle_svc = NameToHandleService(audit, search_client=MagicMock(), delay_seconds=0)
-
-            final = name_to_handle_svc.resolve_cross_account_handles(
-                extract_result.all_merged, platform=Platform(platform),
+            resolver = CrossPlatformHandleResolverService(
+                audit, search_client=MagicMock(), delay_seconds=0,
             )
+
+            final = resolver.resolve(extract_result.all_merged)
 
         return {
             "filename": filename,

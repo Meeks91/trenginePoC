@@ -58,6 +58,6 @@ class SearchClient(Protocol):
 
         Each dict contains at least 'href', 'title', and optionally 'body'.
         Handles retries internally. Returns [] on permanent failure.
-        Used by NameToHandleService and NameResolver for handle lookups.
+        Used by HandleFromNameService and NameResolver for handle lookups.
         """
         ...

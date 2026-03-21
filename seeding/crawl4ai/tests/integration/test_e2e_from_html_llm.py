@@ -30,7 +30,8 @@ from config.schema import PipelineStats, JobBreakdown, Platform
 from services.audit.AuditService import AuditLog
 from services.crawling.CrawlService import CrawlService
 from services.extraction.LLMExtractionService import LLMExtractionService
-from services.enrichment.NameToHandleService import NameToHandleService
+from services.handleResolution.HandleFromNameService import HandleFromNameService
+from services.handleResolution.CrossPlatformHandleResolverService import CrossPlatformHandleResolverService
 from services.validation.IngestionValidator import IngestionValidator
 from services.reporting.PipelineReporter import PipelineReporter
 
@@ -184,11 +185,11 @@ async def test_e2e_from_html_real_llm():
 
                 # ── Enrich + Dedup (DDG MOCKED) ──
                 print("\n--- Enrich + Dedup (DDG mocked) ---")
-                name_to_handle_svc = NameToHandleService(audit, search_client=MagicMock(), delay_seconds=0)
-
-                unique = name_to_handle_svc.resolve_cross_account_handles(
-                    influencers, platform=Platform.Instagram,
+                resolver = CrossPlatformHandleResolverService(
+                    audit, search_client=MagicMock(), delay_seconds=0,
                 )
+
+                unique = resolver.resolve(influencers)
 
                 # HARD: enrichment pipeline is deterministic — must not lose data
                 assert len(unique) >= len(influencers), (

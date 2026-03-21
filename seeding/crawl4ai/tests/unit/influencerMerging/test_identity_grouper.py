@@ -12,7 +12,7 @@ Tests cover:
 """
 
 from config.schema import Influencer, Platform, CategoryCitation
-from services.enrichment.InfluencerMerger import InfluencerMerger, _normalize_handle
+from services.influencerMerging.InfluencerMergerService import InfluencerMergerService, _normalize_handle
 
 
 # ══════════════════════════════════════════════════════════════════════
@@ -60,7 +60,7 @@ class TestHandleGrouping:
             Influencer(name="foodgod", handles={Platform.TikTok: "@foodgod"}),
             Influencer(name="foodgod", handles={Platform.YouTube: "@foodgod"}),
         ]
-        result = InfluencerMerger.merge(influencers)
+        result = InfluencerMergerService.merge(influencers)
 
         assert len(result) == 1
         inf = result[0]
@@ -74,7 +74,7 @@ class TestHandleGrouping:
             Influencer(name="Binging With Babish", handles={Platform.Instagram: "@bingingwithbabish"}),
             Influencer(name="bingingwithbabish", handles={Platform.TikTok: "BingingWBabish"}),
         ]
-        result = InfluencerMerger.merge(influencers)
+        result = InfluencerMergerService.merge(influencers)
         assert len(result) == 2
 
     def test_case_insensitive_handles_merge(self):
@@ -82,7 +82,7 @@ class TestHandleGrouping:
             Influencer(name="foodgod", handles={Platform.Instagram: "@FoodGod"}),
             Influencer(name="foodgod", handles={Platform.TikTok: "@foodgod"}),
         ]
-        result = InfluencerMerger.merge(influencers)
+        result = InfluencerMergerService.merge(influencers)
         assert len(result) == 1
 
     def test_four_platforms_target_preferred(self):
@@ -92,7 +92,7 @@ class TestHandleGrouping:
             Influencer(name="David Chang", handles={Platform.Instagram: "@davidchang"}),
             Influencer(name="David Chang", handles={Platform.YouTube: "@davidchang"}),
         ]
-        result = InfluencerMerger.merge(influencers)
+        result = InfluencerMergerService.merge(influencers)
 
         assert len(result) == 1
         assert result[0].name == "David Chang"
@@ -105,7 +105,7 @@ class TestHandleGrouping:
             Influencer(name="Deliciously Ella", handles={Platform.Instagram: "@deliciouslyella"}),
             Influencer(name="Deliciously Ella", handles={Platform.TikTok: "@_deliciouslyella"}),
         ]
-        result = InfluencerMerger.merge(influencers)
+        result = InfluencerMergerService.merge(influencers)
 
         assert len(result) == 1
         assert Platform.Instagram in result[0].handles
@@ -117,7 +117,7 @@ class TestHandleGrouping:
             Influencer(name="Creator", handles={Platform.Instagram: "@creator"}),
             Influencer(name="Creator", handles={Platform.TikTok: "@creator_official"}),
         ]
-        result = InfluencerMerger.merge(influencers)
+        result = InfluencerMergerService.merge(influencers)
 
         assert len(result) == 1
         assert Platform.Instagram in result[0].handles
@@ -135,7 +135,7 @@ class TestNameGrouping:
             Influencer(name="Deliciously Ella", handles={Platform.Instagram: "@deliciouslyella"}),
             Influencer(name="Deliciously Ella", handles={Platform.TikTok: "@_deliciouslyella"}),
         ]
-        result = InfluencerMerger.merge(influencers)
+        result = InfluencerMergerService.merge(influencers)
         assert len(result) == 1
         assert Platform.Instagram in result[0].handles
 
@@ -144,7 +144,7 @@ class TestNameGrouping:
             Influencer(name="foodgod", handles={Platform.Instagram: "@foodgod"}),
             Influencer(name="foodgod", handles={Platform.TikTok: "@foodgod_other"}),
         ]
-        result = InfluencerMerger.merge(influencers)
+        result = InfluencerMergerService.merge(influencers)
         assert len(result) == 2
 
 
@@ -176,7 +176,7 @@ class TestCategoriesUnion:
                 ],
             ),
         ]
-        result = InfluencerMerger.merge(influencers)
+        result = InfluencerMergerService.merge(influencers)
         assert len(result) == 1
         subs = {cc.sub for cc in result[0].seen_in_categories}
         assert "Fitness" in subs
@@ -202,7 +202,7 @@ class TestCategoriesUnion:
                 ],
             ),
         ]
-        result = InfluencerMerger.merge(influencers)
+        result = InfluencerMergerService.merge(influencers)
         assert len(result) == 1
         assert len(result[0].seen_in_categories) == 1
         assert result[0].seen_in_categories[0].citations == 2
@@ -218,7 +218,7 @@ class TestPlatformFiltering:
         influencers = [
             Influencer(name="some_person", handles={}),
         ]
-        assert len(InfluencerMerger.merge(influencers)) == 0
+        assert len(InfluencerMergerService.merge(influencers)) == 0
 
     def test_handleless_entry_dropped(self):
         """Entry with no handles and handle-as-name is dropped."""
@@ -229,7 +229,7 @@ class TestPlatformFiltering:
         # But "fragment" is a non-handle name, so it still gets a name key
         # This is correct — if an entry survives extraction with an explicit
         # platform, it should survive grouping too.
-        result = InfluencerMerger.merge(influencers)
+        result = InfluencerMergerService.merge(influencers)
         assert len(result) == 0  # No supported platform handle → dropped
 
     def test_twitter_merged_into_supported(self):
@@ -237,7 +237,7 @@ class TestPlatformFiltering:
             Influencer(name="foodgod", handles={Platform.Instagram: "@foodgod"}),
             Influencer(name="foodgod", handles={}),
         ]
-        result = InfluencerMerger.merge(influencers)
+        result = InfluencerMergerService.merge(influencers)
         assert len(result) == 1
         assert Platform.Instagram in result[0].handles
 
@@ -247,7 +247,7 @@ class TestPlatformFiltering:
             Influencer(name="Creator", handles={Platform.TikTok: "@creator"}),
             Influencer(name="Creator", handles={}),
         ]
-        result = InfluencerMerger.merge(influencers)
+        result = InfluencerMergerService.merge(influencers)
         assert len(result) == 1
         assert Platform.TikTok in result[0].handles
 
@@ -263,7 +263,7 @@ class TestBestName:
             Influencer(name="foodgod", handles={Platform.Instagram: "@foodgod"}),
             Influencer(name="Jonathan Cheban", handles={Platform.TikTok: "@foodgod"}),
         ]
-        result = InfluencerMerger.merge(influencers)
+        result = InfluencerMergerService.merge(influencers)
         assert result[0].name == "Jonathan Cheban"
 
     def test_handle_as_name_not_preferred(self):
@@ -271,7 +271,7 @@ class TestBestName:
             Influencer(name="@foodgod", handles={Platform.Instagram: "@foodgod"}),
             Influencer(name="Real Name", handles={Platform.TikTok: "@foodgod"}),
         ]
-        result = InfluencerMerger.merge(influencers)
+        result = InfluencerMergerService.merge(influencers)
         assert result[0].name == "Real Name"
 
 
@@ -282,17 +282,17 @@ class TestBestName:
 class TestEdgeCases:
 
     def test_empty_input(self):
-        assert InfluencerMerger.merge([]) == []
+        assert InfluencerMergerService.merge([]) == []
 
     def test_single_supported_entry_unchanged(self):
         influencers = [Influencer(name="Solo", handles={Platform.Instagram: "@solo"})]
-        result = InfluencerMerger.merge(influencers)
+        result = InfluencerMergerService.merge(influencers)
         assert len(result) == 1
         assert Platform.Instagram in result[0].handles
 
     def test_no_handle_no_name_dropped(self):
         influencers = [Influencer(name="", handles={})]
-        assert len(InfluencerMerger.merge(influencers)) == 0
+        assert len(InfluencerMergerService.merge(influencers)) == 0
 
     def test_multiple_distinct_people_stay_separate(self):
         influencers = [
@@ -300,14 +300,14 @@ class TestEdgeCases:
             Influencer(name="Bob Jones", handles={Platform.Instagram: "@bobjones"}),
             Influencer(name="Charlie Brown", handles={Platform.TikTok: "@charliebrown"}),
         ]
-        assert len(InfluencerMerger.merge(influencers)) == 3
+        assert len(InfluencerMergerService.merge(influencers)) == 3
 
     def test_target_tiktok_changes_primary(self):
         influencers = [
             Influencer(name="Creator", handles={Platform.Instagram: "@creator"}),
             Influencer(name="Creator", handles={Platform.TikTok: "@creator"}),
         ]
-        result = InfluencerMerger.merge(influencers)
+        result = InfluencerMergerService.merge(influencers)
         # Both platforms should be in the merged result
         assert Platform.Instagram in result[0].handles
         assert Platform.TikTok in result[0].handles
@@ -341,7 +341,7 @@ class TestCloudkitchensScenario:
             Influencer(name="thejoshelkin", handles={Platform.Instagram: "@thejoshelkin"}),
         ]
 
-        result = InfluencerMerger.merge(influencers)
+        result = InfluencerMergerService.merge(influencers)
 
         # All entries must have at least one supported platform handle
         for inf in result:

@@ -10,7 +10,8 @@ from unittest.mock import MagicMock
 from services.audit.AuditService import AuditLog
 from services.crawling.CrawlService import CrawlService
 from services.extraction.HandleExtractionService import HandleExtractionService
-from services.enrichment.NameToHandleService import NameToHandleService
+from services.handleResolution.HandleFromNameService import HandleFromNameService
+from services.handleResolution.CrossPlatformHandleResolverService import CrossPlatformHandleResolverService
 from config.schema import Platform
 from config import AUDIT_DIR
 
@@ -115,7 +116,8 @@ class TestLiveCrawl:
         audit = AuditLog(AUDIT_DIR, "test_live_full")
         crawl_svc = CrawlService(audit)
         handle_svc = HandleExtractionService(audit)
-        name_to_handle_svc = NameToHandleService(audit, search_client=MagicMock())
+        name_to_handle_svc = HandleFromNameService(audit, search_client=MagicMock())
+        resolver = CrossPlatformHandleResolverService(audit, search_client=MagicMock())
 
         pages = await crawl_svc.crawl_urls([
             (CLOUDKITCHENS_URL, "test_query"),
@@ -132,11 +134,7 @@ class TestLiveCrawl:
             direct_handles=[],
         )
 
-        unique = name_to_handle_svc.resolve_cross_account_handles(
-            result.all_merged,
-            platform=Platform.Instagram,
-            skip_cross_platform=True,
-        )
+        unique = resolver.resolve(result.all_merged)
 
         # ── Explicit assertions ──
         all_handles: set[str] = set()

@@ -9,7 +9,7 @@ resolution, name resolution, phase pipeline, and merger.
 from config.schema import Influencer, Platform
 from services.extraction.RegexHandleExtractor import ExtractedHandle
 from services.extraction.HandleExtractionService import HandleExtractionService
-from services.enrichment.InfluencerMerger import InfluencerMerger
+from services.influencerMerging.InfluencerMergerService import InfluencerMergerService as InfluencerMerger
 
 
 # Fixtures:

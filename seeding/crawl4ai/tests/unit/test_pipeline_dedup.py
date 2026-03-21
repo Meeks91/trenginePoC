@@ -89,7 +89,7 @@ class TestMergeCalledInRun:
         runner._assembler.generate_run_id.return_value = "test-run"
 
         with (
-            patch("base_pipeline.InfluencerMerger") as mock_merger,
+            patch("base_pipeline.InfluencerMergerService") as mock_merger,
             patch("base_pipeline.PipelineReporter"),
             patch("base_pipeline.AuditLog"),
         ):
@@ -129,7 +129,7 @@ class TestMergeCalledInRun:
     @pytest.mark.asyncio
     async def test_pre_nr_merge_reduces_duplicates(self) -> None:
         """Pre-NR merge: 3 Jeff Nippard entries with same handle → 1 identity."""
-        from services.enrichment.InfluencerMerger import InfluencerMerger
+        from services.influencerMerging.InfluencerMergerService import InfluencerMergerService as InfluencerMerger
 
         dupes = [_jeff_nippard(), _jeff_nippard(), _jeff_nippard()]
         merged = InfluencerMerger.merge(dupes)

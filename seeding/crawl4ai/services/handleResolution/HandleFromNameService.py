@@ -1,14 +1,16 @@
-"""NameToHandleService — THE single service for name → handle DDG resolution.
+"""HandleFromNameService — DDG name-to-handle resolution via NameMentionTracker.
 
-Two modes:
-  1. resolve_cross_account_handles()       — per-job cross-platform enrichment only.
-                                Name-only influencers are NOT DDG'd here.
-  2. resolve_handles_for_top_mentioned_names()  — post-all-jobs, uses NameMentionTracker to:
+Two resolution paths:
+  1. resolve_handles_for_top_mentioned_names()  — post-all-jobs, uses NameMentionTracker to:
                                 ① group names by sub-category
                                 ② filter ≥ min_mentions (default 2)
                                 ③ take top max_per_sub (default 5) per sub
                                 ④ DDG-resolve only those names
                                 This is the ONLY path for name-only → handle.
+  2. resolve_with_recycling() — per-group DDG resolution with known-handle collision recycling.
+
+Cross-platform backfill (given a handle, find other platform handles) has moved to
+CrossPlatformHandleResolverService.
 
 Supports Instagram, TikTok, YouTube.
 Includes exponential backoff for rate limiting.
@@ -17,7 +19,6 @@ Includes exponential backoff for rate limiting.
 from __future__ import annotations
 
 import logging
-import time
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
@@ -29,27 +30,24 @@ from services.search.SearchClient import SearchClient
 
 logger = logging.getLogger(__name__)
 from config.schema import Influencer, Platform, NameMentionRecord
-from services.enrichment.CategoryProvenanceTagger import CategoryProvenanceTagger
+from services.influencerProvenance.CategoryProvenanceTaggerService import CategoryProvenanceTagger
 from services.extraction.NameCleaner import NameCleaner
 from config import (
     ENRICH_DELAY_SECONDS,
     NAME_RESOLUTION_MIN_MENTIONS, NAME_RESOLUTION_MAX_PER_SUB,
-    CROSS_PLATFORM_MAX_LOOKUPS,
 )
-from services.enrichment.patterns import (
+from services.handleResolution.patterns import (
     extract_handle_from_url,
     extract_handle_from_text,
     PLATFORM_DOMAINS,
 )
 
 
+class HandleFromNameService:
+    """DDG name → handle resolution, gated by NameMentionTracker.
 
-
-class NameToHandleService:
-    """Single service for all name → handle DDG resolution.
-
-    resolve_cross_account_handles()      → cross-platform enrichment (per-job)
     resolve_handles_for_top_mentioned_names() → tracker-filtered name resolution (post-all-jobs)
+    resolve_with_recycling()                  → per-group resolution with collision recycling
     """
 
     def __init__(
@@ -66,126 +64,7 @@ class NameToHandleService:
         self.retries = 0    # Owned by client; kept for interface compatibility
         self.failures = 0   # Owned by client; kept for interface compatibility
 
-    # ── Internal helpers (static, pure — independently testable) ──
-
-    @staticmethod
-    def _needs_resolution(inf: Influencer, platform: Platform) -> bool:
-        """Determine if an influencer needs handle resolution.
-
-        Returns True when:
-          - No handles at all
-          - Doesn't have a handle for the target platform
-        """
-        if not inf.handles:
-            return True
-        return platform not in inf.handles
-
-    # ── Mode 1: Per-Job Cross-Platform Enrichment ──
-
-    def resolve_cross_account_handles(
-        self,
-        influencers: list[Influencer],
-        platform: Platform,
-        skip_cross_platform: bool = False,
-        max_lookups: int = CROSS_PLATFORM_MAX_LOOKUPS,
-        min_sources: int = 2,
-    ) -> list[Influencer]:
-        """Cross-platform enrichment ONLY. Name-only influencers are NOT DDG'd.
-
-        Cross-platform handles are PRESERVED as separate entries. If targeting
-        Instagram and we find a TikTok handle, the TikTok entry stays and a new
-        Instagram entry is added (if DDG finds one).
-
-        Name-only influencers (no handles at all) are SKIPPED here — they go
-        through resolve_handles_for_top_mentioned_names() after all jobs complete.
-
-        Rate limit budget is managed internally:
-          1. Only entries cited on ≥ ``min_sources`` pages qualify
-          2. Sorted by frequency (most-cited first)
-          3. Capped at ``max_lookups`` DDG queries per call
-
-        Since each call = 1 job = 1 subCat × 1 region, total DDG budget
-        across a full run = numSubCats × max_lookups × numRegions.
-
-        Args:
-            skip_cross_platform: If True, skip all DDG lookups entirely.
-            max_lookups: Maximum DDG queries per call (default 5).
-            min_sources: Minimum source_urls count to qualify (default 2).
-
-        Returns:
-            The enriched list (same list, possibly with new entries appended).
-        """
-        logger.info(f"\n  --- Resolve Handles ({platform.value}) ---")
-        if skip_cross_platform:
-            logger.info("  Cross-platform lookup: SKIPPED (--no-cross-platform-lookup)")
-            return influencers
-
-        # Only enrich cross-platform: has handle on another platform, needs target
-        candidates = [
-            inf for inf in influencers
-            if inf.handles  # MUST have at least one handle
-            and self._needs_resolution(inf, platform)
-        ]
-
-        # Filter by minimum source frequency
-        qualified = [
-            inf for inf in candidates
-            if len(inf.source_urls) >= min_sources
-        ]
-        below_threshold = len(candidates) - len(qualified)
-
-        # Sort by frequency (most-cited first) and cap
-        qualified.sort(key=lambda inf: len(inf.source_urls), reverse=True)
-        to_resolve = qualified[:max_lookups]
-        _capped = len(qualified) - len(to_resolve)
-
-        name_only_count = sum(1 for inf in influencers if not inf.handles)
-        logger.info(f"  {len(candidates)} need cross-platform, "
-              f"{below_threshold} below min sources ({min_sources}), "
-              f"{len(to_resolve)} queued (top {max_lookups} by frequency), "
-              f"{name_only_count} name-only deferred to tracker")
-
-        new_entries = self._ddg_lookup_batch(to_resolve, platform)
-        influencers.extend(new_entries)
-
-        return influencers
-
-    def _ddg_lookup_batch(
-        self,
-        entries: list[Influencer],
-        platform: Platform,
-    ) -> list[Influencer]:
-        """DDG-search each entry for a target-platform handle.
-
-        Returns new Influencer entries (one per successful lookup) with
-        only the target-platform handle. Does NOT modify the input entries.
-        """
-        domain = PLATFORM_DOMAINS.get(platform)
-        if not entries or not domain:
-            if not domain and entries:
-                logger.warning(f"Unknown platform '{platform.value}' — skipping handle backfill")
-            return []
-
-        new_entries: list[Influencer] = []
-        for inf in entries:
-            handle = self._search_handle(inf.name, platform, domain)
-            if handle:
-                existing_summary = ", ".join(
-                    f"{p.value}: {h}" for p, h in inf.handles.items()
-                )
-                new_entries.append(Influencer(
-                    name=inf.name,
-                    handles={platform: handle.lstrip("@")},
-                ))
-                self._audit.log_handle_found(inf.name, handle)
-                logger.info(f"    {inf.name} -> {handle} (kept {existing_summary})")
-            time.sleep(self._delay)
-
-        logger.info(f"\n  Filled {len(new_entries)}/{len(entries)} cross-platform handles")
-        return new_entries
-
-    # ── Mode 2: Post-All-Jobs Tracker-Filtered Resolution ──
-
+    # API:
     def resolve_handles_for_top_mentioned_names(
         self,
         tracker: NameMentionTracker | None,

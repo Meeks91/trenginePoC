@@ -29,7 +29,7 @@ import re
 from typing import Callable
 
 from config.schema import Influencer, Platform, CategoryCitation
-from services.enrichment.CategoryProvenanceTagger import CategoryProvenanceTagger
+from services.influencerProvenance.CategoryProvenanceTaggerService import CategoryProvenanceTagger
 from services.extraction.RegexHandleExtractor import is_blocked_handle
 from services.extraction.NameCleaner import NameCleaner
 
@@ -58,7 +58,7 @@ _STRIP_AFFIXES = re.compile(
 # Public class
 # ══════════════════════════════════════════════════════════════════════
 
-class InfluencerMerger:
+class InfluencerMergerService:
     """Single class for all influencer dedup/merge operations."""
 
     @staticmethod

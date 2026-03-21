@@ -273,7 +273,7 @@ class TestInfluencerMergerExtractionMethods:
 
     def test_identity_merge_unions_extraction_methods(self):
         """Two entries for same person with different methods → union."""
-        from services.enrichment.InfluencerMerger import InfluencerMerger
+        from services.influencerMerging.InfluencerMergerService import InfluencerMergerService as InfluencerMerger
 
         entries = [
             Influencer(
@@ -295,7 +295,7 @@ class TestInfluencerMergerExtractionMethods:
 
     def test_merge_preserves_single_extraction_method(self):
         """Single entry preserves its extraction method through merge."""
-        from services.enrichment.InfluencerMerger import InfluencerMerger
+        from services.influencerMerging.InfluencerMergerService import InfluencerMergerService as InfluencerMerger
 
         entries = [
             Influencer(

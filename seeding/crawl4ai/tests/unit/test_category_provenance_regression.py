@@ -18,7 +18,7 @@ different categories and verifies that:
 """
 
 from config.schema import Influencer, Platform, CategoryCitation
-from services.enrichment.InfluencerMerger import InfluencerMerger
+from services.influencerMerging.InfluencerMergerService import InfluencerMergerService as InfluencerMerger
 
 
 class TestMultiConfigCategoryProvenance:

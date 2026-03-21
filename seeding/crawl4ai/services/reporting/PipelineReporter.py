@@ -14,7 +14,7 @@ from config.schema import (
     PipelineStats, JobBreakdown, Influencer,
     NameMentionRecord, Platform, ErroredConfig,
 )
-from services.enrichment.InfluencerMerger import InfluencerMerger
+from services.influencerMerging.InfluencerMergerService import InfluencerMergerService
 from services.validation.IngestionValidator import ValidationResult
 
 logger = logging.getLogger(__name__)
@@ -144,7 +144,7 @@ class PipelineReporter:
     def _influencer_roster_section(influencers: list[Influencer] | None) -> list[str]:
         if not influencers:
             return []
-        grouped = InfluencerMerger.merge(influencers)
+        grouped = InfluencerMergerService.merge(influencers)
         grouped.sort(key=lambda inf: len(inf.source_urls), reverse=True)
         lines = [
             "## Influencers Found",

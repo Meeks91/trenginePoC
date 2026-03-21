@@ -1,8 +1,7 @@
 """
 Unit tests for slot recycling:
-  - NameToHandleService.resolve_with_recycling()
-  - BasePipelineRunner._build_known_handles()
-  - NameToHandleService._mention_to_record()
+  - HandleFromNameService.resolve_with_recycling()
+  - HandleFromNameService._mention_to_record()
 """
 
 from collections import deque
@@ -11,7 +10,7 @@ from unittest.mock import patch, MagicMock
 
 from config.schema import Influencer, Platform
 from services.extraction.NameMentionTracker import NameMention, GroupKey
-from services.enrichment.NameToHandleService import NameToHandleService
+from services.handleResolution.HandleFromNameService import HandleFromNameService
 from services.extraction.RegexHandleExtractor import ExtractedHandle
 
 
@@ -47,7 +46,7 @@ class TestResolveWithRecycling:
     def test_new_handle_creates_influencer(self, mock_ddg: MagicMock) -> None:
         mock_ddg.return_value = [_make_extracted("Sean Nalewanyj", "seannal")]
         audit = MagicMock()
-        svc = NameToHandleService(audit, search_client=MagicMock())
+        svc = HandleFromNameService(audit, search_client=MagicMock())
 
         queues: dict[GroupKey, deque[NameMention]] = {
             ("Instagram", "FITNESS", "Gym", "US"): deque([
@@ -82,7 +81,7 @@ class TestResolveWithRecycling:
         """Resolved influencer carries category from NameMention, not NAME_RESOLUTION."""
         mock_ddg.return_value = [_make_extracted("Multi Cat Person", "multicatperson")]
         audit = MagicMock()
-        svc = NameToHandleService(audit, search_client=MagicMock())
+        svc = HandleFromNameService(audit, search_client=MagicMock())
 
         mention = NameMention(
             canonical="Multi Cat Person",
@@ -124,7 +123,7 @@ class TestResolveWithRecycling:
             [_make_extracted("Sean Nalewanyj", "seannal")],       # new
         ]
         audit = MagicMock()
-        svc = NameToHandleService(audit, search_client=MagicMock())
+        svc = HandleFromNameService(audit, search_client=MagicMock())
 
         queues: dict[GroupKey, deque[NameMention]] = {
             ("Instagram", "FITNESS", "Gym", "US"): deque([
@@ -153,7 +152,7 @@ class TestResolveWithRecycling:
     def test_no_handle_found_consumes_slot(self, mock_ddg: MagicMock) -> None:
         mock_ddg.return_value = []
         audit = MagicMock()
-        svc = NameToHandleService(audit, search_client=MagicMock())
+        svc = HandleFromNameService(audit, search_client=MagicMock())
 
         queues: dict[GroupKey, deque[NameMention]] = {
             ("Instagram", "FITNESS", "Gym", "US"): deque([
@@ -184,7 +183,7 @@ class TestResolveWithRecycling:
             for i in range(5)
         ]
         audit = MagicMock()
-        svc = NameToHandleService(audit, search_client=MagicMock())
+        svc = HandleFromNameService(audit, search_client=MagicMock())
 
         queues: dict[GroupKey, deque[NameMention]] = {
             ("Instagram", "FITNESS", "Gym", "US"): deque([
@@ -213,7 +212,7 @@ class TestResolveWithRecycling:
             [_make_extracted("Shared Person", "shared_handle")],  # collision in group 2
         ]
         audit = MagicMock()
-        svc = NameToHandleService(audit, search_client=MagicMock())
+        svc = HandleFromNameService(audit, search_client=MagicMock())
 
         queues: dict[GroupKey, deque[NameMention]] = {
             ("Instagram", "FITNESS", "Gym", "US"): deque([
@@ -241,7 +240,7 @@ class TestResolveWithRecycling:
         """When all candidates in a group are collisions, error is logged."""
         mock_ddg.return_value = [_make_extracted("Known", "known_handle")]
         audit = MagicMock()
-        svc = NameToHandleService(audit, search_client=MagicMock())
+        svc = HandleFromNameService(audit, search_client=MagicMock())
 
         queues: dict[GroupKey, deque[NameMention]] = {
             ("Instagram", "FITNESS", "Gym", "US"): deque([
@@ -250,7 +249,7 @@ class TestResolveWithRecycling:
         }
         known: set[str] = {"known_handle"}
 
-        with patch("services.enrichment.NameToHandleService.logger") as mock_logger:
+        with patch("services.handleResolution.HandleFromNameService.logger") as mock_logger:
             svc.resolve_with_recycling(
                 group_queues=queues,
                 known_handles=known,
@@ -267,7 +266,7 @@ class TestMentionToRecord:
 
     def test_basic_conversion(self) -> None:
         mention = _make_mention("Jeff Nippard", 10)
-        record = NameToHandleService._mention_to_record(
+        record = HandleFromNameService._mention_to_record(
             mention, searched=True, handle="jeffnippard", platform_str="Instagram",
         )
         assert record.canonical == "Jeff Nippard"
@@ -278,7 +277,7 @@ class TestMentionToRecord:
 
     def test_no_handle_defaults(self) -> None:
         mention = _make_mention("Unknown", 3)
-        record = NameToHandleService._mention_to_record(mention, searched=True)
+        record = HandleFromNameService._mention_to_record(mention, searched=True)
         assert record.resolved_handle == ""
         assert record.resolved_platform == ""
 

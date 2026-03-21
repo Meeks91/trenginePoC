@@ -19,12 +19,12 @@ from config import (
 )
 from config.schema import SubResult, RegionResult, Influencer, Platform
 
-from services.enrichment.CategoryProvenanceTagger import CategoryProvenanceTagger
+from services.influencerProvenance.CategoryProvenanceTaggerService import CategoryProvenanceTagger
 from services.search.SearchService import SearchResults
 from services.crawling.CrawlService import CrawlService
 from services.extraction.HandleExtractionService import HandleExtractionService
 from services.extraction.NameMentionTracker import NameMentionTracker
-from services.enrichment.NameToHandleService import NameToHandleService
+from services.handleResolution.CrossPlatformHandleResolverService import CrossPlatformHandleResolverService
 from services.reporting.PipelineReporter import PipelineReporter
 
 from base_pipeline import BasePipelineRunner, GatherResult
@@ -118,17 +118,19 @@ class PerJobPipelineRunner(BasePipelineRunner):
         if extract_result.name_tracker is not None:
             self._global_name_tracker.merge(extract_result.name_tracker)
 
-        # Enrich
-        name_to_handle_svc = NameToHandleService(audit, search_client=self._build_search_client(audit))
-        unique = name_to_handle_svc.resolve_cross_account_handles(
-            extract_result.all_merged, platform=job.platform,
-            skip_cross_platform=self.no_cross_platform_lookup,
-        )
+        # Enrich — cross-platform backfill
+        if not self.no_cross_platform_lookup:
+            resolver = CrossPlatformHandleResolverService(
+                audit,
+                search_client=self._build_search_client(audit),
+            )
+            extract_result.all_merged = resolver.resolve(extract_result.all_merged)
+        unique = extract_result.all_merged
         self._stats.record_enrichment(
             unique_count=len(unique),
             handles_filled=sum(1 for inf in unique if inf.handles),
-            retries=name_to_handle_svc.retries,
-            failures=name_to_handle_svc.failures,
+            retries=0,
+            failures=0,
         )
 
         # Build SourceResult list
@@ -244,17 +246,19 @@ class PerJobPipelineRunner(BasePipelineRunner):
         )
         extract_result.all_merged.extend(resolved_influencers)
 
-        # Enrich
-        name_to_handle_svc = NameToHandleService(audit, search_client=self._build_search_client(audit))
-        unique = name_to_handle_svc.resolve_cross_account_handles(
-            extract_result.all_merged, platform=Platform(platform),
-            skip_cross_platform=self.no_cross_platform_lookup,
-        )
+        # Enrich — cross-platform backfill
+        if not self.no_cross_platform_lookup:
+            resolver = CrossPlatformHandleResolverService(
+                audit,
+                search_client=self._build_search_client(audit),
+            )
+            extract_result.all_merged = resolver.resolve(extract_result.all_merged)
+        unique = extract_result.all_merged
         self._stats.record_enrichment(
             unique_count=len(unique),
             handles_filled=sum(1 for inf in unique if inf.handles),
-            retries=name_to_handle_svc.retries,
-            failures=name_to_handle_svc.failures,
+            retries=0,
+            failures=0,
         )
 
         # Build SourceResult list

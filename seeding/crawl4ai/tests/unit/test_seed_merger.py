@@ -5,7 +5,7 @@ and to_dict() for DB serialization.
 """
 
 from config.schema import Influencer, Platform, CategoryCitation
-from services.enrichment.InfluencerMerger import InfluencerMerger
+from services.influencerMerging.InfluencerMergerService import InfluencerMergerService as InfluencerMerger
 from services.extraction.RegexHandleExtractor import is_blocked_handle
 
 

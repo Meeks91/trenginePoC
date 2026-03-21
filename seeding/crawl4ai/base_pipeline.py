@@ -5,7 +5,7 @@ Implements the Template Method pattern:
   2. _on_config_search_finished() — ABSTRACT, subclass-specific post-search
   3. _search_and_extract_influencers(jobs) — ABSTRACT, subclass-specific gather
   4. Deferred name resolution
-  5. Global dedup (InfluencerMerger.filter_blocked)
+  5. Global dedup (InfluencerMergerService.filter_blocked)
   6. Canary validation (IngestionValidator)
   7. Report generation (PipelineReporter)
   8. Save seeds + errored configs (ResultAssembler)
@@ -37,8 +37,8 @@ from services.search.SearchCache import SearchCache
 from services.search.OpenSearchClient import OpenSearchClient
 from services.search.StrictSearchClient import StrictSearchClient
 from services.extraction.NameMentionTracker import NameMentionTracker
-from services.enrichment.NameToHandleService import NameToHandleService
-from services.enrichment.InfluencerMerger import InfluencerMerger
+from services.handleResolution.HandleFromNameService import HandleFromNameService
+from services.influencerMerging.InfluencerMergerService import InfluencerMergerService
 from services.validation.IngestionValidator import IngestionValidator, ValidationResult
 from services.reporting.PipelineReporter import PipelineReporter
 from services.reporting.StatsCollector import StatsCollector
@@ -145,7 +145,7 @@ class BasePipelineRunner(abc.ABC):
             self._stats.stats.configs_aborted = len(errored_configs)
 
         # Step 3: Merge identity groups before NR
-        merged = InfluencerMerger.merge(gather.influencers)
+        merged = InfluencerMergerService.merge(gather.influencers)
         logger.info(
             "  Pre-NR merge: %d entries → %d identities",
             len(gather.influencers), len(merged),
@@ -164,10 +164,10 @@ class BasePipelineRunner(abc.ABC):
         )
 
         # Step 5: Post-NR merge (fold resolved names into identities)
-        merged = InfluencerMerger.merge(merged)
+        merged = InfluencerMergerService.merge(merged)
 
         # Step 6: Global dedup → seeds
-        seeds = InfluencerMerger.filter_blocked(merged)
+        seeds = InfluencerMergerService.filter_blocked(merged)
         logger.info(
             "  Global dedup: %d identities → %d seeds",
             len(merged), len(seeds),
@@ -465,7 +465,7 @@ class BasePipelineRunner(abc.ABC):
         )
 
         search_client = self._build_search_client(audit)
-        name_to_handle_svc = NameToHandleService(audit, search_client=search_client)
+        name_to_handle_svc = HandleFromNameService(audit, search_client=search_client)
         resolved_influencers, records = name_to_handle_svc.resolve_with_recycling(
             group_queues=group_queues,
             known_handles=known_handles,

@@ -25,7 +25,7 @@ from services.extraction.HandleExtractionService import (
     needs_llm,
 )
 from services.extraction.RegexHandleExtractor import ExtractedHandle
-from services.enrichment.NameToHandleService import NameToHandleService
+from services.handleResolution.CrossPlatformHandleResolverService import CrossPlatformHandleResolverService
 
 # Pre-import LLMExtractionService so its module is in sys.modules for mocking
 import services.extraction.LLMExtractionService as _ext_svc_mod  # noqa: F401
@@ -148,7 +148,7 @@ class TestMechanicalClassification:
 # ══════════════════════════════════════════════════════════════════════
 
 class TestExtractAllHandlesE2E:
-    """TRUE E2E: HandleExtractionService.extract_all_handles() → NameToHandleService.
+    """TRUE E2E: HandleExtractionService.extract_all_handles() → HandleFromNameService.
 
     No Gemini mock — LLM won't fire for handle-rich pages.
     DDG mocked to avoid rate limiting.
@@ -184,11 +184,11 @@ class TestExtractAllHandlesE2E:
             assert len(result.regex_handles) >= 3
 
             # Enrich + Dedup
-            name_to_handle_svc = NameToHandleService(audit, search_client=MagicMock(), delay_seconds=0)
-
-            final = name_to_handle_svc.resolve_cross_account_handles(
-                result.all_merged, platform=Platform.Instagram,
+            resolver = CrossPlatformHandleResolverService(
+                audit, search_client=MagicMock(), delay_seconds=0,
             )
+
+            final = resolver.resolve(result.all_merged)
 
             # All 3 handles must survive enrichment
             final_handles: set[str] = set()
@@ -244,11 +244,11 @@ class TestExtractAllHandlesE2E:
             assert result.llm_pages_skipped >= 1
 
             # Enrich + Dedup
-            name_to_handle_svc = NameToHandleService(audit, search_client=MagicMock(), delay_seconds=0)
-
-            final = name_to_handle_svc.resolve_cross_account_handles(
-                result.all_merged, platform=Platform.Instagram,
+            resolver = CrossPlatformHandleResolverService(
+                audit, search_client=MagicMock(), delay_seconds=0,
             )
+
+            final = resolver.resolve(result.all_merged)
 
             # Both handles must survive
             final_handles: set[str] = set()
@@ -285,11 +285,11 @@ class TestExtractAllHandlesE2E:
             assert result.llm_pages_used == 0
 
             # Enrich + Dedup
-            name_to_handle_svc = NameToHandleService(audit, search_client=MagicMock(), delay_seconds=0)
-
-            final = name_to_handle_svc.resolve_cross_account_handles(
-                result.all_merged, platform=Platform.Instagram,
+            resolver = CrossPlatformHandleResolverService(
+                audit, search_client=MagicMock(), delay_seconds=0,
             )
+
+            final = resolver.resolve(result.all_merged)
 
             # TikTok handles must survive as separate entries
             tt_entries = [inf for inf in final if Platform.TikTok in inf.handles]
