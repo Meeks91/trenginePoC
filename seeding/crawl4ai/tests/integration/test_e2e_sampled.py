@@ -29,7 +29,8 @@ from pipeline import PipelineRunner
 @pytest.mark.network
 def test_e2e_sampled():
     """Full pipeline on 1 job with sampling — verifies handles, report, stats."""
-    assert config.GEMINI_API_KEY, "GEMINI_API_KEY must be set to run this test"
+    import os
+    assert os.environ.get("GEMINI_API_KEY"), "GEMINI_API_KEY must be set to run this test"
     asyncio.run(_test_e2e_sampled_async())
 
 
