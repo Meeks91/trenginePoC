@@ -26,6 +26,7 @@ import sys
 from collections import Counter, defaultdict
 from dataclasses import dataclass, field
 from pathlib import Path
+from typing import cast
 
 _SCRIPT_DIR = Path(__file__).resolve().parent
 _CANARY_PATH = _SCRIPT_DIR / "config" / "canary_influencers.json"
@@ -47,12 +48,12 @@ _NAME_RE = re.compile(
 
 def _load_seeds(path: str) -> list[dict]:
     with open(path) as f:
-        return json.load(f)
+        return cast(list[dict], json.load(f))
 
 
 def _load_canaries() -> dict:
     with open(_CANARY_PATH) as f:
-        return json.load(f)
+        return cast(dict, json.load(f))
 
 
 def _load_parent_category_keys() -> set[str]:
