@@ -242,10 +242,7 @@ async def test_e2e_from_html():
             with (
                 patch("services.crawling.CrawlService.PAGES_DIR", tmp_path / "pages"),
                 patch("services.extraction.LLMExtractionService.RAW_DIR", tmp_path / "raw"),
-                patch("services.reporting.ResultAssembler.REPORTS_DIR", tmp_path / "reports"),
-                patch("services.reporting.ResultAssembler.RESULTS_DIR", tmp_path / "results"),
                 patch("base_pipeline.RESULTS_DIR", tmp_path / "results"),
-                patch("base_pipeline.REPORTS_DIR", tmp_path / "reports"),
                 patch("base_pipeline.AUDIT_DIR", tmp_path / "audit"),
             ):
                 audit = AuditLog(tmp_path / "audit", "e2e_html_test")

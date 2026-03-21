@@ -268,3 +268,22 @@ def test_extract_no_eligible_pages_returns_tuple():
         assert url_to_inf == {}, "Expected empty dict for no eligible pages"
         assert in_tok == 0, f"Expected 0 input tokens, got {in_tok}"
         assert out_tok == 0, f"Expected 0 output tokens, got {out_tok}"
+
+
+# ── Regression: Shared NameCleaner ──
+
+def test_name_cleaner_shared_by_both_parsers():
+    """LLMResponseParser and NameExtractor must both use NameCleaner.
+
+    Old code defined cleanup logic independently. Now both import
+    NameCleaner for consistent name cleaning.
+    """
+    import services.extraction.LLMResponseParser as parser_mod
+    import services.extraction.NameExtractor as extractor_mod
+
+    assert hasattr(parser_mod, 'NameCleaner'), (
+        "LLMResponseParser must import NameCleaner"
+    )
+    assert hasattr(extractor_mod, 'NameCleaner'), (
+        "NameExtractor must import NameCleaner"
+    )

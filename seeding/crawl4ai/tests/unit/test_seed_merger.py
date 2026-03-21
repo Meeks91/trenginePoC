@@ -369,3 +369,16 @@ class TestBrandHandleBlocklist:
         assert len(result) == 1
         assert result[0].ig_handle == "kayla_itsines"
 
+
+# ── Regression: callable → Callable[[str], bool] ──
+
+def test_filter_blocked_accepts_custom_filter():
+    """InfluencerMerger.filter_blocked() handle_filter must accept a typed callable."""
+    entries = [
+        Influencer(name="Test", handles={Platform.Instagram: "@test_user"}, most_seen_category="CAT"),
+    ]
+    result = InfluencerMerger.filter_blocked(entries, handle_filter=lambda h: False)
+    assert len(result) >= 1, "Custom filter should allow all handles through"
+
+    result_blocked = InfluencerMerger.filter_blocked(entries, handle_filter=lambda h: True)
+    assert len(result_blocked) == 0, "Filter returning True should block all handles"

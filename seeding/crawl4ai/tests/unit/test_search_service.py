@@ -463,3 +463,36 @@ class TestPipelineCacheInjection:
 
         runner = PipelineRunner()
         assert runner._cache is None, "Default should be None — cli.py must always supply a cache"
+
+
+# ── Regression: lstrip("www.") → removeprefix("www.") ──
+
+class TestRemovePrefixFix:
+    """Regression tests for the lstrip → removeprefix fix in SearchService."""
+
+    def test_www_prefix_stripped(self):
+        """Standard www. prefix is correctly removed."""
+        assert SearchService._is_platform_url("https://www.instagram.com/user") is True
+        assert SearchService._is_platform_url("https://www.tiktok.com/@user") is True
+
+    def test_no_www_prefix_works(self):
+        """URLs without www. prefix still match."""
+        assert SearchService._is_platform_url("https://instagram.com/user") is True
+        assert SearchService._is_platform_url("https://tiktok.com/@user") is True
+
+    def test_domain_starting_with_w_not_mangled(self):
+        """REGRESSION: domains starting with 'w' must NOT be mangled.
+
+        Old lstrip("www.") would strip the leading 'w' from 'weather.com'
+        turning it into 'eather.com'. removeprefix keeps it intact.
+        """
+        assert SearchService._is_platform_url("https://weather.com/forecast") is False
+        assert SearchService._is_platform_url("https://wikipedia.org/wiki") is False
+
+    def test_double_www_not_over_stripped(self):
+        """REGRESSION: 'wwww.instagram.com' should still resolve.
+
+        Old lstrip("www.") would strip all leading w's AND the dot.
+        removeprefix("www.") strips exactly one 'www.' prefix.
+        """
+        assert SearchService._is_platform_url("https://wwww.instagram.com/user") is True

@@ -107,3 +107,19 @@ def test_handles_survive_per_platform():
             )
     finally:
         srv.shutdown()
+
+
+# ── Regression: _dropped_count / _retry_count init ──
+
+def test_crawl_service_counters_initialised():
+    """REGRESSION: dropped_count and retry_count must be accessible before crawl_urls().
+
+    Old code used getattr(self, '_dropped_count', 0) because the attributes
+    were only set inside crawl_urls(). Now they're initialised in __init__.
+    """
+    with tempfile.TemporaryDirectory() as tmp:
+        audit = AuditLog(Path(tmp), "test")
+        svc = CrawlService(audit)
+
+        assert svc.dropped_count == 0, "dropped_count must be 0 before any crawl"
+        assert svc.retry_count == 0, "retry_count must be 0 before any crawl"

@@ -161,3 +161,54 @@ def test_open_search_client_type_builds_open(tmp_path):
     client = runner._build_search_client(audit)
     assert isinstance(client, OpenSearchClient)
 
+
+# ── Regression: Phase pipeline accumulators init in __init__ ──
+
+def test_phase_pipeline_accumulators_initialised():
+    """REGRESSION: phase pipeline accumulators must exist at init time.
+
+    _url_bag and _all_direct_handles are the real accumulators used
+    during phase-based search. They must be initialised in __init__.
+    (_name_records and _direct_handles were dead fields, now removed.)
+    """
+    from phase_pipeline import PhasePipelineRunner
+    runner = PhasePipelineRunner()
+    assert hasattr(runner, '_url_bag'), "_url_bag must be set in __init__"
+    assert runner._url_bag == {}, "_url_bag must default to empty dict"
+    assert hasattr(runner, '_all_direct_handles'), "_all_direct_handles must be set in __init__"
+    assert runner._all_direct_handles == [], "_all_direct_handles must default to empty list"
+
+
+# ── Regression: SeedJob.build_sub_to_category centralised helper ──
+
+def test_build_sub_to_category_maps_subs_to_categories():
+    """SeedJob.build_sub_to_category builds {sub_name: category_key} from jobs."""
+    from config.seed_schema import SeedJob, SubCategory, Difficulty, Region, RegionCode
+
+    sub_gym = SubCategory(
+        sub_name="Gym", is_top_level=False, search_prompt="", alt_search_terms=[],
+        known_sources=[], platform_notes="", region_notes="",
+        difficulty=Difficulty.EASY, strict_slugs=[],
+    )
+    sub_cooking = SubCategory(
+        sub_name="Cooking", is_top_level=False, search_prompt="", alt_search_terms=[],
+        known_sources=[], platform_notes="", region_notes="",
+        difficulty=Difficulty.EASY, strict_slugs=[],
+    )
+    region = Region(code=RegionCode.US, language="en", label="United States")
+    jobs = [
+        SeedJob(platform=Platform.Instagram, region=region, category_key="FITNESS", sub=sub_gym),
+        SeedJob(platform=Platform.Instagram, region=region, category_key="FOOD", sub=sub_cooking),
+    ]
+
+    result = SeedJob.build_sub_to_category(jobs=jobs)
+
+    assert result == {"Gym": "FITNESS", "Cooking": "FOOD"}
+
+
+def test_build_sub_to_category_empty_jobs():
+    """Empty job list → empty mapping."""
+    from config.seed_schema import SeedJob
+
+    assert SeedJob.build_sub_to_category(jobs=[]) == {}
+
