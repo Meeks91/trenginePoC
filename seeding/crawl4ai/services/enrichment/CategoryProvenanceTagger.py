@@ -120,8 +120,8 @@ class CategoryProvenanceTagger:
             )
         ]
 
-        cat_totals: dict[str, int] = {}
-        for (cat, _sub), count in cat_sub_counts.items():
-            cat_totals[cat] = cat_totals.get(cat, 0) + count
-        inf.most_seen_category = max(cat_totals, key=lambda k: cat_totals[k])
+        sub_totals: dict[str, int] = {}
+        for (_cat, sub), count in cat_sub_counts.items():
+            sub_totals[sub] = sub_totals.get(sub, 0) + count
+        inf.most_seen_category = max(sub_totals, key=lambda k: sub_totals[k])
 

@@ -237,7 +237,7 @@ class TestResolutionEnabled:
         assert len(entries) == 1
         inf = entries[0]
         assert "alexleonidas" in inf.handles.values()
-        assert inf.most_seen_category == "FITNESS"
+        assert inf.most_seen_category == "Fitness"
         assert inf.source_urls == {"https://example.com/alex-leonidas"}
         assert inf.extraction_methods == {"name_resolution"}
         assert inf.citation_count == 1

@@ -93,7 +93,7 @@ class TestTagFromJob:
             category_key="FITNESS",
             sub_name="Gym",
         )
-        assert inf.most_seen_category == "FITNESS"
+        assert inf.most_seen_category == "Gym"
         assert len(inf.seen_in_categories) == 1
         assert inf.seen_in_categories[0].category == "FITNESS"
         assert inf.seen_in_categories[0].sub == "Gym"
@@ -107,7 +107,7 @@ class TestTagFromJob:
             sub_name="Cooking",
         )
         for inf in influencers:
-            assert inf.most_seen_category == "FOOD"
+            assert inf.most_seen_category == "Cooking"
             assert inf.seen_in_categories[0].sub == "Cooking"
 
 
@@ -131,7 +131,7 @@ class TestTagFromPageMap:
             fallback_sub=FALLBACK_SUB,
         )
 
-        assert inf.most_seen_category == "FITNESS"
+        assert inf.most_seen_category in {"Gym", "Science-Based Training"}
         assert len(inf.seen_in_categories) == 1
         assert inf.seen_in_categories[0] == CategoryCitation(
             category="FITNESS", sub="Gym", citations=1,
@@ -155,7 +155,7 @@ class TestTagFromPageMap:
             fallback_sub=FALLBACK_SUB,
         )
 
-        assert inf.most_seen_category == "FITNESS"
+        assert inf.most_seen_category in {"Gym", "Science-Based Training"}
         pairs = {(cc.category, cc.sub) for cc in inf.seen_in_categories}
         assert pairs == {("FITNESS", "Gym"), ("FITNESS", "Science-Based Training")}
 
@@ -200,7 +200,7 @@ class TestTagFromPageMap:
             fallback_sub=FALLBACK_SUB,
         )
 
-        assert inf.most_seen_category == FALLBACK_CATEGORY
+        assert inf.most_seen_category == FALLBACK_SUB
         assert inf.seen_in_categories[0].sub == FALLBACK_SUB
 
     def test_multiple_source_urls_accumulate_citations(self) -> None:
@@ -241,7 +241,7 @@ class TestTagFromNameMention:
             sub_to_category=SUB_TO_CATEGORY,
         )
 
-        assert inf.most_seen_category == "FITNESS"
+        assert inf.most_seen_category == "Gym"
         assert inf.seen_in_categories[0].sub == "Gym"
 
     def test_multi_sub_different_categories_no_phantom(self) -> None:
@@ -279,7 +279,7 @@ class TestTagFromNameMention:
             sub_to_category=SUB_TO_CATEGORY,
         )
 
-        assert inf.most_seen_category == "NAME_RESOLUTION"
+        assert inf.most_seen_category == "Name Resolution"
         assert inf.seen_in_categories[0].sub == "Name Resolution"
 
     def test_unknown_sub_falls_back_to_name_resolution_category(self) -> None:
@@ -297,7 +297,7 @@ class TestTagFromNameMention:
             sub_to_category=SUB_TO_CATEGORY,
         )
 
-        assert inf.most_seen_category == "NAME_RESOLUTION"
+        assert inf.most_seen_category == "Underwater Basket Weaving"
         assert inf.seen_in_categories[0].sub == "Underwater Basket Weaving"
 
 
@@ -332,7 +332,7 @@ class TestApplyProvenance:
             },
         )
 
-        assert inf.most_seen_category == "FOOD"
+        assert inf.most_seen_category == "Cooking"
 
     def test_single_entry(self) -> None:
         inf = gen_influencer()
@@ -341,5 +341,17 @@ class TestApplyProvenance:
             cat_sub_counts={("FITNESS", "Gym"): 1},
         )
 
-        assert inf.most_seen_category == "FITNESS"
+        assert inf.most_seen_category == "Gym"
         assert len(inf.seen_in_categories) == 1
+
+    def test_most_seen_category_is_sub_not_parent(self) -> None:
+        """REGRESSION: most_seen_category must be the sub name, not the parent category."""
+        inf = gen_influencer()
+        CategoryProvenanceTagger.apply_provenance(
+            inf=inf,
+            cat_sub_counts={
+                ("FITNESS", "Calisthenics"): 3,
+                ("FITNESS", "Yoga"): 1,
+            },
+        )
+        assert inf.most_seen_category == "Calisthenics"

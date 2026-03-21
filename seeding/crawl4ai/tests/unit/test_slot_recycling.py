@@ -70,7 +70,7 @@ class TestResolveWithRecycling:
         assert resolved[0].source_urls == {"https://reddit.com/sean_nalewanyj"}
         assert resolved[0].extraction_methods == {"name_resolution"}
         assert resolved[0].citation_count == 1
-        assert resolved[0].most_seen_category == "FITNESS"
+        assert resolved[0].most_seen_category == "Gym"
         assert resolved[0].seen_in_categories[0].category == "FITNESS"
         assert resolved[0].seen_in_categories[0].sub == "Gym"
         assert "seannal" in known
@@ -111,7 +111,7 @@ class TestResolveWithRecycling:
 
         assert len(resolved) == 1
         inf = resolved[0]
-        assert inf.most_seen_category == "FITNESS"
+        assert inf.most_seen_category in {"Gym", "Science-Based Training"}
         subs = {cc.sub for cc in inf.seen_in_categories}
         assert "Gym" in subs
         assert "Science-Based Training" in subs

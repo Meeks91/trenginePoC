@@ -266,7 +266,7 @@ class PhasePipelineRunner(BasePipelineRunner):
             inf = Influencer(
                 name=NameCleaner.clean_name(handle.name) or "",
                 handles=_to_handles(handle.handle, handle.platform),
-                most_seen_category=category,
+                most_seen_category=sub_name,
                 seen_in_categories=[
                     CategoryCitation(category=category, sub=sub_name, citations=1),
                 ],

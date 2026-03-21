@@ -136,4 +136,4 @@ class TestMergeCalledInRun:
         assert len(merged) == 1
         assert merged[0].name == "Jeff Nippard"
         assert merged[0].handles[Platform.Instagram] == "jeffnippard"
-        assert merged[0].most_seen_category == "FITNESS"
+        assert merged[0].most_seen_category == "Gym"

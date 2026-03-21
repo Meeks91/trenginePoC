@@ -12,7 +12,7 @@ text in page markdown; when matching failed, fell back to jobs[0].category_key
 
 This test creates influencers found across multiple tagged URLs with
 different categories and verifies that:
-  1. most_seen_category reflects the top-level category with the most hits
+  1. most_seen_category reflects the subcategory with the most hits
   2. seen_in_categories contains per-sub citations from all configs
   3. Merging correctly sums citation counts across duplicate entries
 """
@@ -67,7 +67,7 @@ class TestMultiConfigCategoryProvenance:
         subs = {cc.sub for cc in merged[0].seen_in_categories}
         assert "Gym" in subs
         assert "Science-Based Training" in subs
-        assert merged[0].most_seen_category == "FITNESS"
+        assert merged[0].most_seen_category == "Gym"
 
     def test_merge_sums_citations_for_same_sub(self):
         """Same (category, sub) from two entries → citations summed."""
@@ -96,7 +96,7 @@ class TestMultiConfigCategoryProvenance:
         assert gym_citations[0].citations == 5
 
     def test_most_seen_category_recomputed_on_merge(self):
-        """After merge, most_seen_category reflects the dominant category."""
+        """After merge, most_seen_category reflects the dominant subcategory."""
         raw = [
             Influencer(
                 name="CrossFit Creator",
@@ -125,7 +125,7 @@ class TestMultiConfigCategoryProvenance:
         ]
         merged = InfluencerMerger.merge(raw)
         assert len(merged) == 1
-        assert merged[0].most_seen_category == "FITNESS"
+        assert merged[0].most_seen_category == "CrossFit"
         total_fitness = sum(
             cc.citations for cc in merged[0].seen_in_categories
             if cc.category == "FITNESS"

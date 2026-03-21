@@ -69,7 +69,7 @@ class Influencer:
     Attributes:
         name: Display name (real name only, empty string if unknown).
         handles: Platform-to-handle mapping, e.g. {Platform.Instagram: "foodgod"}.
-        most_seen_category: Top-level category with the most page hits.
+        most_seen_category: Subcategory name with the most page hits.
         seen_in_categories: All subcategory searches that surfaced this
             influencer, with per-sub citation counts. Populated by config
             provenance tracing during pipeline processing.
