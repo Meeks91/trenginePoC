@@ -1,18 +1,20 @@
 """
 verify_results — Post-crawl quality check for seeds.json
 =========================================================
-Validates pipeline output across 7 dimensions:
+Validates pipeline output across 8 dimensions:
   1. Merge integrity (duplicate handles, missed merges)
   2. Name cleanliness (empty, blocklisted, invalid)
-  3. Platform coverage (IG / TK / YT presence)
+  3. Platform coverage (IG / TK / YT presence, per-type breakdown)
   4. Category correctness (most_seen_category is sub, not parent)
-  5. Canary presence (per category/sub/region)
+  5. Canary presence (per category/sub/region, scopeable by --category)
   6. Handle quality (URL fragments, LinkedIn slugs, etc.)
-  7. Overall stats (counts, distributions, extraction methods)
+  7. Name resolution signal quality (zero-citation seeds, empty extraction_methods)
+  8. Overall stats (counts, distributions, citation density warnings)
 
 Usage:
     python verify_results.py results/2026-03-21_3.13am_US/seeds.json
     python verify_results.py results/2026-03-21_3.13am_US/seeds.json --region US
+    python verify_results.py results/2026-03-21_3.13am_US/seeds.json --category FITNESS
 """
 
 from __future__ import annotations
@@ -238,15 +240,27 @@ def check_platform_coverage(seeds: list[dict]) -> CheckResult:
             platform_counts["yt"] += 1
             present += 1
 
+    def platform_count(ig_req: bool, tk_req: bool, yt_req: bool) -> int:
+        return sum(
+            1 for s in seeds
+            if bool(s.get("ig_handle")) == ig_req
+            and bool(s.get("tk_handle")) == tk_req
+            and bool(s.get("yt_handle")) == yt_req
+        )
+
     multi_platform = sum(
         1 for s in seeds
         if sum(bool(s.get(k)) for k in ("ig_handle", "tk_handle", "yt_handle")) >= 2
     )
+    ig_only = platform_count(ig_req=True, tk_req=False, yt_req=False)
+    tk_only = platform_count(ig_req=False, tk_req=True, yt_req=False)
+    yt_only = platform_count(ig_req=False, tk_req=False, yt_req=True)
 
     result.add_info(f"Instagram: {ig}/{total} ({ig*100//total}%)")
     result.add_info(f"TikTok:    {tk}/{total} ({tk*100//total}%)")
     result.add_info(f"YouTube:   {yt}/{total} ({yt*100//total}%)")
     result.add_info(f"Multi-platform (2+): {multi_platform}/{total} ({multi_platform*100//total}%)")
+    result.add_info(f"  IG only: {ig_only}  |  TK only: {tk_only}  |  YT only: {yt_only}")
 
     if no_handle:
         result.error(f"Seeds with NO handles at all: {no_handle}")
@@ -256,6 +270,9 @@ def check_platform_coverage(seeds: list[dict]) -> CheckResult:
             result.error(f"Zero {platform} handles found")
         elif count < total * 0.05:
             result.warn(f"Very low {platform} coverage: {count}/{total}")
+
+    if multi_platform < total * 0.05:
+        result.warn(f"Very low multi-platform yield: {multi_platform}/{total} ({multi_platform*100//total}%) — NR or TK/YT crawl coverage may be thin")
 
     return result
 
@@ -312,6 +329,7 @@ def check_category_correctness(seeds: list[dict]) -> CheckResult:
 def check_canary_presence(
     seeds: list[dict],
     region_filter: str | None = None,
+    category_filter: str | None = None,
 ) -> CheckResult:
     result = CheckResult(name="Canary Presence")
     canaries = _load_canaries()
@@ -330,6 +348,8 @@ def check_canary_presence(
 
     for cat_key, subs in canaries.items():
         if cat_key.startswith("_"):
+            continue
+        if category_filter and cat_key.upper() != category_filter.upper():
             continue
         for sub_name, regions in subs.items():
             for region_code, names in regions.items():
@@ -420,6 +440,50 @@ def check_handle_quality(seeds: list[dict]) -> CheckResult:
 
 
 # ══════════════════════════════════════════════════════════════════════
+# 7. Name Resolution Signal Quality
+# ══════════════════════════════════════════════════════════════════════
+
+
+def check_name_resolution_quality(seeds: list[dict]) -> CheckResult:
+    result = CheckResult(name="Name Resolution Signal Quality")
+    total = len(seeds)
+
+    zero_citation = [s for s in seeds if s.get("citation_count", 0) == 0]
+    no_methods = [s for s in seeds if not s.get("extraction_methods")]
+    nr_seeds = [
+        s for s in seeds
+        if "name_resolution" in s.get("extraction_methods", [])
+    ]
+    nr_zero_citation = [
+        s for s in nr_seeds if s.get("citation_count", 0) == 0
+    ]
+
+    result.add_info(f"Name-resolved seeds (NR path): {len(nr_seeds)}/{total}")
+    result.add_info(f"Zero-citation seeds: {len(zero_citation)} ({len(zero_citation)*100//total}%)")
+    result.add_info(f"  Of which via NR path: {len(nr_zero_citation)}")
+    result.add_info(f"Seeds with empty extraction_methods: {len(no_methods)}")
+
+    if len(no_methods) > 0:
+        sample = [
+            s.get("ig_handle") or s.get("tk_handle") or s.get("yt_handle") or "?"
+            for s in no_methods[:5]
+        ]
+        result.warn(
+            f"{len(no_methods)} seeds have no extraction_methods recorded "
+            f"(provenance gap) — sample: {sample}"
+        )
+
+    zero_pct = len(zero_citation) * 100 // total if total else 0
+    if zero_pct > 10:
+        result.warn(
+            f"High zero-citation rate: {zero_pct}% — "
+            "consider whether NR threshold or page crawl depth needs tuning"
+        )
+
+    return result
+
+
+# ══════════════════════════════════════════════════════════════════════
 # 7. Overall Stats
 # ══════════════════════════════════════════════════════════════════════
 
@@ -448,12 +512,18 @@ def check_overall_stats(seeds: list[dict]) -> CheckResult:
         result.add_info(f"  {method}: {count} seeds")
 
     if citations:
+        median_citations = statistics.median(citations)
         result.add_info(
             f"Citations: min={min(citations)}, "
-            f"median={statistics.median(citations):.0f}, "
+            f"median={median_citations:.0f}, "
             f"mean={statistics.mean(citations):.1f}, "
             f"max={max(citations)}"
         )
+        if median_citations <= 1:
+            result.warn(
+                "Median citation count is 1 — most seeds seen on only one page. "
+                "Signal is thin; consider adding more crawl sources or deeper crawls."
+            )
 
     if source_counts:
         result.add_info(
@@ -531,20 +601,24 @@ def _print_summary(results: list[CheckResult]) -> None:
 def run_verification(
     seeds_path: str,
     region_filter: str | None = None,
+    category_filter: str | None = None,
 ) -> int:
     seeds = _load_seeds(seeds_path)
     print(f"{_BOLD}Verifying: {seeds_path}{_RESET}")
     print(f"Seeds loaded: {len(seeds)}")
     if region_filter:
         print(f"Region filter: {region_filter}")
+    if category_filter:
+        print(f"Category filter: {category_filter}")
 
     results = [
         check_merge_integrity(seeds),
         check_name_cleanliness(seeds),
         check_platform_coverage(seeds),
         check_category_correctness(seeds),
-        check_canary_presence(seeds, region_filter=region_filter),
+        check_canary_presence(seeds, region_filter=region_filter, category_filter=category_filter),
         check_handle_quality(seeds),
+        check_name_resolution_quality(seeds),
         check_overall_stats(seeds),
     ]
 
@@ -565,20 +639,27 @@ def run_verification(
 
 def main() -> None:
     if len(sys.argv) < 2:
-        print(f"Usage: python {sys.argv[0]} <seeds.json> [--region US|UK]")
+        print(f"Usage: python {sys.argv[0]} <seeds.json> [--region US|UK] [--category FITNESS]")
         sys.exit(1)
 
     seeds_path = sys.argv[1]
     region_filter = None
+    category_filter = None
 
     if "--region" in sys.argv:
         idx = sys.argv.index("--region")
         if idx + 1 < len(sys.argv):
             region_filter = sys.argv[idx + 1]
 
+    if "--category" in sys.argv:
+        idx = sys.argv.index("--category")
+        if idx + 1 < len(sys.argv):
+            category_filter = sys.argv[idx + 1]
+
     exit_code = run_verification(
         seeds_path=seeds_path,
         region_filter=region_filter,
+        category_filter=category_filter,
     )
     sys.exit(exit_code)
 
