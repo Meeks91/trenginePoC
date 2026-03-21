@@ -30,7 +30,6 @@ from services.search.SearchService import SearchResults
 from services.crawling.CrawlService import CrawlService
 from services.extraction.HandleExtractionService import HandleExtractionService, _to_handles
 from services.extraction.RegexHandleExtractor import ExtractedHandle
-from services.handleResolution.HandleFromNameService import HandleFromNameService
 from services.handleResolution.CrossPlatformHandleResolverService import CrossPlatformHandleResolverService
 from services.influencerProvenance.CategoryProvenanceTaggerService import CategoryProvenanceTagger
 from services.extraction.NameCleaner import NameCleaner

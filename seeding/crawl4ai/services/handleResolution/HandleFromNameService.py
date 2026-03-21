@@ -27,8 +27,6 @@ if TYPE_CHECKING:
 
 from services.audit.AuditService import AuditLog
 from services.search.SearchClient import SearchClient
-
-logger = logging.getLogger(__name__)
 from config.schema import Influencer, Platform, NameMentionRecord
 from services.influencerProvenance.CategoryProvenanceTaggerService import CategoryProvenanceTagger
 from services.extraction.NameCleaner import NameCleaner
@@ -41,6 +39,8 @@ from services.handleResolution.patterns import (
     extract_handle_from_text,
     PLATFORM_DOMAINS,
 )
+
+logger = logging.getLogger(__name__)
 
 
 class HandleFromNameService:
