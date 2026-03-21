@@ -7,7 +7,7 @@ Includes mocked SearchClient for _search_handle().
 
 import tempfile
 from pathlib import Path
-from unittest.mock import MagicMock, patch
+from unittest.mock import MagicMock
 
 
 from services.enrichment.patterns import extract_handle_from_url, extract_handle_from_text

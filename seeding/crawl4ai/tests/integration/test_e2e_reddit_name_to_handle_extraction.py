@@ -145,10 +145,13 @@ class TestRedditDDGResolution:
     def test_ddg_resolves_known_influencers(
         self, extracted_names: list[str], tmp_path: Path
     ) -> None:
+        from services.search.OpenSearchClient import OpenSearchClient
         audit = AuditLog(tmp_path / "audit", "test_bwf")
+        search_client = OpenSearchClient(audit)
         handles: list[ExtractedHandle] = resolve_names_via_ddg(
             extracted_names,
             audit,
+            search_client=search_client,
             query_template='{name} Instagram YouTube TikTok',
             category="Fitness",
         )
