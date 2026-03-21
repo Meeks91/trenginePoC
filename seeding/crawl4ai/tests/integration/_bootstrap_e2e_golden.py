@@ -126,10 +126,7 @@ class _E2EPipelineRunner(BasePipelineRunner):
         self._stats.record_extraction(extract_result)
 
         from services.enrichment.NameToHandleService import NameToHandleService
-        name_to_handle_svc = NameToHandleService(self._audit, delay_seconds=0)
-        mock_ddgs = MagicMock()
-        mock_ddgs.text.return_value = []
-        name_to_handle_svc._ddgs = mock_ddgs
+        name_to_handle_svc = NameToHandleService(self._audit, search_client=MagicMock(), delay_seconds=0)
         unique = name_to_handle_svc.resolve_cross_account_handles(extract_result.all_merged, platform=job.platform)
         self._stats.record_enrichment(
             unique_count=len(unique),
