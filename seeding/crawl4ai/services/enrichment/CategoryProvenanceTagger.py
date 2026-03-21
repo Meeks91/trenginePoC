@@ -123,5 +123,11 @@ class CategoryProvenanceTagger:
         sub_totals: dict[str, int] = {}
         for (_cat, sub), count in cat_sub_counts.items():
             sub_totals[sub] = sub_totals.get(sub, 0) + count
-        inf.most_seen_category = max(sub_totals, key=lambda k: sub_totals[k])
+        max_count = max(sub_totals.values())
+        leading_subs = [sub for sub, count in sub_totals.items() if count == max_count]
+        if len(leading_subs) == 1:
+            inf.most_seen_category = leading_subs[0]
+        else:
+            alphabetically_first_winner_sub = min(leading_subs)
+            inf.most_seen_category = alphabetically_first_winner_sub
 

@@ -355,3 +355,17 @@ class TestApplyProvenance:
             },
         )
         assert inf.most_seen_category == "Calisthenics"
+
+    def test_draw_broken_alphabetically(self) -> None:
+        """Tied subs are broken alphabetically — deterministic regardless of insertion order."""
+        inf = gen_influencer()
+        CategoryProvenanceTagger.apply_provenance(
+            inf=inf,
+            cat_sub_counts={
+                ("FITNESS", "Powerlifting"): 1,
+                ("FITNESS", "Calisthenics"): 1,
+                ("FITNESS", "Yoga"): 1,
+            },
+        )
+        # "Calisthenics" sorts first among the three tied subs
+        assert inf.most_seen_category == "Calisthenics"
