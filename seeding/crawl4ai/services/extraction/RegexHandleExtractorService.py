@@ -656,4 +656,13 @@ class RegexHandleExtractorService:
         words = [w.lower() for w in name.split() if len(w) >= 4]
         return any(word in h_clean for word in words)
 
+# ══════════════════════════════════════════════════════════════════════
+# Module-level aliases — restores pre-refactor public API surface
+# Tests and callers may import these directly from this module.
+# ══════════════════════════════════════════════════════════════════════
+
+extract_handles_from_html = RegexHandleExtractorService.extract_handles_from_html
+extract_youtube_channel_ids = RegexHandleExtractorService.extract_youtube_channel_ids
+extract_handles_from_url = RegexHandleExtractorService.extract_handles_from_url
+
 

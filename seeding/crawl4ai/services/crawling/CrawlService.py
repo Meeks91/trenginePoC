@@ -74,10 +74,12 @@ class CrawlService:
         )
 
         # Wire up crawl4ai's built-in retry + rate limiting
-        # Use importlib to bypass pytest's import rewriting — the project dir
-        # 'crawl4ai' shadows the pip package during test collection.
+        # Import async_dispatcher lazily and via package-relative lookup so that
+        # the crawl4ai namespace collision (local project dir vs installed package)
+        # resolves correctly: sys.modules['crawl4ai'] is already the venv package
+        # (populated by the top-level `from crawl4ai import ...` above).
         import importlib
-        _dispatcher = importlib.import_module("crawl4ai.async_dispatcher")
+        _dispatcher = importlib.import_module(".async_dispatcher", package="crawl4ai")
         SemaphoreDispatcher = _dispatcher.SemaphoreDispatcher
         RateLimiter = _dispatcher.RateLimiter
 

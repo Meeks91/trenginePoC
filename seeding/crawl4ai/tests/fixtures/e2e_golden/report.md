@@ -20,8 +20,8 @@
 | # | IG Handle | TK Handle | YT Handle | Category |
 |---|-----------|-----------|-----------|----------|
 | 1 | — | — | The | Fitness / Fitness |
-| 2 | — | — | seancaseyfitness111 | Fitness / Fitness |
-| 3 | — | — | LucyDavisFit | Fitness / Fitness |
+| 2 | — | — | LucyDavisFit | Fitness / Fitness |
+| 3 | — | — | seancaseyfitness111 | Fitness / Fitness |
 | 4 | — | — | adammaxted | Fitness / Fitness |
 | 5 | alex.beattie | alex.beattie | — | Fitness / Fitness |
 | 6 | courtneyblackfitness | Courtney | — | Fitness / Fitness |

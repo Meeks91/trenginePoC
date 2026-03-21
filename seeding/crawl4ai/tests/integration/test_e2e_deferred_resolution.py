@@ -16,20 +16,10 @@ NOTE: We mock crawl4ai at module level to avoid ImportError in test envs
       where the crawl4ai library is not installed.
 """
 
-import sys
 from unittest.mock import patch, MagicMock
 
 _SC_PATCH = "base_pipeline.BasePipelineRunner._build_search_client"
 
-
-# Mock crawl4ai before any pipeline imports (it's a C-extension dep)
-_mock_crawl4ai = MagicMock()
-for _sub in [
-    "crawl4ai",
-    "crawl4ai.content_filter_strategy",
-    "crawl4ai.markdown_generation_strategy",
-]:
-    sys.modules.setdefault(_sub, _mock_crawl4ai)
 
 from config.schema import SourceType
 from services.extraction.NameMentionTracker import NameMentionTracker
