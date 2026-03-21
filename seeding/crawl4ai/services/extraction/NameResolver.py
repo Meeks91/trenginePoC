@@ -26,7 +26,7 @@ from services.extraction.RegexHandleExtractor import (
 )
 from config import (
     SEARCH_DELAY_SECONDS, SEARCH_BACKEND, SEARCH_REGION,
-    MAX_RETRIES, BACKOFF_BASE_SECONDS, BACKOFF_MAX_SECONDS,
+    BACKOFF_BASE_SECONDS, BACKOFF_MAX_SECONDS,
 )
 
 

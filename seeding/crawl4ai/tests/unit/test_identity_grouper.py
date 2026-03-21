@@ -11,7 +11,6 @@ Tests cover:
   - Real-world cloudkitchens scenario with _underscore merging
 """
 
-import pytest
 from config.schema import Influencer, Platform, CategoryCitation
 from services.enrichment.InfluencerMerger import InfluencerMerger, _normalize_handle
 

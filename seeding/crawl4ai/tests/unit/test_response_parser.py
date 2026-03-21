@@ -5,8 +5,6 @@ Verifies LLM JSON response parsing into Influencer[].
 Includes handle validation tests (invalid handles cleared, not rejected).
 """
 
-import sys
-from pathlib import Path
 
 from config.schema import Platform
 from services.extraction.LLMResponseParser import LLMResponseParser
@@ -134,7 +132,7 @@ def test_parse_valid_handle_kept():
 
 def test_parse_consecutive_dots_cleared():
     """Handle with consecutive dots → cleared (lorey rule)."""
-    json_str = '{"influencers": [{"name": "Dorothy Mills", "handle": "bad..handle"}]}' 
+    json_str = '{"influencers": [{"name": "Dorothy Mills", "handle": "bad..handle"}]}'
     result = LLMResponseParser.parse(json_str)
     assert len(result) == 1
     assert not result[0].handles

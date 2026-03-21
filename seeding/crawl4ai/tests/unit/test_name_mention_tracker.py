@@ -4,10 +4,9 @@ source_urls tracking, SourceType enum, top_reddit_names(), all_names,
 reddit_names, non_reddit_names, and merge().
 """
 
-import pytest
 
 from config.schema import SourceType
-from services.extraction.NameMentionTracker import NameMentionTracker, NameMention
+from services.extraction.NameMentionTracker import NameMentionTracker
 
 
 def _record(tracker, name, count, url, source_type, platform="Instagram",

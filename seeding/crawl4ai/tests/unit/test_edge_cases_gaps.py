@@ -4,11 +4,9 @@ Edge Case Tests: StatsCollector, NameMentionTracker, PageTruncator
 Covers identified test gaps T5, T6, T7 from the code review.
 """
 
-import pytest
 
-from config.schema import PageResult, SourceType
+from config.schema import SourceType
 from services.reporting.StatsCollector import StatsCollector
-from services.extraction.HandleExtractionService import HandleExtractionResult
 from services.extraction.NameMentionTracker import NameMentionTracker
 from services.extraction.PageTruncator import truncate_for_llm, _MAX_TRUNCATED_CHARS
 

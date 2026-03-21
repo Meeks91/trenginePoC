@@ -13,18 +13,15 @@ Uses real fixtures + mocked LLM to verify behavior without API costs.
 """
 
 import asyncio
-import json
 import tempfile
 from pathlib import Path
-from unittest.mock import MagicMock, patch
+from unittest.mock import MagicMock
 
-import pytest
 
-from config.schema import PageResult, Influencer, Platform
+from config.schema import PageResult, Platform
 from services.audit.AuditService import AuditLog
 from services.extraction.HandleExtractionService import (
     HandleExtractionService,
-    HandleExtractionResult,
     needs_llm,
 )
 from services.extraction.RegexHandleExtractor import ExtractedHandle

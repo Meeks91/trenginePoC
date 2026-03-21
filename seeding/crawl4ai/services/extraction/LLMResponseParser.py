@@ -9,7 +9,7 @@ from __future__ import annotations
 
 import json
 import re
-from typing import Any, Optional
+from typing import Any
 
 from config.schema import Influencer, Platform
 from services.extraction.RegexHandleExtractor import _is_valid_handle
@@ -61,8 +61,8 @@ class LLMResponseParser:
         for item in raw_items:
             if not isinstance(item, dict):
                 continue
-            name = str(item.get("name", "")).strip()
-            name = NameCleaner.clean_name(name)
+            raw_name = str(item.get("name", "")).strip()
+            name = NameCleaner.clean_name(raw_name)
             if not name:
                 continue
             handle = str(item.get("handle", "")).strip().lstrip("@")

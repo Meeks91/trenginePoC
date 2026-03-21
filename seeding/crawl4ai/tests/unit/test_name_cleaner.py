@@ -5,7 +5,6 @@ Tests every cleanup rule: markdown strip, number prefix, URL decode,
 country/brand/news rejection, LinkedIn slug rejection, valid names pass.
 """
 
-import pytest
 
 from services.extraction.NameCleaner import NameCleaner
 
@@ -108,7 +107,7 @@ class TestCleanName:
         assert NameCleaner.clean_name("   ") is None
 
     def test_none_input_raises_or_returns_none(self):
-        assert NameCleaner.clean_name(None) is None  # type: ignore
+        assert NameCleaner.clean_name(None) is None
 
 
 class TestIsValidHandle:

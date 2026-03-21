@@ -4,8 +4,6 @@ Unit Tests: IngestionValidator
 Verifies canary validation logic — matches and misses.
 """
 
-import sys
-from pathlib import Path
 
 
 from services.validation.IngestionValidator import IngestionValidator, CANARY_FILE

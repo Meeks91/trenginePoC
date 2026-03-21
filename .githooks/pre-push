@@ -1,20 +1,43 @@
 #!/bin/bash
 # Installed via: git config core.hooksPath .githooks
 
-echo "Running ALL test suites (including network & slow tests) before push..."
 export PY_COLORS=1
-
 cd "seeding/crawl4ai" || exit 1
+
+# ── Step 1: Ruff lint check ─────────────────────────────────────
+echo "Running Ruff lint check..."
+
+if ! ruff check . 2>&1 | head -50; then
+    echo "========================================="
+    echo "❌ PRE-PUSH FAILED: Ruff lint errors found!"
+    echo "Fix lint errors before pushing."
+    echo "Run: ruff check . --fix"
+    echo "========================================="
+    exit 1
+fi
+
+echo "✅ Ruff passed."
+
+# ── Step 2: mypy type checks ────────────────────────────────────
+echo "Running mypy type checks..."
+
+if ! python -m mypy . 2>&1 | head -50; then
+    echo "========================================="
+    echo "❌ PRE-PUSH FAILED: mypy type errors found!"
+    echo "Fix type errors before pushing."
+    echo "========================================="
+    exit 1
+fi
+
+echo "✅ mypy passed."
+
+# ── Step 3: ALL tests (including network & slow) ────────────────
+echo "Running ALL test suites (including network & slow tests) before push..."
 
 if [ -z "$GEMINI_API_KEY" ]; then
     echo "⚠️  NOTE: GEMINI_API_KEY is not set. Network tests may fail if they attempt to call Gemini API."
 fi
 
-# Run all tests (pytest tests/ without markers runs everything by default unless excluded in pytest.ini)
-# In pyproject.toml 'network' and 'slow' are excluded by default using addopts = "-m 'not network and not slow'"
-# To force running all, we don't supply -m and let pytest discover all, or we explicitly pass -m "network or slow or not network"
-# Actually, the best way to override the default exclude is passing without the 'not' or clearing addopts.
-# Overriding addopts from cli:
 if ! python -m pytest tests/ -o addopts="" -q --disable-warnings; then
     echo "========================================="
     echo "❌ PRE-PUSH FAILED: Comprehensive test suite broken!"

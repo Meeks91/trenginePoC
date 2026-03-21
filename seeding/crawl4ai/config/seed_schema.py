@@ -6,10 +6,8 @@ Loads category JSON, handles query building, and job generation.
 """
 
 from __future__ import annotations
-import re
 from dataclasses import dataclass, field
 from enum import Enum
-from typing import Optional
 from pathlib import Path
 from pydantic import BaseModel, Field
 
@@ -279,7 +277,7 @@ if __name__ == "__main__":
 
     # Peek at first job
     job = test_jobs[0]
-    print(f"\n--- Sample Job ---")
+    print("\n--- Sample Job ---")
     print(f"Category: {job.category_key}")
     print(f"Sub: {job.sub.sub_name}")
     print(f"Difficulty: {job.sub.difficulty.value}")

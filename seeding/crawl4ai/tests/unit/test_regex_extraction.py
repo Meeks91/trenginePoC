@@ -25,7 +25,6 @@ from services.extraction.RegexHandleExtractor import (
     extract_youtube_channel_ids,
     extract_handles_from_url,
     count_handles,
-    ExtractedHandle,
 )
 
 

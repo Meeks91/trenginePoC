@@ -12,12 +12,10 @@ import tempfile
 from pathlib import Path
 from unittest.mock import patch, MagicMock
 
-import pytest
 
 from config.schema import Influencer, Platform
 from config.seed_schema import SeedJob, SubCategory, Region, RegionCode, Difficulty
 from base_pipeline import BasePipelineRunner, GatherResult
-from services.validation.IngestionValidator import ValidationResult
 
 
 # -- Fixtures --
@@ -103,7 +101,7 @@ class TestBasePipelineCanaryWiring:
                 MockAssembler.return_value = MagicMock()
                 runner._assembler = MockAssembler.return_value
 
-                seeds = asyncio.run(runner.run(jobs))
+                _seeds = asyncio.run(runner.run(jobs))
 
             # Canary validation should have been called
             assert runner.validation_results, (

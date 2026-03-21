@@ -22,7 +22,6 @@ import pytest
 from config.schema import Influencer, PageResult, Platform
 from services.audit.AuditService import AuditLog
 from services.extraction.HandleExtractionService import HandleExtractionService
-from services.extraction.RegexHandleExtractor import extract_handles_from_html
 from services.enrichment.NameToHandleService import NameToHandleService
 
 
@@ -218,7 +217,7 @@ class TestCrossPlatformE2E:
 
             handle_svc = HandleExtractionService(audit)
             with patch("services.extraction.LLMExtractionService.litellm"):
-                extract_result = asyncio.run(handle_svc.extract_all_handles(
+                _extract_result = asyncio.run(handle_svc.extract_all_handles(
                     [page_result],
                     platform=Platform.Instagram,
                     category_key="FOOD",

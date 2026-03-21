@@ -252,7 +252,7 @@ async def scrape_bios() -> dict[str, dict[str, str | None]]:
 async def main() -> None:
     print(f"\n{'='*60}")
     print(f"  Instagram Bio Scraper — {len(HANDLES)} profiles")
-    print(f"  Mode: visible browser + manual login")
+    print("  Mode: visible browser + manual login")
     print(f"{'='*60}")
 
     results = await scrape_bios()

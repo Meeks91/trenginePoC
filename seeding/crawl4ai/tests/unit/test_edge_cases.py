@@ -15,8 +15,6 @@ Synthetic HTML inputs testing:
 
 from services.extraction.RegexHandleExtractor import (
     extract_handles_from_html,
-    extract_youtube_channel_ids,
-    ExtractedHandle,
 )
 
 
@@ -106,7 +104,7 @@ class TestMalformedURLs:
         """instagram.com/handle#section → should extract handle."""
         html = '<a href="https://instagram.com/fitness_pro#posts">Posts</a>'
         results = extract_handles_from_html(html)
-        handles = {r.handle.lower() for r in results}
+        _handles = {r.handle.lower() for r in results}
         # The regex boundary may or may not capture this - test for no crash
         assert isinstance(results, list)
 

@@ -4,8 +4,7 @@ Tests for StatsCollector
 Unit tests for centralized pipeline metrics accumulation.
 """
 
-import pytest
-from config.schema import PipelineStats, PageResult
+from config.schema import PageResult
 from services.reporting.StatsCollector import StatsCollector
 from services.extraction.HandleExtractionService import HandleExtractionResult
 from config.schema import Influencer, Platform

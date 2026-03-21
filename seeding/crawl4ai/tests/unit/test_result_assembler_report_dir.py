@@ -12,7 +12,6 @@ import json
 import tempfile
 from pathlib import Path
 
-import pytest
 
 from config.schema import (
     ErroredConfig, NameMentionRecord, Influencer, Platform,

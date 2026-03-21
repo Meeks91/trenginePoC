@@ -19,10 +19,10 @@ from datetime import datetime
 from pathlib import Path
 from zoneinfo import ZoneInfo
 
-from config import RESULTS_DIR, SEARCH_DIR, REPORTS_DIR
+from config import SEARCH_DIR
 from config.schema import (
     Influencer, NameMentionRecord, SourceResult,
-    PageResult, SubResult, RegionResult, ErroredConfig,
+    PageResult, ErroredConfig,
 )
 
 logger = logging.getLogger(__name__)

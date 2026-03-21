@@ -20,7 +20,6 @@ NOTE: English-only language support.
 from __future__ import annotations
 
 import logging
-import os
 import time
 
 import requests
@@ -104,7 +103,7 @@ class StrictSearchClient:
         mandatory = self._mandatory_clause()
         slugs = self._slug_clause(job.sub.strict_slugs)
 
-        terms: list[tuple[str, str, QueryType]] = [
+        terms: list[tuple[str, QueryType]] = [
             (
                 f'{job.sub.search_prompt} {job.platform.value} influencers list {job.year}',
                 QueryType.PRIMARY_OPEN,

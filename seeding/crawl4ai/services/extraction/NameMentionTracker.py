@@ -35,14 +35,13 @@ from dataclasses import dataclass, field
 
 from config.schema import Influencer, SourceType
 
-# Type aliases for bucket parallel-list elements
 type VariantCounts = dict[str, int]
 type StringSet = set[str]
 type BucketRow = tuple[
     VariantCounts, bool, StringSet, StringSet,
     StringSet, StringSet, StringSet, StringSet,
 ]
-type GroupKey = tuple[str, str, str, str]  # (platform, category, sub, region)
+type GroupKey = tuple[str, str, str, str]
 
 from services.extraction.NameCleaner import _ALL_NON_PERSON as _CLEANER_BLOCKLIST
 

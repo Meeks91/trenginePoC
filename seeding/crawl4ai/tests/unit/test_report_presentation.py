@@ -7,7 +7,6 @@ Verifies PipelineReporter output format:
 """
 
 from pathlib import Path
-from unittest.mock import patch
 from config.schema import PipelineStats, Influencer, Platform, NameMentionRecord
 
 

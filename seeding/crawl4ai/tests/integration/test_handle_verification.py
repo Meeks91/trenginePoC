@@ -11,7 +11,6 @@ Run with:
     PYTHONPATH="." python3 -m pytest tests/integration/test_handle_verification.py -v -m network
 """
 
-import asyncio
 from pathlib import Path
 
 import pytest
@@ -21,7 +20,6 @@ httpx = pytest.importorskip("httpx")
 
 from services.extraction.RegexHandleExtractor import (
     extract_handles_from_html,
-    ExtractedHandle,
 )
 
 FIXTURES_DIR = Path(__file__).resolve().parent.parent / "fixtures"

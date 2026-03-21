@@ -7,7 +7,7 @@ requires-python = ">=3.11"
 
 # ── Mypy ──────────────────────────────────────────────────────────
 [tool.mypy]
-python_version = "3.11"
+python_version = "3.12"
 
 # ── Strictness (graduated – start here, tighten over time) ───────
 warn_return_any              = true
@@ -37,6 +37,8 @@ module = [
     "crawl4ai.*",
     "ddgs.*",
     "litellm.*",
+    "requests.*",
+    "names_dataset.*",
 ]
 ignore_missing_imports = true
 
@@ -58,3 +60,28 @@ markers = [
     "slow: long-running tests — excluded by default, run with: pytest -m slow",
     "integration: integration tests with mocked external deps",
 ]
+
+# ── Ruff ──────────────────────────────────────────────────────────
+[tool.ruff]
+target-version = "py312"
+line-length = 120
+
+[tool.ruff.lint]
+select = ["E", "F", "W"]
+ignore = ["E501"]
+
+[tool.ruff.lint.per-file-ignores]
+# E402: imports after sys.modules stubs or TYPE_CHECKING blocks (legitimate)
+"config/seed_schema.py" = ["E402"]
+"services/enrichment/NameToHandleService.py" = ["E402"]
+"services/extraction/HandleExtractionService.py" = ["E402"]
+"services/extraction/LLMExtractionService.py" = ["E402"]
+"services/extraction/NameMentionTracker.py" = ["E402"]
+"services/extraction/NameResolver.py" = ["E402"]
+"services/extraction/RegexHandleExtractor.py" = ["E402"]
+"tests/**/test_deferred_name_resolution.py" = ["E402"]
+"tests/**/test_e2e_deferred_resolution.py" = ["E402"]
+"tests/**/test_handle_extraction_service.py" = ["E402"]
+"tests/**/test_handle_verification.py" = ["E402"]
+"tests/**/test_integration_fixture_audit.py" = ["E402"]
+"tests/**/_bootstrap_e2e_golden.py" = ["E402"]

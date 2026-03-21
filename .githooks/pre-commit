@@ -1,18 +1,46 @@
 #!/bin/bash
 # Installed via: git config core.hooksPath .githooks
 
-echo "Running standard test suite (skipping network & slow tests)..."
 export PY_COLORS=1
-
 cd "seeding/crawl4ai" || exit 1
+
+# ── Step 1: Ruff lint check ─────────────────────────────────────
+echo "Running Ruff lint check..."
+
+if ! ruff check . 2>&1 | head -50; then
+    echo "========================================="
+    echo "❌ PRE-COMMIT FAILED: Ruff lint errors found!"
+    echo "Fix lint errors before committing."
+    echo "Run: ruff check . --fix"
+    echo "========================================="
+    exit 1
+fi
+
+echo "✅ Ruff passed."
+
+# ── Step 2: mypy type checks ────────────────────────────────────
+echo "Running mypy type checks..."
+
+if ! python -m mypy . 2>&1 | head -50; then
+    echo "========================================="
+    echo "❌ PRE-COMMIT FAILED: mypy type errors found!"
+    echo "Fix type errors before committing."
+    echo "========================================="
+    exit 1
+fi
+
+echo "✅ mypy passed."
+
+# ── Step 3: unit tests ──────────────────────────────────────────
+echo "Running unit tests (skipping network & slow)..."
 
 if ! python -m pytest tests/unit -q --disable-warnings; then
     echo "========================================="
-    echo "❌ PRE-COMMIT FAILED: Standard tests broken!"
+    echo "❌ PRE-COMMIT FAILED: Unit tests broken!"
     echo "Please fix the failing tests before committing."
     echo "========================================="
     exit 1
 fi
 
-echo "✅ Standard tests passed."
+echo "✅ Unit tests passed."
 exit 0

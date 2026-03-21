@@ -7,11 +7,9 @@ MAX_URLS_PER_JOB cap.
 discover_urls() tested with mocked SearchClient to avoid real network calls.
 """
 
-import tempfile
 from pathlib import Path
 from unittest.mock import MagicMock, patch
 
-import pytest
 
 from config.seed_schema import (
     Difficulty, Platform, Region, RegionCode, SubCategory, SeedJob,

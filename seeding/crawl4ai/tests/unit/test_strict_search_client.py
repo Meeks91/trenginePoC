@@ -7,14 +7,13 @@ and Serper response parsing. All tests use mocked HTTP — no real API calls.
 
 from unittest.mock import MagicMock, patch
 
-import pytest
 import requests
 
 from config.seed_schema import (
     Difficulty, Platform, Region, RegionCode, SubCategory, SeedJob,
 )
 from services.audit.AuditService import AuditLog
-from services.search.SearchClient import QueryType, RawSearchResult, SearchQuery
+from services.search.SearchClient import QueryType, SearchQuery
 from services.search.StrictSearchClient import StrictSearchClient
 
 

@@ -8,15 +8,11 @@ Unit tests for slot recycling:
 from collections import deque
 from unittest.mock import patch, MagicMock
 
-import pytest
 
-from config.schema import Influencer, Platform, NameMentionRecord
-from services.extraction.NameMentionTracker import NameMention
+from config.schema import Influencer, Platform
+from services.extraction.NameMentionTracker import NameMention, GroupKey
 from services.enrichment.NameToHandleService import NameToHandleService
 from services.extraction.RegexHandleExtractor import ExtractedHandle
-
-
-type GroupKey = tuple[str, str, str, str]
 
 
 def _make_mention(

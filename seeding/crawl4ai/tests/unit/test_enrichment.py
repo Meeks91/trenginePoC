@@ -5,7 +5,6 @@ Tests all 3 platforms: Instagram, TikTok, YouTube.
 Includes mocked DDGS for _search_handle().
 """
 
-import sys
 import tempfile
 from pathlib import Path
 from unittest.mock import patch

@@ -8,9 +8,7 @@ Each test documents which fix it validates and what the old broken behavior was.
 import tempfile
 from datetime import datetime
 from pathlib import Path
-from unittest.mock import patch
 
-import pytest
 
 from services.audit.AuditService import AuditLog
 from services.search.SearchService import SearchService
@@ -132,7 +130,6 @@ def test_name_cleaner_shared_by_both_parsers():
     """
     import services.extraction.LLMResponseParser as parser_mod
     import services.extraction.NameExtractor as extractor_mod
-    from services.extraction.NameCleaner import NameCleaner
 
     assert hasattr(parser_mod, 'NameCleaner'), (
         "LLMResponseParser must import NameCleaner"

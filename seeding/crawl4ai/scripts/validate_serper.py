@@ -167,14 +167,14 @@ def validate_test(test: dict, results: list[dict[str, str]]) -> TestResult:
     non_reddit_title_words = checks.get("must_contain_non_reddit_title_match")
     if non_reddit_title_words:
         words_lower = [w.lower() for w in non_reddit_title_words]
-        matching = [
-            r for r in results
+        non_reddit_matches: list[str] = [
+            r["url"] for r in results
             if "reddit.com" not in urlparse(r["url"]).netloc.lower()
             and any(w in r["title"].lower() for w in words_lower)
         ]
-        if matching:
+        if non_reddit_matches:
             passed.append(
-                f"must_contain_non_reddit_title_match: {len(matching)} non-reddit "
+                f"must_contain_non_reddit_title_match: {len(non_reddit_matches)} non-reddit "
                 f"results with title matching {non_reddit_title_words}"
             )
         else:
@@ -247,16 +247,16 @@ def print_report(result: TestResult) -> None:
     print(f"Results: {result.result_count}")
 
     if result.passed_checks:
-        print(f"\n  Passed:")
+        print("\n  Passed:")
         for check in result.passed_checks:
             print(f"    ✅ {check}")
 
     if result.failed_checks:
-        print(f"\n  Failed:")
+        print("\n  Failed:")
         for check in result.failed_checks:
             print(f"    ❌ {check}")
 
-    print(f"\n  Top results:")
+    print("\n  Top results:")
     for i, r in enumerate(result.raw_results[:5], 1):
         domain = urlparse(r["url"]).netloc
         print(f"    {i}. [{domain}] {r['title'][:70]}")
@@ -281,7 +281,7 @@ def run() -> None:
         print(f"[{i+1}/{len(TESTS)}] Running: {test['name']}...")
         print(f"         {test['description']}")
 
-        results = serper_search(test["query"], api_key)
+        results = serper_search(str(test["query"]), api_key)
         test_result = validate_test(test, results)
         all_results.append(test_result)
         print_report(test_result)

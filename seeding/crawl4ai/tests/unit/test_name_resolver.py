@@ -4,7 +4,6 @@ Unit tests for NameResolver — DDG-based name → handle resolution.
 All DDG calls are mocked to avoid external network dependencies.
 """
 
-import pytest
 from unittest.mock import patch, MagicMock
 
 from services.extraction.NameResolver import (

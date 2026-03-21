@@ -104,7 +104,7 @@ class _E2EPipelineRunner(BasePipelineRunner):
             (self._local_url, "site:gymfluencers.agency fitness influencers UK"),
         ])
         self._stats.record_crawl(pages, dropped=crawl_svc.dropped_count, retries=crawl_svc.retry_count)
-        page = pages[0]
+        _page = pages[0]
 
         handle_svc = HandleExtractionService(self._audit)
 
@@ -245,7 +245,7 @@ async def main():
                 (GOLDEN_DIR / "validation_results.json").write_text(
                     json.dumps(vr_data, indent=2, ensure_ascii=False)
                 )
-                print(f"  Saved validation_results.json")
+                print("  Saved validation_results.json")
 
                 print(f"\n  Golden fixtures saved to: {GOLDEN_DIR}")
 

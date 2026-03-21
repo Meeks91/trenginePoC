@@ -9,7 +9,11 @@ from __future__ import annotations
 
 import logging
 import re
+from typing import TYPE_CHECKING
 from urllib.parse import unquote
+
+if TYPE_CHECKING:
+    from names_dataset import NameDataset
 
 logger = logging.getLogger(__name__)
 

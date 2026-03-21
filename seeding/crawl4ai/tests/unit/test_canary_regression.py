@@ -13,12 +13,9 @@ This test imports PipelineRunner and tests its validation_results
 state to prove the fix works at the pipeline level.
 """
 
-import pytest
-from unittest.mock import patch, AsyncMock, MagicMock
 
 from config.schema import Influencer, Platform
 from services.validation.IngestionValidator import IngestionValidator
-from services.reporting.StatsCollector import StatsCollector
 
 
 # -- Fixtures: cross-platform influencers split across 3 jobs --

@@ -87,7 +87,7 @@ async def _test_llm_fallback_async():
     # Step 1: Prove regex is insufficient on this fixture
     regex_results = extract_handles_from_html(html_bytes.decode("utf-8", errors="ignore"))
     regex_handles = {r.handle.lower() for r in regex_results}
-    regex_names = {r.name.lower() for r in regex_results if r.name}
+    _regex_names = {r.name.lower() for r in regex_results if r.name}
 
     # Regex finds TikTok/YouTube handles but NOT names
     assert len(regex_handles & REGEX_HANDLES) >= 4, \

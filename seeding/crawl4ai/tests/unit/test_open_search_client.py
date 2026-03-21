@@ -6,7 +6,6 @@ Tests use mocked DDGS to avoid real network calls.
 """
 
 import json
-import tempfile
 from pathlib import Path
 from unittest.mock import MagicMock, patch
 
@@ -179,7 +178,7 @@ class TestRetryAndCache:
             patch("services.search.OpenSearchClient.BACKOFF_BASE_SECONDS", 0.01),
             patch("services.search.OpenSearchClient.BACKOFF_MAX_SECONDS", 0.05),
         ):
-            results = client.search(job)
+            _results = client.search(job)
 
         assert call_count > 1, f"Expected retries, got {call_count} calls"
 
@@ -195,7 +194,7 @@ class TestRetryAndCache:
         for sq in queries:
             cache.put(sq.query, [{"href": "https://cached.com", "title": "Cached", "body": ""}])
 
-        results = client.search(job)
+        _results = client.search(job)
 
         ddgs.text.assert_not_called()
         assert cache.hits == len(queries)

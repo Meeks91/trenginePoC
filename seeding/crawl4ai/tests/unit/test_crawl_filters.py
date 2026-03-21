@@ -5,8 +5,6 @@ Verifies PruningContentFilter preserves influencer names and handles
 in fixture pages. Tests run offline against saved markdown files.
 """
 
-import sys
-import os
 import re
 from pathlib import Path
 

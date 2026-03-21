@@ -10,12 +10,10 @@ Tests:
   - _merge_handles() static method
 """
 
-import pytest
 from config.schema import PageResult, Influencer, Platform
 from services.extraction.RegexHandleExtractor import ExtractedHandle, assign_names_from_headings
 from services.extraction.HandleExtractionService import (
     HandleExtractionService,
-    HandleExtractionResult,
     needs_llm,
 )
 

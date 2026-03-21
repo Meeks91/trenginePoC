@@ -54,7 +54,7 @@ async def _test_e2e_sampled_async():
     )
 
     print(f"\nRunning e2e sampled test: {job.category_key}/{job.sub.sub_name}/{job.platform.value}/{job.region.code.value}")
-    print(f"Sampling: 3 pages\n")
+    print("Sampling: 3 pages\n")
 
     with tempfile.TemporaryDirectory() as tmp:
         tmp_path = Path(tmp)
@@ -124,7 +124,7 @@ async def _test_e2e_sampled_async():
             assert isinstance(result.to_dict(), dict)
 
             # ── Print results ──
-            print(f"\nResults:")
+            print("\nResults:")
             print(f"  Sources crawled: {len(result.sources)}")
             print(f"  Influencers found: {len(result.all_influencers)}")
             print(f"  With handles: {len(with_handles)}")
@@ -134,7 +134,7 @@ async def _test_e2e_sampled_async():
                 ) if inf.handles else "no handle"
                 print(f"    {inf.name} ({handle_str})")
 
-            print(f"\nPipeline stats:")
+            print("\nPipeline stats:")
             print(f"  URLs discovered: {runner.stats.urls_discovered}")
             print(f"  Pages crawled: {runner.stats.pages_crawled}")
             print(f"  Pages extracted: {runner.stats.pages_extracted}")

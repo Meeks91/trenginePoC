@@ -3,7 +3,6 @@ Unit Tests: AuditService
 Verifies JSONL append-only audit logging for all pipeline phases.
 """
 
-import sys
 import json
 import tempfile
 from pathlib import Path

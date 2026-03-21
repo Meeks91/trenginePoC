@@ -15,7 +15,6 @@ import argparse
 import asyncio
 import os
 import sys
-from pathlib import Path
 
 
 from config.seed_schema import (
@@ -177,7 +176,7 @@ async def main() -> None:
 
         input_cost = phase_runner.stats.total_input_tokens * INPUT_COST_PER_1M / 1_000_000
         output_cost = phase_runner.stats.total_output_tokens * OUTPUT_COST_PER_1M / 1_000_000
-        print(f"\nPhase pipeline complete")
+        print("\nPhase pipeline complete")
         print(f"  Total seeds: {len(seeds)}")
         print(f"  Cache: {cache.hits} hits, {cache.misses} misses")
         print(f"  Estimated cost: ${input_cost + output_cost:.4f}")

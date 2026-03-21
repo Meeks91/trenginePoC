@@ -10,9 +10,8 @@ Verifies:
 import asyncio
 import tempfile
 from pathlib import Path
-from unittest.mock import patch, MagicMock, AsyncMock
+from unittest.mock import patch, MagicMock
 
-import pytest
 
 from config.schema import (
     Influencer, Platform, ErroredConfig,
@@ -89,7 +88,7 @@ class TestPipelineAbort:
                 MockAssembler.return_value = MagicMock()
                 runner._assembler = MockAssembler.return_value
 
-                seeds = asyncio.run(runner.run(jobs))
+                _seeds = asyncio.run(runner.run(jobs))
 
             call_kwargs = mock_reporter.generate.call_args
             passed_errored = call_kwargs.kwargs.get("errored_configs", [])

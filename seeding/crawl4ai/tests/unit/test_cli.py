@@ -4,8 +4,6 @@ Unit Tests: CLI Functions
 Verifies parse_job_key(), build_jobs(), and CURRENT_YEAR dynamic default.
 """
 
-import sys
-from pathlib import Path
 
 
 from cli import parse_job_key, build_jobs

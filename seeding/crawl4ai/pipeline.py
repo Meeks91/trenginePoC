@@ -9,6 +9,7 @@ Also supports a single-URL override mode that skips Search entirely.
 from __future__ import annotations
 
 import logging
+from typing import Any
 
 from config.seed_schema import SeedJob
 
@@ -43,7 +44,7 @@ class PerJobPipelineRunner(BasePipelineRunner):
     and enrich immediately after each config's search completes.
     """
 
-    def __init__(self, **kwargs) -> None:
+    def __init__(self, **kwargs: Any) -> None:
         super().__init__(**kwargs)
         # Cross-job accumulator for the per-job loop
         self._all_influencers: list[Influencer] = []
@@ -131,7 +132,7 @@ class PerJobPipelineRunner(BasePipelineRunner):
         )
 
         # Build SourceResult list
-        sources = self._assembler.build_source_results(
+        _sources = self._assembler.build_source_results(
             pages, extract_result.llm_handles,
         )
 
@@ -157,7 +158,7 @@ class PerJobPipelineRunner(BasePipelineRunner):
         RegionResult structure that is unique to per-job mode.
         """
         # Run the template (search+extract → name res → dedup → canary → report → save)
-        seeds = await self.run(jobs)
+        _seeds = await self.run(jobs)
 
         # Build nested RegionResult output from the SubResults created during
         # _on_config_search_finished() — this structure is per-job mode only

@@ -9,11 +9,9 @@ import tempfile
 from pathlib import Path
 from unittest.mock import patch
 
-import pytest
 
 from config.schema import (
-    Influencer, NameMentionRecord, Platform, SourceResult,
-    PageResult, SubResult, RegionResult,
+    Influencer, Platform, PageResult,
 )
 from services.reporting.ResultAssembler import ResultAssembler
 

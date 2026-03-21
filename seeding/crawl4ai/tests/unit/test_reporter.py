@@ -173,7 +173,7 @@ def test_influencer_roster_renders():
         assert "adammaxted2262" in content
         assert "victorianiamh" in content
         assert "lucydavis" in content
-        adam_line = [l for l in content.split("\n") if "Adam Maxted" in l][0]
+        adam_line = [line for line in content.split("\n") if "Adam Maxted" in line][0]
         assert "adammaxted" in adam_line
         assert "adammaxted2262" in adam_line
 

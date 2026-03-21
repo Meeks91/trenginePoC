@@ -10,17 +10,14 @@ Verifies:
 """
 
 import asyncio
-from dataclasses import dataclass, field
-from unittest.mock import AsyncMock, patch, MagicMock
 
-import pytest
 
-from config.schema import Platform, ErroredConfig
+from config.schema import Platform
 from config.seed_schema import (
     SeedJob, SubCategory, Region, RegionCode, Difficulty,
 )
 from config.settings import DDG_KILL_AFTER_N
-from base_pipeline import BasePipelineRunner, GatherResult, JobOutcome
+from base_pipeline import BasePipelineRunner
 from services.search.SearchService import SearchResults
 
 

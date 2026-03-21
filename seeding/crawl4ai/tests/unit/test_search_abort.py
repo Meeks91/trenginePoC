@@ -6,7 +6,6 @@ Verifies:
 - Zero queries → 0.0 threshold (no divide-by-zero)
 - Partial failures below threshold → no abort
 """
-from dataclasses import dataclass, field
 
 import pytest
 

@@ -12,8 +12,8 @@ Covers:
 """
 
 from dataclasses import dataclass, field
+from typing import Any
 
-import pytest
 
 from config.schema import CategoryCitation, Influencer, PageResult, Platform
 from services.enrichment.CategoryProvenanceTagger import CategoryProvenanceTagger
@@ -70,8 +70,8 @@ def gen_influencer(
 
 def gen_page_map(
     entries: list[tuple[str, _MockTaggedURL]],
-) -> dict[str, tuple[PageResult, _MockTaggedURL]]:
-    result = {}
+) -> dict[str, Any]:
+    result: dict[str, Any] = {}
     for url, tagged in entries:
         page = PageResult(
             url=url, query="", raw_markdown="", fit_markdown="",
@@ -237,7 +237,7 @@ class TestTagFromNameMention:
 
         CategoryProvenanceTagger.tag_from_name_mention(
             inf=inf,
-            mention=mention,
+            mention=mention,  # type: ignore[arg-type]
             sub_to_category=SUB_TO_CATEGORY,
         )
 
@@ -255,7 +255,7 @@ class TestTagFromNameMention:
 
         CategoryProvenanceTagger.tag_from_name_mention(
             inf=inf,
-            mention=mention,
+            mention=mention,  # type: ignore[arg-type]
             sub_to_category=SUB_TO_CATEGORY,
         )
 
@@ -275,7 +275,7 @@ class TestTagFromNameMention:
 
         CategoryProvenanceTagger.tag_from_name_mention(
             inf=inf,
-            mention=mention,
+            mention=mention,  # type: ignore[arg-type]
             sub_to_category=SUB_TO_CATEGORY,
         )
 
@@ -293,7 +293,7 @@ class TestTagFromNameMention:
 
         CategoryProvenanceTagger.tag_from_name_mention(
             inf=inf,
-            mention=mention,
+            mention=mention,  # type: ignore[arg-type]
             sub_to_category=SUB_TO_CATEGORY,
         )
 

@@ -12,7 +12,7 @@ import logging
 
 import os
 import re
-from urllib.parse import urlparse, urljoin
+from urllib.parse import urlparse
 
 from crawl4ai import AsyncWebCrawler, CrawlerRunConfig, BrowserConfig
 

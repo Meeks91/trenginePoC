@@ -25,8 +25,8 @@ from unittest.mock import patch, MagicMock
 
 import pytest
 
-from config import GEMINI_API_KEY, OUTPUT_TOKENS_PER_INFLUENCER, LLM_PROVIDER
-from config.schema import PipelineStats, JobBreakdown, Platform, Influencer
+from config import GEMINI_API_KEY, LLM_PROVIDER
+from config.schema import PipelineStats, JobBreakdown, Platform
 from services.audit.AuditService import AuditLog
 from services.crawling.CrawlService import CrawlService
 from services.extraction.LLMExtractionService import LLMExtractionService
@@ -205,7 +205,7 @@ async def test_e2e_from_html_real_llm():
                     assert any(fn in n for n in final_names), (
                         f"Name '{fn}' extracted by LLM but lost during enrichment/dedup"
                     )
-                print(f"  ✓ All LLM-extracted names survived pipeline")
+                print("  ✓ All LLM-extracted names survived pipeline")
 
                 # HARD: handles must not be lost through enrichment
                 handles_filled = sum(1 for inf in unique if inf.handles)

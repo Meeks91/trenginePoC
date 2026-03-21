@@ -22,7 +22,8 @@ import time
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from services.extraction.NameMentionTracker import NameMentionTracker
+    from collections import deque
+    from services.extraction.NameMentionTracker import NameMention, NameMentionTracker
 
 from ddgs import DDGS
 
@@ -141,7 +142,7 @@ class NameToHandleService:
         # Sort by frequency (most-cited first) and cap
         qualified.sort(key=lambda inf: len(inf.source_urls), reverse=True)
         to_resolve = qualified[:max_lookups]
-        capped = len(qualified) - len(to_resolve)
+        _capped = len(qualified) - len(to_resolve)
 
         name_only_count = sum(1 for inf in influencers if not inf.handles)
         logger.info(f"  {len(candidates)} need cross-platform, "
@@ -228,7 +229,7 @@ class NameToHandleService:
         names_to_resolve = [m.canonical for m in top_mentions]
 
         all_mentions = tracker.all_names
-        logger.info(f"\n  --- Name → Handle Resolution ---")
+        logger.info("\n  --- Name → Handle Resolution ---")
         logger.info(f"  {len(all_mentions)} total name buckets, "
               f"{len(names_to_resolve)} qualify "
               f"(≥{min_mentions} mentions, top {max_per_group}/group, reddit-sourced)")
@@ -309,16 +310,14 @@ class NameToHandleService:
         Returns:
             Tuple of (resolved_influencers, name_mention_records).
         """
-        from collections import deque
         from services.extraction.NameResolver import resolve_names_via_ddg
-        from services.extraction.NameMentionTracker import NameMention
 
         all_resolved: list[Influencer] = []
         all_records: list[NameMentionRecord] = []
         total_collisions = 0
         total_new = 0
 
-        logger.info(f"\n  --- Slot Recycling Name Resolution ---")
+        logger.info("\n  --- Slot Recycling Name Resolution ---")
         logger.info(f"  {len(group_queues)} groups, "
               f"max {max_slots_per_group} slots/group, "
               f"{len(known_handles)} known handles")

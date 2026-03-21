@@ -8,8 +8,7 @@ then asserts that:
   3. Duplicate influencers are actually deduped in final seeds
 """
 
-import asyncio
-from unittest.mock import AsyncMock, MagicMock, patch
+from unittest.mock import MagicMock, patch
 
 import pytest
 
@@ -17,7 +16,7 @@ from config.schema import Influencer, Platform, CategoryCitation
 from config.seed_schema import (
     SeedJob, SubCategory, Difficulty, Region, RegionCode,
 )
-from base_pipeline import BasePipelineRunner, GatherResult, JobOutcome
+from base_pipeline import BasePipelineRunner, GatherResult
 from services.extraction.NameMentionTracker import NameMentionTracker
 
 

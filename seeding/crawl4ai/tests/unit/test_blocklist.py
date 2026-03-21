@@ -14,7 +14,6 @@ from services.extraction.RegexHandleExtractor import (
     _IGNORE_SUBSTRINGS,
     _IGNORE_PREFIXES,
     _is_valid_handle,
-    is_blocked_handle,
     extract_handles_from_html,
 )
 from services.enrichment.InfluencerMerger import InfluencerMerger
@@ -204,7 +203,8 @@ def test_filter_blocked_calls_injected_handle_filter():
 
 def test_filter_blocked_injected_filter_can_block():
     """Injected filter returning True → entry is blocked."""
-    always_block = lambda h: True
+    def always_block(h: str) -> bool:
+        return True
     entries = [Influencer(name="X", handles={Platform.Instagram: "anything"}, most_seen_category="AI")]
     result = InfluencerMerger.filter_blocked(entries, handle_filter=always_block)
     assert len(result) == 0

@@ -12,6 +12,7 @@ from __future__ import annotations
 import asyncio
 import http.server
 import threading
+from collections.abc import Generator
 from pathlib import Path
 
 import pytest
@@ -71,7 +72,7 @@ class _FixtureHandler(http.server.SimpleHTTPRequestHandler):
 
 
 @pytest.fixture(scope="module")
-def fixture_server() -> str:
+def fixture_server() -> Generator[str, None, None]:
     """Start a localhost HTTP server serving the fixture HTML."""
     server = http.server.HTTPServer(("127.0.0.1", 0), _FixtureHandler)
     port = server.server_address[1]

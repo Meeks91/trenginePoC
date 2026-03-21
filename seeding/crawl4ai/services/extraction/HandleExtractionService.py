@@ -442,7 +442,7 @@ class HandleExtractionService:
     ) -> dict[str, str]:
         """Resolve YouTube channel IDs to @handles."""
         from services.extraction.YouTubeChannelResolver import resolve_youtube_channels
-        logger.info(f"\n  --- YouTube Channel Resolution ---")
+        logger.info("\n  --- YouTube Channel Resolution ---")
         return await resolve_youtube_channels(list(set(yt_channel_ids)))
 
     @staticmethod

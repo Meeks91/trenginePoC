@@ -12,7 +12,6 @@ NOTE: We mock crawl4ai at module level to avoid ImportError in test envs
 import sys
 from unittest.mock import patch, MagicMock
 
-import pytest
 
 # Mock crawl4ai before any pipeline imports (it's a C-extension dep)
 _mock_crawl4ai = MagicMock()
@@ -23,7 +22,7 @@ for _sub in [
 ]:
     sys.modules.setdefault(_sub, _mock_crawl4ai)
 
-from config.schema import NameMentionRecord, Influencer, Platform, SourceType
+from config.schema import NameMentionRecord, Platform, SourceType
 from services.extraction.NameMentionTracker import NameMentionTracker
 from pipeline import PipelineRunner
 
@@ -223,7 +222,7 @@ class TestResolutionEnabled:
         audit = MagicMock()
         audit.log = MagicMock()
 
-        
+
 
         entries: list = []
         runner._run_deferred_name_resolution(

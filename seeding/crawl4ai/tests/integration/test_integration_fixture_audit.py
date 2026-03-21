@@ -542,7 +542,7 @@ class TestHandleClassifierGating:
         regex_handles = [
             Influencer(name="Test", handles={Platform.Instagram: "test_user"}),
         ]
-        naked_handles = [
+        _naked_handles = [
             ExtractedHandle(handle="ambiguous1", platform=""),
         ]
         # has_tagged_handles = True means ambiguous handles are discarded
@@ -551,7 +551,7 @@ class TestHandleClassifierGating:
 
     def test_page_without_url_handles_falls_to_llm(self):
         """Page with no URL-tagged handles + ambiguous = falls through to LLM."""
-        from config.schema import Influencer, Platform
+        from config.schema import Influencer
         regex_handles = [
             Influencer(name="Naked", handles={}),  # Naked handle — no platform yet
         ]
@@ -914,10 +914,9 @@ class TestAggregateFixtureQuality:
 
 import asyncio
 import tempfile
-from unittest.mock import MagicMock, patch
+from unittest.mock import MagicMock
 
 from services.audit.AuditService import AuditLog
-from services.extraction.HandleExtractionService import HandleExtractionService
 from services.enrichment.NameToHandleService import NameToHandleService
 
 

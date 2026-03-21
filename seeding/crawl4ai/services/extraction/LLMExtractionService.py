@@ -8,11 +8,9 @@ Uses the fit_markdown from CrawlService directly — no re-crawl.
 from __future__ import annotations
 
 import asyncio
-import json
 import logging
 import os
 import random
-from pathlib import Path
 
 import litellm
 
@@ -228,7 +226,7 @@ class LLMExtractionService:
 
         raw_content = response.choices[0].message.content
         if not raw_content:
-            logger.warning(f"LLM returned empty response")
+            logger.warning("LLM returned empty response")
             return [], input_tokens, output_tokens or 0
 
         # Save raw response

@@ -19,6 +19,7 @@ from __future__ import annotations
 
 import logging
 from dataclasses import dataclass, field
+from typing import Any, TYPE_CHECKING
 
 from config.seed_schema import SeedJob
 from config import AUDIT_DIR, CURRENT_YEAR
@@ -26,14 +27,15 @@ from config.schema import CategoryCitation, Influencer, PageResult, Platform
 
 from services.audit.AuditService import AuditLog
 from services.search.SearchService import SearchResults
-from services.search.SearchCache import SearchCache
 from services.crawling.CrawlService import CrawlService
 from services.extraction.HandleExtractionService import HandleExtractionService, _to_handles
 from services.extraction.RegexHandleExtractor import ExtractedHandle
 from services.enrichment.NameToHandleService import NameToHandleService
-from services.enrichment.InfluencerMerger import InfluencerMerger
 from services.enrichment.CategoryProvenanceTagger import CategoryProvenanceTagger
 from services.extraction.NameCleaner import NameCleaner
+
+if TYPE_CHECKING:
+    from services.extraction.NameMentionTracker import NameMentionTracker
 
 from base_pipeline import BasePipelineRunner, GatherResult
 
@@ -65,7 +67,7 @@ class PhasePipelineRunner(BasePipelineRunner):
     def _report_mode(self) -> str:
         return "phase-pipeline"
 
-    def __init__(self, **kwargs) -> None:
+    def __init__(self, **kwargs: Any) -> None:
         super().__init__(**kwargs)
         # Accumulators populated by _on_config_search_finished
         self._url_bag: dict[str, TaggedURL] = {}
@@ -205,7 +207,6 @@ class PhasePipelineRunner(BasePipelineRunner):
 
         Returns (influencers, name_tracker).
         """
-        from services.extraction.NameMentionTracker import NameMentionTracker
 
         logger.info("="*70)
         logger.info("  PHASE 4: EXTRACT + MERGE")

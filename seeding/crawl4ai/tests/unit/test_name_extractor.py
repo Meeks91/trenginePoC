@@ -2,7 +2,6 @@
 Unit tests for NameExtractor — regex-based candidate name extraction.
 """
 
-import pytest
 from services.extraction.NameExtractor import extract_candidate_names, is_reddit_page
 
 

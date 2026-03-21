@@ -5,7 +5,6 @@ Tests LLM extraction with mocked litellm.acompletion.
 Verifies: token usage extraction, sampling, rate limiting, error handling.
 """
 
-import sys
 import asyncio
 import json
 import os
@@ -16,7 +15,7 @@ from unittest.mock import patch, AsyncMock, MagicMock
 
 from services.extraction.LLMExtractionService import LLMExtractionService
 from services.audit.AuditService import AuditLog
-from config.schema import PageResult, Influencer
+from config.schema import PageResult
 
 
 def _make_page(url="https://example.com/page", fit_markdown="## Top Influencers\n- Kayla Itsines @kayla_itsines\n- Joe Wicks"):

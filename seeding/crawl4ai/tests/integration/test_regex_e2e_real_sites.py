@@ -215,7 +215,7 @@ class TestClickAnalyticFitness:
         leaked = noise & all_handles
         assert not leaked, f"Noise leaked through blocklist: {leaked}"
         assert len(self.groups.get("naked", set())) == 0, (
-            f"clickanalytic should have 0 naked handles"
+            "clickanalytic should have 0 naked handles"
         )
 
 
