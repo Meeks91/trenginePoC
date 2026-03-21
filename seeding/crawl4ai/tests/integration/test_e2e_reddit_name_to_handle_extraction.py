@@ -1,10 +1,11 @@
 """
-E2E integration test — Reddit name extraction + real DDG resolution.
+E2E integration test — Reddit name extraction (deterministic, localhost only).
 
 Uses a trimmed HTML fixture from r/bodyweightfitness containing exactly 3
-comments with known influencer names.  crawl4ai produces fit_markdown
-from the HTML; NameExtractor extracts candidate names; NameResolver
-resolves them via real DDG queries.
+comments with known influencer names. crawl4ai produces fit_markdown from
+the HTML; NameExtractor extracts candidate names.
+
+DDG resolution (Phase 2) moved to scripts/test_nr_resolution.py — run manually.
 """
 
 from __future__ import annotations
@@ -19,10 +20,7 @@ import pytest
 
 from crawl4ai import AsyncWebCrawler, BrowserConfig, CrawlerRunConfig
 
-from services.audit.AuditService import AuditLog
 from services.extraction.NameExtractor import extract_candidate_names
-from services.extraction.NameResolver import resolve_names_via_ddg
-from services.extraction.RegexHandleExtractor import ExtractedHandle
 
 # ── Fixture path ──
 
@@ -49,11 +47,7 @@ NOISE_NAMES: set[str] = {
     "Log In",
 }
 
-# Expected DDG resolution — (name, expected_handle_substring, expected_platform).
-# handle_substring: DDG results vary, so we check that the handle *contains* this.
-EXPECTED_RESOLUTIONS: list[tuple[str, str, str]] = [
-    ("Jeff Nippard", "jeffnippard", "Instagram"),
-]
+# Phase 2 (DDG resolution) moved to scripts/test_nr_resolution.py — run manually.
 
 
 # ── Fixtures ──
@@ -131,44 +125,3 @@ class TestRedditNameExtraction:
     def test_all_names_are_multi_word(self, extracted_names: list[str]) -> None:
         for name in extracted_names:
             assert len(name.split()) >= 2, f"Single-word name leaked: '{name}'"
-
-
-# ══════════════════════════════════════════════════════════════════════
-# Phase 2: DDG Resolution (REAL network — hits DuckDuckGo)
-# ══════════════════════════════════════════════════════════════════════
-
-
-@pytest.mark.network
-class TestRedditDDGResolution:
-    """Verify resolve_names_via_ddg resolves known influencers via real DDG."""
-
-    def test_ddg_resolves_known_influencers(
-        self, extracted_names: list[str], tmp_path: Path
-    ) -> None:
-        from services.search.OpenSearchClient import OpenSearchClient
-        audit = AuditLog(tmp_path / "audit", "test_bwf")
-        search_client = OpenSearchClient(audit)
-        handles: list[ExtractedHandle] = resolve_names_via_ddg(
-            extracted_names,
-            audit,
-            search_client=search_client,
-            query_template='{name} Instagram YouTube TikTok',
-            category="Fitness",
-        )
-
-        # Structural assertions — every handle must be well-formed
-        for h in handles:
-            assert isinstance(h, ExtractedHandle)
-            assert h.handle, "handle string must be non-empty"
-            assert h.platform, "platform string must be non-empty"
-
-        # Ground-truth assertions — known influencers resolve to expected handles
-        for name, expected_substr, expected_platform in EXPECTED_RESOLUTIONS:
-            matched = [
-                h for h in handles
-                if expected_substr in h.handle.lower()
-            ]
-            assert matched, (
-                f"DDG did not resolve '{name}' to a handle containing "
-                f"'{expected_substr}'.  Got handles: {[h.handle for h in handles]}"
-            )
