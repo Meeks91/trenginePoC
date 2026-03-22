@@ -4,7 +4,7 @@
     "variants": [
       "Courtney Black"
     ],
-    "mention_count": 9,
+    "mention_count": 8,
     "source_types": [
       "llm",
       "non-reddit",
@@ -22,7 +22,7 @@
     "variants": [
       "Michael Griffiths"
     ],
-    "mention_count": 7,
+    "mention_count": 6,
     "source_types": [
       "llm",
       "non-reddit",
@@ -40,7 +40,7 @@
     "variants": [
       "Adam Maxted"
     ],
-    "mention_count": 7,
+    "mention_count": 6,
     "source_types": [
       "llm",
       "non-reddit",
@@ -76,29 +76,10 @@
     "variants": [
       "Sean Casey"
     ],
-    "mention_count": 6,
-    "source_types": [
-      "llm",
-      "non-reddit",
-      "regex"
-    ],
-    "source_urls": [
-      "http://127.0.0.1:0/gymfluencers_uk_fitness.html"
-    ],
-    "was_searched": false,
-    "resolved_handle": "",
-    "resolved_platform": ""
-  },
-  {
-    "canonical": "Lucy Davis",
-    "variants": [
-      "Lucy Davis"
-    ],
     "mention_count": 5,
     "source_types": [
       "llm",
-      "non-reddit",
-      "regex"
+      "non-reddit"
     ],
     "source_urls": [
       "http://127.0.0.1:0/gymfluencers_uk_fitness.html"
@@ -114,6 +95,23 @@
     ],
     "mention_count": 4,
     "source_types": [
+      "non-reddit"
+    ],
+    "source_urls": [
+      "http://127.0.0.1:0/gymfluencers_uk_fitness.html"
+    ],
+    "was_searched": false,
+    "resolved_handle": "",
+    "resolved_platform": ""
+  },
+  {
+    "canonical": "Lucy Davis",
+    "variants": [
+      "Lucy Davis"
+    ],
+    "mention_count": 4,
+    "source_types": [
+      "llm",
       "non-reddit"
     ],
     "source_urls": [

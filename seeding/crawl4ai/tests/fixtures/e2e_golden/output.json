@@ -5,6 +5,7 @@
     "tk_handle": "",
     "yt_handle": "TheBodyCoachTV",
     "most_seen_category": "Fitness",
+    "parent_category": "FITNESS",
     "seen_in_categories": [
       {
         "category": "FITNESS",
@@ -12,27 +13,7 @@
         "citations": 2
       }
     ],
-    "source_urls": [
-      "http://127.0.0.1:0/gymfluencers_uk_fitness.html"
-    ],
-    "extraction_methods": [
-      "llm"
-    ],
-    "citation_count": 1
-  },
-  {
-    "name": "Alex Beattie",
-    "ig_handle": "alex.beattie",
-    "tk_handle": "alex.beattie",
-    "yt_handle": "",
-    "most_seen_category": "Fitness",
-    "seen_in_categories": [
-      {
-        "category": "FITNESS",
-        "sub": "Fitness",
-        "citations": 2
-      }
-    ],
+    "total_citations": 2,
     "source_urls": [
       "http://127.0.0.1:0/gymfluencers_uk_fitness.html"
     ],
@@ -43,11 +24,12 @@
     "citation_count": 1
   },
   {
-    "name": "Lucy Davis",
-    "ig_handle": "",
-    "tk_handle": "",
-    "yt_handle": "Lucy",
+    "name": "Alex Beattie",
+    "ig_handle": "alex.beattie",
+    "tk_handle": "alex.beattie",
+    "yt_handle": "",
     "most_seen_category": "Fitness",
+    "parent_category": "FITNESS",
     "seen_in_categories": [
       {
         "category": "FITNESS",
@@ -55,6 +37,7 @@
         "citations": 2
       }
     ],
+    "total_citations": 2,
     "source_urls": [
       "http://127.0.0.1:0/gymfluencers_uk_fitness.html"
     ],
@@ -67,16 +50,18 @@
   {
     "name": "Courtney Black",
     "ig_handle": "courtneyblackfitness",
-    "tk_handle": "Courtney",
+    "tk_handle": "courtneyblackfitness",
     "yt_handle": "",
     "most_seen_category": "Fitness",
+    "parent_category": "FITNESS",
     "seen_in_categories": [
       {
         "category": "FITNESS",
         "sub": "Fitness",
-        "citations": 3
+        "citations": 2
       }
     ],
+    "total_citations": 2,
     "source_urls": [
       "http://127.0.0.1:0/gymfluencers_uk_fitness.html"
     ],
@@ -90,15 +75,17 @@
     "name": "Michael Griffiths",
     "ig_handle": "",
     "tk_handle": "",
-    "yt_handle": "Michael",
+    "yt_handle": "mac_griffiths",
     "most_seen_category": "Fitness",
+    "parent_category": "FITNESS",
     "seen_in_categories": [
       {
         "category": "FITNESS",
         "sub": "Fitness",
-        "citations": 2
+        "citations": 1
       }
     ],
+    "total_citations": 1,
     "source_urls": [
       "http://127.0.0.1:0/gymfluencers_uk_fitness.html"
     ],
@@ -114,6 +101,7 @@
     "tk_handle": "",
     "yt_handle": "esgfitness",
     "most_seen_category": "Fitness",
+    "parent_category": "FITNESS",
     "seen_in_categories": [
       {
         "category": "FITNESS",
@@ -121,6 +109,7 @@
         "citations": 2
       }
     ],
+    "total_citations": 2,
     "source_urls": [
       "http://127.0.0.1:0/gymfluencers_uk_fitness.html"
     ],
@@ -136,6 +125,7 @@
     "tk_handle": "bblisacross",
     "yt_handle": "",
     "most_seen_category": "Fitness",
+    "parent_category": "FITNESS",
     "seen_in_categories": [
       {
         "category": "FITNESS",
@@ -143,6 +133,7 @@
         "citations": 1
       }
     ],
+    "total_citations": 1,
     "source_urls": [
       "http://127.0.0.1:0/gymfluencers_uk_fitness.html"
     ],
@@ -156,15 +147,17 @@
     "name": "Adam Maxted",
     "ig_handle": "",
     "tk_handle": "",
-    "yt_handle": "adammaxted",
+    "yt_handle": "adammaxted2262",
     "most_seen_category": "Fitness",
+    "parent_category": "FITNESS",
     "seen_in_categories": [
       {
         "category": "FITNESS",
         "sub": "Fitness",
-        "citations": 2
+        "citations": 1
       }
     ],
+    "total_citations": 1,
     "source_urls": [
       "http://127.0.0.1:0/gymfluencers_uk_fitness.html"
     ],
@@ -180,6 +173,7 @@
     "tk_handle": "victorianiamh",
     "yt_handle": "",
     "most_seen_category": "Fitness",
+    "parent_category": "FITNESS",
     "seen_in_categories": [
       {
         "category": "FITNESS",
@@ -187,54 +181,12 @@
         "citations": 1
       }
     ],
+    "total_citations": 1,
     "source_urls": [
       "http://127.0.0.1:0/gymfluencers_uk_fitness.html"
     ],
     "extraction_methods": [
       "llm",
-      "regex"
-    ],
-    "citation_count": 1
-  },
-  {
-    "name": "Sean Casey",
-    "ig_handle": "",
-    "tk_handle": "",
-    "yt_handle": "Sean",
-    "most_seen_category": "Fitness",
-    "seen_in_categories": [
-      {
-        "category": "FITNESS",
-        "sub": "Fitness",
-        "citations": 2
-      }
-    ],
-    "source_urls": [
-      "http://127.0.0.1:0/gymfluencers_uk_fitness.html"
-    ],
-    "extraction_methods": [
-      "llm",
-      "regex"
-    ],
-    "citation_count": 1
-  },
-  {
-    "name": "",
-    "ig_handle": "",
-    "tk_handle": "",
-    "yt_handle": "The",
-    "most_seen_category": "Fitness",
-    "seen_in_categories": [
-      {
-        "category": "FITNESS",
-        "sub": "Fitness",
-        "citations": 1
-      }
-    ],
-    "source_urls": [
-      "http://127.0.0.1:0/gymfluencers_uk_fitness.html"
-    ],
-    "extraction_methods": [
       "regex"
     ],
     "citation_count": 1
@@ -245,6 +197,7 @@
     "tk_handle": "",
     "yt_handle": "seancaseyfitness111",
     "most_seen_category": "Fitness",
+    "parent_category": "FITNESS",
     "seen_in_categories": [
       {
         "category": "FITNESS",
@@ -252,9 +205,14 @@
         "citations": 1
       }
     ],
-    "source_urls": [],
-    "extraction_methods": [],
-    "citation_count": 0
+    "total_citations": 1,
+    "source_urls": [
+      "http://127.0.0.1:0/gymfluencers_uk_fitness.html"
+    ],
+    "extraction_methods": [
+      "regex"
+    ],
+    "citation_count": 1
   },
   {
     "name": "",
@@ -262,6 +220,7 @@
     "tk_handle": "",
     "yt_handle": "LucyDavisFit",
     "most_seen_category": "Fitness",
+    "parent_category": "FITNESS",
     "seen_in_categories": [
       {
         "category": "FITNESS",
@@ -269,8 +228,13 @@
         "citations": 1
       }
     ],
-    "source_urls": [],
-    "extraction_methods": [],
-    "citation_count": 0
+    "total_citations": 1,
+    "source_urls": [
+      "http://127.0.0.1:0/gymfluencers_uk_fitness.html"
+    ],
+    "extraction_methods": [
+      "regex"
+    ],
+    "citation_count": 1
   }
 ]

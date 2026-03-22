@@ -6,32 +6,29 @@
 | URLs discovered | 0 |
 | Pages crawled | 1 (0 failed, 0 dropped) |
 | Pages extracted (LLM) | 1 |
-| Influencers found (raw) | 22 |
-| Unique (after dedup) | 22 |
-| Handle fill rate | 20/22 |
+| Influencers found (raw) | 16 |
+| Unique (after dedup) | 16 |
+| Handle fill rate | 14/16 |
 | **Handle retrieval** | **0/0** |
 | Estimated LLM cost | $0.0006 |
-| Regex yield | 16.0 handles/page |
+| Regex yield | 10.0 handles/page |
 | **Configs** | **1 succeeded, 0 failed (1 total)** |
 
 ## Global Seed DB (Deduped)
-**13 unique seeds** across all configs
+**10 unique seeds** across all configs
 
 | # | IG Handle | TK Handle | YT Handle | Category |
 |---|-----------|-----------|-----------|----------|
-| 1 | — | — | The | Fitness / Fitness |
-| 2 | — | — | seancaseyfitness111 | Fitness / Fitness |
-| 3 | — | — | LucyDavisFit | Fitness / Fitness |
-| 4 | — | — | adammaxted | Fitness / Fitness |
-| 5 | alex.beattie | alex.beattie | — | Fitness / Fitness |
-| 6 | courtneyblackfitness | Courtney | — | Fitness / Fitness |
-| 7 | esgfitness | — | esgfitness | Fitness / Fitness |
-| 8 | thebodycoach | — | TheBodyCoachTV | Fitness / Fitness |
-| 9 | — | bblisacross | — | Fitness / Fitness |
-| 10 | — | — | Lucy | Fitness / Fitness |
-| 11 | — | — | Michael | Fitness / Fitness |
-| 12 | — | — | Sean | Fitness / Fitness |
-| 13 | — | victorianiamh | — | Fitness / Fitness |
+| 1 | — | — | seancaseyfitness111 | Fitness / Fitness |
+| 2 | — | — | LucyDavisFit | Fitness / Fitness |
+| 3 | — | — | adammaxted2262 | Fitness / Fitness |
+| 4 | alex.beattie | alex.beattie | — | Fitness / Fitness |
+| 5 | courtneyblackfitness | courtneyblackfitness | — | Fitness / Fitness |
+| 6 | esgfitness | — | esgfitness | Fitness / Fitness |
+| 7 | thebodycoach | — | TheBodyCoachTV | Fitness / Fitness |
+| 8 | — | bblisacross | — | Fitness / Fitness |
+| 9 | — | — | mac_griffiths | Fitness / Fitness |
+| 10 | — | victorianiamh | — | Fitness / Fitness |
 
 ## Canary Validation
 | Sub | Canary | Found? |
@@ -46,13 +43,13 @@
 
 | # | Name | Mentions | Source | URLs | Resolved? | Handle |
 |---|------|----------|--------|------|-----------|--------|
-| 1 | Courtney Black | 9 | llm, non-reddit, regex | 1 | ❌ |
-| 2 | Michael Griffiths | 7 | llm, non-reddit, regex | 1 | ❌ |
-| 3 | Adam Maxted | 7 | llm, non-reddit, regex | 1 | ❌ |
+| 1 | Courtney Black | 8 | llm, non-reddit, regex | 1 | ❌ |
+| 2 | Michael Griffiths | 6 | llm, non-reddit, regex | 1 | ❌ |
+| 3 | Adam Maxted | 6 | llm, non-reddit, regex | 1 | ❌ |
 | 4 | Victoria Niamh | 6 | llm, non-reddit, regex | 1 | ❌ |
-| 5 | Sean Casey | 6 | llm, non-reddit, regex | 1 | ❌ |
-| 6 | Lucy Davis | 5 | llm, non-reddit, regex | 1 | ❌ |
-| 7 | Love Island | 4 | non-reddit | 1 | ❌ |
+| 5 | Sean Casey | 5 | llm, non-reddit | 1 | ❌ |
+| 6 | Love Island | 4 | non-reddit | 1 | ❌ |
+| 7 | Lucy Davis | 4 | llm, non-reddit | 1 | ❌ |
 | 8 | Lisa Cross | 4 | llm, non-reddit, regex | 1 | ❌ |
 | 9 | Joe Wicks | 3 | llm, non-reddit | 1 | ❌ |
 | 10 | Alex Beattie | 3 | llm, non-reddit, regex | 1 | ❌ |
