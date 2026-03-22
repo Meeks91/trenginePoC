@@ -222,3 +222,50 @@ class TestNerValidation:
     def test_rejects_non_person_first_word_niche(self):
         assert NameCleanerService.clean_name("Niche The") is None
 
+
+class TestGameBlocklist:
+    """Regression tests for _GAME_BLOCKLIST additions."""
+
+    # ── Specific seeds.json offenders ──
+
+    def test_rejects_the_sims(self):
+        assert NameCleanerService.clean_name("The Sims") is None
+
+    def test_rejects_far_cry(self):
+        assert NameCleanerService.clean_name("Far Cry") is None
+
+    def test_rejects_indie_game(self):
+        assert NameCleanerService.clean_name("Indie Game") is None
+
+    def test_rejects_garry_mod(self):
+        assert NameCleanerService.clean_name("Garry Mod") is None
+
+    def test_rejects_marine_electrical(self):
+        # "Marine Electrical" is an occupation phrase blocked via _GENERIC_BLOCKLIST.
+        assert NameCleanerService.clean_name("Marine Electrical") is None
+
+    # ── Franchise names ──
+
+    def test_rejects_dark_souls(self):
+        assert NameCleanerService.clean_name("Dark Souls") is None
+
+    def test_rejects_final_fantasy(self):
+        assert NameCleanerService.clean_name("Final Fantasy") is None
+
+    def test_rejects_grand_theft(self):
+        assert NameCleanerService.clean_name("Grand Theft") is None
+
+    def test_rejects_star_wars(self):
+        assert NameCleanerService.clean_name("Star Wars") is None
+
+    def test_rejects_call_duty(self):
+        assert NameCleanerService.clean_name("Call Duty") is None
+
+    # ── Real gaming creator names must still pass ──
+
+    def test_accepts_jesse_cox(self):
+        assert NameCleanerService.clean_name("Jesse Cox") == "Jesse Cox"
+
+    def test_accepts_jim_sterling(self):
+        assert NameCleanerService.clean_name("Jim Sterling") == "Jim Sterling"
+

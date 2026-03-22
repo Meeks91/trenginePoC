@@ -128,6 +128,8 @@ class SearchService:
                 handle = RegexHandleExtractorService.extract_handles_from_url(r.url)
                 if handle and handle.handle.lower() not in seen_handles:
                     seen_handles.add(handle.handle.lower())
+                    platform_profile_url = r.url
+                    handle.source_url = platform_profile_url
                     direct_handles.append(handle)
                     self._audit.log(
                         "search", "direct_handle",

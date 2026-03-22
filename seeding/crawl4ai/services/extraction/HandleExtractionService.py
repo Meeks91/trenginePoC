@@ -73,7 +73,7 @@ class RegexExtractResult:
     """Output from _regex_extract — replaces unwieldy 6-element tuple."""
     regex_handles: list[Influencer] = field(default_factory=list)
     naked_handles: list[ExtractedHandle] = field(default_factory=list)
-    yt_channel_ids: list[str] = field(default_factory=list)
+    channel_id_to_source_url: dict[str, str] = field(default_factory=dict)
     page_url_handle_counts: dict[str, int] = field(default_factory=dict)
     page_naked_handle_counts: dict[str, int] = field(default_factory=dict)
     naked_handle_to_influencer: dict[str, Influencer] = field(default_factory=dict)
@@ -170,8 +170,8 @@ class HandleExtractionService:
 
         logger.info("  Regex found %d handles (%d naked @mentions)",
                     len(rx.regex_handles), len(rx.naked_handles))
-        if rx.yt_channel_ids:
-            logger.info("  Found %d YouTube channel IDs to resolve", len(rx.yt_channel_ids))
+        if rx.channel_id_to_source_url:
+            logger.info("  Found %d YouTube channel IDs to resolve", len(rx.channel_id_to_source_url))
 
         # ── Classify naked @handles (mechanical → LLM fallback) ──
         if rx.naked_handles:
@@ -181,12 +181,15 @@ class HandleExtractionService:
             )
 
         # ── YouTube Channel ID Resolution ──
-        if rx.yt_channel_ids:
-            yt_resolved = await self._resolve_youtube_channels(rx.yt_channel_ids)
-            for _cid, handle in yt_resolved.items():
+        if rx.channel_id_to_source_url:
+            yt_resolved = await self._resolve_youtube_channels(list(rx.channel_id_to_source_url.keys()))
+            for cid, handle in yt_resolved.items():
+                source_url = rx.channel_id_to_source_url.get(cid, "")
                 rx.regex_handles.append(Influencer(
                     name="",
                     handles={Platform.YouTube: handle},
+                    source_urls={source_url} if source_url else set(),
+                    extraction_methods={"regex"},
                 ))
 
         # ── Name Mention Tracking (all pages, no gate) ──
@@ -295,7 +298,7 @@ class HandleExtractionService:
         regex_handles: list[Influencer] = []
         naked_handles: list[ExtractedHandle] = []
         naked_handle_to_influencer: dict[str, Influencer] = {}
-        yt_channel_ids: list[str] = []
+        channel_id_to_source_url: dict[str, str] = {}
         page_url_handle_counts: dict[str, int] = {}
         page_naked_handle_counts: dict[str, int] = {}
 
@@ -323,12 +326,13 @@ class HandleExtractionService:
                     naked_count += 1
             page_url_handle_counts[page.url] = url_handle_count
             page_naked_handle_counts[page.url] = naked_count
-            yt_channel_ids.extend(RegexHandleExtractorService.extract_youtube_channel_ids(page.raw_markdown))
+            for cid in RegexHandleExtractorService.extract_youtube_channel_ids(page.raw_markdown):
+                channel_id_to_source_url.setdefault(cid, page.url)
 
         return RegexExtractResult(
             regex_handles=regex_handles,
             naked_handles=naked_handles,
-            yt_channel_ids=yt_channel_ids,
+            channel_id_to_source_url=channel_id_to_source_url,
             page_url_handle_counts=page_url_handle_counts,
             page_naked_handle_counts=page_naked_handle_counts,
             naked_handle_to_influencer=naked_handle_to_influencer,
@@ -493,6 +497,7 @@ class HandleExtractionService:
             _add(Influencer(
                 name=NameCleanerService.clean_name(dh.name) or "",
                 handles=_to_handles(dh.handle, dh.platform),
+                source_urls={dh.source_url} if dh.source_url else set(),
                 extraction_methods={"ddg_direct"},
             ))
 

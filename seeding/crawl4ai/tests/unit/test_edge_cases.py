@@ -26,10 +26,13 @@ class TestHandlesInNonContentRegions:
     """Handles inside <script>, <!-- comments -->, and attributes."""
 
     def test_handles_in_script_tags_extracted(self):
-        """@handles inside <script> blocks ARE extracted (regex is text-based).
+        r"""@handles inside <script> strings NOT extracted with (?<!\S) lookbehind.
 
-        The regex runs on raw HTML/markdown, not parsed DOM — so script
-        contents are visible. This tests the current behavior.
+        The regex runs on raw HTML/markdown — script contents are visible.
+        However, the (?<!\S) lookbehind now blocks @handles immediately
+        preceded by quotes ('"', "'") or other non-whitespace chars, so
+        JS string literals like `"@script_handle_xyz"` are correctly blocked.
+        This is better behaviour: JS string handles are not social mentions.
         """
         html = """
         <script>
@@ -38,9 +41,9 @@ class TestHandlesInNonContentRegions:
         <p>Real content here</p>
         """
         results = extract_handles_from_html(html)
-        # Script handles ARE extracted by the text-based regex
         handles = {r.handle.lower() for r in results}
-        assert "script_handle_xyz" in handles
+        # Correctly blocked — inside JS string, not a social mention
+        assert "script_handle_xyz" not in handles
 
     def test_handles_in_html_comments_extracted(self):
         """@handles inside <!-- comments --> ARE extracted (text-based regex)."""
@@ -335,6 +338,69 @@ class TestDomainSuffixFilter:
         results = extract_handles_from_html(html)
         handles = {r.handle.lower() for r in results}
         assert "kayla.itsines" in handles
+
+
+# ══════════════════════════════════════════════════════════════════════
+# 9g-2: Email pattern filter — regression tests for evolved.gg bug
+# Bug: *****@evolved.gg was extracted as ig_handle "evolved.gg".
+# Root cause: (?<!\w) lookbehind didn't block non-word chars like *.
+# Fix: (?<!\S) lookbehind + _EMAIL_PATTERN pre-filter.
+# ══════════════════════════════════════════════════════════════════════
+
+class TestEmailPatternFilter:
+    """Email-like strings must not be extracted as @handles."""
+
+    def test_obfuscated_email_not_extracted(self):
+        """*****@evolved.gg is an obfuscated email — must not extract evolved.gg.
+
+        Regression test for the feedspot gaming page bug where the bio text
+        '*****@evolved.gg' was captured as an Instagram handle.
+        """
+        html = "<p>Contact *****@evolved.gg for bookings</p>"
+        results = extract_handles_from_html(html)
+        handles = {r.handle.lower() for r in results}
+        assert "evolved.gg" not in handles
+
+    def test_real_email_not_extracted(self):
+        """user@example.com — neither part should be extracted as a handle."""
+        html = "<p>Email us at contact@brandname.com</p>"
+        results = extract_handles_from_html(html)
+        handles = {r.handle.lower() for r in results}
+        assert "brandname.com" not in handles
+        assert "contact" not in handles
+
+    def test_feedspot_bio_string_not_extracted(self):
+        """Full feedspot bio format regression: *****@evolved.gg 👨‍💼 Instagram Handle @average_jonas.
+
+        Only @average_jonas should be extracted — not evolved.gg.
+        """
+        bio = "*****@evolved.gg 👨\u200d💼 Instagram Handle @average_jonas"
+        results = extract_handles_from_html(bio)
+        handles = {r.handle.lower() for r in results}
+        assert "evolved.gg" not in handles
+        assert "average_jonas" in handles
+
+    def test_valid_at_mention_preceded_by_space_extracted(self):
+        """A real @mention preceded by whitespace must still be extracted."""
+        html = "<p>Follow @ninja for gaming content!</p>"
+        results = extract_handles_from_html(html)
+        handles = {r.handle.lower() for r in results}
+        assert "ninja" in handles
+
+    def test_at_handle_after_newline_extracted(self):
+        """@handle at start of a line (preceded by newline) must be extracted."""
+        html = "Gaming creator:\n@markiplier is the best"
+        results = extract_handles_from_html(html)
+        handles = {r.handle.lower() for r in results}
+        assert "markiplier" in handles
+
+    def test_email_before_handle_on_same_line_handle_extracted(self):
+        """If an email and a valid @mention appear on the same line, handle is kept."""
+        html = "<p>Email: jeff@jeffseid.com — Instagram @jeff_seid</p>"
+        results = extract_handles_from_html(html)
+        handles = {r.handle.lower() for r in results}
+        assert "jeff_seid" in handles
+        assert "jeffseid.com" not in handles
 
 
 # ══════════════════════════════════════════════════════════════════════

@@ -152,8 +152,105 @@ _GENERIC_BLOCKLIST = frozenset({
     "insurance catch", "two months", "places ashes",
     "have been", "photos will", "have astonishing",
     "demo and", "questions thread", "study the",
+    # Occupation / industry phrases extracted as names
+    "marine electrical", "british climate",
     # Single-word handles that pass as names
     "favikon_",
+})
+
+# Video games, franchises, gaming brands — not people
+_GAME_BLOCKLIST = frozenset({
+    # The Sims / simulation
+    "the sims", "the sim",
+    # Open-world / action
+    "far cry", "grand theft", "theft auto", "san andreas", "vice city", "liberty city",
+    "red dead", "dead redemption", "black myth", "myth wukong",
+    "watch dogs", "watch dog", "just cause",
+    # Call of Duty family
+    "call duty", "modern warfare", "advanced warfare", "black ops",
+    "infinite warfare", "ghost recon",
+    # Ubisoft franchises
+    "assassins creed", "assassin creed", "black flag", "rainbow six",
+    "splinter cell", "riders republic", "trials rising",
+    # EA / sports
+    "need speed", "fifa 23", "fifa 24", "madden nfl",
+    "nba 2k", "wwe 2k", "tony hawk", "skate 3",
+    "forza horizon", "gran turismo", "dirt rally", "assetto corsa", "project cars",
+    # FromSoftware / soulslike
+    "dark souls", "dark soul", "demon souls", "blood borne",
+    "elden ring", "shadow erdtree",
+    # Horror / survival
+    "resident evil", "silent hill", "silent hills",
+    "dead space", "dead island", "alan wake",
+    "dying light", "last us",
+    # RPG / JRPG
+    "final fantasy", "dragon quest", "dragon age", "mass effect",
+    "kingdom hearts", "persona 5", "shin megami", "devil may",
+    "baldurs gate", "baldur gate", "outer worlds",
+    "fire emblem", "xenoblade chronicles", "zero escape",
+    "disco elysium",
+    # Nintendo first-party
+    "super mario", "mario kart", "mario party", "mario odyssey",
+    "mario wonder", "mario bros", "donkey kong",
+    "animal crossing", "new horizons",
+    "super smash", "smash bros",
+    "luigis mansion", "splatoon 2", "splatoon 3",
+    "breath wild", "tears kingdom", "skyward sword",
+    "twilight princess", "ocarina time", "majoras mask", "wind waker",
+    "wii sports", "wii fit", "wii play",
+    # Pokémon variants (two-word color names pass _NAME_RE)
+    "pokemon red", "pokemon blue", "pokemon gold", "pokemon silver",
+    "pokemon diamond", "pokemon pearl", "pokemon sun", "pokemon moon",
+    "pokemon sword", "pokemon shield", "pokemon scarlet", "pokemon violet",
+    # Sony exclusives
+    "god war", "ghost tsushima", "stellar blade", "rise ronin",
+    "spider man", "spiderman", "guardians galaxy",
+    # Bethesda / open world
+    "star field", "elder scrolls", "fallout 4", "fall out",
+    "no mans", "mans sky",
+    # Rockstar
+    "rockstar games",
+    # Fighting games
+    "street fighter", "mortal kombat", "soul calibur",
+    "killer instinct", "guilty gear", "virtua fighter",
+    "tekken 8", "dragon ball", "jump force",
+    # Shooter / BR
+    "counter strike", "global offensive",
+    "apex legends", "rocket league", "fall guys", "fall guy",
+    "among us", "lethal company", "destiny 2",
+    "battle front", "jedi fallen", "jedi survivor", "old republic",
+    "star wars", "star craft", "war craft",
+    # MOBA / strategy
+    "league legends", "age empires", "total war",
+    "company heroes", "command conquer",
+    "diablo 4", "diablo 3", "hearth stone", "heroes storm",
+    # Open world survival / sandbox
+    "ark survival", "conan exiles", "genshin impact",
+    "honkai star", "zenless zone", "deep rock",
+    "stardew valley", "rim world", "dyson sphere",
+    "manor lords", "manor lord", "cities skylines",
+    "kerbal space", "sea thieves", "state decay",
+    # Misc popular titles
+    "sonic hedgehog", "pac man", "tomb raider",
+    "walking dead", "metal gear", "phantom pain",
+    "monster hunter", "monster hunters",
+    "borderlands 2", "border lands", "tiny tina", "wonder lands",
+    "hogwarts legacy", "suicide squad", "gotham knights",
+    "hollow knight", "dead cells", "outer wilds",
+    "slay spire", "vampire survivors",
+    "just dance", "oregon trail", "human fall", "fall flat",
+    "garry mod", "garrys mod",
+    "indie game", "indie games",
+    # Publishers / studios (two-word forms)
+    "riot games", "epic games", "electronic arts", "activision blizzard",
+    "square enix", "bandai namco", "cd projekt", "from software",
+    "larian studios", "naughty dog", "insomniac games",
+    "guerrilla games", "platinum games", "kojima productions",
+    "sucker punch", "santa monica", "devolver digital",
+    "paradox interactive", "creative assembly", "firaxis games",
+    "gearbox software", "respawn entertainment", "supergiant games",
+    "annapurna interactive", "coffee stain", "team cherry",
+    "xbox games", "sony interactive", "microsoft gaming",
 })
 
 # Non-content-creator celebrities — NOT Arnold, The Rock, Gordon Ramsay
@@ -175,7 +272,7 @@ _CELEBRITY_BLOCKLIST = frozenset({
 # Combined lowercase set for efficient lookup
 _ALL_NON_PERSON = (
     _BRAND_BLOCKLIST | _COUNTRY_BLOCKLIST | _NEWS_ORG_BLOCKLIST
-    | _GENERIC_BLOCKLIST | _CELEBRITY_BLOCKLIST
+    | _GENERIC_BLOCKLIST | _CELEBRITY_BLOCKLIST | _GAME_BLOCKLIST
 )
 
 # LinkedIn slug pattern: first-last-1234567

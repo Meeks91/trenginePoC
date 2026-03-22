@@ -112,7 +112,7 @@ class TestRegexExtract:
         raw = '<a href="https://youtube.com/channel/UC4qk9TtGhBKCkoWz5qGJcGg">channel</a>'
         page = _page("https://listicle.com/page", raw_md=raw)
         rx = HandleExtractionService._regex_extract([page])
-        assert "UC4qk9TtGhBKCkoWz5qGJcGg" in rx.yt_channel_ids
+        assert "UC4qk9TtGhBKCkoWz5qGJcGg" in rx.channel_id_to_source_url
 
     def test_skips_failed_pages(self):
         page = _page("https://failed.com", success=False, raw_md="@handle")

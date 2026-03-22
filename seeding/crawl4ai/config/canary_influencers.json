@@ -246,27 +246,27 @@
 
   "GAMING": {
     "Gaming": {
-      "US": ["Ninja", "Markiplier"],
+      "US": ["Markiplier", "Ninja", "MrBeast Gaming", "VanossGaming", "SSSniperWolf", "CoryxKenshin"],
       "UK": ["KSI", "DanTDM"]
     },
     "Game Reviews": {
-      "US": ["Skill Up", "videogamedunkey"],
+      "US": ["Skill Up", "videogamedunkey", "MatPat", "Game Theory"],
       "UK": []
     },
     "Gaming Guides / Tutorials": {
-      "US": ["TheRadBrad"],
+      "US": ["TypicalGamer", "Dream"],
       "UK": []
     },
     "Streaming / Let's Play": {
-      "US": ["Markiplier", "Jacksepticeye"],
+      "US": ["Markiplier", "jacksepticeye", "iShowSpeed", "xQc", "Pokimane"],
       "UK": ["KSI", "DanTDM"]
     },
     "Esports / Competitive": {
-      "US": ["Ninja", "shroud"],
+      "US": ["Ninja", "xQc", "Pokimane"],
       "UK": []
     },
     "Gaming Clips": {
-      "US": ["SypherPK", "Tfue"],
+      "US": ["SSSniperWolf", "iShowSpeed", "CoryxKenshin"],
       "UK": []
     }
   },

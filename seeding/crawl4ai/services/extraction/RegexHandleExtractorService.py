@@ -92,11 +92,19 @@ _URL_PATTERNS: list[tuple[re.Pattern, str]] = [
 ]
 
 # Plain text @handle (e.g. "Instagram: @run_with_tom")
-_AT_MENTION = re.compile(r'(?<!\w)@([A-Za-z0-9_.]{3,30})(?!\w)')
+# Uses (?<!\S) — not preceded by ANY non-whitespace char — so
+# "*****@evolved.gg" and "user@email.com" are both blocked.
+_AT_MENTION = re.compile(r'(?<!\S)@([A-Za-z0-9_.]{3,30})(?!\w)')
 
-# Instagram embed: "A post shared by Name (@handle)"
+# Email pattern: <nonwhitespace>@<word chars>.<tld>
+# Pre-filter: we strip these from text before running _AT_MENTION
+# to provide belt-and-suspenders coverage for any edge cases
+# (e.g. emails at start-of-string where (?<!\S) would also pass).
+_EMAIL_PATTERN = re.compile(r'[^\s@]+@[A-Za-z0-9._-]+\.[A-Za-z]{2,}')
+
+# Instagram embed: "A post shared by Name (@handle)" or "A post shared by (@handle)"
 _IG_EMBED = re.compile(
-    r'(?:A post shared by|shared by)\s+(.+?)\s+\(@([A-Za-z0-9_.]{2,30})\)',
+    r'(?:A post shared by|shared by)\s+(.+?)?\s*\(@([A-Za-z0-9_.]{2,30})\)',
     re.IGNORECASE,
 )
 
@@ -428,6 +436,7 @@ class ExtractedHandle:
     handle: str       # Bare handle without @
     platform: str     # "Instagram", "TikTok", "YouTube", "Twitter", or "" (unknown)
     name: str = ""    # Name if extractable from context (embed, heading)
+    source_url: str = ""  # Origin URL (set by DDG direct extraction)
 
 
 
@@ -471,7 +480,7 @@ class RegexHandleExtractorService:
         # 1. Instagram embed pattern FIRST (highest value — carries name)
         #    "A post shared by Name (@handle)"
         for match in _IG_EMBED.finditer(html):
-            name_raw = match.group(1)
+            name_raw = match.group(1) or ""
             handle = match.group(2)
             # Clean name: remove trailing " |" and similar
             name = re.sub(r'\s*[|/\\].*$', '', name_raw).strip()
@@ -484,8 +493,11 @@ class RegexHandleExtractorService:
                 _add(handle, platform)
 
         # 3. @mention extraction (lower confidence — no platform info)
-        #    Skip handles already seen from URL-based extraction (any platform)
-        for match in _AT_MENTION.finditer(html):
+        #    Skip handles already seen from URL-based extraction (any platform).
+        #    Pre-filter: remove email addresses (word@domain.tld) before scanning
+        #    so that obfuscated emails like "*****@evolved.gg" cannot match.
+        html_without_emails = _EMAIL_PATTERN.sub(" ", html)
+        for match in _AT_MENTION.finditer(html_without_emails):
             handle = match.group(1)
             if handle.lower().rstrip(".") not in seen_handles:
                 _add(handle, "", "")  # Empty platform = unknown

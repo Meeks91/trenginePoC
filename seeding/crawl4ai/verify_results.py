@@ -1,15 +1,16 @@
 """
 verify_results — Post-crawl quality check for seeds.json
 =========================================================
-Validates pipeline output across 8 dimensions:
+Validates pipeline output across 9 dimensions:
   1. Merge integrity (duplicate handles, missed merges)
   2. Name cleanliness (empty, blocklisted, invalid)
   3. Platform coverage (IG / TK / YT presence, per-type breakdown)
   4. Category correctness (most_seen_category is sub, not parent)
   5. Canary presence (per category/sub/region, scopeable by --category)
   6. Handle quality (URL fragments, LinkedIn slugs, etc.)
-  7. Name resolution signal quality (zero-citation seeds, empty extraction_methods)
-  8. Overall stats (counts, distributions, citation density warnings)
+  7. Provenance quality (zero-citation, empty methods — broken down by root cause)
+  8. Email handle leakage (handles that look like emails, e.g. evolved.gg)
+  9. Overall stats (counts, distributions, citation density warnings)
 
 Usage:
     python verify_results.py results/2026-03-21_3.13am_US/seeds.json
@@ -38,6 +39,12 @@ _NAME_RE = re.compile(
     r"[A-ZÀ-ÖØ-Þ][a-zA-ZÀ-ÖØ-öø-ÿ'\u2019-]+"
     r"\s[A-ZÀ-ÖØ-Þ][a-zA-ZÀ-ÖØ-öø-ÿ'\u2019-]+"
     r")\b"
+)
+# Domain suffixes that should not appear at the end of a handle — email leak signal.
+# Mirrors _DOMAIN_SUFFIXES in RegexHandleExtractorService.
+_HANDLE_DOMAIN_SUFFIX_RE = re.compile(
+    r"\.(?:com|net|org|io|co|gg|uk|ca|au|de|fr|es|ru|jp|cn|in|me|tv|ly|it|app|dev|ai)$",
+    re.IGNORECASE,
 )
 
 
@@ -446,11 +453,30 @@ def check_handle_quality(seeds: list[dict]) -> CheckResult:
 
 
 def check_name_resolution_quality(seeds: list[dict]) -> CheckResult:
-    result = CheckResult(name="Name Resolution Signal Quality")
+    """Check provenance quality — breaks down by root cause.
+
+    Known root causes of zero-citation / missing provenance:
+      - YT channel ID resolution: produces yt_handle-only seeds with no source_urls
+        (fixed: now stamps source_url from the resolved channel page)
+      - DDG direct handles: has extraction_methods but no source_urls
+        (fixed: now stamps source_url from the platform profile URL)
+    """
+    result = CheckResult(name="Provenance Quality")
     total = len(seeds)
 
     zero_citation = [s for s in seeds if s.get("citation_count", 0) == 0]
     no_methods = [s for s in seeds if not s.get("extraction_methods")]
+    ddg_no_source = [
+        s for s in seeds
+        if "ddg_direct" in s.get("extraction_methods", [])
+        and not s.get("source_urls")
+    ]
+    yt_only_no_source = [
+        s for s in seeds
+        if s.get("yt_handle") and not s.get("ig_handle") and not s.get("tk_handle")
+        and not s.get("source_urls")
+        and not s.get("extraction_methods")
+    ]
     nr_seeds = [
         s for s in seeds
         if "name_resolution" in s.get("extraction_methods", [])
@@ -464,14 +490,27 @@ def check_name_resolution_quality(seeds: list[dict]) -> CheckResult:
     result.add_info(f"  Of which via NR path: {len(nr_zero_citation)}")
     result.add_info(f"Seeds with empty extraction_methods: {len(no_methods)}")
 
-    if len(no_methods) > 0:
+    # Break down by root cause
+    if yt_only_no_source:
+        sample = [s.get("yt_handle", "?") for s in yt_only_no_source[:5]]
+        result.warn(
+            f"{len(yt_only_no_source)} YT-channel-only seeds have no source_urls — "
+            f"likely from channel ID resolution (should be 0 after fix). Sample: {sample}"
+        )
+    if ddg_no_source:
+        sample = [s.get("ig_handle") or s.get("yt_handle") or "?" for s in ddg_no_source[:5]]
+        result.warn(
+            f"{len(ddg_no_source)} DDG-direct seeds have no source_urls — "
+            f"(should be 0 after fix). Sample: {sample}"
+        )
+    if no_methods:
         sample = [
             s.get("ig_handle") or s.get("tk_handle") or s.get("yt_handle") or "?"
             for s in no_methods[:5]
         ]
         result.warn(
-            f"{len(no_methods)} seeds have no extraction_methods recorded "
-            f"(provenance gap) — sample: {sample}"
+            f"{len(no_methods)} seeds have no extraction_methods (provenance gap) — "
+            f"sample: {sample}"
         )
 
     zero_pct = len(zero_citation) * 100 // total if total else 0
@@ -480,6 +519,49 @@ def check_name_resolution_quality(seeds: list[dict]) -> CheckResult:
             f"High zero-citation rate: {zero_pct}% — "
             "consider whether NR threshold or page crawl depth needs tuning"
         )
+
+    return result
+
+
+# ══════════════════════════════════════════════════════════════════════
+# 8. Email Handle Leakage
+# ══════════════════════════════════════════════════════════════════════
+
+
+def check_email_handle_leakage(seeds: list[dict]) -> CheckResult:
+    """Detect handles that look like email addresses, not domain-based org names.
+
+    Regression check for the evolved.gg bug:
+      '*****@evolved.gg' was incorrectly extracted as ig_handle 'evolved.gg'.
+
+    Key distinction: gaming/esports orgs legitimately use .gg as their IG handle
+    (e.g. nrg.gg, mrsavage.gg — extracted from instagram.com/nrg.gg URLs).
+    We only flag handles with domain suffixes that have NO source_urls, because
+    those can't have come from URL extraction — they're @mention false positives.
+    """
+    result = CheckResult(name="Email Handle Leakage")
+    leaked: list[str] = []
+
+    for seed in seeds:
+        has_source = bool(seed.get("source_urls"))
+        for key in ("ig_handle", "tk_handle", "yt_handle"):
+            handle = seed.get(key, "")
+            if handle and _HANDLE_DOMAIN_SUFFIX_RE.search(handle) and not has_source:
+                leaked.append(
+                    f"{key}='{handle}' (seed: {seed.get('name', '?') or '(no name)'})"
+                )
+
+    if leaked:
+        for entry in leaked[:20]:
+            result.error(f"Email-like handle (no source URL): {entry}")
+        if len(leaked) > 20:
+            result.error(f"  ... and {len(leaked) - 20} more")
+        result.error(
+            f"Total suspicious handles: {len(leaked)} — check _AT_MENTION regex and "
+            "_DOMAIN_SUFFIXES blocklist in RegexHandleExtractorService"
+        )
+    else:
+        result.add_info("No email-like handles detected ✓")
 
     return result
 
@@ -620,6 +702,7 @@ def run_verification(
         check_canary_presence(seeds, region_filter=region_filter, category_filter=category_filter),
         check_handle_quality(seeds),
         check_name_resolution_quality(seeds),
+        check_email_handle_leakage(seeds),
         check_overall_stats(seeds),
     ]
 
