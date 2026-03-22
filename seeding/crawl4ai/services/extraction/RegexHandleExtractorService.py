@@ -28,6 +28,8 @@ from __future__ import annotations
 import re
 from dataclasses import dataclass
 
+from services.extraction.NameCleanerService import NameCleanerService
+
 
 
 # ══════════════════════════════════════════════════════════════════════
@@ -428,14 +430,6 @@ class ExtractedHandle:
     name: str = ""    # Name if extractable from context (embed, heading)
 
 
-# ══════════════════════════════════════════════════════════════════════
-# Heading-Based Name Extraction (imported here, used inside class)
-# ══════════════════════════════════════════════════════════════════════
-
-from services.extraction.NameCleanerService import NameCleanerService  # noqa: E402
-
-# Markdown headings: ## or ### (skip # — usually page titles)
-_HEADING_RE = re.compile(r'^#{2,4}\s+(.+?)$', re.MULTILINE)
 
 
 # ══════════════════════════════════════════════════════════════════════
@@ -531,67 +525,6 @@ class RegexHandleExtractorService:
         return None
 
     @staticmethod
-    def assign_names_from_headings(
-        handles: list[ExtractedHandle],
-        page_text: str,
-    ) -> None:
-        """Assign names to handles from nearest preceding markdown heading.
-
-        For structured listicle pages (joliapp, modash, feedspot) where each
-        influencer has a heading like '### Sabiha Divan' above their handle.
-
-        Only assigns if:
-          - Handle doesn't already have a name (or name == handle)
-          - Heading looks like a person name (2-4 words, capitalized)
-          - Heading is not a section title (blocked keywords)
-
-        Modifies handles in-place.
-        """
-        if not page_text or not handles:
-            return
-
-        # Build list of (position, cleaned_name) tuples via NameCleaner
-        headings: list[tuple[int, str]] = []
-        for match in _HEADING_RE.finditer(page_text):
-            raw = match.group(1).strip()
-            cleaned = NameCleanerService.clean_name(raw)
-            if cleaned:
-                headings.append((match.start(), cleaned))
-
-        if not headings:
-            return
-
-        # For each handle, find nearest preceding heading
-        for handle in handles:
-            if handle.name and handle.name != handle.handle:
-                continue  # Already has a real name
-
-            # Find handle position in page text
-            handle_pattern = (
-                f"@{re.escape(handle.handle)}"
-                if f"@{handle.handle}" in page_text
-                else re.escape(handle.handle)
-            )
-            h_match = re.search(handle_pattern, page_text, re.IGNORECASE)
-            if not h_match:
-                continue
-
-            handle_pos = h_match.start()
-
-            # Find nearest preceding heading
-            best_heading = None
-            best_dist = float("inf")
-            for heading_pos, heading_text in headings:
-                if heading_pos < handle_pos:
-                    dist = handle_pos - heading_pos
-                    if dist < best_dist:
-                        best_dist = dist
-                        best_heading = heading_text
-
-            if best_heading and best_dist <= 500:
-                if RegexHandleExtractorService._heading_name_matches_handle(best_heading, handle.handle):
-                    handle.name = best_heading
-
     @staticmethod
     def is_blocked_handle(handle: str) -> bool:
         """Check if a handle string is in the blocklist.
@@ -642,19 +575,6 @@ class RegexHandleExtractorService:
 
     # Internal:
 
-    @staticmethod
-    def _heading_name_matches_handle(name: str, handle: str) -> bool:
-        """True if any word from the heading name appears in the handle.
-
-        Prevents brand handles (e.g. @dfyne.official) from being assigned
-        a nearby person's heading name (e.g. "JOSE ROMERO").
-        Only considers words with 4+ characters to avoid false matches.
-        """
-        if not name or not handle:
-            return False
-        h_clean = handle.lower().replace("_", "").replace(".", "")
-        words = [w.lower() for w in name.split() if len(w) >= 4]
-        return any(word in h_clean for word in words)
 
 # ══════════════════════════════════════════════════════════════════════
 # Module-level aliases — restores pre-refactor public API surface

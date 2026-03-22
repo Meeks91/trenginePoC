@@ -28,6 +28,9 @@ from services.extraction.RegexHandleExtractorService import (
 
 logger = logging.getLogger(__name__)
 
+# Markdown headings: ## or ### (skip # — usually page titles)
+_HEADING_RE = re.compile(r'^#{2,4}\s+(.+?)$', re.MULTILINE)
+
 # Map platform strings from ExtractedHandle to Platform enum
 _PLATFORM_MAP: dict[str, Platform] = {
     "Instagram": Platform.Instagram,
@@ -301,7 +304,7 @@ class HandleExtractionService:
                 continue
             handles = RegexHandleExtractorService.extract_handles_from_html(page.raw_markdown)
             # Backfill names from nearby headings before creating Influencers
-            RegexHandleExtractorService.assign_names_from_headings(handles, page.raw_markdown)
+            HandleExtractionService._backfill_names_from_headings(handles, page.raw_markdown)
             url_handle_count = 0
             naked_count = 0
             for h in handles:
@@ -498,3 +501,75 @@ class HandleExtractionService:
             _add(inf)
 
         return merged
+
+    @staticmethod
+    def _backfill_names_from_headings(
+        handles: list[ExtractedHandle],
+        page_text: str,
+    ) -> None:
+        """Assign names to handles from nearest preceding markdown heading.
+
+        For structured listicle pages (joliapp, modash, feedspot) where each
+        influencer has a heading like '### Sabiha Divan' above her handle.
+
+        Only assigns if the handle has no real name yet and a valid person-name
+        heading is found within 500 characters.
+
+        Modifies handles in-place.
+        """
+        if not page_text or not handles:
+            return
+
+        headings: list[tuple[int, str]] = []
+        for match in _HEADING_RE.finditer(page_text):
+            raw = match.group(1).strip()
+            cleaned = NameCleanerService.clean_name(raw)
+            if cleaned:
+                headings.append((match.start(), cleaned))
+
+        if not headings:
+            return
+
+        for handle in handles:
+            if handle.name and handle.name != handle.handle:
+                continue
+
+            handle_pattern = (
+                f"@{re.escape(handle.handle)}"
+                if f"@{handle.handle}" in page_text
+                else re.escape(handle.handle)
+            )
+            h_match = re.search(handle_pattern, page_text, re.IGNORECASE)
+            if not h_match:
+                continue
+
+            handle_pos = h_match.start()
+            best_heading: str | None = None
+            best_dist = float("inf")
+            for heading_pos, heading_text in headings:
+                if heading_pos < handle_pos:
+                    dist = handle_pos - heading_pos
+                    if dist < best_dist:
+                        best_dist = dist
+                        best_heading = heading_text
+
+            if best_heading and best_dist <= 500:
+                if HandleExtractionService._heading_name_matches_handle(
+                    name=best_heading,
+                    handle=handle.handle,
+                ):
+                    handle.name = best_heading
+
+    @staticmethod
+    def _heading_name_matches_handle(name: str, handle: str) -> bool:
+        """True if any word from the heading name appears in the handle.
+
+        Prevents brand handles (e.g. @dfyne.official) from being assigned
+        a nearby person's heading name (e.g. "JOSE ROMERO").
+        Only considers words with 4+ characters to avoid false matches.
+        """
+        if not name or not handle:
+            return False
+        h_clean = handle.lower().replace("_", "").replace(".", "")
+        words = [w.lower() for w in name.split() if len(w) >= 4]
+        return any(word in h_clean for word in words)

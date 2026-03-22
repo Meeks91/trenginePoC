@@ -12,11 +12,11 @@ Tests:
 
 from config.schema import PageResult, Influencer, Platform
 from services.extraction.RegexHandleExtractorService import RegexHandleExtractorService, ExtractedHandle
-assign_names_from_headings = RegexHandleExtractorService.assign_names_from_headings
 from services.extraction.HandleExtractionService import (
     HandleExtractionService,
     needs_llm,
 )
+assign_names_from_headings = HandleExtractionService._backfill_names_from_headings
 
 
 # ══════════════════════════════════════════════════════════════════════
