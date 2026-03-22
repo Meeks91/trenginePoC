@@ -39,13 +39,13 @@ echo "✅ mypy passed."
 echo "Running ALL test suites (including network & slow tests) before push..."
 
 
-PYTEST_OPTS="-o addopts= -q --disable-warnings"
+PYTEST_OPTS=(-o "addopts=" -q --disable-warnings)
 if [ -z "$GEMINI_API_KEY" ]; then
     echo "⚠️  GEMINI_API_KEY not set — skipping @pytest.mark.network tests."
-    PYTEST_OPTS="$PYTEST_OPTS -m 'not network'"
+    PYTEST_OPTS+=(-m "not network")
 fi
 
-if ! python3 -m pytest tests/ $PYTEST_OPTS; then
+if ! python3 -m pytest tests/ "${PYTEST_OPTS[@]}"; then
     echo "========================================="
     echo "❌ PRE-PUSH FAILED: Comprehensive test suite broken!"
     echo "Please fix the failing tests before pushing."
