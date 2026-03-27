@@ -109,6 +109,18 @@ class Influencer:
         """Number of distinct source pages citing this influencer."""
         return len(self.source_urls)
 
+    @property
+    def total_citations(self) -> int:
+        """Sum of all sub-level citation counts across all seen_in_categories."""
+        return sum(cc.citations for cc in self.seen_in_categories)
+
+    @property
+    def parent_category(self) -> str:
+        """Top-level category key of the sub with the highest citation count."""
+        if not self.seen_in_categories:
+            return ""
+        return max(self.seen_in_categories, key=lambda cc: cc.citations).category
+
     def to_dict(self) -> dict:
         """Serialize to DB-ready dict with flattened platform handle columns."""
         return {
@@ -117,9 +129,11 @@ class Influencer:
             "tk_handle": self.tk_handle,
             "yt_handle": self.yt_handle,
             "most_seen_category": self.most_seen_category,
+            "parent_category": self.parent_category,
             "seen_in_categories": [
                 cc.to_dict() for cc in self.seen_in_categories
             ],
+            "total_citations": self.total_citations,
             "source_urls": sorted(self.source_urls),
             "extraction_methods": sorted(self.extraction_methods),
             "citation_count": self.citation_count,

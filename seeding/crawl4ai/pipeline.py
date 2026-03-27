@@ -24,7 +24,6 @@ from services.search.SearchService import SearchResults
 from services.crawling.CrawlService import CrawlService
 from services.extraction.HandleExtractionService import HandleExtractionService
 from services.extraction.NameMentionTracker import NameMentionTracker
-from services.handleResolution.CrossPlatformHandleResolverService import CrossPlatformHandleResolverService
 from services.reporting.PipelineReporter import PipelineReporter
 
 from base_pipeline import BasePipelineRunner, GatherResult
@@ -118,13 +117,6 @@ class PerJobPipelineRunner(BasePipelineRunner):
         if extract_result.name_tracker is not None:
             self._global_name_tracker.merge(extract_result.name_tracker)
 
-        # Enrich — cross-platform backfill
-        if not self.no_cross_platform_lookup:
-            resolver = CrossPlatformHandleResolverService(
-                audit,
-                search_client=self._build_search_client(audit),
-            )
-            extract_result.all_merged = resolver.resolve(extract_result.all_merged)
         unique = extract_result.all_merged
         self._stats.record_enrichment(
             unique_count=len(unique),
@@ -246,13 +238,6 @@ class PerJobPipelineRunner(BasePipelineRunner):
         )
         extract_result.all_merged.extend(resolved_influencers)
 
-        # Enrich — cross-platform backfill
-        if not self.no_cross_platform_lookup:
-            resolver = CrossPlatformHandleResolverService(
-                audit,
-                search_client=self._build_search_client(audit),
-            )
-            extract_result.all_merged = resolver.resolve(extract_result.all_merged)
         unique = extract_result.all_merged
         self._stats.record_enrichment(
             unique_count=len(unique),

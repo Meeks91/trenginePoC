@@ -150,8 +150,10 @@ class TestMultiConfigCategoryProvenance:
         )
         d = inf.to_dict()
         assert d["most_seen_category"] == "FITNESS"
+        assert d["parent_category"] == "FITNESS"
         assert len(d["seen_in_categories"]) == 2
         assert d["seen_in_categories"][0] == {
             "category": "FITNESS", "sub": "Gym", "citations": 3,
         }
+        assert d["total_citations"] == 4
         assert "categories" not in d

@@ -42,21 +42,21 @@ def extract_handle_from_url(url: str, platform: str) -> Optional[str]:
             results to the requested platform only).
 
     Returns:
-        Handle prefixed with @ (e.g. "@kayla_itsines"), or None.
+        Bare handle (e.g. "kayla_itsines"), or None.
     """
     result = _regex_extract(url)
     if result is None:
         return None
     if result.platform != platform:
         return None
-    return f"@{result.handle.lower()}"
+    return result.handle.lower()
 
 
 def extract_handle_from_text(text: str) -> Optional[str]:
-    """Extract the first @handle from a block of text."""
+    """Extract the first @handle from a block of text. Returns bare handle (no @)."""
     m = _AT_HANDLE_PATTERN.search(text)
     if m:
         handle = m.group(1).lower()
         if len(handle) > 2:
-            return f"@{handle}"
+            return handle
     return None

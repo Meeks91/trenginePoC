@@ -17,7 +17,6 @@ from unittest.mock import patch, MagicMock
 
 from config.schema import Influencer, Platform
 from services.influencerProvenance.CategoryProvenanceTaggerService import CategoryProvenanceTagger
-from services.handleResolution.CrossPlatformHandleResolverService import CrossPlatformHandleResolverService
 from config.seed_schema import (
     SeedJob, SubCategory, Region, RegionCode, Difficulty,
 )
@@ -126,10 +125,7 @@ class _E2EPipelineRunner(BasePipelineRunner):
             )
         self._stats.record_extraction(extract_result)
 
-        resolver = CrossPlatformHandleResolverService(
-            self._audit, search_client=MagicMock(), delay_seconds=0,
-        )
-        unique = resolver.resolve(extract_result.all_merged)
+        unique = extract_result.all_merged
         self._stats.record_enrichment(
             unique_count=len(unique),
             handles_filled=sum(1 for inf in unique if inf.handles),

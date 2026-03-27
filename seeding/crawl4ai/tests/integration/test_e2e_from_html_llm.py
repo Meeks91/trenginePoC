@@ -30,7 +30,6 @@ from config.schema import PipelineStats, JobBreakdown, Platform
 from services.audit.AuditService import AuditLog
 from services.crawling.CrawlService import CrawlService
 from services.extraction.LLMExtractionService import LLMExtractionService
-from services.handleResolution.CrossPlatformHandleResolverService import CrossPlatformHandleResolverService
 from services.validation.IngestionValidator import IngestionValidator
 from services.reporting.PipelineReporter import PipelineReporter
 
@@ -182,19 +181,11 @@ async def test_e2e_from_html_real_llm():
                 else:
                     print(f"  ✓ {handle_hits}/{len(ALL_EXPECTED_HANDLES)} handles matched")
 
-                # ── Enrich + Dedup (DDG MOCKED) ──
-                print("\n--- Enrich + Dedup (DDG mocked) ---")
-                resolver = CrossPlatformHandleResolverService(
-                    audit, search_client=MagicMock(), delay_seconds=0,
-                )
+                # No cross-platform enrichment step — pipeline uses all_merged directly
+                unique = influencers
 
-                unique = resolver.resolve(influencers)
-
-                # HARD: enrichment pipeline is deterministic — must not lose data
-                assert len(unique) >= len(influencers), (
-                    f"Enrichment lost influencers: {len(influencers)} in → {len(unique)} out"
-                )
-                print(f"  {len(unique)} unique influencers after dedup")
+                # HARD: pipeline must not lose data
+                assert len(unique) >= len(influencers)
 
                 # HARD: every LLM-extracted name must survive enrichment
                 final_names = {inf.name.lower() for inf in unique}

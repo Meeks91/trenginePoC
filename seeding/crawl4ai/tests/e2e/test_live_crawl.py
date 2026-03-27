@@ -10,7 +10,6 @@ from unittest.mock import MagicMock
 from services.audit.AuditService import AuditLog
 from services.crawling.CrawlService import CrawlService
 from services.extraction.HandleExtractionService import HandleExtractionService
-from services.handleResolution.CrossPlatformHandleResolverService import CrossPlatformHandleResolverService
 from config.schema import Platform
 from config import AUDIT_DIR
 
@@ -115,7 +114,6 @@ class TestLiveCrawl:
         audit = AuditLog(AUDIT_DIR, "test_live_full")
         crawl_svc = CrawlService(audit)
         handle_svc = HandleExtractionService(audit)
-        resolver = CrossPlatformHandleResolverService(audit, search_client=MagicMock())
 
         pages = await crawl_svc.crawl_urls([
             (CLOUDKITCHENS_URL, "test_query"),
@@ -132,7 +130,7 @@ class TestLiveCrawl:
             direct_handles=[],
         )
 
-        unique = resolver.resolve(result.all_merged)
+        unique = result.all_merged
 
         # ── Explicit assertions ──
         all_handles: set[str] = set()

@@ -164,6 +164,8 @@ _IGNORE_PLACEHOLDERS = frozenset({
 _IGNORE_PLATFORM_NAMES = frozenset({
     "instagram", "tiktok", "youtube", "twitter",
     "facebook", "snapchat", "pinterest",
+    # Streaming platforms (not social networks but leak as handles)
+    "twitch", "kick", "discord", "steam",
 })
 
 # ── Listicle / aggregator site accounts ──
@@ -261,6 +263,8 @@ _IGNORE_BRANDS_TECH = frozenset({
     "openai", "tiktok_us", "whatsapp", "telegram",
     "primevideo", "amazonprime", "disneyplus", "hbomax", "hulu",
     "paramount", "peacock",
+    # Gaming hardware / peripheral brands
+    "razer", "playstation", "xbox", "steelseries", "logitechg",
 })
 
 # ── Brands: AI companies / products ──
@@ -328,6 +332,8 @@ _IGNORE_BRANDS_AUTO = frozenset({
 _IGNORE_BRANDS_RETAIL = frozenset({
     "walmart", "target", "costco", "ikea", "homedepot",
     "scrubdaddy", "duolingo", "crocs",
+    "hottopic", "bathandbodyworks", "oldspice", "redbullgaming",
+    "nyse", "streamlabs",
 })
 
 # ── Generic non-person terms ──

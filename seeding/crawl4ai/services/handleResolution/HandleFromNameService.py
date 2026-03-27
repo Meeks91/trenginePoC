@@ -9,8 +9,6 @@ Two resolution paths:
                                 This is the ONLY path for name-only → handle.
   2. resolve_with_recycling() — per-group DDG resolution with known-handle collision recycling.
 
-Cross-platform backfill (given a handle, find other platform handles) has moved to
-CrossPlatformHandleResolverService.
 
 Supports Instagram, TikTok, YouTube.
 Includes exponential backoff for rate limiting.
@@ -33,10 +31,6 @@ from services.extraction.NameCleanerService import NameCleanerService
 from config import (
     ENRICH_DELAY_SECONDS,
     NAME_RESOLUTION_MIN_MENTIONS, NAME_RESOLUTION_MAX_PER_SUB,
-)
-from services.handleResolution.patterns import (
-    extract_handle_from_url,
-    extract_handle_from_text,
 )
 
 logger = logging.getLogger(__name__)
@@ -298,18 +292,3 @@ class HandleFromNameService:
             resolved_platform=platform_str,
         )
 
-    # ── Internal Search ──
-
-    def _search_handle(self, name: str, platform: Platform, domain: str) -> str | None:
-        """Search for an influencer's handle via the injected search client."""
-        query = f'"{name}" {domain}'
-        results = self._search_client.search_text(query, max_results=2)
-        for r in results:
-            handle = extract_handle_from_url(r.get("href", ""), platform.value)
-            if handle:
-                return handle
-            text = r.get("title", "") + " " + r.get("body", "")
-            handle = extract_handle_from_text(text)
-            if handle:
-                return handle
-        return None

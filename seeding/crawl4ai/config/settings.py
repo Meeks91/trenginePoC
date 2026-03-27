@@ -72,9 +72,6 @@ LLM_DELAY_SECONDS = 0 if USE_OLLAMA else 2  # Pause between LLM calls (API rate 
 
 # Enrich
 ENRICH_DELAY_SECONDS = 1         # Pause between DDG handle-backfill queries
-# Max cross-platform DDG lookups per job (1 job = 1 subcat × 1 region).
-# Total budget across a full run = numSubCats × CROSS_PLATFORM_MAX_LOOKUPS × numRegions.
-CROSS_PLATFORM_MAX_LOOKUPS = 5
 
 # Retry / Backoff (applies to DDG search + enrich, and LLM calls)
 MAX_RETRIES = 3                  # Max retry attempts before giving up on a request

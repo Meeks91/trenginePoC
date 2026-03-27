@@ -87,7 +87,6 @@ class BasePipelineRunner(abc.ABC):
         *,
         sample_n: int | None = None,
         no_bfs: bool = False,
-        no_cross_platform_lookup: bool = False,
         cache: SearchCache | None = None,
         search_client_type: SearchClientType = SearchClientType.OPEN,
         name_resolution: bool = NAME_RESOLUTION_ENABLED,
@@ -96,7 +95,6 @@ class BasePipelineRunner(abc.ABC):
     ) -> None:
         self.sample_n = sample_n
         self.no_bfs = no_bfs
-        self.no_cross_platform_lookup = no_cross_platform_lookup
         self._cache = cache
         self._search_client_type = search_client_type
         self.name_resolution = name_resolution

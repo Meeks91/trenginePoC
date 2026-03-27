@@ -35,7 +35,6 @@ import pytest
 
 from config.schema import Influencer, Platform
 from services.influencerProvenance.CategoryProvenanceTaggerService import CategoryProvenanceTagger
-from services.handleResolution.CrossPlatformHandleResolverService import CrossPlatformHandleResolverService
 from config.seed_schema import (
     SeedJob, SubCategory, Region, RegionCode, Difficulty,
 )
@@ -158,15 +157,7 @@ class _E2EPipelineRunner(BasePipelineRunner):
             )
         self._stats.record_extraction(extract_result)
 
-        mock_search_client = MagicMock()
-        mock_search_client.search_text.return_value = []
-        mock_search_client.nr_query_template.return_value = '{name} Instagram YouTube TikTok'
-        resolver = CrossPlatformHandleResolverService(
-            self._audit,
-            search_client=mock_search_client,
-            delay_seconds=0,
-        )
-        unique = resolver.resolve(extract_result.all_merged)
+        unique = extract_result.all_merged
         self._stats.record_enrichment(
             unique_count=len(unique),
             handles_filled=sum(1 for inf in unique if inf.handles),

@@ -30,7 +30,6 @@ from services.search.SearchService import SearchResults
 from services.crawling.CrawlService import CrawlService
 from services.extraction.HandleExtractionService import HandleExtractionService, _to_handles
 from services.extraction.RegexHandleExtractorService import ExtractedHandle
-from services.handleResolution.CrossPlatformHandleResolverService import CrossPlatformHandleResolverService
 from services.influencerProvenance.CategoryProvenanceTaggerService import CategoryProvenanceTagger
 from services.extraction.NameCleanerService import NameCleanerService
 
@@ -236,13 +235,6 @@ class PhasePipelineRunner(BasePipelineRunner):
         )
         self._stats.record_extraction(extract_result)
 
-        # Enrich — cross-platform backfill
-        if not self.no_cross_platform_lookup:
-            resolver = CrossPlatformHandleResolverService(
-                audit,
-                search_client=self._build_search_client(audit),
-            )
-            extract_result.all_merged = resolver.resolve(extract_result.all_merged)
         unique = extract_result.all_merged
         self._stats.record_enrichment(
             unique_count=len(unique),

@@ -18,18 +18,18 @@ from config.schema import Platform
 # Fixtures:
 
 INSTAGRAM_URLS = [
-    ("https://www.instagram.com/kayla_itsines/", "@kayla_itsines"),
-    ("https://instagram.com/Fitguru", "@fitguru"),
+    ("https://www.instagram.com/kayla_itsines/", "kayla_itsines"),
+    ("https://instagram.com/Fitguru", "fitguru"),
 ]
 
 TIKTOK_URLS = [
-    ("https://www.tiktok.com/@charlidamelio", "@charlidamelio"),
-    ("https://tiktok.com/@dance_queen/", "@dance_queen"),
+    ("https://www.tiktok.com/@charlidamelio", "charlidamelio"),
+    ("https://tiktok.com/@dance_queen/", "dance_queen"),
 ]
 
 YOUTUBE_URLS = [
-    ("https://www.youtube.com/@mkbhd", "@mkbhd"),
-    ("https://youtube.com/c/PewDiePie", "@pewdiepie"),
+    ("https://www.youtube.com/@mkbhd", "mkbhd"),
+    ("https://youtube.com/c/PewDiePie", "pewdiepie"),
 ]
 
 JUNK_URLS = [
@@ -77,7 +77,7 @@ class TestExtractHandleFromUrl:
 class TestExtractHandleFromText:
 
     def test_extracts_at_handle(self):
-        assert extract_handle_from_text("Follow @fitguru for tips") == "@fitguru"
+        assert extract_handle_from_text("Follow @fitguru for tips") == "fitguru"
 
     def test_returns_none_for_no_handle(self):
         assert extract_handle_from_text("No handles here") is None
@@ -86,10 +86,10 @@ class TestExtractHandleFromText:
         assert extract_handle_from_text("@ab is too short") is None
 
     def test_handles_multiple_returns_first(self):
-        assert extract_handle_from_text("@first and @second") == "@first"
+        assert extract_handle_from_text("@first and @second") == "first"
 
     def test_lowercases_handle(self):
-        assert extract_handle_from_text("@FitGuru") == "@fitguru"
+        assert extract_handle_from_text("@FitGuru") == "fitguru"
 
 
 class TestPlatformDomains:

@@ -218,7 +218,9 @@ class TestInfluencerMergeAndSerialize:
         assert d["tk_handle"] == "kayla_tt"
         assert d["yt_handle"] == "kaylayt"
         assert d["most_seen_category"] == "FITNESS"
+        assert d["parent_category"] == "FITNESS"
         assert len(d["seen_in_categories"]) == 2
+        assert d["total_citations"] == 2
         assert d["source_urls"] == ["https://a.com"]
         assert d["extraction_methods"] == ["regex"]
         assert d["citation_count"] == 1

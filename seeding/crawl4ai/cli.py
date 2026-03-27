@@ -85,8 +85,6 @@ async def main() -> None:
                         help="Only send N pages per job to LLM (rest crawled but not extracted)")
     parser.add_argument("--bfs", action="store_true", default=False,
                         help="Enable BFS link-following (crawl sublinks on each page)")
-    parser.add_argument("--cross-platform-lookup", action="store_true", default=False,
-                        help="Enable DDG lookup for cross-platform handles")
     parser.add_argument("--region", type=str, default=None,
                         help="Filter jobs by region code (e.g. US, UK)")
     parser.add_argument("--phase", action="store_true",
@@ -111,7 +109,6 @@ async def main() -> None:
     runner = PerJobPipelineRunner(
         sample_n=args.sample,
         no_bfs=not args.bfs,
-        no_cross_platform_lookup=not args.cross_platform_lookup,
         cache=cache,
         search_client_type=search_client_type,
         name_resolution=args.name_resolution,
@@ -166,7 +163,6 @@ async def main() -> None:
         phase_runner = PhasePipelineRunner(
             sample_n=args.sample,
             no_bfs=not args.bfs,
-            no_cross_platform_lookup=not args.cross_platform_lookup,
             cache=cache,
             search_client_type=search_client_type,
             name_resolution=args.name_resolution,
