@@ -112,7 +112,14 @@ class CategoryProvenanceTagger:
         inf: Influencer,
         cat_sub_counts: dict[tuple[str, str], int],
     ) -> None:
-        """Build seen_in_categories + most_seen_category from a counts dict."""
+        """Build seen_in_categories + most_seen_category from a counts dict.
+
+        Parent subs (where category.lower() == sub.lower(), e.g. BEAUTY/'Beauty')
+        are excluded from the most_seen_category winner pool when specific subs
+        also exist. This promotes diversity — creators fall into specific subs
+        instead of the catch-all parent. The parent sub still appears in
+        seen_in_categories for full audit transparency.
+        """
         inf.seen_in_categories = [
             CategoryCitation(category=cat, sub=sub, citations=count)
             for (cat, sub), count in sorted(
@@ -123,11 +130,23 @@ class CategoryProvenanceTagger:
         sub_totals: dict[str, int] = {}
         for (_cat, sub), count in cat_sub_counts.items():
             sub_totals[sub] = sub_totals.get(sub, 0) + count
-        max_count = max(sub_totals.values())
-        leading_subs = [sub for sub, count in sub_totals.items() if count == max_count]
+
+        parent_sub_names = {
+            sub
+            for (cat, sub) in cat_sub_counts
+            if cat.lower() == sub.lower()
+        }
+        specific_sub_totals = {
+            sub: count
+            for sub, count in sub_totals.items()
+            if sub not in parent_sub_names
+        }
+        candidate_totals = specific_sub_totals if specific_sub_totals else sub_totals
+
+        max_count = max(candidate_totals.values())
+        leading_subs = [sub for sub, count in candidate_totals.items() if count == max_count]
         if len(leading_subs) == 1:
             inf.most_seen_category = leading_subs[0]
         else:
-            alphabetically_first_winner_sub = min(leading_subs)
-            inf.most_seen_category = alphabetically_first_winner_sub
+            inf.most_seen_category = min(leading_subs)
 

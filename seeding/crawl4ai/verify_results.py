@@ -293,6 +293,7 @@ def check_platform_coverage(seeds: list[dict]) -> CheckResult:
 def check_category_correctness(seeds: list[dict]) -> CheckResult:
     result = CheckResult(name="Category Correctness (most_seen_category)")
     parent_keys = _load_parent_category_keys()
+    parent_keys_lower = {k.lower() for k in parent_keys}
 
     parent_violations: list[str] = []
     empty_category = 0
@@ -306,7 +307,7 @@ def check_category_correctness(seeds: list[dict]) -> CheckResult:
 
         category_dist[msc] += 1
 
-        if msc in parent_keys:
+        if msc.lower() in parent_keys_lower:
             name = seed.get("name", "?") or "(no name)"
             parent_violations.append(f"'{name}' → {msc}")
 

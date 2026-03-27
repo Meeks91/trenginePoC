@@ -1,7 +1,7 @@
 # Crawl4AI Seed Crawler — Architecture
 
 > Exhaustive reference for the crawl4ai CLI seed pipeline.
-> Last updated: 2026-03-21
+> Last updated: 2026-03-26
 
 ---
 
@@ -584,7 +584,7 @@ crawl4ai/
 | `NameCleaner` | Regex extraction (`_NAME_RE.search()`) replaces stripping pipeline. Brand/country/news/CTA blocklists, URL-decode, LinkedIn slug rejection. |
 | `InfluencerMerger` | `merge()`: identity grouping by normalized handle/name (called pre-NR + post-NR). `filter_blocked()`: removes handleless/blocked entries. |
 | `NameToHandleService` | **THE single DDG gate.** Mode 1: per-job cross-platform enrichment. Mode 2: post-all-jobs slot-recycling name resolution via `resolve_with_recycling()`. |
-| `CategoryProvenanceTagger` | Stamps `seen_in_categories` + `most_seen_category` onto `Influencer`s. 3 entry points: `tag_from_job` (per-job), `tag_from_page_map` (phase), `tag_from_name_mention` (NR). All converge on `apply_provenance()`. |
+| `CategoryProvenanceTagger` | Stamps `seen_in_categories` + `most_seen_category` onto `Influencer`s. 3 entry points: `tag_from_job` (per-job), `tag_from_page_map` (phase), `tag_from_name_mention` (NR). All converge on `apply_provenance()`. Parent subs (where `category.lower() == sub.lower()`) are excluded from the `most_seen_category` winner pool when specific subs also exist, promoting diversity. |
 | `AuditService` | JSONL logging of every pipeline decision. |
 | `PipelineReporter` | Markdown report with summary, breakdown, roster, seeds, canaries, name mentions, token usage. |
 | `StatsCollector` | Centralized `PipelineStats` accumulator. |
@@ -653,7 +653,12 @@ Handles normalized by stripping `@`, `_`, `.`, and common affixes (`the`, `real`
 
   apply_provenance(inf, cat_sub_counts):
     → Builds seen_in_categories = [{category, sub, citations}, ...]
-    → Sets most_seen_category = category with highest total citations
+    → Derives most_seen_category from the sub with highest total citations
+    → DIVERSITY RULE: parent subs (where category.lower() == sub.lower(),
+      e.g. BEAUTY/'Beauty') are excluded from the winner pool when more
+      specific subs also exist. The parent sub remains in seen_in_categories
+      for audit transparency. Falls back to parent sub only when it is the
+      sole sub (i.e. the influencer was only ever seen in the catch-all).
 ```
 
 `sub_to_category` is built once per run via `SeedJob.build_sub_to_category(jobs)` — a static helper that maps `sub_name → category_key` from the job list, avoiding cross-product of independent sets.

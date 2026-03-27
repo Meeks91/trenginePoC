@@ -28,7 +28,6 @@ from services.extraction.HandleExtractionService import (
 )
 from services.extraction.RegexHandleExtractorService import ExtractedHandle
 from config.schema import PageResult, Platform
-from services.handleResolution.CrossPlatformHandleResolverService import CrossPlatformHandleResolverService
 
 FIXTURES = Path(__file__).resolve().parent.parent / "fixtures"
 
@@ -129,7 +128,7 @@ class TestClickanalyticFitness:
 
 # ══════════════════════════════════════════════════════════════════════
 # Fixture 2: theinfluenceroom_uk.html
-# 19 IG, 14 TT, 1 YT, 2 X, 3 naked, 2 YTID
+# 19 IG, 14 TT, 1 YT, 2 X, 0 naked, 2 YTID
 # ══════════════════════════════════════════════════════════════════════
 
 TINFROOM_EXPECTED_IG = {
@@ -148,11 +147,11 @@ TINFROOM_EXPECTED_TT = {
 }
 TINFROOM_EXPECTED_YT = {"littleniks"}
 TINFROOM_EXPECTED_X = {"Aimee_fuller", "influence_room"}
-TINFROOM_EXPECTED_NAKED = {"aimeefullersnow", "diaryofjess", "donnanoble65"}
+TINFROOM_EXPECTED_NAKED: set[str] = set()
 
 
 class TestTheInfluenceRoomUK:
-    """theinfluenceroom_uk.html: 19 IG, 14 TT, 1 YT, 2 X, 3 naked."""
+    """theinfluenceroom_uk.html: 19 IG, 14 TT, 1 YT, 2 X, 0 naked."""
 
     @pytest.fixture(scope="class")
     def text(self):
@@ -189,8 +188,8 @@ class TestTheInfluenceRoomUK:
     def test_naked_exact_set(self, groups):
         assert groups["naked"] == TINFROOM_EXPECTED_NAKED
 
-    def test_naked_count_is_3(self, groups):
-        assert len(groups["naked"]) == 3
+    def test_naked_count_is_0(self, groups):
+        assert len(groups["naked"]) == 0
 
     def test_yt_channel_ids_count(self, text):
         assert len(extract_youtube_channel_ids(text)) == 2
@@ -228,16 +227,17 @@ class TestTheInfluenceRoomUK:
 
 # ══════════════════════════════════════════════════════════════════════
 # Fixture 3: gymfluencers_uk_fitness.html
-# 0 IG, 4 TT, 3 YT, 0 X, 6 naked, 3 YTID
+# 0 IG, 4 TT, 3 YT, 0 X, 0 naked, 3 YTID
+# Note: all @handles are inside YouTube anchor tags; 0 naked handles extracted.
 # ══════════════════════════════════════════════════════════════════════
 
 GYM_EXPECTED_TT = {"alex.beattie", "bblisacross", "courtneyblackfitness", "victorianiamh"}
 GYM_EXPECTED_YT = {"adammaxted2262", "ESGfitness", "mac_griffiths"}
-GYM_EXPECTED_NAKED = {"adammaxted", "Courtney", "Lucy", "Michael", "Sean", "The"}
+GYM_EXPECTED_NAKED: set[str] = set()
 
 
 class TestGymfluencersUKFitness:
-    """gymfluencers_uk_fitness.html: 0 IG, 4 TT, 3 YT, 6 naked."""
+    """gymfluencers_uk_fitness.html: 0 IG, 4 TT, 3 YT, 0 naked."""
 
     @pytest.fixture(scope="class")
     def text(self):
@@ -268,8 +268,8 @@ class TestGymfluencersUKFitness:
     def test_naked_exact_set(self, groups):
         assert groups["naked"] == GYM_EXPECTED_NAKED
 
-    def test_naked_count_is_6(self, groups):
-        assert len(groups["naked"]) == 6
+    def test_naked_count_is_0(self, groups):
+        assert len(groups["naked"]) == 0
 
     def test_yt_channel_ids_count(self, text):
         assert len(extract_youtube_channel_ids(text)) == 3
@@ -297,7 +297,9 @@ class TestGymfluencersUKFitness:
 
 # ══════════════════════════════════════════════════════════════════════
 # Fixture 4: seekahost_uk_fitness.html
-# 6 IG, 0 TT, 4 YT, 1 X, 14 naked, 2 YTID
+# 6 IG, 0 TT, 4 YT, 1 X, 2 naked, 2 YTID
+# Note: most @handles appear in HTML anchor tags (>@handle) and are
+# correctly excluded by the (?<!\S)@ lookbehind.
 # ══════════════════════════════════════════════════════════════════════
 
 SEEKAHOST_UK_EXPECTED_IG = {
@@ -309,10 +311,7 @@ SEEKAHOST_UK_EXPECTED_YT = {
 }
 SEEKAHOST_UK_EXPECTED_X = {"atSeekaHost"}
 SEEKAHOST_UK_EXPECTED_NAKED = {
-    "aliceliveing", "Aliceliveing_", "chessieking", "davinamccall",
-    "glouiseatkinson", "gracebeverley", "jameshaskell", "lucy_meck",
-    "lucymeck1", "MissGAtkinson", "thebodycoach", "ThisisDavina",
-    "tomdaley", "TomDaley1994",
+    "glouiseatkinson", "MissGAtkinson",
 }
 
 
@@ -351,8 +350,8 @@ class TestSeekahostUKFitness:
     def test_naked_exact_set(self, groups):
         assert groups["naked"] == SEEKAHOST_UK_EXPECTED_NAKED
 
-    def test_naked_count_is_14(self, groups):
-        assert len(groups["naked"]) == 14
+    def test_naked_count_is_2(self, groups):
+        assert len(groups["naked"]) == 2
 
     def test_yt_channel_ids_count(self, text):
         assert len(extract_youtube_channel_ids(text)) == 2
@@ -457,7 +456,9 @@ POPULARPAYS_EXPECTED_YT = {
     "yogawithadriene",
 }
 POPULARPAYS_BLOCKED_YT = {"popular-pays", "popularpays9201"}
-POPULARPAYS_EXPECTED_NAKED = {"popular"}
+POPULARPAYS_EXPECTED_NAKED: set[str] = set()
+# Note: @popular appears in HTML anchor tag context (>@popular) so
+# the (?<!\S)@ lookbehind correctly excludes it.
 
 
 class TestPopularPays:
@@ -493,8 +494,8 @@ class TestPopularPays:
     def test_naked_exact_set(self, groups):
         assert groups["naked"] == POPULARPAYS_EXPECTED_NAKED
 
-    def test_naked_count_is_1(self, groups):
-        assert len(groups["naked"]) == 1
+    def test_naked_count_is_0(self, groups):
+        assert len(groups["naked"]) == 0
 
     def test_yt_channel_ids_count(self, text):
         assert len(extract_youtube_channel_ids(text)) == 1
@@ -748,8 +749,8 @@ class TestFeedspotFitnessIG:
         """_feedspot is blocklisted → 0 Twitter."""
         assert len(groups["Twitter"]) == 0
 
-    def test_naked_count_is_124(self, groups):
-        assert len(groups["naked"]) == 124
+    def test_naked_count_is_103(self, groups):
+        assert len(groups["naked"]) == 103
 
     def test_yt_channel_ids_count(self, text):
         assert len(extract_youtube_channel_ids(text)) == 2
@@ -891,12 +892,13 @@ class TestAggregateFixtureQuality:
     def test_total_handle_count(self, all_results):
         """Total across 9 fixtures after blocklist.
 
-        clickanalytic=15, tinfroom=39, gym=13, seekahost_uk=25,
-        seekahost_male=22, popularpays=25, modash=84, feedspot=225,
-        disrupt=15 → 463 total.
+        clickanalytic=15, tinfroom=36, gym=13, seekahost_uk=13,
+        seekahost_male=22, popularpays=24, modash=84, feedspot=204,
+        disrupt=9 → 420 total.
+        Note: counts reflect (?<!\\S)@ excluding in-anchor @handles.
         """
-        assert len(all_results) == 463, (
-            f"Expected 463 total handles, got {len(all_results)}"
+        assert len(all_results) == 420, (
+            f"Expected 420 total handles, got {len(all_results)}"
         )
 
     def test_no_empty_handles(self, all_results):
@@ -980,12 +982,7 @@ class TestFullPipelineAllFixtures:
                 sample_n=0,
             ))
 
-            # Enrich + Dedup (mock DDG only)
-            resolver = CrossPlatformHandleResolverService(
-                audit, search_client=MagicMock(), delay_seconds=0,
-            )
-
-            final = resolver.resolve(extract_result.all_merged)
+            final = extract_result.all_merged
 
         return {
             "filename": filename,

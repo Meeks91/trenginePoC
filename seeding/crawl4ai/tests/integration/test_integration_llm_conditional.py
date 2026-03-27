@@ -25,7 +25,6 @@ from services.extraction.HandleExtractionService import (
     needs_llm,
 )
 from services.extraction.RegexHandleExtractorService import ExtractedHandle
-from services.handleResolution.CrossPlatformHandleResolverService import CrossPlatformHandleResolverService
 
 # Pre-import LLMExtractionService so its module is in sys.modules for mocking
 import services.extraction.LLMExtractionService as _ext_svc_mod  # noqa: F401
@@ -183,12 +182,7 @@ class TestExtractAllHandlesE2E:
             assert result.llm_pages_skipped >= 1
             assert len(result.regex_handles) >= 3
 
-            # Enrich + Dedup
-            resolver = CrossPlatformHandleResolverService(
-                audit, search_client=MagicMock(), delay_seconds=0,
-            )
-
-            final = resolver.resolve(result.all_merged)
+            final = result.all_merged
 
             # All 3 handles must survive enrichment
             final_handles: set[str] = set()
@@ -214,8 +208,8 @@ class TestExtractAllHandlesE2E:
         <html><body>
         <h1>Top Instagram fitness creators</h1>
         <p>Follow these amazing creators:</p>
-        <p>@fit_guru_2025 - Amazing workouts</p>
-        <p>@yoga_queen - Best yoga content</p>
+        <p> @fit_guru_2025 - Amazing workouts</p>
+        <p> @yoga_queen - Best yoga content</p>
         </body></html>
         '''
         page = _page(url="https://example.com/top-influencers", md=html)
@@ -243,12 +237,7 @@ class TestExtractAllHandlesE2E:
             assert result.llm_pages_used == 0
             assert result.llm_pages_skipped >= 1
 
-            # Enrich + Dedup
-            resolver = CrossPlatformHandleResolverService(
-                audit, search_client=MagicMock(), delay_seconds=0,
-            )
-
-            final = resolver.resolve(result.all_merged)
+            final = result.all_merged
 
             # Both handles must survive
             final_handles: set[str] = set()
@@ -284,12 +273,7 @@ class TestExtractAllHandlesE2E:
             # LLM should be SKIPPED
             assert result.llm_pages_used == 0
 
-            # Enrich + Dedup
-            resolver = CrossPlatformHandleResolverService(
-                audit, search_client=MagicMock(), delay_seconds=0,
-            )
-
-            final = resolver.resolve(result.all_merged)
+            final = result.all_merged
 
             # TikTok handles must survive as separate entries
             tt_entries = [inf for inf in final if Platform.TikTok in inf.handles]

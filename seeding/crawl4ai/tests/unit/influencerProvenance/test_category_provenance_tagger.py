@@ -369,3 +369,57 @@ class TestApplyProvenance:
         )
         # "Calisthenics" sorts first among the three tied subs
         assert inf.most_seen_category == "Calisthenics"
+
+    def test_parent_sub_excluded_when_specific_subs_exist(self) -> None:
+        """DIVERSITY: parent sub (category.lower()==sub.lower()) must not win when specific subs exist.
+
+        'Beauty' is the parent sub of BEAUTY. Even with more citations it should
+        lose to 'Makeup Tutorials' because it is the catch-all.
+        """
+        inf = gen_influencer()
+        CategoryProvenanceTagger.apply_provenance(
+            inf=inf,
+            cat_sub_counts={
+                ("BEAUTY", "Beauty"): 5,
+                ("BEAUTY", "Makeup Tutorials"): 3,
+            },
+        )
+        assert inf.most_seen_category == "Makeup Tutorials"
+
+    def test_parent_sub_used_when_only_sub(self) -> None:
+        """Safety: when the parent sub is the ONLY sub, it must still be chosen."""
+        inf = gen_influencer()
+        CategoryProvenanceTagger.apply_provenance(
+            inf=inf,
+            cat_sub_counts={("BEAUTY", "Beauty"): 3},
+        )
+        assert inf.most_seen_category == "Beauty"
+
+    def test_parent_sub_excluded_tie_goes_to_alphabetical_specific(self) -> None:
+        """When parent is excluded and remaining subs tie, alphabetical winner is picked."""
+        inf = gen_influencer()
+        CategoryProvenanceTagger.apply_provenance(
+            inf=inf,
+            cat_sub_counts={
+                ("BEAUTY", "Beauty"): 3,
+                ("BEAUTY", "Haircare"): 3,
+                ("BEAUTY", "Makeup Tutorials"): 3,
+            },
+        )
+        # 'Beauty' is the parent sub — excluded. Remaining: 'Haircare' and 'Makeup Tutorials'.
+        # 'Haircare' sorts before 'Makeup Tutorials' alphabetically.
+        assert inf.most_seen_category == "Haircare"
+
+    def test_parent_sub_still_in_seen_in_categories(self) -> None:
+        """Parent sub must remain in seen_in_categories even when excluded from most_seen_category."""
+        inf = gen_influencer()
+        CategoryProvenanceTagger.apply_provenance(
+            inf=inf,
+            cat_sub_counts={
+                ("BEAUTY", "Beauty"): 5,
+                ("BEAUTY", "Skincare Routines"): 2,
+            },
+        )
+        sub_names = [cc.sub for cc in inf.seen_in_categories]
+        assert "Beauty" in sub_names
+        assert inf.most_seen_category == "Skincare Routines"
