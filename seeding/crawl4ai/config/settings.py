@@ -17,6 +17,10 @@ import os
 from datetime import datetime
 from pathlib import Path
 
+from dotenv import load_dotenv
+
+load_dotenv()
+
 
 # ── Paths ──
 # PIPELINE_ROOT = seeding/ (parent of crawl4ai/)
