@@ -568,6 +568,9 @@ class RegexHandleExtractorService:
         domain leaks, and anything in the blocklist.
         """
         h_lower = handle.lower().rstrip(".")
+        # Handles on all platforms disallow spaces — a space means it's a name, not a handle
+        if " " in handle:
+            return False
         if RegexHandleExtractorService.is_blocked_handle(handle):
             return False
         if len(h_lower) < 2:
