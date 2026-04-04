@@ -17,8 +17,7 @@
    - [3c. YouTube Channel Resolution](#3c-youtube-channel-resolution)
    - [3d. Name Mention Tracking](#3d-name-mention-tracking)
    - [3e. LLM Extraction (Conditional)](#3e-llm-extraction-conditional)
-5. [Phase 4 — Enrichment](#phase-4--enrichment)
-6. [Phase 4¼ — Category Provenance Tagging](#phase-4¼--category-provenance-tagging)
+5. [Phase 4 — Category Provenance Tagging](#phase-4--category-provenance-tagging)
 7. [Phase 4½ — Identity Merge & Dedup](#phase-4½--identity-merge--dedup)
 8. [Phase 5 — Deferred Name Resolution (Slot Recycling)](#phase-5--deferred-name-resolution-slot-recycling)
 9. [Phase 6 — Output, Validation, Reporting](#phase-6--output-validation-reporting)
@@ -35,8 +34,7 @@ graph TD
     A["🌱 Seed Config<br/>72 subs × 3 platforms × N regions"] --> B["① Search<br/>DDG queries → URLs"]
     B --> C["② Crawl<br/>Crawl4AI → markdown"]
     C --> D["③ Extract<br/>Regex → Classify → LLM"]
-    D --> E["④ Enrich<br/>DDG handle backfill"]
-    E --> F1["④½ Pre-NR Merge<br/>merge() dedup"]
+    D --> F1["④ Pre-NR Merge<br/>merge() dedup"]
     F1 --> F["⑤ Name Resolution<br/>KnownNameIndex → DDG → handles"]
     F --> F2["⑤½ Post-NR Merge<br/>merge() fold resolved"]
     F2 --> G["⑥ Output<br/>JSON + Report + Audit"]
@@ -434,60 +432,7 @@ Dedup key: `(handle.lower(), platform.lower())`
 
 ---
 
-## Phase 4 — Enrichment
-
-**Service**: `NameToHandleService.py`
-**Cost**: FREE (DDG)
-
-### Handle Backfill
-
-For influencers with a name but missing a handle on the target platform:
-
-```
-DDG query: "{name}" {platform_domain}
-   e.g. → "Jeff Nippard" instagram.com
-
-Parse results:
-  1. URL match: instagram.com/{handle} → extract   
-  2. Text match: @{handle} in title/body → extract
-  
-Junk path filter per platform:
-  Instagram: /explore, /accounts, /developer, /reel...
-  TikTok: /foryou, /following, /discover...
-  YouTube: /watch, /playlist, /shorts, /feed...
-```
-
-#### Cross-Platform Qualification Rules
-
-| Rule | Value | Rationale |
-|------|-------|-----------|
-| Must have ≥1 handle | Required | Name-only → deferred to name resolution |
-| Must need target platform | Required | Already has IG → skip |
-| Min source citations | ≥ 2 pages | Multi-cited = more likely real |
-| Max lookups per job | 5 | Caps DDG budget |
-| Sort order | Most-cited first | Best ROI |
-
-#### Cross-Platform Logic
-
-| Scenario | `--no-cross-platform-lookup` OFF | `--no-cross-platform-lookup` ON |
-|----------|---------------------------|--|
-| Name only, no handles | DDG lookup ✅ | DDG lookup ✅ |
-| Has TikTok, needs Instagram | DDG lookup ✅ | Skip ❌ |
-| Has all platforms | Skip ❌ | Skip ❌ |
-
-### Per-Job Deduplication
-
-```
-Key = (handle.lower().lstrip("@"), platform.value.lower())
-If no handle: key = ("", name.lower())
-
-First occurrence wins.
-Duplicates: source_urls unioned, handles merged into surviving entry.
-```
-
----
-
-## Phase 4¼ — Category Provenance Tagging
+## Phase 4 — Category Provenance Tagging
 
 **Service**: `CategoryProvenanceTagger.py`
 **When**: After handles are extracted and enriched, before merge
@@ -761,7 +706,6 @@ Every decision logged to `results/audit/{job_key}.jsonl`:
 search   → url_accepted, url_rejected, direct_handle, cache_hit, retry
 crawl    → page_success, page_failed
 extract  → llm_call (tokens, count)
-enrich   → handle_found, dedup, retry, permanent_failure
 name_res → resolved, no_match
 ```
 
@@ -781,7 +725,6 @@ name_res → resolved, no_match
 | `BFS_MAX_PAGES` | 20 | — | Max extra pages per BFS pass |
 | `LLM_PROVIDER` | `gemini/gemini-2.5-flash-lite` | — | LiteLLM model identifier |
 | `LLM_DELAY_SECONDS` | 2 (0 for Ollama) | — | Pause between LLM calls |
-| `ENRICH_DELAY_SECONDS` | 1 | — | Pause between DDG enrichment queries |
 | `MAX_RETRIES` | 3 | — | Max retry attempts (DDG + LLM) |
 | `BACKOFF_BASE_SECONDS` | 2 | — | Exponential backoff base |
 | `BACKOFF_MAX_SECONDS` | 30 | — | Backoff cap |

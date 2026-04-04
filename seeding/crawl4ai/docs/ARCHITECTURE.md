@@ -191,25 +191,7 @@ then after ALL jobs finish, deferred resolution + global dedup runs.
 │  │        → name_tracker: names seen across pages           │                     │
 │  └──────────────────────────────────────────────────────────┘                     │
 │                                                                                  │
-│  STEP 4: PER-JOB ENRICHMENT (cross-platform DDG)                                 │
-│  ┌──────────────────────────────────────────────────────────┐                     │
-│  │ NameToHandleService.resolve_cross_account_handles()      │                     │
-│  │                                                          │                     │
-│  │ If an influencer has a TikTok handle but the job         │                     │
-│  │ targets Instagram: DDG "{name}" instagram.com            │                     │
-│  │                                                          │                     │
-│  │ Rules:                                                   │                     │
-│  │   • Only influencers with ≥2 source page citations       │                     │
-│  │   • Max 5 DDG lookups per job (budget cap)               │                     │
-│  │   • Sorted by citation count (most-cited first)          │                     │
-│  │   • Name-only influencers are SKIPPED here (deferred)    │                     │
-│  │                                                          │                     │
-│  │ New handles are added as NEW Influencer entries.          │                     │
-│  │                                                          │                     │
-│  │ OUTPUT → enriched Influencer[] for this job              │                     │
-│  └──────────────────────────────────────────────────────────┘                     │
-│                                                                                  │
-│  STEP 4½: CATEGORY PROVENANCE TAGGING                                            │
+│  STEP 4: CATEGORY PROVENANCE TAGGING                                            │
 │  ┌──────────────────────────────────────────────────────────┐                     │
 │  │ CategoryProvenanceTagger.tag_from_job()                  │                     │
 │  │                                                          │                     │
@@ -234,7 +216,7 @@ then after ALL jobs finish, deferred resolution + global dedup runs.
 ┌──────────────────────────────────────────────────────────────────────────────────┐
 │ STEP 6: DEFERRED NAME RESOLUTION                                                 │
 │ ┌──────────────────────────────────────────────────────────┐                      │
-│ │ NameToHandleService.resolve_with_recycling() uses the    │                      │
+│ │ HandleFromNameService.resolve_with_recycling() uses the  │                      │
 │ │ global NameMentionTracker with per-group slot recycling.  │                      │
 │ │                                                          │                      │
 │ │ Names from Reddit mentioned ≥2 times across pages get    │                      │
@@ -336,10 +318,9 @@ An alternative orchestration that avoids redundant crawls.
  └──────────────────────────────────────────────────────────────────────┘
                               │
                               ▼
- PHASE 4: EXTRACT + ENRICH + TAG
+ PHASE 4: EXTRACT + TAG
  ┌──────────────────────────────────────────────────────────────────────┐
  │  HandleExtractionService runs on all crawled pages.                 │
- │  NameToHandleService cross-platform enrichment.                     │
  │  CategoryProvenanceTagger.tag_from_page_map() traces each           │
  │  influencer's source_urls → page_map → TaggedURL → sub_keys        │
  │  to derive config-based provenance (which searches found them).     │
@@ -419,12 +400,6 @@ An alternative orchestration that avoids redundant crawls.
  └────────────────────────────┬──────────────────────────────────┘
                               │
                               ▼
- ┌───────────────────────────────────────────────────────────────┐
- │  NameToHandleService — cross-platform DDG enrichment          │
- │  "Has TikTok, needs Instagram" → DDG "{name}" instagram.com  │
- │  (max 5 per job, only ≥2-cited influencers)                   │
- └────────────────────────────┬──────────────────────────────────┘
-                              │
               accumulate (Influencer, category) into global pool
                               │
                     ┌─────────┴──── after ALL jobs ──────────────┐
@@ -504,10 +479,12 @@ crawl4ai/
 │   │   ├── LLMResponseParser.py        # LLM JSON → Influencer[] with handle validation
 │   │   └── prompts.py                  # LLM prompt template
 │   │
-│   ├── enrichment/
-│   │   ├── InfluencerMerger.py         # Identity merge + blocked-handle filtering
-│   │   ├── NameToHandleService.py      # DDG gate: cross-platform + slot-recycling NR
-│   │   ├── CategoryProvenanceTagger.py # Config → (category, sub) provenance stamping
+│   ├── influencerMerging/
+│   │   └── InfluencerMergerService.py  # Identity merge + blocked-handle filtering
+│   ├── influencerProvenance/
+│   │   └── CategoryProvenanceTaggerService.py  # Config → (category, sub) provenance stamping
+│   ├── handleResolution/
+│   │   ├── HandleFromNameService.py    # DDG gate: deferred slot-recycling name resolution
 │   │   └── patterns.py                 # Platform URL + @handle text regexes
 │   │
 │   ├── audit/
@@ -549,7 +526,7 @@ crawl4ai/
 |--------|---------------|
 | `cli.py` | argparse entry point. Loads `all_categories.json`, generates `SeedJob[]`, routes to PerJobPipelineRunner or PhasePipelineRunner. |
 | `base_pipeline.py` | `BasePipelineRunner` — Template Method base class. Shared init, stats, search loop with DDG circuit breaker, deferred name resolution, canary validation, report generation, seed saving. Both runners extend this. |
-| `pipeline.py` | `PerJobPipelineRunner(BasePipelineRunner)`. Overrides `_search_and_extract_influencers()` with per-job loop: Crawl→Extract→Enrich per job (search is shared). |
+| `pipeline.py` | `PerJobPipelineRunner(BasePipelineRunner)`. Overrides `_search_and_extract_influencers()` with per-job loop: Crawl→Extract→Tag per job (search is shared). |
 | `phase_pipeline.py` | `PhasePipelineRunner(BasePipelineRunner)`. Overrides `_search_and_extract_influencers()` with global phases: Dedupe URLs → Crawl Once → Extract+Merge (search is shared). |
 
 ### Config
@@ -583,7 +560,7 @@ crawl4ai/
 | `ResponseParser` | LLM JSON → Influencer[]. Handles 3 response shapes. Validates handles via NameCleaner. |
 | `NameCleaner` | Regex extraction (`_NAME_RE.search()`) replaces stripping pipeline. Brand/country/news/CTA blocklists, URL-decode, LinkedIn slug rejection. |
 | `InfluencerMerger` | `merge()`: identity grouping by normalized handle/name (called pre-NR + post-NR). `filter_blocked()`: removes handleless/blocked entries. |
-| `NameToHandleService` | **THE single DDG gate.** Mode 1: per-job cross-platform enrichment. Mode 2: post-all-jobs slot-recycling name resolution via `resolve_with_recycling()`. |
+| `HandleFromNameService` | **The deferred name resolution DDG gate.** Runs once after all jobs complete. Slot-recycling name resolution via `resolve_with_recycling()`. |
 | `CategoryProvenanceTagger` | Stamps `seen_in_categories` + `most_seen_category` onto `Influencer`s. 3 entry points: `tag_from_job` (per-job), `tag_from_page_map` (phase), `tag_from_name_mention` (NR). All converge on `apply_provenance()`. Parent subs (where `category.lower() == sub.lower()`) are excluded from the `most_seen_category` winner pool when specific subs also exist, promoting diversity. |
 | `AuditService` | JSONL logging of every pipeline decision. |
 | `PipelineReporter` | Markdown report with summary, breakdown, roster, seeds, canaries, name mentions, token usage. |
@@ -607,19 +584,10 @@ crawl4ai/
  Cost ~$0.003│ 6. LLMExtractionService (zero-handle listicles only)
 ```
 
-### NameToHandleService: Two Modes
+### HandleFromNameService: Deferred Name Resolution
 
 ```
- MODE 1 — Per-Job Cross-Platform (runs during each job)
- ┌──────────────────────────────────────────────────────┐
- │ "This influencer has TikTok but we need Instagram"   │
- │ DDG: "{name}" instagram.com                          │
- │ Only if: has ≥1 handle, needs target platform,       │
- │          cited on ≥2 pages, max 5 lookups/job        │
- │ Name-only influencers SKIPPED (go to Mode 2)         │
- └──────────────────────────────────────────────────────┘
-
- MODE 2 — Deferred Name Resolution (runs once, after ALL jobs)
+ Runs once, after ALL jobs complete.
  ┌──────────────────────────────────────────────────────┐
  │ "This name appeared on 4 Reddit pages with no handle"│
  │ DDG: "{name} {category} Instagram TikTok YouTube"    │
