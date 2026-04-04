@@ -124,3 +124,29 @@ class TestValidHandlesStillPass:
         assert is_valid_handle(handle), (
             f"Valid handle '{handle}' was incorrectly blocked"
         )
+
+
+class TestHandlesWithSpacesRejected:
+    """Regression: LLM hallucinating a person's full name as their handle.
+
+    All social platforms disallow spaces in handles. A string like 'Yann Todd'
+    is a display name, not a handle — is_valid_handle must reject it.
+    """
+
+    # Fixtures:
+
+    SPACED_HANDLES = [
+        "Yann Todd",        # exact regression case — favikon Switzerland page
+        "Chris Heria",      # another real name that could be hallucinated
+        "Jeff Nippard",
+        "two words",
+        "First Last Name",  # three words
+    ]
+
+    # Fixtures
+
+    @pytest.mark.parametrize("handle", SPACED_HANDLES)
+    def test_handle_with_space_is_invalid(self, handle):
+        assert not is_valid_handle(handle), (
+            f"Handle with space '{handle}' should be rejected by is_valid_handle"
+        )
